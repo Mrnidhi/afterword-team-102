@@ -1,4 +1,8 @@
-# Afterword — interactive design prototype
+# Afterword — Team 102
+
+An interactive design prototype by Team 102.
+
+[Website](https://mrnidhi.github.io/afterword-team-102/) · [Deployment workflow](https://github.com/Mrnidhi/afterword-team-102/actions/workflows/pages.yml)
 
 A private design preview for a family organizing the practical work after a death. Built from the supplied Afterword product document, with a fictional estate for Arun Rao and Priya Rao. No source-document credentials, personal records or private identifiers are included.
 
@@ -31,7 +35,15 @@ Hash routes are deep-linkable. User-entered content is escaped before HTML rende
 
 The app also feature-detects the browser's experimental WebMCP API and registers one read-only tool for the fictional action plan. It grants no external access. Ordinary UI operation does not depend on this API.
 
-To run locally, serve `dist/` with any static server. There is no install or build step. The Sites manifest specifies `dist` as the static directory.
+To run locally, serve `dist/` with any static server. There is no install or build step.
+
+## Hosting on GitHub Pages
+
+GitHub Pages is the selected host. The workflow in `.github/workflows/pages.yml` validates the JavaScript and uploads only `dist/`, then deploys it to the `github-pages` environment. A push to `main` that changes the website or workflow triggers deployment; it can also be run manually from Actions. All asset URLs are relative, so the app works under the repository path `/afterword-team-102/`.
+
+The repository uses GitHub Actions as its Pages publishing source. There is no API key, server, database or paid hosting dependency. Official actions are pinned to verified release commit hashes. The GitHub website and this repository are public; use fictional records only.
+
+The `.openai/hosting.json` file records the earlier private design-preview deployment. It is retained as historical configuration, not the active GitHub deployment configuration. Updating this repository deploys through GitHub Pages, not the earlier host.
 
 ## Design rationale and research
 

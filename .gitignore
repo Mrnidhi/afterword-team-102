@@ -1,0 +1,10 @@
+.DS_Store
+.env
+.env.*
+!.env.example
+node_modules/
+*.tar.gz
+*.zip
+*.log
+.idea/
+.vscode/
