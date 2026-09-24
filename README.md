@@ -19,7 +19,7 @@ The website keeps ten family-facing views:
 7. **Ask Afterword** — four scripted source-linked examples and an honest unsupported-question response.
 8. **Privacy** — browser storage, actual connection/sharing status, sample sensitive-record categories and an optional request preview.
 9. **Activity** — searchable history of real changes made in this browser, with export.
-10. **Settings** — reading size, JSON export, reset and session-scoped undo.
+10. **Settings** — reading size, background motion, JSON export, reset and session-scoped undo.
 
 Hardware promotion, model-routing diagrams and design-research pages are deliberately kept out of the family workflow. Technical architecture and references belong in this document. The overview prioritizes the next action and dates to keep in view.
 
@@ -36,11 +36,12 @@ This is a buildless static application using semantic HTML, CSS and JavaScript. 
 - `dist/pages.js`: fictional document content and core page renderers.
 - `dist/workspace.js`: intake, plan, evidence, drafts, practical privacy, activity and settings workflows.
 - `dist/experience.js`: debounced autosave, recovery across reload, focus continuity, contextual help and reversible action notices.
+- `dist/ambient.js`, `ambient.css`: original vector daylight scene, local-time tones, persisted pause preference and reduced-motion support.
 - `dist/styles.css`, `studio.css`, `workspace.css`: base layouts, HP-inspired design tokens and responsive workflow styling.
 - `scripts/version-assets.cjs`: content-based CSS/JS versions to prevent mixed deployments from cached assets.
 - `tests/state.test.cjs`: meaningful boundary tests for malformed storage, migration, ID allowlists, date/size limits and write failures.
 
-Tasks, reminders, notes, read marks, favorites, drafts, file metadata and reading size persist under `afterword-workspace-v3`. Legacy `afterword-design-v2` data is validated and migrated. Working notes and drafts autosave after a short typing pause and flush on navigation or page exit. Invalid reminder entries remain visibly unsaved until corrected. The last edited letter template is restored. Stored input is escaped before rendering; CSV exports neutralize formula-like values. Storage failure is visible and export remains available.
+Tasks, reminders, notes, read marks, favorites, drafts, file metadata, reading size and background motion persist under `afterword-workspace-v3`. Legacy `afterword-design-v2` data is validated and migrated. Working notes and drafts autosave after a short typing pause and flush on navigation or page exit. Invalid reminder entries remain visibly unsaved until corrected. The last edited letter template is restored. Stored input is escaped before rendering; CSV exports neutralize formula-like values. Storage failure is visible and export remains available.
 
 The file picker and drop zone accept PDF, TXT, CSV, EML and Markdown names, up to 20 MB per file, 20 files and 100 MB total. The frontend stores only names, sizes and types. It does not read, retain, upload or analyze file contents. Users must reselect originals for a future connected processor. Browser local storage is unencrypted; use fictional files and details in this demo.
 
@@ -97,3 +98,9 @@ Interaction checks covered independent draft save/reload and evidence-to-letter 
 ## UX acceptance and validation
 
 The user’s 4.9/5 aspiration is a target, not a measured rating or a guarantee. No satisfaction study or 100,000-user deployment has been performed. [UX-VALIDATION.md](UX-VALIDATION.md) defines the user journeys, success criteria and responsible evaluation sequence.
+
+## Ambient appearance
+
+Overview and Memories have an original vector background inspired by softly folded paper in daylight. Three shapes move on 32–44 second transform cycles; the local clock selects morning, day, evening or night colors. No location access, external imagery, video, canvas, tracking or inference is used. Other task pages and reading surfaces stay stationary.
+
+Pause/resume is available beside the artwork and in Appearance preferences. The preference persists in the existing validated store. Operating-system reduced motion always overrides animation; forced-colors mode and printing omit the artwork. Motion also pauses when the artwork is offscreen, a dialog is open or the tab is hidden. The scene lives outside the rerendered app so actions do not restart it. Clock checks run once per minute only while the scene is moving.

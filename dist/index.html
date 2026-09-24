@@ -9,14 +9,49 @@
   <link rel="stylesheet" href="styles.css?v=3bef84fb944f">
   <link rel="stylesheet" href="studio.css?v=402751c47775">
   <link rel="stylesheet" href="workspace.css?v=c7f0480dcbf0">
-  <script src="store.js?v=4859f8ccf96c" defer></script>
-  <script src="app.js?v=5ebb7ffdc16b" defer></script>
+  <link rel="stylesheet" href="ambient.css?v=5d71385ba3da">
+  <script src="store.js?v=9f8cdfe5158e" defer></script>
+  <script src="app.js?v=0cdd17de689d" defer></script>
   <script src="pages.js?v=85673885b9e5" defer></script>
-  <script src="workspace.js?v=f2ca68a96091" defer></script>
+  <script src="workspace.js?v=71b2b0f6e4d0" defer></script>
   <script src="experience.js?v=66cb0c15ff89" defer></script>
+  <script src="ambient.js?v=54f8047d15c2" defer></script>
 </head>
 <body>
   <a class="skip" href="#main">Skip to content</a>
+  <div id="ambient-daylight" aria-hidden="true" inert>
+    <svg viewBox="0 0 1200 440" preserveAspectRatio="xMidYMid slice" focusable="false">
+      <defs>
+        <linearGradient id="daylight-paper" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0" stop-color="var(--daylight-white)"/>
+          <stop offset=".54" stop-color="var(--daylight-silver)"/>
+          <stop offset="1" stop-color="var(--daylight-blue)"/>
+        </linearGradient>
+        <linearGradient id="daylight-fold" x1="0" y1="0" x2=".8" y2="1">
+          <stop offset="0" stop-color="var(--daylight-warm)"/>
+          <stop offset=".48" stop-color="var(--daylight-white)"/>
+          <stop offset="1" stop-color="var(--daylight-silver)"/>
+        </linearGradient>
+        <linearGradient id="daylight-edge" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0" stop-color="var(--daylight-silver)"/>
+          <stop offset=".48" stop-color="var(--daylight-white)"/>
+          <stop offset="1" stop-color="var(--daylight-blue)"/>
+        </linearGradient>
+      </defs>
+      <g class="daylight-plane daylight-plane-back">
+        <path d="M450 -100H1380V550H200C540 390 820 250 720 110C680 50 560 -20 450 -100Z" fill="url(#daylight-paper)"/>
+        <path d="M450 -100C560 -20 680 50 720 110C820 250 540 390 200 550" fill="none" stroke="#fff" stroke-opacity=".8"/>
+      </g>
+      <g class="daylight-plane daylight-plane-middle">
+        <path d="M950 -100H1430V560H520C690 350 1040 280 1070 130C1090 30 1010 -30 950 -100Z" fill="url(#daylight-fold)"/>
+        <path d="M950 -100C1010 -30 1090 30 1070 130C1040 280 690 350 520 560" fill="none" stroke="#fff" stroke-opacity=".9"/>
+      </g>
+      <g class="daylight-plane daylight-plane-front">
+        <path d="M1410 -40V580H740C900 420 850 340 990 230C1110 135 1290 145 1410 -40Z" fill="url(#daylight-edge)"/>
+        <path d="M740 580C900 420 850 340 990 230C1110 135 1290 145 1410 -40" fill="none" stroke="#fff" stroke-opacity=".8"/>
+      </g>
+    </svg>
+  </div>
   <div id="app"></div>
   <dialog id="detail-dialog" aria-labelledby="dialog-title"><div id="dialog-content"></div></dialog>
   <div id="toast" role="status" aria-live="polite"></div>

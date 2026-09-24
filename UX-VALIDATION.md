@@ -45,3 +45,11 @@ Verified cases include autosave recovery on immediate reload without pressing Sa
 - [Error-message guidance](https://www.nngroup.com/articles/error-message-guidelines/) — explain the problem and the recovery step.
 - [W3C status messages](https://www.w3.org/WAI/WCAG21/Understanding/status-messages) — announce saves/errors without stealing focus.
 - [W3C enhanced target sizing](https://www.w3.org/WAI/WCAG22/Understanding/target-size-enhanced.html) — aim for comfortable controls; this is not a claim of full conformance.
+
+## Ambient background acceptance
+
+- Artwork is decorative and absent from the accessibility tree. Controls retain 44px minimum height and visible keyboard focus.
+- Motion is limited to Overview and Memories; document, letter and evidence surfaces remain still.
+- Pause preserves the scene, survives reload and remains available in Appearance preferences. Device reduced motion takes priority, including preference changes while the app is open.
+- Animation pauses offscreen, behind a dialog and in a hidden tab. Printing and forced-colors modes omit it.
+- Time-of-day tones use only the device clock; no location request or added network resource is needed.

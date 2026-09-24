@@ -1,0 +1,70 @@
+/* Daylight: original vector folds. Only their transforms animate, never reading surfaces. */
+:root {
+  --daylight-white: #fafcfd;
+  --daylight-silver: #cbd8e3;
+  --daylight-blue: #a6bfd3;
+  --daylight-warm: #f0e8db;
+}
+:root[data-daylight="morning"] { --daylight-silver:#d2dce2; --daylight-blue:#b3c9d4; --daylight-warm:#f3e2c9; }
+:root[data-daylight="evening"] { --daylight-silver:#d9d6d3; --daylight-blue:#b6c4d6; --daylight-warm:#efd7be; }
+:root[data-daylight="night"] { --daylight-silver:#c9d2e1; --daylight-blue:#94abc6; --daylight-warm:#e5e7ee; }
+#app { position:relative; z-index:1; }
+[data-page="overview"] .page-enter,[data-page="memories"] .page-enter { animation:none; }
+#ambient-daylight {
+  position:absolute; z-index:0; overflow:hidden; pointer-events:none; display:none;
+  background:#edf1f5; contain:layout paint; border-radius:2px;
+}
+#ambient-daylight[data-visible="true"] { display:block; }
+#ambient-daylight svg { display:block; width:100%; height:100%; }
+#ambient-daylight::after {
+  content:""; position:absolute; inset:0;
+  background:linear-gradient(90deg,#f6f7f9 0%,#f6f7f9fa 25%,#f6f7f9d9 42%,#f6f7f954 65%,#f6f7f900 90%);
+}
+.daylight-plane { animation:daylight-drift 32s ease-in-out infinite alternate; animation-play-state:paused; }
+.daylight-plane-middle { animation-name:daylight-settle; animation-duration:38s; animation-delay:-12s; }
+.daylight-plane-front { animation-name:daylight-rise; animation-duration:44s; animation-delay:-24s; }
+#ambient-daylight[data-running="true"] .daylight-plane { animation-play-state:running; }
+@keyframes daylight-drift { from { transform:translate(-16px,-8px); } to { transform:translate(32px,14px); } }
+@keyframes daylight-settle { from { transform:translate(20px,-14px); } to { transform:translate(-24px,12px); } }
+@keyframes daylight-rise { from { transform:translate(16px,15px); } to { transform:translate(-28px,-12px); } }
+.ambient-intro {
+  position:relative; display:block; min-height:280px; padding:32px 30px 62px;
+  border-bottom:1px solid #d2dae4; margin-bottom:28px; isolation:isolate;
+}
+.ambient-intro>div { max-width:640px; }
+.ambient-intro h1 { max-width:620px; }
+.ambient-intro p { max-width:530px; color:#505c6d; }
+.ambient-intro>.button { margin-top:24px; }
+.ambient-intro.memory-top { min-height:250px; text-align:left; align-items:initial; }
+.ambient-intro.memory-top>svg { display:none; }
+.ambient-intro.memory-top p { max-width:470px; }
+.ambient-control {
+  position:absolute; right:22px; bottom:12px; display:inline-flex; align-items:center; gap:8px;
+  min-height:44px; padding:8px 10px; color:#344357; background:transparent;
+  font:500 .75rem/1.5 var(--sans); border-radius:3px;
+}
+.ambient-control svg { width:15px; height:15px; }
+.ambient-control:hover { background:#ffffff80; }
+.ambient-control:disabled { opacity:1; color:#586476; cursor:default; }
+.ambient-intro~.quiet-archive-intro { margin-top:10px; border-top:0; }
+.motion-preference-note { margin-top:12px; }
+@media(min-width:1600px) { .ambient-intro { min-height:305px; padding:40px 36px 65px; } }
+@media(max-width:1040px) {
+  .ambient-intro { padding:28px 24px 60px; }
+  .ambient-intro>div { max-width:80%; }
+  #ambient-daylight::after { background:linear-gradient(90deg,#f6f7f9 0%,#f6f7f9eb 42%,#f6f7f966 75%,#f6f7f91a); }
+}
+@media(max-width:740px) {
+  .ambient-intro,.ambient-intro.memory-top { min-height:0; padding:25px 0 60px; margin-bottom:24px; }
+  .ambient-intro>div { max-width:100%; }
+  .ambient-intro h1 { font-size:1.85rem; max-width:100%; }
+  .ambient-intro p { font-size:.9375rem; line-height:1.8; }
+  .ambient-intro>.button { margin-top:21px; }
+  .ambient-control { right:0; bottom:6px; }
+  #ambient-daylight::after { background:linear-gradient(90deg,#f6f7f9f5,#f6f7f9cc 60%,#f6f7f966); }
+  #ambient-daylight svg { width:145%; max-width:none; margin-left:-45%; }
+  .ambient-intro~.quiet-archive-intro { padding-top:8px; }
+}
+@media(prefers-reduced-motion:reduce) { .daylight-plane { animation:none!important; } }
+@media(forced-colors:active) { #ambient-daylight,.ambient-control { display:none!important; } }
+@media print { #ambient-daylight,.ambient-control { display:none!important; } .ambient-intro { min-height:0!important; padding:0!important; } }
