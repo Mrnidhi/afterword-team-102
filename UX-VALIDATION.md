@@ -48,8 +48,8 @@ Verified cases include autosave recovery on immediate reload without pressing Sa
 
 ## Ambient background acceptance
 
-- Artwork is decorative and absent from the accessibility tree. Controls retain 44px minimum height and visible keyboard focus.
+- Artwork is decorative and absent from the accessibility tree. Its motion preference is available in Appearance settings.
 - Motion is limited to Overview and Memories; document, letter and evidence surfaces remain still.
-- Pause preserves the scene, survives reload and remains available in Appearance preferences. Device reduced motion takes priority, including preference changes while the app is open.
+- The Still preference preserves the scene and survives reload. It is available in Appearance preferences. Device reduced motion takes priority, including preference changes while the app is open.
 - Animation pauses offscreen, behind a dialog and in a hidden tab. Printing and forced-colors modes omit it.
 - Time-of-day tones use only the device clock; no location request or added network resource is needed.
