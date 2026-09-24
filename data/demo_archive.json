@@ -1,0 +1,183 @@
+{
+  "version": 1,
+  "notice": "All documents, names, amounts, providers and identifiers are fictional. Added contact records use reserved example domains and are not deliverable.",
+  "person": {
+    "full_name": "Arun Rao",
+    "date_of_death": null
+  },
+  "findings": [
+    {
+      "id": "insurance",
+      "provider_id": "cedar-life",
+      "type": "insurance",
+      "title": "Request current policy information",
+      "masked_identifier": "policy ending 4471",
+      "source_ids": [
+        "policy",
+        "will",
+        "cedar-life-contact"
+      ]
+    },
+    {
+      "id": "storage",
+      "provider_id": "valley-storage",
+      "type": "account",
+      "title": "Ask about access to personal belongings",
+      "source_ids": [
+        "storage"
+      ]
+    },
+    {
+      "id": "medical",
+      "provider_id": "cedar-clinic",
+      "type": "bill",
+      "title": "Request an updated balance and payment allocation",
+      "masked_identifier": "account ending 0082",
+      "source_ids": [
+        "medical",
+        "receipt",
+        "clinic-contact"
+      ]
+    },
+    {
+      "id": "subscriptions",
+      "provider_id": "harbor-gym",
+      "provider_ids": [
+        "harbor-gym",
+        "streamly"
+      ],
+      "type": "subscription",
+      "title": "Request cancellation requirements",
+      "source_ids": [
+        "statement"
+      ]
+    },
+    {
+      "id": "bonds",
+      "provider_id": null,
+      "type": "asset",
+      "title": "Request records for a mentioned asset",
+      "source_ids": [
+        "voice"
+      ]
+    },
+    {
+      "id": "notify-employer",
+      "provider_id": "northline",
+      "type": "pension",
+      "title": "Ask about account status and required documents",
+      "source_ids": [
+        "pension"
+      ]
+    },
+    {
+      "id": "gather-records",
+      "provider_id": null,
+      "type": "admin",
+      "title": "Request a duplicate record",
+      "source_ids": []
+    }
+  ],
+  "documents": [
+    {
+      "id": "policy",
+      "provider_id": "cedar-life",
+      "type": "text",
+      "date": "2019-06-12",
+      "title": "Life insurance policy letter",
+      "filename": "policy-letter-2019.pdf",
+      "fictional": true,
+      "text": "Policy correspondence\n\nCedar Life · fictional provider\n\nJun 12, 2019\n\nDear Arun Rao,\n\nThis letter confirms the policy information held on June 12, 2019.\n\nRecorded coverage: $250,000. Primary beneficiary on file: Maya Rao.\n\nThis historical letter does not confirm current policy status, premium payments, or any subsequent beneficiary changes. Contact the provider for current information."
+    },
+    {
+      "id": "will",
+      "provider_id": null,
+      "type": "text",
+      "date": "2024-02-08",
+      "title": "Will — family copy",
+      "filename": "will-family-copy-2024.pdf",
+      "fictional": true,
+      "text": "Extract from a family copy\n\nFamily archive · unsigned design sample\n\nFeb 8, 2024\n\nThis fictional excerpt describes a direction for the estate.\n\nI name Priya Rao to receive the residue of my estate.\n\nThe sample does not establish validity, legal authority, or the recipient of a separately designated insurance benefit. No other pages are included in this design fixture."
+    },
+    {
+      "id": "storage",
+      "provider_id": "valley-storage",
+      "type": "email",
+      "date": "2026-09-02",
+      "title": "Storage renewal email",
+      "filename": "storage-renewal.eml",
+      "fictional": true,
+      "text": "Your monthly storage renewal\n\nValley Storage · fictional provider\n\nSep 2, 2026\n\nHello Arun,\n\nYour storage space is scheduled to renew for another month.\n\nMonthly charge: $129. Please arrange collection of all belongings before closing the space.\n\nThe message does not include an inventory. Arrange a visit and ask the provider about access requirements before making changes."
+    },
+    {
+      "id": "statement",
+      "provider_id": null,
+      "type": "text",
+      "date": "2026-09-15",
+      "title": "September account statement",
+      "filename": "september-statement.csv",
+      "fictional": true,
+      "text": "Recurring transactions\n\nFamily sample · fictional transactions\n\nSep 15, 2026\n\nTwo recurring charges are present in this sample statement.\n\nSep 3 · Harbor Gym · $39.99\nSep 7 · Streamly · $15.49\n\nTotal shown: $55.48. This statement alone does not prove account ownership, cancellation terms or future renewals."
+    },
+    {
+      "id": "medical",
+      "provider_id": "cedar-clinic",
+      "type": "text",
+      "date": "2026-09-10",
+      "title": "Medical invoice",
+      "filename": "medical-invoice.pdf",
+      "fictional": true,
+      "text": "Account balance notice\n\nCedar Clinic · fictional provider\n\nSep 10, 2026\n\nThis fictional invoice requests a response by September 30, 2026.\n\nAmount shown on September 10: $1,240.\n\nThe invoice predates the payment receipt in this workspace. Ask the provider whether that payment was applied before relying on this amount."
+    },
+    {
+      "id": "receipt",
+      "provider_id": "cedar-clinic",
+      "type": "email",
+      "date": "2026-09-14",
+      "title": "Payment receipt",
+      "filename": "payment-receipt.eml",
+      "fictional": true,
+      "text": "Thank you for your payment\n\nCedar Clinic · fictional provider\n\nSep 14, 2026\n\nA payment acknowledgement was issued four days after the invoice.\n\nPayment received: $400. Date: September 14, 2026.\n\nThis receipt does not confirm the current balance or explicitly link this payment to the September 10 invoice."
+    },
+    {
+      "id": "voice",
+      "provider_id": null,
+      "type": "text",
+      "date": "2026-07-03",
+      "title": "A note about the blue folder",
+      "filename": "blue-folder-transcript.txt",
+      "fictional": true,
+      "text": "Transcript excerpt\n\nFamily voice-note transcript · fictional\n\nJul 3, 2026\n\nArun’s note to the family:\n\n“The savings bonds should be in the blue folder, in the hall closet. I meant to sort those out.”\n\nA mention is a lead to follow, not proof of an asset or its value. The prototype includes text only; no original recording is attached."
+    },
+    {
+      "id": "pension",
+      "provider_id": "northline",
+      "type": "email",
+      "date": "2026-09-19",
+      "title": "Former employer acknowledgement",
+      "filename": "employer-acknowledgement.eml",
+      "fictional": true,
+      "text": "We have received your notification\n\nNorthline · fictional employer\n\nSep 19, 2026\n\nDear Priya,\n\nThank you for contacting the benefits team.\n\nYour notification has been received. A team member will follow up about any required documents.\n\nNo benefit eligibility or payment amount has been confirmed. Your workspace note records the notification as sent."
+    },
+    {
+      "id": "cedar-life-contact",
+      "provider_id": "cedar-life",
+      "type": "email",
+      "date": "2026-09-18",
+      "title": "Cedar Life contact acknowledgement",
+      "filename": "cedar-life-contact.eml",
+      "fictional": true,
+      "text": "From: Cedar Life <noreply@cedar-life.example>\nReply-To: claims@cedar-life.example\nReturn-Path: <notifications@cedar-life.example>\nDate: Fri, 18 Sep 2026 09:00:00 -0700\nSubject: How to contact our claims team\n\nFor policy information, contact claims@cedar-life.example.\nPlease quote policy ending 4471.\nCedar Life Claims\nFictional archive contact. This reserved example address cannot receive mail."
+    },
+    {
+      "id": "clinic-contact",
+      "provider_id": "cedar-clinic",
+      "type": "text",
+      "date": "2026-09-10",
+      "title": "Cedar Clinic billing contact",
+      "filename": "clinic-contact.txt",
+      "fictional": true,
+      "text": "Cedar Clinic\nAccount ending 0082\nFor balance questions: service@cedar-clinic.example\nFictional archive contact. This reserved example address cannot receive mail."
+    }
+  ]
+}

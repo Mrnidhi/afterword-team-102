@@ -1,0 +1,112 @@
+{
+  "version": 1,
+  "notice": "Fictional providers. No live recipient is configured. Only derive aliases after the family confirms control of a Gmail inbox. Example domain addresses are evidence fixtures and cannot be handed off.",
+  "providers": [
+    {
+      "provider_id": "cedar-life",
+      "display_name": "Cedar Life",
+      "aliases": [
+        "Cedar Life Insurance"
+      ],
+      "domains": [
+        "cedar-life.example"
+      ],
+      "country": "US",
+      "demo_alias": "cedarlife",
+      "label": "Claims",
+      "fictional": true,
+      "source_kind": "directory",
+      "channels": [],
+      "verified_by_user": false,
+      "contact_template": "{controlled_inbox_local}+cedarlife@{controlled_inbox_domain}"
+    },
+    {
+      "provider_id": "valley-storage",
+      "display_name": "Valley Storage",
+      "aliases": [
+        "Valley Storage Rentals"
+      ],
+      "domains": [
+        "valley-storage.example"
+      ],
+      "country": "US",
+      "demo_alias": "valleystorage",
+      "label": "Customer service",
+      "fictional": true,
+      "source_kind": "directory",
+      "channels": [],
+      "verified_by_user": false,
+      "contact_template": "{controlled_inbox_local}+valleystorage@{controlled_inbox_domain}"
+    },
+    {
+      "provider_id": "cedar-clinic",
+      "display_name": "Cedar Clinic",
+      "aliases": [
+        "Cedar Clinic Billing"
+      ],
+      "domains": [
+        "cedar-clinic.example"
+      ],
+      "country": "US",
+      "demo_alias": "cedarclinic",
+      "label": "Billing",
+      "fictional": true,
+      "source_kind": "directory",
+      "channels": [],
+      "verified_by_user": false,
+      "contact_template": "{controlled_inbox_local}+cedarclinic@{controlled_inbox_domain}"
+    },
+    {
+      "provider_id": "harbor-gym",
+      "display_name": "Harbor Gym",
+      "aliases": [
+        "Harbor Gym Membership"
+      ],
+      "domains": [
+        "harbor-gym.example"
+      ],
+      "country": "US",
+      "demo_alias": "harborgym",
+      "label": "Membership",
+      "fictional": true,
+      "source_kind": "directory",
+      "channels": [],
+      "verified_by_user": false,
+      "contact_template": "{controlled_inbox_local}+harborgym@{controlled_inbox_domain}"
+    },
+    {
+      "provider_id": "streamly",
+      "display_name": "Streamly",
+      "aliases": [],
+      "domains": [
+        "streamly.example"
+      ],
+      "country": "US",
+      "demo_alias": "streamly",
+      "label": "Customer service",
+      "fictional": true,
+      "source_kind": "directory",
+      "channels": [],
+      "verified_by_user": false,
+      "contact_template": "{controlled_inbox_local}+streamly@{controlled_inbox_domain}"
+    },
+    {
+      "provider_id": "northline",
+      "display_name": "Northline",
+      "aliases": [
+        "Northline Benefits"
+      ],
+      "domains": [
+        "northline.example"
+      ],
+      "country": "US",
+      "demo_alias": "northline",
+      "label": "Benefits",
+      "fictional": true,
+      "source_kind": "directory",
+      "channels": [],
+      "verified_by_user": false,
+      "contact_template": "{controlled_inbox_local}+northline@{controlled_inbox_domain}"
+    }
+  ]
+}

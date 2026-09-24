@@ -1,0 +1,15 @@
+{salutation}
+
+My name is {writer_name}. I am writing in my capacity as {relationship} regarding {person_name}, who died on {date_of_death}.
+
+{identifier_sentence}
+
+1. Please explain how to request a copy of the relevant record.
+2. Please confirm which documents and evidence of authority you require.
+
+I can supply a death certificate and documentation of my authority through your preferred secure process.
+
+Please contact me at {writer_phone} or reply to this email.
+
+{closing}
+{writer_name}

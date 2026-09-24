@@ -1,10 +1,10 @@
 # Afterword — Team 102
 
-An interactive design prototype by Team 102, designed around HP ZGX Nano.
+An Afterword prototype with a local provider-outreach service, by Team 102.
 
 [Website](https://mrnidhi.github.io/afterword-team-102/) · [Deployment workflow](https://github.com/Mrnidhi/afterword-team-102/actions/workflows/pages.yml)
 
-A family workspace for organizing the practical work after a loss. This is a complete browser-side demonstration using fictional records for Arun Rao and Priya Rao. It is an independent concept for HP ZGX, not an HP product or endorsement. No private source-document credentials or real personal records are included.
+A family workspace for organizing the practical work after a loss. The public website uses fictional records for Arun Rao and Priya Rao. A Python service adds local provider contact mining, reviewed email preparation and consent/outreach persistence. It is an independent concept for HP ZGX, not an HP product or endorsement. No private credentials or real family records are included in the repository.
 
 ## Open and explore
 
@@ -14,10 +14,10 @@ The website keeps ten family-facing views:
 2. **Action plan** — status/category/search filters, date/amount sorting, notes, reminders, completion/waiting/reopening and CSV export.
 3. **Documents** — searchable fictional excerpts, source previews and a validated file-name staging queue with removal, empty and error states.
 4. **Evidence review** — source comparisons, known/unknown distinctions, working review notes, read acknowledgements, timestamps, JSON export and print.
-5. **Letters** — three independently saved editable drafts, preview, reset, print and text export.
+5. **Letters** — provider contacts with source evidence, five templates, family details, exact disclosure review, Gmail/mailto/copy handoff and separately recorded sent/replied states.
 6. **Memories** — a typography-led archive of fictional writing with reading dialogs and favorites.
 7. **Ask Afterword** — four scripted source-linked examples and an honest unsupported-question response.
-8. **Privacy** — browser storage, actual connection/sharing status, sample sensitive-record categories and an optional request preview.
+8. **Privacy** — storage and connection status, outreach/disclosure history, consent records and export.
 9. **Activity** — searchable history of real changes made in this browser, with export.
 10. **Settings** — reading size, background motion, JSON export, reset and session-scoped undo.
 
@@ -29,7 +29,7 @@ All amounts, dates, providers, people and passages are fictional. Provider respo
 
 ## Implementation
 
-This is a buildless static application using semantic HTML, CSS and JavaScript. `dist/` is the deployable website. Google Fonts supplies Plus Jakarta Sans, with system-font fallbacks. No analytics, model requests, account connections or backend are included.
+The frontend remains buildless HTML, CSS and JavaScript, with no new frontend dependencies. `dist/` is the GitHub Pages website. Google Fonts supplies Plus Jakarta Sans, with system-font fallbacks. `backend/` is an optional local FastAPI/Pydantic/SQLite service; GitHub Pages cannot run that service. No analytics are included.
 
 - `dist/store.js`: bounded state validation, v2-to-v3 migration, storage failure handling and file metadata validation.
 - `dist/app.js`: application shell, routing, task fixtures, overview, dialogs and workspace search.
@@ -40,10 +40,17 @@ This is a buildless static application using semantic HTML, CSS and JavaScript. 
 - `dist/styles.css`, `studio.css`, `workspace.css`: base layouts, HP-inspired design tokens and responsive workflow styling.
 - `scripts/version-assets.cjs`: content-based CSS/JS versions to prevent mixed deployments from cached assets.
 - `tests/state.test.cjs`: meaningful boundary tests for malformed storage, migration, ID allowlists, date/size limits and write failures.
+- `dist/outreach-core.js`, `outreach.js`, `outreach.css`: provider selection, letter review, disclosure rules and handoff UI, with separate browser-local and local-service modes.
+- `backend/`: local contact extraction, persistence, draft templates/model adapter, consent gates and optional integrations. There is no email-sending operation.
+- `data/`: fictional archive, curated provider directory and independent resolver answer key. The public fixture copies under `dist/data/` must match.
+- `PLAN.md`, `docs/OUTREACH-TEST-PLAN.md`, `docs/METRICS.md`: feature requirements, verification coverage and measured/unmeasured boundaries.
 
 Tasks, reminders, notes, read marks, favorites, drafts, file metadata, reading size and background motion persist under `afterword-workspace-v3`. Legacy `afterword-design-v2` data is validated and migrated. Working notes and drafts autosave after a short typing pause and flush on navigation or page exit. Invalid reminder entries remain visibly unsaved until corrected. The last edited letter template is restored. Stored input is escaped before rendering; CSV exports neutralize formula-like values. Storage failure is visible and export remains available.
 
-The file picker and drop zone accept PDF, TXT, CSV, EML and Markdown names, up to 20 MB per file, 20 files and 100 MB total. The frontend stores only names, sizes and types. It does not read, retain, upload or analyze file contents. Users must reselect originals for a future connected processor. Browser local storage is unencrypted; use fictional files and details in this demo.
+Outreach currently keeps one working letter per action and template in the browser, including when two providers share an action. Selecting another provider updates that working letter; it does not create a separate provider-specific tab. The local service retains separately generated draft records and immutable consent snapshots, and reviewed handoffs remain available in Privacy.
+
+
+The original static file queue accepts PDF, TXT, CSV, EML and Markdown names, up to 20 MB per file, 20 files and 100 MB total. In static mode that queue stores metadata only. Local outreach ingestion and optional scan processing are separate, explicit operations on the local service. Browser storage and the local SQLite database are not application-encrypted; use fictional files and details for this prototype.
 
 The app also feature-detects the browser's experimental WebMCP API and registers one read-only tool for the fictional action plan. It grants no external access. Ordinary UI operation does not depend on this API.
 
@@ -51,17 +58,77 @@ To run locally, serve `dist/` with any static server. There is no dependency ins
 
 ```sh
 node tests/state.test.cjs
+node tests/outreach.test.cjs
+node tests/outreach-integrations.test.cjs
+node scripts/check-outreach-data.cjs
 node scripts/version-assets.cjs
 node scripts/version-assets.cjs --check
 ```
 
 The deployment workflow also syntax-checks every frontend JavaScript file.
 
+## Run the local outreach service
+
+Use Python 3.9 or newer in a virtual environment:
+
+```sh
+python3 -m venv .venv
+.venv/bin/python -m pip install -r requirements.txt
+.venv/bin/python -m backend.main
+```
+
+Open `http://127.0.0.1:4173/`. The server serves the existing frontend and its API
+on the same origin. `AFTERWORD_PORT` selects another port. By default the SQLite
+database is stored outside the repository under `~/.local/share/afterword/`;
+`AFTERWORD_DB` can select a different local path. The service binds to loopback and
+rejects unapproved origins/hosts. This is a single-workspace local prototype, not
+a publicly authenticated multi-tenant service.
+
+Set `AFTERWORD_LLM_URL=http://127.0.0.1:8000/v1` and
+`AFTERWORD_LLM_MODEL=<the-served-model-name>` for a local OpenAI-compatible model.
+Model access must stay on the local machine; no cloud model is substituted.
+The model returns declared slots and a tone choice. Code checks each fact against
+the supplied values before rendering one of the five local templates. If the
+model is unavailable or invents a value, the application reports template mode
+and retains the validated template. This is not evidence of a measured HP model run.
+
+Configure an approved demo inbox in Settings. No example address from the feature
+plan is assumed to belong to the team. Gmail inboxes can use plus-addresses;
+other approved inboxes use the exact supplied address. This setting stays in the
+local workspace and must not be committed to the public provider directory.
+Reserved `.example` contacts in the source fixtures demonstrate provenance and
+are blocked from email handoff.
+
+The required path works without Google OAuth: review the recipient, full message,
+disclosure summary and attachment checklist, then open Gmail, open a mail app or
+copy the letter. Opening Gmail transfers the reviewed message text to Google;
+it does not send the message. `Mark as sent` is a separate family confirmation,
+which sets a personal reminder for 14 days later. No legal deadline is inferred.
+
+Optional public lookup, local scan extraction, Google OAuth draft creation and
+readonly reply tracking require explicit configuration and separate permissions.
+See `docs/OUTREACH-INTEGRATIONS.md`. Google's `gmail.compose` scope itself includes
+send capability; Afterword implements only draft creation. It neither requests
+the separate `gmail.send` scope nor exposes a send endpoint. Tokens and attachment
+files stay outside the repository. Automated tests use injected transports and
+cannot establish a live OAuth, mailbox delivery or Nano result.
+
+Run backend verification and the independent fixture evaluation:
+
+```sh
+.venv/bin/python -m pytest tests/ -q
+.venv/bin/python scripts/evaluate_outreach.py
+```
+
 ## Hosting on GitHub Pages
 
 GitHub Pages is the selected host. The workflow in `.github/workflows/pages.yml` validates the JavaScript and uploads only `dist/`, then deploys it to the `github-pages` environment. A push to `main` that changes the website or workflow triggers deployment; it can also be run manually from Actions. All asset URLs are relative, so the app works under the repository path `/afterword-team-102/`.
 
-The repository uses GitHub Actions as its Pages publishing source. There is no API key, server, database or paid hosting dependency. Official actions are pinned to verified release commit hashes. The GitHub website and this repository are public; use fictional records only.
+The repository uses GitHub Actions as its Pages publishing source. The public
+static site needs no API key or paid hosting. The local service and its database
+are not uploaded as a Pages artifact. Official actions are pinned to verified
+release commit hashes. The website and repository are public; use fictional
+records only. CI validates both the Python service and the static frontend.
 
 The `.openai/hosting.json` file records the earlier private design-preview deployment. It is retained as historical configuration, not the active GitHub deployment configuration. Updating this repository deploys through GitHub Pages, not the earlier host.
 
@@ -83,13 +150,27 @@ HP supplies the visual reference for the neutral workstation aesthetic; its hard
 
 ## Production boundary and next engineering work
 
-The prototype implements the frontend experience, not the estate-processing backend. Authentication, authority checks, consent, multi-user roles, encrypted ingestion, native document parsers, local inference, provenance storage, grounded retrieval, secure routing, jurisdiction-specific rules and backend deletion/export controls remain to be built and evaluated.
+The outreach service implements one bounded backend workflow. It does not make
+the entire estate-processing product complete. Production authentication,
+multi-user roles, independently verified authority, encrypted storage, a complete
+document-analysis pipeline, retrieval, jurisdiction-specific rules and lifecycle
+management still require implementation and evaluation. The consent gate records
+the family's stated intent; it does not establish legal authority.
 
-The planned HP deployment uses local parsing, a smaller model for extraction, a larger model for difficult comparisons, and explicit family review. The 8B/70B model sizes are proposed targets. No latency, memory, accuracy, cost, security or hardware results are claimed. Any optional cloud path needs threat modeling, payload review, explicit consent and leakage evaluation; removing names is not a sufficient privacy guarantee.
+The planned HP deployment uses local parsing and model inference with explicit
+family review. Model selection and fine-tuning remain separate from this feature.
+No latency, memory, accuracy or security results on HP hardware are claimed here.
+Public contact lookup contains only a curated company name and country, and
+requires its own approval. That approval cannot authorize sharing a family letter.
 
 A production service should maintain immutable source records with span coordinates; version findings separately from source facts; store user review as an acknowledgement rather than truth; and make letter preparation distinct from any external sending. UI actions should call authorization-checked services instead of mutating browser fixtures. A realistic first backend slice is text-native files → extracted spans → insurance or billing comparison → human-reviewed information request.
 
 ## Verification notes
+
+Provider outreach has a separate, current requirement-by-requirement report in
+[`docs/OUTREACH-VERIFICATION.md`](docs/OUTREACH-VERIFICATION.md). The checks below
+describe the earlier workspace release; they do not establish live Google or HP
+verification for the new feature.
 
 JavaScript syntax and state-boundary tests pass. Browser checks covered all ten product routes at 390px and 320px, with no page-level or main-content horizontal overflow after fixes; the product views also fit 320px with the larger 18px reading preference. Desktop and phone layouts were visually inspected. The final ten-view navigation was rechecked at 320px after removing the showcase pages.
 

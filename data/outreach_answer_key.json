@@ -1,0 +1,13 @@
+{
+  "version": 1,
+  "description": "Independent expectations for the fictional archive, before configuring a demo mailbox. Reserved addresses are evidence fixtures, not deliverable recipients.",
+  "findings": {
+    "insurance": {"tier": "records", "emails": ["claims@cedar-life.example"], "demo_aliases": ["cedarlife"]},
+    "medical": {"tier": "records", "emails": ["service@cedar-clinic.example"], "demo_aliases": ["cedarclinic"]},
+    "storage": {"tier": "none", "emails": [], "demo_aliases": ["valleystorage"]},
+    "subscriptions": {"tier": "none", "emails": [], "demo_aliases": ["harborgym", "streamly"]},
+    "bonds": {"tier": "none", "emails": []},
+    "notify-employer": {"tier": "none", "emails": [], "demo_aliases": ["northline"]},
+    "gather-records": {"tier": "none", "emails": []}
+  }
+}

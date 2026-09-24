@@ -10,6 +10,8 @@ const clean = v=>JSON.parse(JSON.stringify(store.clean(v)));
 
 assert.deepEqual(clean({completed:null,waiting:{},favorite:false}).completed,['notify-employer','gather-records']);
 assert.deepEqual(clean({completed:['insurance','insurance','unknown'],waiting:['insurance','storage']}).waiting,['storage']);
+assert.deepEqual(clean({outreachReview:['storage','unknown','storage'],completed:['medical'],waiting:['insurance']}).outreachReview,['storage']);
+assert.deepEqual(clean({outreachReview:['insurance','medical','storage'],completed:['medical'],waiting:['insurance']}).outreachReview,['storage']);
 assert.equal(clean({largeText:'false',imported:'true'}).largeText,false);
 assert.equal(clean({}).ambientMotion,true);
 assert.equal(clean({ambientMotion:false}).ambientMotion,false);
