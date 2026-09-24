@@ -17,6 +17,12 @@ were verified byte for byte. The scan/readiness extension is published as commit
 passed validation and Pages deployment. A fresh public read-back matched the
 release bytes for `index.html`, `outreach-scans.js`, `outreach.js`,
 `outreach-integrations.js`, `outreach.css` and `workspace.js`.
+The source-reference and navigation correction is published as commit
+`2f9e6b7adda492d1c0748f776e60e0d88fc935ee`.
+[GitHub Actions run 36067293932](https://github.com/Mrnidhi/afterword-team-102/actions/runs/36067293932)
+passed validation and Pages deployment. A fresh public read-back matched the
+release bytes for `index.html`, `outreach.js`, `outreach-core.js` and
+`outreach-scans.js`.
 GitHub Pages runs the static mode; it does not host Python, the private database,
 scan images or Google tokens.
 
