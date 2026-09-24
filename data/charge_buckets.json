@@ -1,0 +1,84 @@
+{
+  "version": 1,
+  "notice": "Rules for sorting recurring charges. Keep-for-now and decide-later keywords are checked before anything can be sorted as stoppable, so a charge that must continue is never counted in the daily headline. Keywords match whole words, case-insensitively, against the charge label, provider aliases and provider id.",
+  "precedence": ["keep_for_now", "decide_later", "institutions", "stoppable"],
+  "buckets": {
+    "keep_for_now": [
+      {
+        "keywords": ["home insurance", "homeowner", "homeowners", "homeowner's", "property insurance", "dwelling insurance", "hazard insurance", "flood insurance", "renters insurance"],
+        "note": "Home insurance usually needs to stay active while the estate is settled, even if the house is empty."
+      },
+      {
+        "keywords": ["auto insurance", "car insurance", "vehicle insurance", "motor insurance"],
+        "note": "Car insurance usually needs to stay active until the vehicle is sold or transferred."
+      },
+      {
+        "keywords": ["utility", "utilities", "electric", "electricity", "natural gas", "gas and electric", "water", "sewer", "trash", "waste collection"],
+        "note": "Utilities usually need to stay on while the home is occupied or being looked after."
+      },
+      {
+        "keywords": ["hoa", "homeowners association", "condo association", "condominium association"],
+        "note": "Association fees usually continue while the estate still owns the property."
+      },
+      {
+        "keywords": ["alarm", "alarm monitoring", "security monitoring", "home security"],
+        "note": "Alarm monitoring helps protect the home while it is being settled."
+      }
+    ],
+    "decide_later": [
+      {
+        "keywords": ["mortgage", "home loan", "home equity", "heloc"],
+        "note": "A mortgage needs a decision with whoever is handling the estate. Stopping payments can put the home at risk."
+      },
+      {
+        "keywords": ["car loan", "auto loan", "vehicle loan", "auto finance", "car finance", "auto lease", "car lease", "vehicle lease"],
+        "note": "A car loan or lease is tied to the vehicle. Stopping payments can lead to repossession."
+      },
+      {
+        "keywords": ["timeshare", "vacation ownership", "vacation club"],
+        "note": "A timeshare can carry obligations for the estate. It needs a decision, not a cancellation."
+      },
+      {
+        "keywords": ["life insurance", "life assurance", "annuity", "pension"],
+        "note": "Ask about any benefit before changing a life insurance, annuity or pension account."
+      },
+      {
+        "keywords": ["loan", "credit card", "line of credit", "lease", "rent"],
+        "note": "Debts and leases are usually settled by the estate, with notice terms. Ask before stopping or paying."
+      },
+      {
+        "keywords": ["insurance", "insurer", "assurance"],
+        "note": "Insurance can protect property or carry a benefit. Check what it covers before stopping it."
+      }
+    ],
+    "stoppable": [
+      {
+        "keywords": ["storage", "self storage", "storage unit"],
+        "note": "There may be belongings inside. Plan a visit before closing it."
+      },
+      {
+        "keywords": ["gym", "fitness", "health club", "yoga", "streaming", "video", "music", "news", "newspaper", "magazine", "magazines", "cloud storage", "software", "subscription", "membership"],
+        "note": "You can stop this whenever you’re ready."
+      }
+    ]
+  },
+  "institutions": {
+    "valley-storage": {
+      "bucket": "stoppable",
+      "note": "There may be belongings inside. Plan a visit before closing it."
+    },
+    "harbor-gym": {
+      "bucket": "stoppable",
+      "note": "A gym membership. You can stop this whenever you’re ready."
+    },
+    "streamly": {
+      "bucket": "stoppable",
+      "note": "A streaming service. You can stop this whenever you’re ready."
+    }
+  },
+  "fallback": {
+    "local_model_note": "Sorted by the local model. Check it before stopping anything.",
+    "default_bucket": "decide_later",
+    "default_note": "We couldn’t sort this one automatically. Check what it is before stopping it."
+  }
+}
