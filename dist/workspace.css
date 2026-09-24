@@ -2,8 +2,9 @@
 button{border:0}
 .flow-toolbar{display:flex;gap:12px;align-items:end;margin:22px 0 12px;flex-wrap:wrap}
 .flow-toolbar .search-field{flex:1;min-width:180px;margin:0}
-.compact-field{display:grid;gap:7px;font-size:.75rem;color:var(--muted);min-width:140px}
+.compact-field{display:grid;grid-template-columns:minmax(0,1fr);gap:7px;font-size:.75rem;color:var(--muted);min-width:140px}
 .compact-field select{max-width:100%;min-height:44px;border:1px solid var(--line);border-radius:3px;padding:8px 30px 8px 11px;background:white;color:var(--ink);font:inherit;font-size:.875rem}
+.compact-field select{width:100%;min-width:0}
 .results-count{font-size:.75rem;color:var(--muted);padding:8px 0 16px}
 .plan-progress{display:flex;align-items:center;gap:24px;border-block:1px solid var(--line);padding:20px 0;margin-bottom:28px;font-size:.875rem}
 .plan-progress strong{font-weight:700}
@@ -156,6 +157,7 @@ button{border:0}
 .next-step-card{background:white;border-radius:3px;box-shadow:none;border:1px solid var(--line)}
 .next-step-number{background:transparent;border:0;padding:0;font-size:1rem;color:#6d788a;width:auto;height:auto;border-radius:0;margin-top:20px}
 .next-step-card>p{font-size:.9375rem}.next-step-card h2{font-size:1.8rem;line-height:1.35;font-weight:600}
+.next-step-card h2{margin-top:26px}
 .next-step-bottom>span{font-size:.75rem}
 .zgx-overview-card,.workspace-metrics{border-radius:3px;box-shadow:none}
 .memory-invitation{border:0;border-bottom:1px solid var(--line);border-radius:0;background:transparent;padding:24px 0;gap:16px}
@@ -214,6 +216,7 @@ button{border:0}
 .memory-card,.memory-card.memory-tea{border-radius:0;box-shadow:none;background:white;border:1px solid var(--line)}
 .memory-card.memory-sunday,.memory-card.memory-walk{background:white;border:1px solid var(--line);border-radius:0;box-shadow:none}
 .is-done .plan-track>span,.filter span,.paper-label span{background:transparent;border:0;border-radius:0;color:inherit}
+.filter.selected span{background:transparent}
 .library-head,.document-row>.pill,.memory-card-head>span,.dark-tag{font-size:.75rem!important}
 .pill.green,.pill.red{background:transparent;border:0;border-radius:0;color:#606c7c}
 @media(min-width:741px) and (max-height:850px){.sidebar{padding-top:22px}.brand{margin-bottom:20px}.estate-label{padding:10px;margin-bottom:8px}.nav-label{margin-top:14px;margin-bottom:7px}.nav-link{padding-top:9px;padding-bottom:9px;min-height:39px}.node-label{padding-top:12px;padding-bottom:12px}.sidebar-bottom{padding-top:14px}}
@@ -242,3 +245,7 @@ button{border:0}
   .sidebar,.topbar,.footnote,.mobile-overlay,.skip,#toast,.page-heading>.button,.letter-options,.editor-toolbar,.editor-footer,.letter-extra-actions,.evidence-tabs,.source-tabs,.evidence-actions,.button-row,.review-workbench form>.button,button,.filter-bar,.flow-toolbar{display:none!important}
   .work-area{margin:0!important}.main{padding:0!important;max-width:none!important}.letter-layout,.evidence-workspace,.review-workbench{display:block!important}.letter-editor,.letter-paper,.finding-panel,.source-panel,.record-paper{border:0!important;box-shadow:none!important;padding:10px!important}.letter-paper{min-height:0}.page-heading{margin-bottom:20px}.page-heading h1{font-size:22pt}.page-heading p,.page-heading .eyebrow{display:none}.record-paper,.review-workbench{break-before:page}.letter-paper p{font-size:12pt;color:black!important;line-height:1.6}.letter-monogram{font-size:20pt}textarea{border:0!important;white-space:pre-wrap}.letter-date{font-size:9pt}
 }
+
+/* Keep secondary text readable without turning it into a visual badge. */
+.fine,.footnote,.paper-label,.paper-meta,.paper-bottom,.source-caption{color:#626975}
+.editor-footer>.fine{font-size:.75rem!important}

@@ -5,6 +5,8 @@ on:
     branches: [main]
     paths:
       - 'dist/**'
+      - 'tests/**'
+      - 'scripts/**'
       - '.github/workflows/pages.yml'
   workflow_dispatch:
 
@@ -26,6 +28,7 @@ jobs:
         run: |
           for file in dist/*.js; do node --check "$file"; done
           node tests/state.test.cjs
+          node scripts/version-assets.cjs --check
           test -s dist/index.html
           test -s dist/styles.css
           test -s dist/workspace.css

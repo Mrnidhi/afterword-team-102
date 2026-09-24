@@ -4,38 +4,57 @@ An interactive design prototype by Team 102, designed around HP ZGX Nano.
 
 [Website](https://mrnidhi.github.io/afterword-team-102/) · [Deployment workflow](https://github.com/Mrnidhi/afterword-team-102/actions/workflows/pages.yml)
 
-A private design preview for a family organizing the practical work after a death. Built from the supplied Afterword product document, with a fictional estate for Arun Rao and Priya Rao. No source-document credentials, personal records or private identifiers are included.
+A family workspace for organizing the practical work after a loss. This is a complete browser-side demonstration using fictional records for Arun Rao and Priya Rao. It is an independent concept for HP ZGX, not an HP product or endorsement. No private source-document credentials or real personal records are included.
 
 ## Open and explore
 
-The website starts at the family overview. Navigation gives access to nine distinct compositions:
+The website has twelve distinct views:
 
-1. **Overview** — a next step, practical task count and a gentle invitation to memories.
-2. **Action plan** — a numbered list, status filters, source-linked details, completion, reopening and waiting states.
-3. **Documents** — full-text search across fictional excerpts, file-type filters, readable previews and one additional sample import.
-4. **Evidence review** — source beside finding; separate known, unknown and suggested-next-step content; reversible read status.
-5. **Letters** — three editable information-request templates, preview, browser-local saving and text export with an on-screen copy fallback.
-6. **Memories** — an editorial archive, reading dialogs and reversible favorites.
-7. **Ask Afterword** — four scripted, source-linked demonstrations and an honest unsupported-question response.
-8. **Privacy & processing** — a proposed HP ZGX Nano workflow, explicit disconnected states and an illustrative boundary review.
-9. **Design & research** — primary references, decisions, limitations, palette and scope.
+1. **Overview** — next action, archive counts and recent browser-local activity.
+2. **Action plan** — status/category/search filters, date/amount sorting, notes, reminders, completion/waiting/reopening and CSV export.
+3. **Documents** — searchable fictional excerpts, source previews and a validated file-name staging queue with removal, empty and error states.
+4. **Evidence review** — source comparisons, known/unknown distinctions, working review notes, read acknowledgements, timestamps, JSON export and print.
+5. **Letters** — three independently saved editable drafts, preview, reset, print and text export.
+6. **Memories** — a typography-led archive of fictional writing with reading dialogs and favorites.
+7. **Ask Afterword** — four scripted source-linked examples and an honest unsupported-question response.
+8. **Exposure report** — illustrative sensitive categories, source links and the exact preview of a proposed external question; no request is sent.
+9. **Processing ledger** — filterable routing examples, reasons, CSV export and real browser-side interaction history.
+10. **HP ZGX station** — target hardware, proposed four-tier architecture and explicit disconnected states.
+11. **Workspace settings** — reading size, JSON export, reset and session-scoped undo.
+12. **Design & research** — design decisions, primary references and scope.
+
+Global search opens with the search control or Command/Ctrl+K. Evidence topics and sources, letter templates and document previews support hash query links. Source inspection returns to the originating action without discarding working notes.
 
 All amounts, dates, providers, people and passages are fictional. Provider response dates and user reminders are not statutory deadlines. The policy and will excerpts concern potentially different assets and do not establish a beneficiary entitlement. The medical receipt does not establish the current balance.
 
 ## Implementation
 
-This is a buildless, dependency-free application: semantic HTML, CSS and JavaScript. `dist/` is the deployable website. The only external presentation dependency is the Google Fonts stylesheet for DM Sans and Newsreader; readable system-font fallbacks are supplied. No analytics, AI calls or account connections are included.
+This is a buildless static application using semantic HTML, CSS and JavaScript. `dist/` is the deployable website. Google Fonts supplies Plus Jakarta Sans, with system-font fallbacks. No analytics, model requests, account connections or backend are included.
 
-- `dist/app.js`: stable application shell, routing, base state, task fixtures, overview and dialog helpers.
-- `dist/pages.js`: document fixtures, distinct page renderers and interaction handlers.
-- `dist/styles.css`: shared tokens, task-specific layouts, responsive rules, keyboard focus and reduced-motion handling.
-- `dist/assets/coastal-path.png`: original illustrative asset, included locally.
+- `dist/store.js`: bounded state validation, v2-to-v3 migration, storage failure handling and file metadata validation.
+- `dist/app.js`: application shell, routing, task fixtures, overview, dialogs and workspace search.
+- `dist/pages.js`: fictional document content and core page renderers.
+- `dist/workspace.js`: intake, complete plan, evidence, drafts, exposure report, ledger, device and settings workflows.
+- `dist/styles.css`, `studio.css`, `workspace.css`: base layouts, HP-inspired design tokens and responsive workflow styling.
+- `dist/assets/hp-zgx-nano.jpg`: official HP hardware photograph; attribution below.
+- `scripts/version-assets.cjs`: content-based CSS/JS versions to prevent mixed deployments from cached assets.
+- `tests/state.test.cjs`: meaningful boundary tests for malformed storage, migration, ID allowlists, date/size limits and write failures.
 
-Hash routes are deep-linkable. User-entered content is escaped before HTML rendering. Task status, reviewed findings, favorite memories, one sample letter draft and reading size persist under `afterword-design-v2` in browser local storage. Search, conversation and the additional sample import are session-only. Draft-template identity is saved with the draft. Editing and previewing remain client-side. Browser storage is not encrypted and is not appropriate for real estate records.
+Tasks, reminders, notes, read marks, favorites, drafts, file metadata and reading size persist under `afterword-workspace-v3`. Legacy `afterword-design-v2` data is validated and migrated. Unsaved working notes/drafts are session-only. Stored input is escaped before rendering; CSV exports neutralize formula-like values. Storage failure is visible and export remains available.
+
+The file picker and drop zone accept PDF, TXT, CSV, EML and Markdown names, up to 20 MB per file, 20 files and 100 MB total. The frontend stores only names, sizes and types. It does not read, retain, upload or analyze file contents. Users must reselect originals for a future connected processor. Browser local storage is unencrypted; use fictional files and details in this demo.
 
 The app also feature-detects the browser's experimental WebMCP API and registers one read-only tool for the fictional action plan. It grants no external access. Ordinary UI operation does not depend on this API.
 
-To run locally, serve `dist/` with any static server. There is no install or build step.
+To run locally, serve `dist/` with any static server. There is no dependency installation or build step. Before committing frontend changes, run:
+
+```sh
+node tests/state.test.cjs
+node scripts/version-assets.cjs
+node scripts/version-assets.cjs --check
+```
+
+The deployment workflow also syntax-checks every frontend JavaScript file.
 
 ## Hosting on GitHub Pages
 
@@ -63,18 +82,14 @@ The official HP hardware photograph in `dist/assets/hp-zgx-nano.jpg` comes from 
 
 ## Production boundary and next engineering work
 
-The prototype implements the frontend experience, not the estate-processing backend. Authentication, authority checks, consent, multi-user roles, encrypted ingestion, native document parsers, local inference, provenance storage, grounded retrieval, secure routing, jurisdiction-specific rules and deletion/export controls remain to be built and evaluated.
+The prototype implements the frontend experience, not the estate-processing backend. Authentication, authority checks, consent, multi-user roles, encrypted ingestion, native document parsers, local inference, provenance storage, grounded retrieval, secure routing, jurisdiction-specific rules and backend deletion/export controls remain to be built and evaluated.
 
 The planned HP deployment uses local parsing, a smaller model for extraction, a larger model for difficult comparisons, and explicit family review. The 8B/70B model sizes are proposed targets. No latency, memory, accuracy, cost, security or hardware results are claimed. Any optional cloud path needs threat modeling, payload review, explicit consent and leakage evaluation; removing names is not a sufficient privacy guarantee.
 
 A production service should maintain immutable source records with span coordinates; version findings separately from source facts; store user review as an acknowledgement rather than truth; and make letter preparation distinct from any external sending. UI actions should call authorization-checked services instead of mutating browser fixtures. A realistic first backend slice is text-native files → extracted spans → insurance or billing comparison → human-reviewed information request.
 
-## Illustration provenance
-
-One new 1536 × 1024 image generated using OpenAI image generation, with no reference image, variants or retries. It was visually inspected and copied into the website. CSS crops the same asset for the overview and memories page. It represents an illustration, not a photograph from the fictional family.
-
-Prompt: “Use case: stylized-concept. Asset type: original in-page website illustration for Afterword, a respectful bereavement and estate-organizing app. A quiet contemporary editorial fine-art landscape of California coastal hills and a winding footpath beneath a pale sky. Refined understated realism with subtle painted paper texture, not flat vector art. Landscape approximately 3:2; the right half must work as a standalone crop while the complete landscape works in a memories archive. Gentle hopeful afternoon light; atmospheric greens, muted olive, warm ivory and pale sky. No people, symbols of death, floating objects, text, typography, UI, logos or watermark.”
-
 ## Verification notes
 
-JavaScript syntax checked. Browser interaction checks cover evidence selection and review/undo, evidence-to-letter navigation, letter editing and preview, correct saved-template restoration, document search and empty filters, sample import, completion and reopening, favorites and source-linked sample answers. All nine views were checked at 320px with no page-level horizontal overflow; desktop and 390px phone layouts were visually inspected. Skip navigation preserves the current page and focuses its main content; closed mobile navigation is excluded from the focus order. Browser error logs were empty during these checks. The browser's file-download event was not reported by the in-app browser; text export therefore includes a visible selectable fallback. The optional WebMCP tool was not exposed by the preview browser and could not be exercised. These checks are not a full accessibility audit.
+JavaScript syntax and state-boundary tests pass. Browser checks covered all twelve routes at 390px and 320px, with no page-level or main-content horizontal overflow after fixes; all twelve also fit 320px with the larger 18px reading preference. Desktop and phone layouts were visually inspected.
+
+Interaction checks covered independent draft save/reload and evidence-to-letter restoration; reminders/notes and source-return context; working review notes across source changes; read/undo; file picker validation for valid/unsupported/empty sample files, staging persistence and removal; ledger filtering; payload preview; reset/undo draft restoration; and mobile navigation. Browser error logs were empty. Downloads provide a selectable fallback, since the in-app browser does not reliably report download events. Printing opens the browser print flow with dedicated print styles; physical print output was not tested. These checks are not a full accessibility audit.

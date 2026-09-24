@@ -25,7 +25,6 @@ function home() {
   </div>
   <div class="studio-hero-grid">
     <section class="next-step-card"><div class="next-step-top"><span class="eyebrow">NEXT ACTION</span></div>
-      <div class="next-step-number">${next ? '01' : icon('check')}</div>
       <h2>${next ? escapeHTML(next.title) : 'A little breathing room.'}</h2>
       <p>${next ? escapeHTML(next.description) : 'You have completed the actions in this workspace.'}</p>
       <div class="next-step-bottom">${next ? '<button class="button primary" data-task="'+next.id+'">Review this step '+icon('arrow')+'</button>' : '<a class="button primary" href="#plan">See your plan</a>'}<span>${next ? escapeHTML(next.source) : 'At your own pace'}</span></div>
@@ -50,7 +49,7 @@ function render() {
     <nav aria-label="Main navigation"><div class="nav-label">WORKSPACE</div><div class="nav-list">${nav.slice(0,5).map(n=>navItem(n,route)).join('')}</div><div class="nav-label">INTELLIGENCE & CONTROL</div><div class="nav-list">${nav.slice(5).map(n=>navItem(n,route)).join('')}</div></nav>
     <div class="sidebar-bottom"><a class="node-label" href="#privacy"><span class="node-symbol">Z</span><span>HP ZGX Nano<small>Local AI · concept edition</small></span>${icon('chevron')}</a><div class="profile"><span class="avatar">PR</span><div><strong>Priya Rao</strong><small>Sample workspace</small></div><button data-action="preferences" aria-label="Appearance preferences">${icon('settings')}</button></div></div>
   </aside><button class="mobile-overlay" data-action="menu" aria-label="Close navigation"></button>
-  <div class="work-area"><header class="topbar"><button class="icon-button menu-button" data-action="menu" aria-label="Open navigation" aria-expanded="false">${icon('menu')}</button><div class="breadcrumbs"><a class="crumb-parent" href="#overview">Workspace</a><span>/</span><b>${name}</b></div><div class="top-actions"><button class="workspace-search" data-action="command" aria-label="Search workspace">${icon('search')}<span>Search workspace</span><kbd>⌘ K</kbd></button><span class="demo-label">DEMO</span><a class="ask-button" href="#ask">${icon('spark')}<span>Ask Afterword</span></a></div></header>
+  <div class="work-area"><header class="topbar"><button class="icon-button menu-button" data-action="menu" aria-label="Open navigation" aria-expanded="false">${icon('menu')}</button><div class="breadcrumbs"><a class="crumb-parent" href="#overview">Workspace</a><span>/</span><b>${name}</b></div><div class="top-actions"><button class="workspace-search" data-action="command" aria-label="Search workspace">${icon('search')}<span>Search workspace</span><kbd>⌘ K</kbd></button><span class="demo-label">DEMO</span><a class="ask-button" href="#ask" aria-label="Ask Afterword">${icon('spark')}<span>Ask Afterword</span></a></div></header>
   <main id="main" class="main page-enter" tabindex="-1">${(window.views?.[route]||home)()}</main>
   <footer class="footnote"><span><b>AFTERWORD</b> / TEAM 102</span><span>Independent concept for HP ZGX · Sample data · AI not connected</span><a href="#design">About this concept</a></footer></div>`;
   afterRender();
