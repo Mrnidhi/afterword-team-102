@@ -31,11 +31,12 @@
 
   async function gmailSettings() {
     const info=await call('/integrations/gmail/status',undefined,'GET');
+    O().setGmailStatus?.(info);
     modal('Gmail connection',`<p>${info.configured?(info.connected?'Gmail is connected to this local service.':'Connect Gmail to create reviewed drafts from Afterword.'):'Gmail API drafts need an OAuth client configured on the local service. You can still use Open in Gmail without an account connection.'}</p><p class="fine">${esc(info.permission_notice)}</p>${info.configured?actorInput(O().currentDraft()?.fields?.writer_name||''):''}<dl class="privacy-facts"><div><dt>Draft creation</dt><dd>${info.draft_scope_granted?'Permission granted':'Not connected'}</dd></div><div><dt>Reply tracking</dt><dd>${info.reply_tracking_granted?'Separate read permission granted':'Off — your mailbox is not read'}</dd></div></dl><p class="fine">Enabling reply tracking asks Google for access to read your mailbox. Afterword checks only the message created here and its replies when you request a check.</p>${statusBox()}`,button('Close','close-modal')+(info.configured?btn('gmail-connect','Approve draft connection',true)+(!info.reply_tracking_granted?btn('gmail-readonly','Approve reply tracking'):''):'')+(info.connected?btn('gmail-disconnect','Disconnect Gmail'):''));
     const connect=async purpose=>{const result=await call('/integrations/gmail/authorize',{purpose,approved:true,actor:actor()});const parsed=new URL(result.authorization_url);if(parsed.origin!=='https://accounts.google.com')throw Error('The authorization link is invalid.');status('Continue to Google to choose your account and review permissions.');document.getElementById('integration-status').insertAdjacentHTML('afterend',openLink('gmail-authorize-link','Continue to Google',result.authorization_url));};
     bind('gmail-connect',()=>connect('drafts'));
     bind('gmail-readonly',()=>connect('reply_tracking'));
-    bind('gmail-disconnect',async()=>{const result=await call('/integrations/gmail/disconnect',{});modal('Gmail disconnected',`<p>${esc(result.note)}</p><p>Local access tokens were deleted. Existing Gmail drafts remain in your mailbox.</p>`,button('Close','close-modal'));});
+    bind('gmail-disconnect',async()=>{const result=await call('/integrations/gmail/disconnect',{});O().setGmailStatus?.(await call('/integrations/gmail/status',undefined,'GET'));modal('Gmail disconnected',`<p>${esc(result.note)}</p><p>Local access tokens were deleted. Existing Gmail drafts remain in your mailbox.</p>`,button('Close','close-modal'));});
   }
 
   async function gmailDraft({draft, onComplete}) {

@@ -128,6 +128,8 @@ def create_app(db_path=None,data_dir=None,selector=None,allowed_hosts=None):
             raise
     else:
         mount_integrations(app,service)
+        from .scans import mount_scans
+        mount_scans(app,service,app.state.vision_integration)
     app.mount('/',StaticFiles(directory=ROOT/'dist',html=True),name='frontend')
     return app
 

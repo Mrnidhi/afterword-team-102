@@ -12,7 +12,7 @@ The website keeps ten family-facing views:
 
 1. **Overview** — next action, archive counts and recent browser-local activity.
 2. **Action plan** — status/category/search filters, date/amount sorting, notes, reminders, completion/waiting/reopening and CSV export.
-3. **Documents** — searchable fictional excerpts, source previews and a validated file-name staging queue with removal, empty and error states.
+3. **Documents** — searchable fictional excerpts, source previews and a validated file-name staging queue. With the local service, scanned PNG/JPEG letters can be read, compared with their OCR text, corrected and submitted to the configured local vision model for source-checked contacts.
 4. **Evidence review** — source comparisons, known/unknown distinctions, working review notes, read acknowledgements, timestamps, JSON export and print.
 5. **Letters** — provider contacts with source evidence, five templates, family details, exact disclosure review, Gmail/mailto/copy handoff and separately recorded sent/replied states.
 6. **Memories** — a typography-led archive of fictional writing with reading dialogs and favorites.
@@ -42,6 +42,7 @@ The frontend remains buildless HTML, CSS and JavaScript, with no new frontend de
 - `tests/state.test.cjs`: meaningful boundary tests for malformed storage, migration, ID allowlists, date/size limits and write failures.
 - `dist/outreach-core.js`, `outreach.js`, `outreach.css`: provider selection, letter review, disclosure rules and handoff UI, with separate browser-local and local-service modes.
 - `backend/`: local contact extraction, persistence, draft templates/model adapter, consent gates and optional integrations. There is no email-sending operation.
+- `backend/scans.py`, `dist/outreach-scans.js`: bounded local Tesseract OCR, original-scan preview, versioned human corrections and confirmed local vision extraction with exact source spans.
 - `data/`: fictional archive, curated provider directory and independent resolver answer key. The public fixture copies under `dist/data/` must match.
 - `PLAN.md`, `docs/OUTREACH-TEST-PLAN.md`, `docs/METRICS.md`: feature requirements, verification coverage and measured/unmeasured boundaries.
 
@@ -60,6 +61,7 @@ To run locally, serve `dist/` with any static server. There is no dependency ins
 node tests/state.test.cjs
 node tests/outreach.test.cjs
 node tests/outreach-integrations.test.cjs
+node tests/outreach-scans.test.cjs
 node scripts/check-outreach-data.cjs
 node scripts/version-assets.cjs
 node scripts/version-assets.cjs --check
@@ -119,6 +121,83 @@ Run backend verification and the independent fixture evaluation:
 .venv/bin/python -m pytest tests/ -q
 .venv/bin/python scripts/evaluate_outreach.py
 ```
+
+## Read a scanned letter locally
+
+The scan workflow requires the local service; GitHub Pages cannot run OCR or a
+model. Python dependencies, including Pillow image validation, are installed by
+`pip install -r requirements.txt` above. Install the separate **Tesseract** command
+and its English (`eng`) language data on the machine running the service:
+
+```sh
+# macOS with Homebrew; the standard package includes English data.
+brew install tesseract
+
+# Debian/Ubuntu, including an Ubuntu-based HP environment.
+sudo apt-get update
+sudo apt-get install tesseract-ocr tesseract-ocr-eng
+```
+
+Use the commands for your operating system, then check `tesseract --list-langs`
+includes `eng`. The service searches its own `PATH`. If necessary, set
+`AFTERWORD_TESSERACT_BIN` to the absolute executable path before starting it; for
+example, `/opt/homebrew/bin/tesseract` on an Apple Silicon Homebrew installation.
+This setting is an operator-controlled executable path, never a browser-supplied
+command. OCR uses fixed arguments, English text recognition and a 30-second
+execution timeout.
+
+In **Documents**, open the scanned-letter workflow, choose the provider and
+optional source date, and select a single PNG or JPEG. Import is explicit; simply
+selecting an image does not upload it. Supported scans are at most **6 MB**, **20
+megapixels** and **12,000 pixels on either side**. Animated images and PDFs are not
+accepted by this workflow. The derived processing image must also fit 6 MB;
+otherwise the user is asked to crop the scan. Extracted text is limited to
+200,000 characters. The original static PDF staging queue is separate and does
+not perform PDF-to-image conversion.
+
+Compare the original scan with the recognized text before proceeding. Correct
+misread characters, enter the reviewer's name and save the corrections. Every
+correction changes the text hash and clears the UI's previous review confirmation.
+The service retains the original image bytes and hash, a separate sanitized
+processing copy and hash, and the original OCR text and hash. Corrected text has
+its own version, hash, actor and timestamp; it never replaces the raw OCR record.
+After extraction, that source is immutable and a changed source must be imported
+as a new scan. Contact evidence offsets refer to the reviewed text, explicitly
+labelled as human-corrected OCR when applicable—not to an assertion that the
+original OCR recognized those corrected characters.
+
+Scan files stay outside the repository in `~/.local/share/afterword/scans/`.
+`AFTERWORD_SCAN_DIR` can select another private directory outside the repository.
+Directories use permission `0700`, source/processing files use `0600`, and OCR
+scratch files are removed after processing. Stage metadata, OCR versions and
+review history use the existing local SQLite database. This is local filesystem
+access control, not application encryption. Scans are never automatically attached
+to an email.
+
+**OCR staging, preview and corrections work without a vision model.** Contact
+extraction requires a real locally served vision-capable model, configured with
+`AFTERWORD_VISION_ENDPOINT` (for example,
+`http://127.0.0.1:8000/v1/chat/completions`) and `AFTERWORD_VISION_MODEL` set to its
+served model name. The endpoint must be loopback HTTP. Without it, the preview
+remains saved and extraction reports that the model is unavailable; it does not
+invent contacts or report a successful model run. After explicit confirmation,
+the same source hashes are checked again, the local vision model reads the
+processing image, and contacts are retained only when their values and offsets
+match the reviewed text. Email contacts must also match the selected provider.
+
+`GET /scans/status` reports OCR, image-validation and vision readiness separately.
+`POST /scans` stages OCR; `PATCH /scans/{id}` records a correction with the previous
+text hash and actor; `POST /scans/{id}/confirm` requires the current image/text
+hashes and explicit confirmation. Pending scans can be reopened from the Documents
+view without re-uploading their source.
+
+The fictional scan fixture has been processed with real Tesseract on the
+developer's machine. It exposed an OCR error (`claims` read as `clains`), which is
+why the comparison and correction step is required. The Python scan suite includes
+optional real-engine tests when Tesseract is installed; model-orchestration tests
+use explicit fakes. This evidence is **not** a Nano benchmark, a live vision-model
+result or a claim of perfect OCR. The current validation report keeps those
+boundaries separate.
 
 ## Hosting on GitHub Pages
 

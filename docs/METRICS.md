@@ -64,6 +64,18 @@ after evaluation. Do not put that address into source or CI settings.
 
 ## Reproduction and final report
 
+The scan workflow has a separate actual-engine record in
+`outreach-ocr-verification.json`. One fictional page was read with local
+Tesseract 5.5.3 on macOS; its email contained a character error and needed human
+correction. No scan precision percentage or vision success is inferred from that
+single OCR run. The original bytes, raw transcription and correction are kept
+separate. The scan results do not change the seven-finding resolver denominators.
+
+`scripts/outreach_rehearsal.py` captures new redacted service events and actual
+operator-measured baseline durations outside Git. It never substitutes an assumed
+baseline or a model-list request for end-to-end Nano timing. Follow
+`OUTREACH-LIVE-REHEARSAL.md` and preserve independent runtime/mailbox evidence.
+
 The final verification report must list commands, pass/fail counts, browser
 viewport sizes, relevant negative cases and unverified external dependencies.
 The benchmark must store source IDs and expected recipients separately from model

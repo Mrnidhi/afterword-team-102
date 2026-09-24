@@ -56,7 +56,7 @@ that the scope technically forbids sending. The application has no send endpoint
 | O6 review | Rendered full snapshot; provenance; fields; attachment list; edit invalidation |
 | O7 handoff | URL encoding, noopener, no auto-send, 1500-char bound, clipboard/mailto fallback |
 | O8 tracking | Opening does not imply sent; explicit sent → waiting; +14-day personal reminder |
-| O9 vision | Local vision integration with exact OCR match; live hardware verification separate |
+| O9 scan pipeline | PNG/JPEG validation → real local Tesseract OCR → original/recognized-text preview → versioned corrections → explicit current-hash confirmation → configured local vision and exact reviewed-text spans; live Nano/vision verification separate |
 | O10 lookup | Explicit consent; only canonical company/country payload; source URL; unverified status; logs |
 | O11 Gmail draft | OAuth state/PKCE; draft-only API; reviewed MIME attachment bytes; local tokens; disconnect |
 | O12 privacy | Who/when/fields/consenting actor; distinguish handoff from sent; export works |
@@ -64,6 +64,41 @@ that the scope technically forbids sending. The application has no send endpoint
 | Metrics | Reproducible fixture resolution/precision/minimization; measured browser timing clearly scoped |
 | Nano timing | Actual HP end-to-end timing and manual baseline, never substituted by laptop timing |
 | Demo delivery | Human-controlled inbox + human Send; receipt/reply verified only with actual evidence |
+
+## O9 implementation and verification boundary
+
+The local scan pipeline is implemented in `backend/scans.py` and
+`dist/outreach-scans.js`. It accepts a single PNG/JPEG up to 6 MB, 20 megapixels
+and 12,000 pixels per dimension. PDF conversion and animated images are outside
+this bounded intake. Pillow validates and decodes the image; a fixed-argument
+Tesseract process reads English text with a timeout. Installation requires the
+Tesseract executable and `eng` language data. `AFTERWORD_TESSERACT_BIN` overrides
+the service's executable discovery; installation and run instructions are in the
+README.
+
+Original scan bytes, their hash, the processing copy/hash and raw OCR/hash remain
+separate. A reviewer can correct text before extraction; correction versions
+retain the previous hash, actor and time. The old hash cannot approve new text.
+Extraction checks the current image/text hashes, requires explicit confirmation,
+uses the configured loopback vision endpoint and stores source spans against the
+reviewed OCR. Corrected OCR is labelled as such. Confirming again is idempotent;
+changed stored images fail validation, and an ingested source cannot be edited.
+Files stay in private storage outside the repository (`AFTERWORD_SCAN_DIR` or
+`~/.local/share/afterword/scans/`) and are never automatically attached to mail.
+
+OCR staging, original-image preview and corrections are usable when the vision
+model is unavailable. Contact extraction then remains unavailable, with no fake
+success or inferred recipient. Readiness reports the OCR executable, image
+validator and vision configuration independently.
+
+Verification includes `node tests/outreach-scans.test.cjs` and the Python scan
+suite within `.venv/bin/python -m pytest tests/ -q`. Adversarial tests cover limits,
+invalid image types, fixed command arguments, timeouts, cleanup, stale hashes,
+modified stored bytes, missing services, correction provenance, idempotency and
+unsupported model contacts. Real Tesseract CLI/API tests processed the fictional
+fixture on the developer's machine and revealed a contact-character OCR error.
+No Nano timing or successful live vision extraction is established by those tests.
+The root verification report and metrics remain the authority for broader gates.
 
 ## External configuration pending
 

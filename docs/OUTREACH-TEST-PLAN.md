@@ -39,6 +39,15 @@
 - Public source URL and exact source match required; returned contact starts unverified.
 - URL fetching rejects private/loopback destinations and redirect-based bypasses where applicable.
 - OCR/vision invented contact cannot pass exact-match gate.
+- Scan upload accepts validated bounded PNG/JPEG only; a file selection is not an upload.
+- OCR runs locally with fixed arguments and timeout; original image and processing copy retain distinct hashes.
+- Image preview bytes match the input; raw OCR remains unchanged after a correction.
+- Corrections retain actor/history, reject stale hashes and invalidate review; approved extraction is idempotent.
+- Missing OCR fails clearly; missing vision still allows staging/review but cannot ingest contacts.
+- Pending scan reviews survive service restart and page reload; no image or OCR text enters browser storage.
+- The actual Tesseract fixture test may contain OCR errors; it does not claim perfect transcription or Nano vision execution.
+- Readiness inspection reads no token contents and makes no network calls; the optional probe only GETs loopback model metadata.
+- Rehearsal reports keep measured events separate from human assertions; a passing observation needs a retained evidence artifact.
 - OAuth state replay, wrong state, PKCE, redirect destination and minimal scope handling.
 - Draft API creates MIME with only reviewed bytes; no sending API exists.
 - Tokens stored outside repository, restricted permissions, deleted on disconnect.

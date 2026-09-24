@@ -1,6 +1,7 @@
 """Optional routes. Missing credentials produce a visible unavailable state."""
 import base64
 import hashlib
+import math
 from functools import wraps
 import os
 from pathlib import Path
@@ -16,6 +17,7 @@ from pydantic import BaseModel, ConfigDict, Field
 from .gmail import GmailIntegration, TokenStore, verified_mime
 from .router import IntegrationError, ProviderLookup, SearchAdapter
 from .vision import VisionContacts
+from .readiness import readiness
 
 
 class StrictInput(BaseModel):
@@ -105,6 +107,62 @@ def mount_integrations(app, service, gmail=None, lookup=None, vision=None, attac
             return {"gmail": gmail.status(), "lookup_configured": lookup.search is not None, "vision_configured": bool(vision.endpoint and vision.model), "live_validation": "Requires configured services and user-approved rehearsal; automated tests use fakes."}
         except IntegrationError as exc:
             fail(exc)
+
+    @app.get("/integrations/readiness")
+    def integration_readiness():
+        # Configuration and filesystem metadata only: this route never opens a
+        # token file, probes a model, resolves DNS or contacts Google/search.
+        from .router import request_json, public_request_json
+        report = readiness()
+        report["registered_components"] = {"gmail_configured": gmail.configured, "gmail_uses_network_transport": gmail.transport is request_json, "lookup_configured": lookup.search is not None, "lookup_uses_network_transport": isinstance(lookup.search, SearchAdapter) and lookup.search.transport is public_request_json, "vision_configured": bool(vision.endpoint and vision.model), "vision_uses_local_transport": vision.transport is request_json}
+        scans = getattr(app.state, "scan_integration", None)
+        report["scans"] = scans.status() if scans is not None else {"pipeline_registered": False}
+        return report
+
+    @app.get("/integrations/rehearsal-evidence")
+    def rehearsal_evidence():
+        from datetime import datetime, timezone
+        from .router import digest
+        kinds = {'draft_created', 'draft_reviewed', 'contact_resolution_requested', 'escalation', 'gmail_connection_consent', 'gmail_connected', 'gmail_disconnected', 'gmail_draft_created', 'gmail_draft_failed', 'gmail_reply_checked', 'manually_marked_sent', 'manually_marked_replied', 'local_vision_contact_extraction', 'attachment_reviewed', 'scan_ocr_completed', 'scan_ocr_corrected', 'scan_ocr_reviewed', 'scan_contacts_ingested'}
+        rows = []
+        for event in service.repo.list('events'):
+            if event.get('kind') not in kinds:
+                continue
+            row = {'event_id': event['id'], 'kind': event['kind'], 'created_at': event.get('created_at'), 'record_sha256': digest(event)}
+            if event.get('outreach_id'):
+                row['outreach_key'] = digest(event['outreach_id'])[:20]
+            for field in ('elapsed_seconds', 'finding_to_review_seconds'):
+                value = event.get(field)
+                if isinstance(value, (int, float)) and not isinstance(value, bool) and math.isfinite(value) and value >= 0:
+                    row[field] = value
+            for field in ('can_handoff', 'sent_verified', 'replied', 'sent'):
+                if isinstance(event.get(field), bool):
+                    row[field] = event[field]
+            if event.get('kind') == 'draft_created':
+                mode = event.get('generation_mode', event.get('generation'))
+                if isinstance(mode, dict):
+                    mode = mode.get('mode')
+                if mode in ('local_template', 'local_model_guarded'):
+                    row['generation_mode'] = mode
+            if event.get('kind') == 'escalation':
+                payload = event.get('payload', {})
+                company, country = payload.get('company'), payload.get('country')
+                minimized = set(payload) == {'company', 'country'} and company in {p['display_name'] for p in service.directory.values()} and isinstance(country, str) and bool(re.fullmatch('[A-Z]{2}', country)) and event.get('query') == str(company) + ' ' + str(country) + ' public bereavement claims contact'
+                row.update(payload_minimization_verified=minimized, status=event.get('status') if event.get('status') in ('started', 'completed', 'failed') else 'unknown')
+            if event.get('kind') == 'gmail_draft_created':
+                row['attachment_count'] = len(event.get('attachment_manifest', []))
+            if event.get('kind', '').startswith('scan_'):
+                for field in ('image_sha256', 'processing_sha256', 'ocr_sha256'):
+                    if isinstance(event.get(field), str) and re.fullmatch('[a-f0-9]{64}', event[field]):
+                        row[field] = event[field]
+                if isinstance(event.get('contact_count'), int):
+                    row['contact_count'] = event['contact_count']
+                if isinstance(event.get('verbatim_gate'), bool):
+                    row['verbatim_gate'] = event['verbatim_gate']
+            if event.get('kind') == 'contact_resolution_requested' and event.get('selected_tier') in ('records', 'directory', 'lookup', 'none'):
+                row['selected_tier'] = event['selected_tier']
+            rows.append(row)
+        return {'schema_version': 1, 'captured_at': datetime.now(timezone.utc).isoformat(), 'source': 'current_local_service_audit', 'records': rows, 'network_requests': 0, 'redaction': 'No addresses, bodies, actors, source text, OAuth tokens or document filenames included.', 'limitations': 'Audit records establish what this local service recorded. Real provider behavior and hardware identity require independent live evidence.'}
 
     @app.get("/providers/lookup-preview")
     def lookup_preview(finding_id: str, country: str = "US"):

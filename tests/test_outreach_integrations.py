@@ -374,6 +374,27 @@ class IntegrationRouteTests(unittest.TestCase):
         self.assertIn('unresolved',second.json()['detail'])
         self.assertEqual(sum(url==API+'drafts' for _,url,_ in self.calls),1)
 
+    def test_readiness_does_not_open_tokens_or_call_any_transport(self):
+        with patch.object(self.store,'read',side_effect=AssertionError('Token content must not be inspected')):
+            response=self.client.get('/integrations/readiness')
+        self.assertEqual(response.status_code,200,response.text)
+        report=response.json()
+        self.assertEqual(report['network_requests'],0)
+        self.assertFalse(report['token_contents_read'])
+        self.assertFalse(report['registered_components']['gmail_uses_network_transport'],'Injected tests must remain distinguishable from registered network transports')
+        self.assertEqual(self.calls,[])
+
+    def test_rehearsal_endpoint_redacts_private_values_and_preserves_audit_hash(self):
+        self.service.log('gmail_draft_created',outreach_id=self.ident,recipient='PRIVATE_RECIPIENT',body='PRIVATE_BODY',actor='PRIVATE_ACTOR',attachment_manifest=[{'name':'PRIVATE_FILENAME'}],sent=False)
+        response=self.client.get('/integrations/rehearsal-evidence')
+        self.assertEqual(response.status_code,200,response.text)
+        self.assertFalse(any(value in response.text for value in ['PRIVATE_RECIPIENT','PRIVATE_BODY','PRIVATE_ACTOR','PRIVATE_FILENAME']))
+        row=next(item for item in response.json()['records'] if item['kind']=='gmail_draft_created')
+        self.assertEqual(row['attachment_count'],1)
+        self.assertFalse(row['sent'])
+        self.assertRegex(row['record_sha256'],r'^[a-f0-9]{64}$')
+        self.assertEqual(self.calls,[])
+
 
 if __name__ == "__main__":
     unittest.main()

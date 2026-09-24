@@ -54,13 +54,46 @@ approved minimized payload and success/failure without logging credentials.
 
 ## Scan extraction
 
-Ingest OCR text locally with its provider association, then POST a PNG/JPEG base64
-scan to `/documents/{id}/vision-contacts`. The vision call uses only a configured
-loopback endpoint; redirects are refused. Proposed email, phone, postal and portal
-values are retained only when they match the stored OCR exactly. Evidence offsets
-refer to that original text. OCR correctness itself must still be checked on the
-actual scan; a verbatim gate cannot repair OCR errors. Account hints never bypass
-the draft's masking and sensitive-field checks.
+Use **Documents → Add scanned letter** in the connected local application.
+Choose a PNG/JPEG and its provider, then compare the image with the local OCR
+preview. Correct any misread characters before approving extraction. Tesseract
+with English language data runs locally; set `AFTERWORD_TESSERACT_BIN` only when
+its executable is not discoverable. Pillow validates and normalizes the image.
+`AFTERWORD_SCAN_DIR` stores scan sources outside the repository, with owner-only
+file permissions. Limits are 6 MB per original image and 20 million pixels.
+
+The corresponding API sequence is:
+
+1. `GET /scans/status` reports local OCR, image validation and vision readiness.
+2. `POST /scans` accepts `filename`, `image_base64`, `provider_id` and optional
+   `date`/`title`; it stages the original and processing image, runs local OCR and
+   returns an `awaiting_review` preview. This step does not ingest provider contacts.
+3. `GET /scans/{id}` returns the OCR and evidence hashes;
+   `GET /scans/{id}/image` serves the original for comparison.
+4. `PATCH /scans/{id}` saves a human correction using `ocr_text`,
+   `previous_ocr_sha256` and `actor`. Raw OCR and its hash remain intact, while each
+   correction records its author, timestamp and previous/new hashes. Stale edits
+   are rejected.
+5. `POST /scans/{id}/confirm` requires `confirmed: true`, `actor`, the current
+   `ocr_sha256` and `image_sha256`. Only then does the local vision model extract
+   contacts. Each retained value and account hint must match the reviewed OCR at
+   its exact evidence offsets; email contacts must also match the selected provider.
+   The ingested source preserves raw OCR, correction history and image hashes.
+
+OCR preview and corrections work without a configured vision model. In that case,
+confirmation reports that vision is unavailable, preserves the preview and ingests
+no contacts. No template or regex result is presented as successful vision work.
+The vision request uses only the configured loopback endpoint and refuses redirects.
+The scan is never automatically attached to an email. Account hints remain subject
+to the draft's masking and sensitive-field checks. A verbatim gate cannot repair
+OCR errors, which is why image comparison and recorded correction precede ingestion.
+
+The lower-level `POST /documents/{id}/vision-contacts` endpoint remains supported
+for an already ingested, provider-associated OCR document and supplied scan. The
+Documents scan workflow above supplies the complete image/OCR review process and
+is the preferred user-facing path. See the [README](../README.md) for local setup
+and the [live rehearsal procedure](OUTREACH-LIVE-REHEARSAL.md) for actual OCR,
+vision and hardware evidence; fixture tests do not establish HP model performance.
 
 ## Gmail connection and permission boundaries
 
@@ -119,6 +152,12 @@ background polling is enabled without a caller; the user can check on demand.
 [Gmail thread retrieval](https://developers.google.com/workspace/gmail/api/guides/threads).
 
 ## Verification
+
+Use [the live rehearsal procedure](OUTREACH-LIVE-REHEARSAL.md) for safe readiness
+inspection, explicit local model probes and recording actual runtime/provider
+evidence separately from mocked tests. `GET /integrations/readiness` never reads
+token contents or contacts a model, search adapter or Google. The rehearsal audit
+endpoint emits only redacted event summaries and record hashes.
 
 Run `.venv/bin/python -m unittest tests.test_outreach_integrations -v`.
 Run `node tests/outreach-integrations.test.cjs` for the optional dialog contract:
