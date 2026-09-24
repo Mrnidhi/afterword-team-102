@@ -93,3 +93,8 @@ for(const id of Object.keys(C.templateNames)){
 }
 assert.throws(()=>C.markSent({...valid,provider_id:'different-provider'},consent),'A same-email provider change requires another review');
 console.log('Outreach rules passed: five concise templates, blocked identifiers, mandatory fields, exact URL encoding, source ranking, reserved addresses, consent snapshots and sent/reply transitions.');
+
+assert.equal(C.snapshot(valid).reference_id,'omit');
+assert.notEqual(C.canonicalSnapshot({...valid,reference_id:'ref-first'}),C.canonicalSnapshot({...valid,reference_id:'ref-second'}),'Account source choice participates in exact consent');
+assert.equal(C.preflight({...valid,reference_selection_pending:true}).can_handoff,false,'Changed account choice requires rebuilding the letter');
+const legacySnapshot=C.snapshot(valid);delete legacySnapshot.reference_id;assert.throws(()=>C.markSent(valid,{outreach_id:valid.id,snapshot:legacySnapshot}),/Review this letter again/);

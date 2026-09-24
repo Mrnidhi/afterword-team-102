@@ -17,3 +17,10 @@ transcribed the image correctly. Compare the source image during review.
 
 See `docs/outreach-ocr-verification.json` for the actual local browser/API result.
 It is not evidence of a Nano model run or a live vision extraction.
+
+The two Valley Storage `.eml` files exercise the record-to-letter workflow.
+Their sender domains identify the provider without a display name or manual
+provider selection. The first account must appear only as `account ending 7766`
+in a generated letter. Importing the second creates two possible references;
+the family must choose one or explicitly omit the reference. A later message date
+does not establish which account the family intends to contact the provider about.

@@ -15,7 +15,7 @@
   const reservedEmail = value => /(^|\.)(invalid|example|test|localhost)$/.test(emailDomain(value)) || /^(example\.(com|org|net))$/.test(emailDomain(value));
   const noReply = value => /^(?:no[._-]?reply|do[._-]?not[._-]?reply|notifications|marketing)(?:[+._-][^@]*)?@/i.test(value);
   const safeURL = value => {try {const u=new URL(value);return u.protocol==='https:'&&!u.username&&!u.password ? u.href : null;} catch{return null;}};
-  const snapshot = draft => ({provider_id:(draft.provider_id&&draft.provider_id!=='user'?draft.provider_id:draft.recipient_provider?.provider_id&&draft.recipient_provider.provider_id!=='user'?draft.recipient_provider.provider_id:null),recipient:String(draft.recipient||'').trim(),subject:String(draft.subject||''),body:String(draft.body||''),attachments:Array.isArray(draft.attachments)?draft.attachments.filter(v=>typeof v==='string').slice(0,20):[],attachment_files:Array.isArray(draft.attachment_files)?draft.attachment_files.map(v=>({id:v.id,name:v.name,size:v.size,sha256:v.sha256})):[]});
+  const snapshot = draft => ({provider_id:(draft.provider_id&&draft.provider_id!=='user'?draft.provider_id:draft.recipient_provider?.provider_id&&draft.recipient_provider.provider_id!=='user'?draft.recipient_provider.provider_id:null),reference_id:draft.reference_id||'omit',recipient:String(draft.recipient||'').trim(),subject:String(draft.subject||''),body:String(draft.body||''),attachments:Array.isArray(draft.attachments)?draft.attachments.filter(v=>typeof v==='string').slice(0,20):[],attachment_files:Array.isArray(draft.attachment_files)?draft.attachment_files.map(v=>({id:v.id,name:v.name,size:v.size,sha256:v.sha256})):[]});
   const canonicalSnapshot = draft => JSON.stringify(snapshot(draft));
   const validDate = value => /^\d{4}-\d{2}-\d{2}$/.test(value||'') && Number.isFinite(Date.parse(value)) && new Date(value).toISOString().slice(0,10)===value;
   function maskIdentifier(value) {
@@ -60,6 +60,7 @@
     if(!s.subject.trim())issues.push('Add a subject.');
     if(/[\r\n]/.test(s.subject))issues.push('Keep the subject on one line.');
     if(!s.body.trim())issues.push('Write the letter before reviewing.');
+    if(draft.reference_review_required||draft.reference_selection_pending)issues.push('Prepare the letter again with the selected account reference, or explicitly leave the reference out.');
     if(ph.length)issues.push('Fill the remaining placeholders: '+ph.join(', ')+'.');
     for(const [field,label] of Object.entries(fieldLabels))if(!String(draft.fields?.[field]||'').trim())issues.push('Add '+label.toLowerCase()+'.');
     if(draft.fields?.writer_phone&&!validPhone(draft.fields.writer_phone))issues.push('Enter a valid contact phone number.');
@@ -102,6 +103,7 @@
   }
   function markSent(draft, consent, now=new Date()) {
     if(!consent||consent.outreach_id!==draft.id)throw new Error('Review and authorize a handoff first.');
+    if(!Object.hasOwn(consent.snapshot||{},'reference_id'))throw new Error('Review this letter again before marking it as sent.');
     if(canonicalSnapshot(consent.snapshot)!==canonicalSnapshot(draft))throw new Error('This draft changed after its last authorized handoff. Review it again.');
     const follow=new Date(now);follow.setDate(follow.getDate()+14);
     return {...draft,status:'waiting',sent_at:now.toISOString(),reminder_date:[follow.getFullYear(),String(follow.getMonth()+1).padStart(2,'0'),String(follow.getDate()).padStart(2,'0')].join('-'),updated_at:now.toISOString()};

@@ -3,7 +3,7 @@
 ## Result and boundary
 
 The provider-outreach implementation is ready for a configured local rehearsal.
-All 108 Python tests and the four Node test suites passed on the development
+All 138 Python tests and the five Node test suites passed on the development
 machine. Static fixture parity, every frontend JavaScript syntax check and asset
 version checks passed. No email was sent. The approved demo recipient is stored
 in local settings and is not included in the repository.
@@ -30,13 +30,13 @@ verified. Mocked transport tests are not evidence of those outcomes.
 | Item | Implemented and executed evidence | Outstanding evidence / limitation |
 |---|---|---|
 | O1 Models and storage | Strict request schemas, SQLite persistence, immutable consent/events API, restricted database permissions, restart and mutation tests | Single-process local workspace; not a production multi-user authorization service |
-| O2 Contact mining | Header/footer extraction, exact domain association, role ranking, no-reply filtering, dates and evidence offsets; MIME base64/plain-part decoding retains raw source and canonical text | Wider real-document evaluation remains necessary |
+| O2 Contact mining | Header/footer extraction, actual sender-domain inference, role ranking, no-reply filtering, valid email Date fallback and evidence offsets; MIME decoding retains raw source and canonical text; conflicting providers are rejected | Wider real-document evaluation remains necessary |
 | O3 Offline directory | All six providers in the actual fictional archive; runtime approved inbox; Gmail aliases only for Gmail domains; exact address on other domains | Mailbox control is user-attested, not independently verified; delivered mail not tested |
 | O4 Resolution | Records/directory/lookup ranking, empty/no-reply cases, wrong-provider rejection, source offsets and provider-specific candidates sharing one inbox | Heuristic confidence is not a probability or proof of contact authority |
-| O5 Five draft templates | All templates, visible required slots, local adapter contract, factual slot equality, rejection/fallback tests and browser checks of actual backend templates | Actual Nano model endpoint is still needed; browser/template fallback is labelled honestly |
-| O6 Disclosure review | Exact recipient/company/subject/body/checklist/file-manifest review; snapshot includes provider identity; stale edit/attachment/provider consent tests; browser review inspected | Humans must review arbitrary prose and file contents; detection cannot identify every personal detail |
+| O5 Five draft templates | All templates, visible required slots, local adapter contract, factual slot equality, rejection/fallback tests and browser checks; account references come from exact provider-scoped source spans, with explicit selection or omission when ambiguous | Actual Nano model endpoint is still needed; browser/template fallback is labelled honestly |
+| O6 Disclosure review | Exact recipient/company/subject/body/checklist/file-manifest review; snapshot includes provider and source-reference identity; stale source/edit/attachment/provider consent tests; browser review inspected | Humans must review arbitrary prose and file contents; detection cannot identify every personal detail |
 | O7 Email handoff | URL encoding, opener isolation, 1,500-character guard, mailto and consented clipboard fallback; placeholder/reserved-recipient failures tested in browser | No actual Gmail compose navigation or email-app delivery was performed in this rehearsal |
-| O8 Sent/replied lifecycle | Explicit separate confirmation, waiting/review mapping, +14-day personal reminder, idempotence and stale-consent tests | Browser copy was verified without falsely marking it sent; lifecycle confirmations used test data in automated tests |
+| O8 Sent/replied lifecycle | Explicit separate confirmation, waiting/review mapping, +14-day personal reminder, idempotence and stale-consent tests; actual frontend handlers preserve later manual task decisions during history reload | Browser copy was verified without falsely marking it sent; lifecycle confirmations used test data in automated tests |
 | O9 Scan contacts | Documents upload UI; local Tesseract OCR; exact original image and raw OCR retained; human correction history; hash-bound review; resume after restart; exact contact spans and provider association; actual local OCR/browser/API verification | PNG/JPEG only, up to 6 MB and 20 megapixels; PDF pages require image export; actual Nano vision extraction is still unverified |
 | O10 Public lookup | Explicit approval/hash, canonical company/country payload, provenance, unverified contacts, escalation log, public DNS pinning and redirect/proxy restrictions tested | Operator-provided HTTPS search adapter is not configured or live-tested |
 | O11 Gmail API draft | PKCE/browser-bound state, narrow operation allowlist, restricted external token storage, account profile, reviewed MIME bytes and hash-bound consent; UI completion uses the actual final consent; ambiguous retries are guarded | Google client/test account and live OAuth/draft/attachment rehearsal required; official draft-ID UI permalink is unavailable, so a clearly labelled Drafts-folder link is used |
@@ -60,6 +60,7 @@ node tests/state.test.cjs
 node tests/outreach.test.cjs
 node tests/outreach-integrations.test.cjs
 node tests/outreach-scans.test.cjs
+node tests/outreach-navigation.test.cjs
 node scripts/check-outreach-data.cjs
 python scripts/evaluate_outreach.py
 node scripts/version-assets.cjs --check
@@ -67,7 +68,7 @@ for file in dist/*.js; do node --check "$file"; done
 git diff --check
 ```
 
-Observed Python result: **108 passed in 3.32 seconds** on the development machine,
+Observed Python result: **138 passed in 4.60 seconds** on the development machine,
 including two tests executing the installed Tesseract engine. CI installs English
 Tesseract so these tests also execute there rather than silently skip.
 This is test-run duration, not model latency. The independent evaluation also ran
@@ -103,6 +104,19 @@ Browser checks used the actual local service and a separate static server:
 - Privacy now describes the locally stored scans, raw OCR and corrected versions.
 - No JavaScript error messages were observed in the inspected scan-session log.
   Earlier workspace-wide tests are documented separately in README.
+- Imported `valley-storage-reference.eml` with provider and date left unset.
+  The actual browser routed from Documents to the storage action, inferred the
+  provider from the sender domain, displayed the September 23 source date and
+  selected account ending 7766. The prepared letter contained only that masked
+  reference, not the full fixture identifier.
+- Imported the second storage fixture. The existing selection stayed intact;
+  the two source records remained separate. Choosing account ending 2233 kept
+  the previous body intact and required preparation before sharing. Preparing
+  applied only the new masked reference. Explicit omission removed the account
+  reference from the letter.
+- The reference selector and its source description fit measured 320px and 390px
+  CSS widths without document overflow. The viewport override was reset, and no
+  errors were present in the inspected browser log.
 
 This is not an exhaustive browser matrix or an independent accessibility audit.
 The UI keeps one working draft per action/template. Changing the provider updates

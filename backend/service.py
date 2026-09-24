@@ -7,9 +7,10 @@ import unicodedata
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from fastapi import HTTPException
-from .contacts import mine_contacts, canonicalize_email, rank_candidate, valid_email, blocked_email, fictional_email
+from .contacts import mine_contacts, canonicalize_email, canonical_provider, rank_candidate, valid_email, blocked_email, fictional_email
 from .drafting import build_draft, TEMPLATE_NAMES
 from .repository import Repository
+from .references import source_references, reference_is_current
 
 
 def now():
@@ -66,6 +67,10 @@ class OutreachService:
 
     def ingest(self,document,log=True):
         document=canonicalize_email(document)
+        if not document.get('provider_id'):
+            inferred=canonical_provider(document,self.directory)
+            if inferred:
+                document={**document,'provider_id':inferred,'provider_assignment':'inferred'}
         if document.get('date'):
             try:
                 datetime.strptime(document['date'],'%Y-%m-%d')
@@ -139,7 +144,10 @@ class OutreachService:
                 candidate['deliverable']=not fictional_email(address)
                 unique.append(candidate);seen.add(identity)
         self.repo.put('settings','resolution:'+finding_id,{'finding_id':finding_id,'source_kind':unique[0]['source_kind'] if unique else 'none','created_at':now()})
-        return {'finding_id':finding_id,'provider_id':provider_id or finding.get('provider_id'),'provider_ids':selected_ids,'candidates':unique,'selected':unique[0] if unique else None,'needs_lookup':not unique and bool(selected_ids),'no_provider':not bool(selected_ids)}
+        references=source_references(self.repo.list('documents'),self.directory,selected_ids)
+        active_provider=provider_id or finding.get('provider_id')
+        active_references=[reference for reference in references if reference['provider_id']==active_provider]
+        return {'finding_id':finding_id,'provider_id':active_provider,'provider_ids':selected_ids,'candidates':unique,'selected':unique[0] if unique else None,'needs_lookup':not unique and bool(selected_ids),'no_provider':not bool(selected_ids),'references':references,'selected_reference_id':active_references[0]['id'] if len(active_references)==1 else None,'reference_selection_required':len(active_references)>1}
 
     def valid_record_evidence(self,candidate):
         addresses={channel['value'] for channel in candidate.get('channels',[]) if channel.get('kind')=='email'}
@@ -167,17 +175,43 @@ class OutreachService:
 
     def draft(self,request):
         finding=self.finding(request['finding_id'])
-        resolved=self.resolve(finding['id'],request.get('provider_id'))
+        active_provider=request.get('provider_id')
+        if not active_provider:
+            initial=self.resolve(finding['id'])
+            address=(request.get('recipient') or '').lower()
+            matching={candidate['provider_id'] for candidate in initial['candidates'] if any(channel['value'].lower()==address for channel in candidate['channels'])} if address else set()
+            if len(matching)==1:
+                active_provider=next(iter(matching))
+            elif len(initial['provider_ids'])>1:
+                raise HTTPException(422,{'message':'Choose the provider before preparing this letter. A shared or manually entered address does not identify which account you mean.','provider_ids':initial['provider_ids']})
+            else:
+                active_provider=finding.get('provider_id')
+        resolved=self.resolve(finding['id'],active_provider)
         selected=resolved['selected']
         recipient=request.get('recipient') or (selected['channels'][0]['value'] if selected else '')
         if recipient and not valid_email(recipient):
             raise HTTPException(422,'Enter one valid email address without line breaks.')
+        references=[reference for reference in resolved['references'] if reference['provider_id']==active_provider]
+        requested_reference=request.get('reference_id')
+        reference=None
+        if requested_reference and requested_reference!='omit':
+            reference=next((candidate for candidate in references if candidate['id']==requested_reference),None)
+            if not reference:
+                raise HTTPException(422,'The account reference is unavailable, changed, or belongs to another provider. Resolve contacts and choose again.')
+        elif requested_reference!='omit':
+            if len(references)>1:
+                raise HTTPException(422,{'message':'Choose the account reference from its source, or explicitly leave it out. Matching endings do not establish that accounts are the same.','references':references})
+            reference=references[0] if references else None
+        draft_finding={**finding}
+        draft_finding.pop('masked_identifier',None)
+        if reference:
+            draft_finding['masked_identifier']=reference['masked_identifier']
         fields=request.get('fields') or {}
         session=self.repo.get('settings','outreach_session:'+str(request.get('session_id'))) if request.get('session_id') else None
         if request.get('session_id') and (not session or session['finding_id']!=finding['id']):
             raise HTTPException(422,'The timing session does not belong to this finding.')
-        result=build_draft(finding,self.person,fields,request['template_id'],self.selector)
-        item={'id':str(uuid.uuid4()),'finding_id':finding['id'],'provider_id':request.get('provider_id') or finding.get('provider_id'),'template_id':request['template_id'],'fields':fields,'recipient':recipient,'recipient_provider':self.recipient_provider(finding['id'],recipient,request.get('provider_id')) if recipient else None,'subject':result['subject'],'body':result['body'],'attachments':result['attachments'],'generation':result['generation'],'status':'draft','created_at':now(),'updated_at':now()}
+        result=build_draft(draft_finding,self.person,fields,request['template_id'],self.selector)
+        item={'id':str(uuid.uuid4()),'finding_id':finding['id'],'provider_id':active_provider,'reference_id':reference['id'] if reference else 'omit','reference':reference,'reference_review_required':False,'template_id':request['template_id'],'fields':fields,'recipient':recipient,'recipient_provider':self.recipient_provider(finding['id'],recipient,active_provider) if recipient else None,'subject':result['subject'],'body':result['body'],'attachments':result['attachments'],'generation':result['generation'],'status':'draft','created_at':now(),'updated_at':now()}
         if session:
             item['session_id']=session['id'];item['finding_opened_at']=session['opened_at']
         self.repo.put('outreach',item['id'],item)
@@ -201,6 +235,7 @@ class OutreachService:
             provider_id=changes.get('provider_id',item.get('provider_id'))
             if 'provider_id' in changes:
                 self.resolve(item['finding_id'],provider_id)
+                changes['reference_review_required']=bool(item.get('reference') and item['reference']['provider_id']!=provider_id)
             if 'recipient' in changes or 'provider_id' in changes:
                 recipient=changes.get('recipient',item['recipient']).strip()
                 if recipient and not valid_email(recipient):
@@ -220,6 +255,7 @@ class OutreachService:
         item=self.get_outreach(outreach_id)
         snapshot={key:item.get(key,[] if key=='attachments' else '') for key in ('recipient','subject','body','attachments')}
         snapshot['provider_id']=item.get('provider_id')
+        snapshot['reference_id']=item.get('reference_id','omit')
         snapshot['attachment_files']=item.get('attachment_files',[])
         text=snapshot['recipient']+'\n'+snapshot['subject']+'\n'+snapshot['body']+'\n'+'\n'.join(snapshot['attachments'])+'\n'+'\n'.join(file.get('name','') for file in snapshot['attachment_files'])
         text=unicodedata.normalize('NFKC',text)
@@ -228,6 +264,10 @@ class OutreachService:
         placeholders=sorted(set(re.findall(r'\[[^\]\n]+\]',text)))
         blocked=[];disclosed=[];warnings=[]
         fields=item.get('fields',{})
+        selected_reference=item.get('reference')
+        reference_problem=bool(selected_reference and not reference_is_current(selected_reference,self.repo.list('documents'),self.directory,item.get('provider_id')))
+        if reference_problem or item.get('reference_review_required'):
+            blocked.append('The account reference changed or belongs to another provider. Prepare the letter again with a current source reference or explicitly omit it.')
         for field,label in [('writer_name','Your full name'),('writer_phone','Your phone'),('relationship','Your relationship or authority'),('date_of_death','Date of death')]:
             if not fields.get(field,'').strip():
                 blocked.append(label+' is required')
@@ -297,7 +337,7 @@ class OutreachService:
         if len(snapshot['body'])>1500:
             warnings.append('This letter exceeds 1,500 characters. Use Copy letter or a Gmail API draft to avoid compose URL truncation.')
         warnings.append('Review the entire letter. The field summary is a helper and cannot identify every personal detail in manually edited text.')
-        result={'snapshot':snapshot,'snapshot_hash':digest(snapshot),'disclosed_fields':list(dict.fromkeys(disclosed)),'blocked_fields':list(dict.fromkeys(blocked)),'placeholders':placeholders,'attachments':snapshot['attachments'],'warnings':warnings,'can_handoff':not blocked and not placeholders,'recipient_confirmation_required':confirmation,'recipient_provider':source,'compose_length_ok':len(snapshot['body'])<=1500}
+        result={'snapshot':snapshot,'snapshot_hash':digest(snapshot),'disclosed_fields':list(dict.fromkeys(disclosed)),'blocked_fields':list(dict.fromkeys(blocked)),'placeholders':placeholders,'attachments':snapshot['attachments'],'warnings':warnings,'can_handoff':not blocked and not placeholders,'recipient_confirmation_required':confirmation,'recipient_provider':source,'reference':selected_reference,'reference_review_required':reference_problem or item.get('reference_review_required',False),'compose_length_ok':len(snapshot['body'])<=1500}
         if log:
             self.log('draft_reviewed',outreach_id=outreach_id,snapshot_hash=result['snapshot_hash'],disclosed_fields=result['disclosed_fields'],blocked_fields=result['blocked_fields'],elapsed_seconds=max(0,(datetime.now(timezone.utc)-datetime.fromisoformat(item['created_at'])).total_seconds()),finding_to_review_seconds=max(0,time.monotonic()-self._session_starts[item['session_id']]) if item.get('session_id') in self._session_starts else None,can_handoff=result['can_handoff'],timing_scope='current_local_service_process')
         return result

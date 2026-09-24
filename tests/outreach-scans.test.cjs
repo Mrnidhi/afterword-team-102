@@ -39,7 +39,7 @@ function harness(options={}){
   }
   throw Error('Unexpected request '+url);
  };
- const bridge={api,getService:()=>control.connected?{service:'afterword-local'}:null,currentDraft:()=>({fields:{writer_name:'Priya Rao'}}),log:()=>{},refreshContacts:()=>{}};
+ const bridge={api,getService:()=>control.connected?{service:'afterword-local'}:null,currentDraft:()=>({fields:{writer_name:'Priya Rao'}}),log:()=>{},refreshContacts:()=>{throw Error('Scan navigation must not refresh the previous finding');},openProviderLetter:(provider_id,finding_id)=>calls.push({navigation:{provider_id,finding_id}})};
  const context={window:{AfterwordOutreach:bridge,views:{documents:()=>'<h1>Documents</h1>'},actions:{}},document:{getElementById:id=>id==='detail-dialog'?dialog:elements.get(id)},location:{origin:'http://127.0.0.1:4174'},localStorage:{getItem:key=>storage.get(key)||null,setItem:(key,value)=>storage.set(key,value)},escapeHTML:value=>String(value??'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/"/g,'&quot;'),OutreachCore:require('../dist/outreach-core.js'),modal,button:(text,action)=>`<button data-action="${action}">${text}</button>`,icon:()=>'',render:()=>{},toast:text=>messages.push(text),closeDialog:()=>{},go:()=>{},Uint8Array,btoa:value=>Buffer.from(value,'binary').toString('base64')};
  vm.runInNewContext(source,context);
  const click=async id=>{const element=elements.get(id);assert.ok(element,'Missing UI control '+id);await element.listeners.click({currentTarget:element});};
@@ -63,6 +63,7 @@ function harness(options={}){
  await staged.click('scan-save-correction');assert.equal(staged.calls.filter(c=>c.method==='PATCH').length,1);assert.match(staged.modals.at(-1).body,/Original text from the local reader/);assert.equal(staged.elements.get('scan-reviewed').checked,false);
  staged.elements.get('scan-reviewed').checked=true;await staged.click('scan-extract');
  const confirmed=staged.calls.find(c=>c.url.endsWith('/confirm'));assert.equal(confirmed.body.ocr_sha256,'c'.repeat(64));assert.equal(staged.modals.at(-1).title,'Contacts added from your scanned letter');assert.match(staged.modals.at(-1).body,/claims@cedar-life.example/);assert.match(staged.modals.at(-1).footer,/data-finding="insurance"/);assert.equal(JSON.parse(staged.storage.get('afterword-pending-scans-v1')).length,0);
+ staged.actions['scan-letter']({dataset:{finding:'insurance',provider:'cedar-life'}});assert.deepEqual(staged.calls.at(-1).navigation,{provider_id:'cedar-life',finding_id:'insurance'},'The actual scan action must name both the provider and target finding');
  const resume=harness();await resume.ui.resumeScan('scan1');assert.equal(resume.modals.at(-1).title,'Compare the text with the scanned letter');assert.equal(resume.calls.filter(c=>c.url==='/scans'&&c.method==='POST').length,0,'Resume loads the staged original; it does not re-upload');
  console.log('Scan workflow passed: actual event handlers enforce local upload consent, file signatures, unavailable engines, OCR correction versioning, fresh review hashes, source evidence and resume behavior.');
 })().catch(error=>{console.error(error);process.exitCode=1;});

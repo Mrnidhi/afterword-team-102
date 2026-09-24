@@ -3,10 +3,11 @@
   'use strict';
   const C=window.OutreachCore, KEY='afterword-outreach-v1', esc=escapeHTML;
   let providers=[], archive={findings:[],documents:[]}, service=null, gmailStatus=null, connection='checking', loadError='', activeFinding='insurance', activeTemplate=C.defaults.insurance;
-  let resolved={}, sessions={}, pending=new Set(), review=null, saveTimer, syncQueue=Promise.resolve(), localAvailable=true, privacyServer=null;
-  const empty=()=>({version:1,config:{runtime:'auto',demo_mailbox:'',confirmed_control:false},drafts:{},consents:[],events:[],verifiedDomains:[]});
+  let resolved={}, sessions={}, pending=new Set(), refreshAfterPending=new Set(), contactTargets={}, review=null, saveTimer, syncQueue=Promise.resolve(), localAvailable=true, privacyServer=null;
+  const empty=()=>({version:1,config:{runtime:'auto',demo_mailbox:'',confirmed_control:false},drafts:{},consents:[],events:[],verifiedDomains:[],taskSync:{}});
   let saved;
   try { const v=JSON.parse(localStorage.getItem(KEY)||'null'); saved=v&&v.version===1&&v.drafts&&typeof v.drafts==='object'&&!Array.isArray(v.drafts)?{...empty(),...v,config:{...empty().config,...v.config},consents:Array.isArray(v.consents)?v.consents:[],events:Array.isArray(v.events)?v.events:[],verifiedDomains:Array.isArray(v.verifiedDomains)?v.verifiedDomains:[]}:empty(); } catch {saved=empty();}
+  if(!saved.taskSync||typeof saved.taskSync!=='object'||Array.isArray(saved.taskSync))saved.taskSync={};
   const key=()=>activeFinding+':'+activeTemplate;
   const finding=id=>archive.findings.find(f=>(f.id||f.finding_id)===id)||{id,finding_id:id,title:tasks.find(t=>t.id===id)?.title||'Request information'};
   const fieldFinding=id=>({...finding(id),finding_id:id,deceased_name:'Arun Rao'});
@@ -20,7 +21,7 @@
     try {
       const response=await fetch(apiPath(path),{method:options.method||'GET',headers:{Accept:'application/json','X-Afterword-Client':'web',...(options.body?{'Content-Type':'application/json'}:{})},...(options.body?{body:JSON.stringify(options.body)}:{}),signal:controller.signal,credentials:'same-origin',redirect:'error'});
       let value;try{value=await response.json();}catch{throw new Error('The local service returned an unreadable response.');}
-      if(!response.ok)throw new Error(typeof value.detail==='string'?value.detail:value.error||'The local service could not complete this request.');
+      if(!response.ok)throw new Error(typeof value.detail==='string'?value.detail:value.detail?.message||value.error||'The local service could not complete this request.');
       return value;
     } finally {clearTimeout(timeout);}
   }
@@ -32,14 +33,23 @@
   function makeDraft() {const d=C.buildDraft(fieldFinding(activeFinding),activeTemplate);d.origin='browser';storeDraft(d);return d;}
   function draft(){return current()||makeDraft();}
   function saveHint(message) {const hint=$('#outreach-save-state');if(hint)hint.textContent=message||(!localAvailable?'Session only. Export before leaving.':current()?.origin==='server'?'Saved on the local service and in this browser.':'Saved in this browser.');}
-  function updateTask(d) {
+  const lifecycleTime=d=>Date.parse(d.status==='waiting'?d.sent_at:d.replied_at)||0;
+  function updateTask(d,hydrate=false) {
     if(!tasks.some(t=>t.id===d.finding_id))return;
     if(!['waiting','review','replied'].includes(d.status))return;
+    const id=d.finding_id,at=lifecycleTime(d),event=d.id+':'+d.status+':'+at,previous=saved.taskSync[id];
+    if(hydrate){
+      // Existing manual completions predate this watermark. Do not replay old outreach over them.
+      if(!previous&&state.completed.includes(id)){saved.taskSync[id]={manual_at:Date.now()};localSave();return;}
+      if(previous?.manual_at&&(!at||at<=previous.manual_at))return;
+      if(previous&&(previous.event===event||previous.applied_at&&at<=previous.applied_at))return;
+    }
     state.completed=state.completed.filter(x=>x!==d.finding_id);
     state.waiting=state.waiting.filter(x=>x!==d.finding_id);
     state.outreachReview=(state.outreachReview||[]).filter(x=>x!==d.finding_id);
     if(d.status==='waiting')state.waiting.push(d.finding_id);else state.outreachReview.push(d.finding_id);
     if(d.reminder_date)state.reminders[d.finding_id]=d.reminder_date;
+    saved.taskSync[id]={applied_at:at,event};localSave();
     persist();
   }
   function startSession(id){
@@ -49,7 +59,7 @@
   async function syncDraft(d) {
     if(d.origin!=='server')return d;
     if(!service)throw new Error('Reconnect the local service before reviewing this server draft. Your edits are saved in this browser.');
-    const revision=d.updated_at, patch={provider_id:providers.some(p=>p.provider_id===d.recipient_provider?.provider_id)?d.recipient_provider.provider_id:undefined,fields:d.fields,recipient:d.recipient,subject:d.subject,body:d.body,attachments:d.attachments};
+    const revision=d.updated_at, patch={provider_id:selectedProvider(d)||undefined,fields:d.fields,recipient:d.recipient,subject:d.subject,body:d.body,attachments:d.attachments};
     const result=await api('/outreach/'+encodeURIComponent(d.id),{method:'PATCH',body:patch});
     const now=saved.drafts[d.finding_id+':'+d.template_id];
     if(now&&now.updated_at===revision)storeDraft({...result,body_edited:d.body_edited},'server');
@@ -90,23 +100,59 @@
     }
     const ranked=C.rankCandidates(candidates);return {finding_id:id,candidates:ranked,selected:ranked[0]||null,needs_lookup:ranked.length===0};
   }
+  function selectedProvider(d){return [d.recipient_provider?.provider_id,d.provider_id,finding(d.finding_id).provider_id].find(id=>providers.some(p=>p.provider_id===id))||null;}
+  function referenceOptions(d){return (resolved[d.finding_id]?.references||[]).filter(r=>r.provider_id===selectedProvider(d));}
+  function reconcileReference(d){
+    if(!service||!resolved[d.finding_id])return;
+    const options=referenceOptions(d),valid=id=>options.some(r=>r.id===id);
+    const keepChoice=d.reference_choice_explicit||d.reference_id&&d.reference_choice===d.reference_id;
+    if(!keepChoice||d.reference_choice!=='omit'&&!valid(d.reference_choice)){
+      d.reference_choice=valid(d.reference_id)?d.reference_id:options.length===1?options[0].id:options.length?'':'omit';
+    }
+    d.reference_selection_pending=!d.reference_choice||d.reference_choice!==(d.reference_id||'omit');
+    localSave();
+  }
+  function chooseProvider(d,p){
+    const previous=selectedProvider(d);
+    d.recipient=emailOf(p);d.recipient_provider=p;d.provider_id=p.provider_id;
+    if(previous!==p.provider_id){delete d.reference_choice;delete d.reference_choice_explicit;d.reference_selection_pending=true;}
+    reconcileReference(d);d.updated_at=new Date().toISOString();queueSync(d);
+  }
+  function referenceField(d){
+    if(!service)return '';
+    const options=referenceOptions(d),chosen=options.find(r=>r.id===d.reference_choice);
+    return `<label class="field"><span>Account reference</span><select id="outreach-reference"><option value="" ${!d.reference_choice?'selected':''} disabled>${pending.has(d.finding_id)?'Reading source references…':'Choose a source reference'}</option>${options.map(r=>`<option value="${esc(r.id)}" ${r.id===d.reference_choice?'selected':''}>${esc(r.masked_identifier)} · ${esc(r.source_title||r.evidence?.[0]?.doc_id||'Source record')}${r.source_date?' · '+esc(r.source_date):''}</option>`).join('')}<option value="omit" ${d.reference_choice==='omit'?'selected':''}>Leave the account reference out</option></select></label><p class="fine">${options.length>1?'Several source records identify an account. Matching endings do not establish that they are the same account. Choose the record for this letter, or leave the reference out.':options.length?'Only the masked reference will appear in your letter.':'No source-backed account reference is available for this provider. The letter can ask how to identify the account securely.'}</p>${chosen?`<p class="fine">Source: ${esc(chosen.source_title||chosen.evidence?.[0]?.doc_id||'Record')}${Number.isInteger(chosen.evidence?.[0]?.start)?' · characters '+chosen.evidence[0].start+'–'+chosen.evidence[0].end:''}</p>`:''}${d.reference_selection_pending||d.reference_review_required?'<p class="outreach-warning">Prepare the letter below to apply this reference choice before sharing.</p>':''}`;
+  }
   async function resolve(id=activeFinding,force=false) {
-    if(pending.has(id)||resolved[id]&&!force)return;
+    if(pending.has(id)){if(force)refreshAfterPending.add(id);return;}
+    if(resolved[id]&&!force)return;
     pending.add(id);if(state.route==='letters')render();
     try {
       const result=service?await api('/providers/resolve',{method:'POST',body:{finding_id:id}}):localResolve(id);
       resolved[id]=result;
-      const d=current();if(id===activeFinding&&d&&!d.recipient&&result.selected){d.recipient=emailOf(result.selected);d.recipient_provider=result.selected;d.updated_at=new Date().toISOString();queueSync(d);}
+      const d=current();if(id===activeFinding&&d){
+        const wanted=contactTargets[id],candidate=wanted?(result.candidates||[]).find(p=>p.provider_id===wanted):result.selected;
+        if(candidate&&(!d.recipient||wanted&&selectedProvider(d)!==wanted))chooseProvider(d,candidate);
+        else if(wanted&&selectedProvider(d)!==wanted){d.provider_id=wanted;d.recipient='';d.recipient_provider=null;delete d.reference_choice;delete d.reference_choice_explicit;d.reference_selection_pending=true;queueSync(d);}
+        reconcileReference(d);delete contactTargets[id];
+      }
       loadError='';
     } catch(e){loadError=e.message;}
-    finally {pending.delete(id);if(state.route==='letters')render();}
+    finally {pending.delete(id);if(refreshAfterPending.delete(id))await resolve(id,true);else if(state.route==='letters')render();}
   }
-  function selectFinding(id,template) {
+  function selectFinding(id,template,options={}) {
     if(!tasks.some(t=>t.id===id))return;
     if(activeFinding!==id||!sessions[id])startSession(id);
     activeFinding=id;activeTemplate=Object.hasOwn(C.templateNames,template)?template:C.defaults[id]||'request_records';
+    if(options.provider_id)contactTargets[id]=options.provider_id;
+    draft();
     const target='letters?finding='+encodeURIComponent(id)+'&outreach='+encodeURIComponent(activeTemplate);
-    go(target);resolve(id);
+    go(target);return resolve(id,!!options.force);
+  }
+  function openProviderLetter(providerId,findingId){
+    const target=archive.findings.find(f=>(!findingId||(f.id||f.finding_id)===findingId)&&(f.provider_ids||[f.provider_id]).includes(providerId));
+    if(!target){go('documents');toast('Records added. Choose the relevant action in Letters after identifying its provider.');return false;}
+    selectFinding(target.id||target.finding_id,undefined,{provider_id:providerId,force:true});return true;
   }
   const oldRoute=window.prepareRoute;
   window.prepareRoute=()=>{
@@ -118,7 +164,7 @@
   function generationText(d) {return ['llm','local_model_guarded'].includes(d.generation?.mode)?'Prepared on the local model. Check each detail against the records.':'Prepared from a local template. No language model was used.';}
   function historyRows(items=saved.consents) {return items.length?items.map(c=>`<article class="outreach-history-row"><div><strong>${esc(c.snapshot?.recipient||c.recipient||'Recipient recorded')}</strong><p>${esc(c.snapshot?.subject||c.subject||'Outreach consent')}</p><small>${esc(formatTime(c.created_at||c.at))} · ${esc(c.actor||'Family member')} · ${esc(({copy:'Copy to clipboard',gmail:'Gmail compose',mailto:'Email app',gmail_api:'Gmail API draft','gmail-draft':'Gmail API draft'})[c.channel]||c.channel||'Handoff')}</small></div><details><summary>Approved content</summary><p>${esc((c.disclosed_fields||[]).join(', ')||'See the exact content below.')}</p><pre>${esc(c.snapshot?.body||c.body||'No body in this record.')}</pre><p class="fine">${c.channel==='copy'?'This records a reviewed clipboard copy. It does not establish that anything was shared externally.':'This records permission to open an external draft.'} It does not prove an email was sent or delivered.</p></details></article>`).join(''):'<div class="inline-empty"><div><strong>No outreach handoffs yet.</strong><p>Reviewing or editing a letter does not disclose it. Reviewed handoffs and copies will appear here.</p></div></div>';}
   function statusBar(d) {
-    const handed=saved.consents.find(c=>c.outreach_id===d.id&&C.canonicalSnapshot(c.snapshot)===C.canonicalSnapshot(d));
+    const handed=saved.consents.find(c=>c.outreach_id===d.id&&Object.hasOwn(c.snapshot||{},'reference_id')&&C.canonicalSnapshot(c.snapshot)===C.canonicalSnapshot(d));
     if(d.status==='waiting')return `<div class="outreach-status"><div><strong>Waiting for a reply</strong><p>You marked this letter as sent ${esc(formatDate(d.sent_at?.slice(0,10)))}. Your reminder: ${esc(formatDate(d.reminder_date))}. This is not a legal deadline.</p></div><div class="button-row"><button class="button" data-action="outreach-replied">They replied</button>${d.origin==='server'?'<button class="text-link" data-action="outreach-check-reply">Check connected Gmail</button>':''}</div></div>`;
     if(['review','replied'].includes(d.status))return '<div class="outreach-status"><div><strong>Reply recorded · needs review</strong><p>Read the provider’s reply and update your action plan. Reply content is not read automatically.</p></div><a class="text-link" href="#plan">View action plan</a></div>';
     return handed?'<div class="outreach-status"><div><strong>Sharing authorized. Sending is still up to you.</strong><p>After you press Send in your email app, mark the letter as sent here.</p></div><button class="button" data-action="outreach-sent">Mark as sent</button></div>':'';
@@ -133,7 +179,7 @@
       ${C.reservedEmail(d.recipient)?'<p class="outreach-warning">This record uses a reserved example address. It cannot receive mail. Configure an approved demo inbox, then choose its demo alias below.</p>':''}
       <details class="outreach-alternatives"><summary>Use a different address${options.length?' · '+options.length+' found':''}</summary>${options.length?options.map((p,i)=>`<button class="outreach-candidate" data-action="outreach-recipient" data-index="${i}"><strong>${esc(emailOf(p))}</strong><span>${esc(p.display_name)} · ${esc(C.sourceLabels[p.source_kind]||'Contact')}</span>${C.reservedEmail(emailOf(p))?'<small>Reserved example · cannot receive mail</small>':''}</button>`).join(''):'<p>No email contact found in the available records or configured directory.</p>'}<p class="fine">You can also type an address above. <a href="#settings">Configure a demo inbox approved for the demo.</a></p></details>
       ${r?.needs_lookup?`<div class="outreach-lookup"><p>No local contact was found. A public lookup can share only the provider’s name and country.</p><button class="button" data-action="outreach-lookup" ${!service?'disabled':''}>Review a public lookup</button>${!service?'<p class="fine">Public lookup requires the local outreach service. You can enter a verified contact yourself.</p>':''}</div>`:''}</div>
-      <div class="outreach-section"><div class="outreach-step-title"><span>2</span><h2>Prepare your letter</h2></div><form id="outreach-fields"><div class="fields-two"><label class="field"><span>Your full name</span><input name="writer_name" id="outreach-writer" autocomplete="name" value="${esc(d.fields?.writer_name||'')}" maxlength="120" placeholder="Required"></label><label class="field"><span>Your phone</span><input name="writer_phone" type="tel" autocomplete="tel" value="${esc(d.fields?.writer_phone||'')}" maxlength="60" placeholder="Required"></label><label class="field"><span>Your relationship / authority</span><input name="relationship" value="${esc(d.fields?.relationship||'')}" maxlength="180" placeholder="For example, daughter; authority not yet confirmed"></label><label class="field"><span>Date of death</span><input name="date_of_death" type="date" value="${esc(d.fields?.date_of_death||'')}"></label></div><div class="outreach-generation"><p class="fine">${esc(generationText(d))} Your details are required before handoff.</p><button type="button" class="button" data-action="outreach-generate">${d.body_edited?'Replace letter from these details':'Prepare letter from these details'}</button></div></form>
+      <div class="outreach-section"><div class="outreach-step-title"><span>2</span><h2>Prepare your letter</h2></div><form id="outreach-fields">${referenceField(d)}<div class="fields-two"><label class="field"><span>Your full name</span><input name="writer_name" id="outreach-writer" autocomplete="name" value="${esc(d.fields?.writer_name||'')}" maxlength="120" placeholder="Required"></label><label class="field"><span>Your phone</span><input name="writer_phone" type="tel" autocomplete="tel" value="${esc(d.fields?.writer_phone||'')}" maxlength="60" placeholder="Required"></label><label class="field"><span>Your relationship / authority</span><input name="relationship" value="${esc(d.fields?.relationship||'')}" maxlength="180" placeholder="For example, daughter; authority not yet confirmed"></label><label class="field"><span>Date of death</span><input name="date_of_death" type="date" value="${esc(d.fields?.date_of_death||'')}"></label></div><div class="outreach-generation"><p class="fine">${esc(generationText(d))} Your details are required before handoff.</p><button type="button" class="button" data-action="outreach-generate">${d.body_edited?'Replace letter from these details':'Prepare letter from these details'}</button></div></form>
       <div class="outreach-letter-fields"><label class="field"><span>Subject</span><input id="outreach-subject" value="${esc(d.subject)}" maxlength="200"></label><label class="field"><span>Letter</span><textarea id="outreach-body" rows="16" maxlength="10000">${esc(d.body)}</textarea></label><div class="outreach-letter-meta"><span id="outreach-length">${d.body.length} characters · ${d.body.trim().split(/\s+/).length} words</span><span id="outreach-save-state" role="status">${localAvailable?'Saved in this browser.':'Session only. Export before leaving.'}</span></div></div>
       <details class="outreach-attachments"><summary>Documents you may need to attach</summary><p class="fine">Nothing is attached or uploaded here. Add documents yourself in Gmail only when needed. Ask for a secure portal before sharing sensitive documents.</p>${['Death certificate (PDF)','Evidence of authority'].map(label=>`<label class="outreach-check"><input type="checkbox" data-outreach-attachment="${esc(label)}" ${d.attachments?.includes(label)?'checked':''}><span>Remind me to attach: ${esc(label)}</span></label>`).join('')}</details>
       </div><div class="outreach-section outreach-finish"><div class="outreach-step-title"><span>3</span><h2>Review before sharing</h2></div><p>The next screen shows the exact recipient, subject, letter and attachment reminders. Nothing is sent automatically.</p><div id="outreach-validation" class="outreach-validation" aria-live="polite">${check.issues.length?`<p>${esc(check.issues[0])}${check.issues.length>1?' '+(check.issues.length-1)+' more details need attention.':''}</p>`:''}</div><div class="button-row"><button class="button primary" data-action="outreach-review">Review & choose email app ${icon('arrow')}</button><button class="button" data-action="outreach-copy">Copy letter</button></div><div class="outreach-secondary"><button class="text-link" data-action="outreach-download">Download letter</button><button class="text-link" data-action="outreach-print">Print</button><button class="text-link" data-action="outreach-reset">Reset this letter</button></div></div>${statusBar(d)}</section></div>`;
@@ -141,10 +187,11 @@
   function rerenderLetterCounts(d){const label=$('#outreach-length');if(label)label.textContent=d.body.length+' characters · '+d.body.trim().split(/\s+/).length+' words';const node=$('#outreach-validation');if(node){const c=C.preflight(d);node.innerHTML=c.issues.length?`<p>${esc(c.issues[0])}${c.issues.length>1?' '+(c.issues.length-1)+' more details need attention.':''}</p>`:'';}}
   function updateDraftValue(target) {
     const d=draft();
+    if(target.id==='outreach-reference')return;
     if(target.closest('#outreach-fields')) {
       d.fields=Object.fromEntries(new FormData($('#outreach-fields')));
       if(!d.body_edited&&d.origin==='browser') {const generated=C.buildDraft(fieldFinding(activeFinding),activeTemplate,d.fields,d.recipient,d.recipient_provider);d.body=generated.body;const area=$('#outreach-body');if(area)area.value=d.body;}
-    } else if(target.id==='outreach-recipient') {d.recipient=target.value.trim();d.recipient_provider=(resolved[activeFinding]?.candidates||[]).find(p=>emailOf(p)===d.recipient)||{source_kind:'user',channels:[{kind:'email',value:d.recipient}],evidence:[],verified_by_user:false};}
+    } else if(target.id==='outreach-recipient') {d.recipient=target.value.trim();const options=(resolved[activeFinding]?.candidates||[]),previous=selectedProvider(d);d.recipient_provider=options.find(p=>emailOf(p)===d.recipient&&p.provider_id===previous)||options.find(p=>emailOf(p)===d.recipient)||{source_kind:'user',channels:[{kind:'email',value:d.recipient}],evidence:[],verified_by_user:false};if(d.recipient_provider.provider_id&&d.recipient_provider.provider_id!==previous){d.provider_id=d.recipient_provider.provider_id;delete d.reference_choice;delete d.reference_choice_explicit;reconcileReference(d);}}
     else if(target.id==='outreach-subject')d.subject=target.value;
     else if(target.id==='outreach-body'){d.body=target.value;d.body_edited=true;}
     else if(target.dataset.outreachAttachment){d.attachments=d.attachments.filter(v=>v!==target.dataset.outreachAttachment);if(target.checked)d.attachments.push(target.dataset.outreachAttachment);}
@@ -155,9 +202,10 @@
     const d=draft();if(d.body_edited&&!force){modal('Replace the edited letter?', '<p>This rebuilds this letter from your saved details. Your manual wording will be replaced.</p>',button('Keep editing','close-modal')+button('Replace letter','outreach-generate-confirm',true));return;}
     const trigger=$('[data-action="outreach-generate"]');if(trigger){trigger.disabled=true;trigger.textContent='Preparing letter…';}
     try {
+      if(service){await resolve(activeFinding);reconcileReference(d);if(!d.reference_choice)throw Error('Choose the source account reference or explicitly leave it out before preparing the letter.');}
       const sessionId=sessions[activeFinding]?.promise?await sessions[activeFinding].promise:sessions[activeFinding]?.id;
-      const generated=service?await api('/outreach/draft',{method:'POST',body:{finding_id:activeFinding,provider_id:providers.some(p=>p.provider_id===d.recipient_provider?.provider_id)?d.recipient_provider.provider_id:undefined,session_id:sessionId||undefined,template_id:activeTemplate,fields:d.fields,recipient:d.recipient||undefined},long:true}):C.buildDraft(fieldFinding(activeFinding),activeTemplate,d.fields,d.recipient,d.recipient_provider);
-      storeDraft({...generated,attachments:d.attachments,body_edited:false},service?'server':'browser');log('draft_prepared',generated,{generation_mode:generated.generation?.mode||'template'});closeDialog();render();toast('Letter prepared. Review the details before sharing.');
+      const generated=service?await api('/outreach/draft',{method:'POST',body:{finding_id:activeFinding,provider_id:selectedProvider(d)||undefined,reference_id:d.reference_choice||undefined,session_id:sessionId||undefined,template_id:activeTemplate,fields:d.fields,recipient:d.recipient||undefined},long:true}):C.buildDraft(fieldFinding(activeFinding),activeTemplate,d.fields,d.recipient,d.recipient_provider);
+      storeDraft({...generated,attachments:d.attachments,body_edited:false,reference_choice:generated.reference_id||'omit',reference_selection_pending:false},service?'server':'browser');log('draft_prepared',generated,{generation_mode:generated.generation?.mode||'template'});closeDialog();render();toast('Letter prepared. Review the details before sharing.');
     } catch(e){loadError=e.message;render();toast('Could not prepare the letter. Your previous draft is preserved.');}
   }
   function reviewHTML(d,check) {
@@ -209,12 +257,12 @@
   }
   function letterText(d){return 'To: '+d.recipient+'\nSubject: '+d.subject+'\n\n'+d.body;}
   async function markSent() {
-    try {const d=await flushDraft(),latest=saved.consents.find(c=>c.outreach_id===d.id&&C.canonicalSnapshot(c.snapshot)===C.canonicalSnapshot(d));
+    try {const d=await flushDraft(),latest=saved.consents.find(c=>c.outreach_id===d.id&&Object.hasOwn(c.snapshot||{},'reference_id')&&C.canonicalSnapshot(c.snapshot)===C.canonicalSnapshot(d));
       if(!latest)throw new Error('Review this exact letter and open your email app first.');
       modal('Did you send this letter?',`<p>Only choose this after pressing Send in your email app.</p><p><strong>To:</strong> ${esc(d.recipient)}</p><p>A reminder will be added to your plan for 14 days from today. It is your reminder, not a legal deadline.</p>`,button('Not yet','close-modal')+button('I sent it','outreach-confirm-sent',true));
     }catch(e){toast(e.message);}
   }
-  async function confirmSent() {try {const d=draft(),latest=saved.consents.find(c=>c.outreach_id===d.id&&C.canonicalSnapshot(c.snapshot)===C.canonicalSnapshot(d));const next=d.origin==='server'?await api('/outreach/'+encodeURIComponent(d.id)+'/sent',{method:'POST',body:{confirmed_sent:true,actor:d.fields.writer_name,consent_id:latest.id}}):C.markSent(d,latest);storeDraft(next,d.origin);updateTask(next);log('marked_sent',next);recordActivity('Marked outreach to '+(next.recipient||'provider')+' as sent');persist();closeDialog();render();toast('Marked as sent. A 14-day reminder is in your action plan.');}catch(e){toast(e.message);}}
+  async function confirmSent() {try {const d=draft(),latest=saved.consents.find(c=>c.outreach_id===d.id&&Object.hasOwn(c.snapshot||{},'reference_id')&&C.canonicalSnapshot(c.snapshot)===C.canonicalSnapshot(d));const next=d.origin==='server'?await api('/outreach/'+encodeURIComponent(d.id)+'/sent',{method:'POST',body:{confirmed_sent:true,actor:d.fields.writer_name,consent_id:latest.id}}):C.markSent(d,latest);storeDraft(next,d.origin);updateTask(next);log('marked_sent',next);recordActivity('Marked outreach to '+(next.recipient||'provider')+' as sent');persist();closeDialog();render();toast('Marked as sent. A 14-day reminder is in your action plan.');}catch(e){toast(e.message);}}
   async function replied(){try {const d=draft(),next=d.origin==='server'?await api('/outreach/'+encodeURIComponent(d.id)+'/replied',{method:'POST',body:{confirmed_replied:true,actor:d.fields.writer_name}}):C.markReplied(d);storeDraft(next,d.origin);updateTask(next);log('reply_recorded',next);recordActivity('Recorded a provider reply; action needs review');persist();render();toast('Reply recorded. This action now needs review.');}catch(e){toast(e.message);}}
   const previousPrivacy=window.views.exposure,previousSettings=window.views.settings;
   function privacyView() {
@@ -245,7 +293,7 @@
         const results=await Promise.allSettled([api('/providers'),api('/outreach'),api('/integrations/gmail/status')]);
         if(results[2].status==='fulfilled')gmailStatus=results[2].value;
         if(results[0].status==='fulfilled'){providers=results[0].value.providers||providers;archive.findings=results[0].value.findings||archive.findings;}
-        if(results[1].status==='fulfilled')for(const d of [...(results[1].value.outreach||[])].sort((a,b)=>Date.parse(a.updated_at)-Date.parse(b.updated_at))){const stored=saved.drafts[d.finding_id+':'+d.template_id];if(!stored||Date.parse(d.updated_at)>=Date.parse(stored.updated_at))storeDraft(d,'server');updateTask(d);}
+        if(results[1].status==='fulfilled')for(const d of [...(results[1].value.outreach||[])].sort((a,b)=>lifecycleTime(a)-lifecycleTime(b))){const stored=saved.drafts[d.finding_id+':'+d.template_id];if(!stored||Date.parse(d.updated_at)>=Date.parse(stored.updated_at))storeDraft(d,'server');updateTask(d,true);}
         else loadError='Could not reload local service drafts. Browser edits have been preserved.';
       }
     } finally {if(connection==='checking')connection='browser';resolved={};localSave();if(['letters','settings','exposure'].includes(state.route))render();if(state.route==='letters'){startSession(activeFinding);resolve(activeFinding);}if(['letters','exposure'].includes(state.route))loadPrivacy();}
@@ -270,7 +318,7 @@
     'finding-letter':()=>selectFinding(state.selectedFinding),
     'outreach-template':a=>selectFinding(activeFinding,a.dataset.id),
     'outreach-resolve':()=>resolve(activeFinding,true),
-    'outreach-recipient':a=>{const p=resolved[activeFinding]?.candidates[Number(a.dataset.index)];if(!p)return;const d=draft();d.recipient=emailOf(p);d.recipient_provider=p;d.provider_id=p.provider_id;d.updated_at=new Date().toISOString();queueSync(d);render();},
+    'outreach-recipient':a=>{const p=resolved[activeFinding]?.candidates[Number(a.dataset.index)];if(!p)return;const d=draft();chooseProvider(d,p);render();},
     'outreach-generate':()=>generate(),
     'outreach-generate-confirm':()=>generate(true),
     'outreach-review':()=>showReview(),
@@ -294,6 +342,17 @@
     'export-exposure':()=>exportFile('afterword-privacy-report.json',JSON.stringify({exported_at:new Date().toISOString(),browserStorage:'unencrypted',localService:!!service,notice:'Outreach authorization is not a delivery receipt.',categories:exposureGroups,browserOutreach:{drafts:Object.values(saved.drafts),consents:saved.consents,events:saved.events},serviceOutreach:privacyServer},null,2),'application/json'),
     'export-workspace':()=>exportFile('afterword-workspace.json',JSON.stringify({version:4,exportedAt:new Date().toISOString(),workspace:AfterwordStore.clean(state),outreach:saved,notice:'Contains personal draft text and editable browser history. Store the export safely.'},null,2),'application/json')
   });
+  for(const action of ['task-complete','task-wait']){
+    const original=window.actions[action];
+    window.actions[action]=(...args)=>{
+      const id=state.activeTask;
+      original?.(...args);
+      if(tasks.some(t=>t.id===id)){
+        // Record the user's decision, including Resume and Undo, independently of old draft edits.
+        saved.taskSync[id]={...saved.taskSync[id],manual_at:Date.now()};localSave();
+      }
+    };
+  }
   let outreachResetBackup;
   const resetAction=window.actions['confirm-reset'],undoResetAction=window.actions['undo-reset'];
   window.actions['confirm-reset']=()=>{outreachResetBackup=JSON.parse(JSON.stringify(saved));saved=empty();localSave();resolved={};resetAction();};
@@ -310,13 +369,26 @@
     const files=[...$('#outreach-ingest-files').files],values=new FormData(form),report=$('#outreach-ingest-state'),button=form.querySelector('button[type=submit]');
     if(!files.length||files.length>10){report.textContent='Choose between 1 and 10 files.';return;}
     if(files.some(f=>! /\.(txt|eml|csv|md)$/i.test(f.name)||!f.size||f.size>2*1024*1024)){report.textContent='Use non-empty TXT, EML, CSV or Markdown files up to 2 MB each.';return;}
-    button.disabled=true;let completed=0;
-    try {for(const file of files){report.textContent='Reading '+file.name+'…';const result=await api('/documents/ingest',{method:'POST',body:{id:'uploaded-'+crypto.randomUUID(),filename:file.name,title:file.name,text:await file.text(),provider_id:values.get('provider_id')||null,type:/\.eml$/i.test(file.name)?'email':'text',date:values.get('date')||''}});if(result.document){archive.documents.push(result.document);}completed++;}resolved={};recordActivity('Added '+completed+' record'+(completed===1?'':'s')+' to the local outreach archive');persist();closeDialog();toast('Records added. Refresh contacts on your letter to see any matching addresses.');go('letters?finding='+activeFinding);resolve(activeFinding,true);}
+    button.disabled=true;let completed=0;const importedProviders=new Set();let hasUnknownProvider=false;
+    try {
+      for(const file of files){
+        report.textContent='Reading '+file.name+'…';
+        const result=await api('/documents/ingest',{method:'POST',body:{id:'uploaded-'+crypto.randomUUID(),filename:file.name,title:file.name,text:await file.text(),provider_id:values.get('provider_id')||null,type:/\.eml$/i.test(file.name)?'email':'text',date:values.get('date')||''}});
+        if(result.document)archive.documents.push(result.document);
+        const known=[result.document?.provider_id,...(result.contacts||[]).map(c=>c.provider_id)].filter(id=>providers.some(p=>p.provider_id===id));
+        if(!known.length)hasUnknownProvider=true;
+        for(const id of known)importedProviders.add(id);
+        completed++;
+      }
+      resolved={};recordActivity('Added '+completed+' record'+(completed===1?'':'s')+' to the local outreach archive');persist();closeDialog();
+      if(importedProviders.size===1&&!hasUnknownProvider){toast('Records added. Review the matching provider contact and account reference.');openProviderLetter([...importedProviders][0]);}
+      else{go('documents');toast('Records added. They cover multiple or unidentified providers. Choose the relevant action in Letters and refresh its contacts.');}
+    }
     catch(e){report.textContent=completed+' record(s) added. '+e.message+' Completed uploads are kept; retry only remaining files.';}finally{button.disabled=false;}
   }
   document.addEventListener('submit',e=>{if(e.target.id==='outreach-ingest-form'){e.preventDefault();ingestFiles(e.target);}});
   document.addEventListener('input',e=>{if(e.target.id==='outreach-demo-mailbox'){const checkbox=$('#outreach-settings-form [name="confirmed_control"]');if(checkbox)checkbox.checked=false;}if(e.target.closest('.outreach-workspace'))updateDraftValue(e.target);});
-  document.addEventListener('change',e=>{if(e.target.id==='outreach-finding')selectFinding(e.target.value);else if(e.target.dataset.outreachAttachment)updateDraftValue(e.target);});
+  document.addEventListener('change',e=>{if(e.target.id==='outreach-finding')selectFinding(e.target.value);else if(e.target.id==='outreach-reference'){const d=draft(),value=e.target.value;if(value==='omit'||referenceOptions(d).some(r=>r.id===value)){d.reference_choice=value;d.reference_choice_explicit=true;reconcileReference(d);localSave();render();}}else if(e.target.dataset.outreachAttachment)updateDraftValue(e.target);});
   document.addEventListener('submit',e=>{if(e.target.id==='outreach-settings-form'){e.preventDefault();saveSettings(e.target);}else if(e.target.id==='outreach-fields')e.preventDefault();});
   window.addEventListener('pagehide',()=>{clearTimeout(saveTimer);localSave();});
   window.addEventListener('hashchange',()=>{if(state.route==='letters'){startSession(activeFinding);resolve(activeFinding);}if(['letters','exposure'].includes(state.route))loadPrivacy();});
@@ -328,9 +400,9 @@
     }
   };
   // Integration hooks expose safe operations, not service secrets or arbitrary endpoints.
-  window.AfterwordOutreach={api,getService:()=>service,currentDraft:()=>draft(),refreshContacts:()=>resolve(activeFinding,true),storeDraft,showReview,reviewError,log,refreshPrivacy:loadPrivacy,rememberServerConsent,summary:()=>({draftCount:Object.keys(saved.drafts).length,localService:!!service,gmail:gmailStatus}),setGmailStatus:value=>{gmailStatus=value;}};
+  window.AfterwordOutreach={api,getService:()=>service,currentDraft:()=>draft(),refreshContacts:()=>resolve(activeFinding,true),openProviderLetter,storeDraft,showReview,reviewError,log,refreshPrivacy:loadPrivacy,rememberServerConsent,summary:()=>({draftCount:Object.keys(saved.drafts).length,localService:!!service,gmail:gmailStatus}),setGmailStatus:value=>{gmailStatus=value;}};
   for(const [id,legacy] of Object.entries(state.drafts||{})){const template=C.defaults[id];if(template&&!saved.drafts[id+':'+template]){const migrated=C.buildDraft(fieldFinding(id),template,{writer_name:legacy.name||''},C.validEmail(legacy.recipient)?legacy.recipient:'');storeDraft({...migrated,subject:legacy.subject,body:legacy.body,body_edited:true,origin:'browser'});}}
-  for(const d of Object.values(saved.drafts).sort((a,b)=>Date.parse(a.updated_at)-Date.parse(b.updated_at)))if(d&&d.finding_id)updateTask(d);
+  for(const d of Object.values(saved.drafts).sort((a,b)=>lifecycleTime(a)-lifecycleTime(b)))if(d&&d.finding_id)updateTask(d,true);
   initialize();
   render();
 })();

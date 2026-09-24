@@ -10,6 +10,11 @@
 - Tier ordering records > directory > lookup and explicit user-selected address.
 - Reserved fictional domains never handed off; directory aliases require a confirmed controlled inbox.
 - All actual archive providers included, including both subscription providers.
+- A known sender domain identifies a provider without a display name or manual selection; conflicting known headers remain ambiguous.
+- Valid email Date headers supply missing document dates; explicit dates take precedence and invalid/duplicate headers remain unknown.
+- Uploaded account references reach the generated letter as masked values with exact source evidence.
+- Multiple accounts require a deliberate choice or explicit omission; the newest record does not automatically choose an account.
+- References cannot cross providers, use changed source text, or collapse distinct full identifiers merely because the last four characters match.
 
 ## Draft and disclosure
 
@@ -32,6 +37,7 @@
 - Manual reply -> review; sent/replied status idempotence; no duplicate follow-up or consent row on double click.
 - Switching templates or findings preserves separate working drafts and returns to the originating evidence.
 - Local and backend modes never silently mix histories; reset/export cover outreach state.
+- Reloading old outreach history preserves a later manual completion, reopened action or edited reminder; a new explicit outreach transition can update the task.
 
 ## Optional integrations
 
@@ -61,3 +67,4 @@
 - Missing backend, model failure, lookup disabled, OAuth unconfigured, storage failure and save retry shown honestly.
 - Existing notes, actions, source links, memories, settings, appearance, autosave, print and export continue to work.
 - Static GitHub Pages works below /afterword-team-102/; local full backend serves same static assets.
+- After ingest, open the finding associated with the actual provider; scan results refresh that target's contacts even if its previous results were cached.

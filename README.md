@@ -62,6 +62,7 @@ node tests/state.test.cjs
 node tests/outreach.test.cjs
 node tests/outreach-integrations.test.cjs
 node tests/outreach-scans.test.cjs
+node tests/outreach-navigation.test.cjs
 node scripts/check-outreach-data.cjs
 node scripts/version-assets.cjs
 node scripts/version-assets.cjs --check
@@ -121,6 +122,27 @@ Run backend verification and the independent fixture evaluation:
 .venv/bin/python -m pytest tests/ -q
 .venv/bin/python scripts/evaluate_outreach.py
 ```
+
+## Use a reference from the records
+
+The local service identifies a provider from an unambiguous known email sender
+domain when no provider was selected during upload. Valid email Date headers are
+used when a document date was not supplied; conflicting provider headers and
+invalid dates are not guessed. Source matching is not independent authentication
+of the sender.
+
+Letters use account or policy references found in the selected provider's stored
+records. Only the masked ending is inserted into the letter. A single reference
+can be selected automatically; multiple references require the family to choose
+the source or explicitly leave the reference out. Newer correspondence does not
+establish which account the family intends to discuss, and matching last four
+characters do not prove two accounts are the same.
+
+Changing providers does not silently rewrite an edited letter. A reference from
+the previous provider blocks handoff until the letter is prepared again with the
+correct source or an explicit omission. Source evidence is checked again during
+review. The consent snapshot includes the selected reference as well as the
+provider and exact letter contents.
 
 ## Read a scanned letter locally
 

@@ -45,6 +45,7 @@ jobs:
           node tests/outreach.test.cjs
           node tests/outreach-integrations.test.cjs
           node tests/outreach-scans.test.cjs
+          node tests/outreach-navigation.test.cjs
           node scripts/check-outreach-data.cjs
           node scripts/version-assets.cjs --check
           test -s dist/index.html

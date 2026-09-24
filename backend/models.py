@@ -65,6 +65,7 @@ class DraftRequest(StrictModel):
     finding_id: str
     provider_id: Optional[str] = None
     session_id: Optional[str] = None
+    reference_id: Optional[str] = Field(default=None,max_length=100)
     template_id: Literal['policy_information','account_status','cancel_service','balance_confirmation','request_records']
     fields: FamilyFields = Field(default_factory=FamilyFields)
     recipient: Optional[str] = Field(default=None,max_length=254)

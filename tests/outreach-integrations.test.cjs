@@ -18,7 +18,7 @@ function harness(connected=true) {
     }
   }
   const file={id:'file1',name:'reviewed.txt',size:7,sha256:'a'.repeat(64)};
-  const snapshot={recipient:'team102+demo@gmail.com',subject:'Information request',body:'Reviewed body',attachments:[],attachment_files:[file]};
+  const snapshot={reference_id:'omit',recipient:'team102+demo@gmail.com',subject:'Information request',body:'Reviewed body',attachments:[],attachment_files:[file]};
   const draft={id:'outreach1',finding_id:'insurance',template_id:'policy_information',fields:{writer_name:'Priya Rao'},origin:'server',...snapshot,attachment_files:[]};
   const consent={id:'fresh-consent',outreach_id:draft.id,actor:'Priya Rao',channel:'gmail_api',snapshot_hash:'new-hash',snapshot,disclosed_fields:['Attachment contents']};
   const api=async(url,options)=>{

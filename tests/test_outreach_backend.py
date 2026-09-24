@@ -169,7 +169,7 @@ def test_blocked_disclosure(client,addition,expected):
 
 def test_known_alphanumeric_identifier_blocked_without_label(client):
     client.post('/documents/ingest',json={'id':'number','provider_id':'cedar-life','text':'Policy number: AB4471ZQ88\nclaims@cedar-life.example','type':'text'})
-    item=draft(client)
+    item=draft(client,reference_id="omit")
     client.patch('/outreach/'+item['id'],json={'body':item['body']+'\nAB4471ZQ88'})
     assert 'Full account or policy number' in review(client,item)['blocked_fields']
 
