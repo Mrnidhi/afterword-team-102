@@ -8,7 +8,7 @@ const AfterwordStore = (() => {
   const text = (v, limit = 2000) => typeof v === 'string' ? v.slice(0, limit) : '';
   const ids = (v, allowed, fallback = []) => Array.isArray(v) ? [...new Set(v.filter(x => allowed.includes(x)))] : fallback;
   const validDate = v => typeof v === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(v) && !Number.isNaN(Date.parse(v)) && new Date(v).toISOString().slice(0,10) === v;
-  const defaults = () => ({completed:['notify-employer','gather-records'],waiting:[],reviewed:[],favorite:[],drafts:{},taskNotes:{},reminders:{},reviewNotes:{},reviewTimes:{},staged:[],imported:false,largeText:false,activity:[]});
+  const defaults = () => ({completed:['notify-employer','gather-records'],waiting:[],reviewed:[],favorite:[],drafts:{},lastDraft:'insurance',taskNotes:{},reminders:{},reviewNotes:{},reviewTimes:{},staged:[],imported:false,largeText:false,activity:[]});
   function clean(input) {
     const d = defaults(), v = object(input) ? input : {};
     d.completed = ids(v.completed, taskIds, d.completed);
@@ -17,6 +17,7 @@ const AfterwordStore = (() => {
     d.favorite = ids(v.favorite, memoryIds);
     d.largeText = v.largeText === true;
     d.imported = v.imported === true;
+    d.lastDraft = findingIds.includes(v.lastDraft) ? v.lastDraft : 'insurance';
     for (const id of taskIds) {
       if (object(v.taskNotes)) d.taskNotes[id] = text(v.taskNotes[id]);
       if (object(v.reminders) && validDate(v.reminders[id])) d.reminders[id] = v.reminders[id];
@@ -32,6 +33,7 @@ const AfterwordStore = (() => {
     // Migrate the single-draft prototype without trusting arbitrary stored keys.
     if (object(v.savedDraft) && findingIds.includes(v.savedDraft.template) && !d.drafts[v.savedDraft.template] && ['name','recipient','subject','body'].every(k => typeof v.savedDraft[k] === 'string')) {
       const old = v.savedDraft;
+      if(!findingIds.includes(v.lastDraft))d.lastDraft=old.template;
       d.drafts[old.template] = {name:text(old.name,120),recipient:text(old.recipient,200),subject:text(old.subject,240),body:text(old.body,12000)};
     }
     d.staged = Array.isArray(v.staged) ? v.staged.filter(f => object(f) && /^local-[\w-]+$/.test(f.id) && typeof f.name === 'string' && Number.isFinite(f.size) && f.size > 0 && f.size <= 20*1024*1024).slice(0,20).map(f => ({id:f.id,name:text(f.name,255),size:f.size,type:text(f.type,20),added:text(f.added,40)})) : [];

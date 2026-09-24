@@ -8,7 +8,7 @@ A family workspace for organizing the practical work after a loss. This is a com
 
 ## Open and explore
 
-The website has twelve distinct views:
+The website keeps ten family-facing views:
 
 1. **Overview** — next action, archive counts and recent browser-local activity.
 2. **Action plan** — status/category/search filters, date/amount sorting, notes, reminders, completion/waiting/reopening and CSV export.
@@ -17,13 +17,13 @@ The website has twelve distinct views:
 5. **Letters** — three independently saved editable drafts, preview, reset, print and text export.
 6. **Memories** — a typography-led archive of fictional writing with reading dialogs and favorites.
 7. **Ask Afterword** — four scripted source-linked examples and an honest unsupported-question response.
-8. **Exposure report** — illustrative sensitive categories, source links and the exact preview of a proposed external question; no request is sent.
-9. **Processing ledger** — filterable routing examples, reasons, CSV export and real browser-side interaction history.
-10. **HP ZGX station** — target hardware, proposed four-tier architecture and explicit disconnected states.
-11. **Workspace settings** — reading size, JSON export, reset and session-scoped undo.
-12. **Design & research** — design decisions, primary references and scope.
+8. **Privacy** — browser storage, actual connection/sharing status, sample sensitive-record categories and an optional request preview.
+9. **Activity** — searchable history of real changes made in this browser, with export.
+10. **Settings** — reading size, JSON export, reset and session-scoped undo.
 
-Global search opens with the search control or Command/Ctrl+K. Evidence topics and sources, letter templates and document previews support hash query links. Source inspection returns to the originating action without discarding working notes.
+Hardware promotion, model-routing diagrams and design-research pages are deliberately kept out of the family workflow. Technical architecture and references belong in this document. The overview prioritizes the next action and dates to keep in view.
+
+Global search opens with the search control or Command/Ctrl+K. Evidence topics and sources, letter templates and document previews support hash query links. Source inspection returns to the originating action without discarding working notes. Source-tab changes preserve scroll and keyboard focus. Letters link back to the source review and related action.
 
 All amounts, dates, providers, people and passages are fictional. Provider response dates and user reminders are not statutory deadlines. The policy and will excerpts concern potentially different assets and do not establish a beneficiary entitlement. The medical receipt does not establish the current balance.
 
@@ -34,13 +34,13 @@ This is a buildless static application using semantic HTML, CSS and JavaScript. 
 - `dist/store.js`: bounded state validation, v2-to-v3 migration, storage failure handling and file metadata validation.
 - `dist/app.js`: application shell, routing, task fixtures, overview, dialogs and workspace search.
 - `dist/pages.js`: fictional document content and core page renderers.
-- `dist/workspace.js`: intake, complete plan, evidence, drafts, exposure report, ledger, device and settings workflows.
+- `dist/workspace.js`: intake, plan, evidence, drafts, practical privacy, activity and settings workflows.
+- `dist/experience.js`: debounced autosave, recovery across reload, focus continuity, contextual help and reversible action notices.
 - `dist/styles.css`, `studio.css`, `workspace.css`: base layouts, HP-inspired design tokens and responsive workflow styling.
-- `dist/assets/hp-zgx-nano.jpg`: official HP hardware photograph; attribution below.
 - `scripts/version-assets.cjs`: content-based CSS/JS versions to prevent mixed deployments from cached assets.
 - `tests/state.test.cjs`: meaningful boundary tests for malformed storage, migration, ID allowlists, date/size limits and write failures.
 
-Tasks, reminders, notes, read marks, favorites, drafts, file metadata and reading size persist under `afterword-workspace-v3`. Legacy `afterword-design-v2` data is validated and migrated. Unsaved working notes/drafts are session-only. Stored input is escaped before rendering; CSV exports neutralize formula-like values. Storage failure is visible and export remains available.
+Tasks, reminders, notes, read marks, favorites, drafts, file metadata and reading size persist under `afterword-workspace-v3`. Legacy `afterword-design-v2` data is validated and migrated. Working notes and drafts autosave after a short typing pause and flush on navigation or page exit. Invalid reminder entries remain visibly unsaved until corrected. The last edited letter template is restored. Stored input is escaped before rendering; CSV exports neutralize formula-like values. Storage failure is visible and export remains available.
 
 The file picker and drop zone accept PDF, TXT, CSV, EML and Markdown names, up to 20 MB per file, 20 files and 100 MB total. The frontend stores only names, sizes and types. It does not read, retain, upload or analyze file contents. Users must reselect originals for a future connected processor. Browser local storage is unencrypted; use fictional files and details in this demo.
 
@@ -78,7 +78,7 @@ Read September 2026. These are design inputs, not evidence of clinical efficacy,
 
 The September 24 visual refresh uses graphite, silver, white and restrained cobalt, inspired by [HP’s ZGX Nano product design](https://www.hp.com/us-en/workstations/zgx-nano-ai-station.html). Plus Jakarta Sans gives the interface a precise geometric character; original document and memory passages keep their reading typography. Amber identifies uncertainty with an accompanying text label. This is an independent concept, not an HP product or an endorsed service. There is no grief score, emotional countdown or celebration animation.
 
-The official HP hardware photograph in `dist/assets/hp-zgx-nano.jpg` comes from [HP’s ZGX product page asset](https://www.hp.com/content/dam/sites/worldwide/workstations/zgx-nano-ai-station/hero-banner-z6-desktop-v3.jpg). HP retains the rights to its product imagery and trademarks. It is used here to identify the target hardware, not as an Afterword logo.
+HP supplies the visual reference for the neutral workstation aesthetic; its hardware photography and promotional content are not part of the family interface.
 
 ## Production boundary and next engineering work
 
@@ -90,6 +90,10 @@ A production service should maintain immutable source records with span coordina
 
 ## Verification notes
 
-JavaScript syntax and state-boundary tests pass. Browser checks covered all twelve routes at 390px and 320px, with no page-level or main-content horizontal overflow after fixes; all twelve also fit 320px with the larger 18px reading preference. Desktop and phone layouts were visually inspected.
+JavaScript syntax and state-boundary tests pass. Browser checks covered all ten product routes at 390px and 320px, with no page-level or main-content horizontal overflow after fixes; the product views also fit 320px with the larger 18px reading preference. Desktop and phone layouts were visually inspected. The final ten-view navigation was rechecked at 320px after removing the showcase pages.
 
-Interaction checks covered independent draft save/reload and evidence-to-letter restoration; reminders/notes and source-return context; working review notes across source changes; read/undo; file picker validation for valid/unsupported/empty sample files, staging persistence and removal; ledger filtering; payload preview; reset/undo draft restoration; and mobile navigation. Browser error logs were empty. Downloads provide a selectable fallback, since the in-app browser does not reliably report download events. Printing opens the browser print flow with dedicated print styles; physical print output was not tested. These checks are not a full accessibility audit.
+Interaction checks covered independent draft save/reload and evidence-to-letter restoration; reminders/notes and source-return context; working review notes across source changes; read/undo; file picker validation for valid/unsupported/empty sample files, staging persistence and removal; activity search; payload preview; reset/undo draft restoration; and mobile navigation. Browser error logs were empty. Downloads provide a selectable fallback, since the in-app browser does not reliably report download events. Printing opens the browser print flow with dedicated print styles; physical print output was not tested. These checks are not a full accessibility audit.
+
+## UX acceptance and validation
+
+The user’s 4.9/5 aspiration is a target, not a measured rating or a guarantee. No satisfaction study or 100,000-user deployment has been performed. [UX-VALIDATION.md](UX-VALIDATION.md) defines the user journeys, success criteria and responsible evaluation sequence.

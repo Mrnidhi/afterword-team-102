@@ -15,6 +15,9 @@ assert.deepEqual(clean(JSON.parse('{"drafts":{"__proto__":{"name":"x"}},"__proto
 assert.equal({}.polluted,undefined);
 const legacy={template:'medical',name:'Priya',recipient:'Sample clinic',subject:'Balance',body:'Please confirm.'};
 assert.equal(clean({savedDraft:legacy}).drafts.medical.subject,'Balance');
+assert.equal(clean({savedDraft:legacy}).lastDraft,'medical');
+assert.equal(clean({lastDraft:'constructor'}).lastDraft,'insurance');
+assert.equal(clean({drafts:{insurance:{name:'',recipient:'',subject:'Unfinished',body:''}}}).drafts.insurance.subject,'Unfinished');
 assert.deepEqual(clean({savedDraft:{...legacy,template:'constructor'}}).drafts,{});
 assert.equal(clean({taskNotes:{insurance:'x'.repeat(3000)}}).taskNotes.insurance.length,2000);
 assert.deepEqual(clean({reminders:{insurance:'2026-02-30',storage:'2026-10-02'}}).reminders,{storage:'2026-10-02'});

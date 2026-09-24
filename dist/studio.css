@@ -290,7 +290,7 @@ h1, h2, h3 { color: var(--ink); }
 .device-caption span { color: #b3c5e1; font-size: .7rem!important; }
 .nano-illustration { min-height: 220px; }
 .nano-box, .nano-ground { display: none; }
-.nano-illustration:before { content: ''; display: block; background: white url('assets/hp-zgx-nano.jpg') center/cover no-repeat; width: 100%; height: 220px; border-radius: 5px; }
+.nano-illustration:before { content: ''; display: block; background: white none center/cover no-repeat; width: 100%; height: 220px; border-radius: 5px; }
 .processing-card, .privacy-panel { border-radius: 6px; border-color: #dce4ef; }
 .stage-number { border-radius: 4px; background: #f0f4fc; border-color: #cddbf0; color: #5876a4; }
 .processing-stage:not(:last-child):before { background: #d9e4f4; }
