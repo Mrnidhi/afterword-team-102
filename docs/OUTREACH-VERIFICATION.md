@@ -11,8 +11,12 @@ in local settings and is not included in the repository.
 The preceding outreach release was commit `092fc9445c45c2e27369ccac48a5e7d99496fba5`.
 [GitHub Actions run 36063210632](https://github.com/Mrnidhi/afterword-team-102/actions/runs/36063210632)
 passed both validation and Pages deployment. Its HTML and four outreach assets
-were verified byte for byte. The scan/readiness extension documented here has
-passed local verification; its new deployment is recorded separately below.
+were verified byte for byte. The scan/readiness extension is published as commit
+`e0c07895fdcf3d2473ea17c8baa6bb2b614ad151`.
+[GitHub Actions run 36065091281](https://github.com/Mrnidhi/afterword-team-102/actions/runs/36065091281)
+passed validation and Pages deployment. A fresh public read-back matched the
+release bytes for `index.html`, `outreach-scans.js`, `outreach.js`,
+`outreach-integrations.js`, `outreach.css` and `workspace.js`.
 GitHub Pages runs the static mode; it does not host Python, the private database,
 scan images or Google tokens.
 
