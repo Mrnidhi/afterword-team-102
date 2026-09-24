@@ -1,6 +1,6 @@
 # Afterword — Team 102
 
-An interactive design prototype by Team 102.
+An interactive design prototype by Team 102, designed around HP ZGX Nano.
 
 [Website](https://mrnidhi.github.io/afterword-team-102/) · [Deployment workflow](https://github.com/Mrnidhi/afterword-team-102/actions/workflows/pages.yml)
 
@@ -57,7 +57,9 @@ Read September 2026. These are design inputs, not evidence of clinical efficacy,
 - W3C WCAG 2.2 guidance on [contrast](https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum.html), [reflow](https://www.w3.org/WAI/WCAG22/Understanding/reflow.html), [target size](https://www.w3.org/WAI/WCAG22/Understanding/target-size-minimum), and [consistent help](https://www.w3.org/WAI/WCAG22/Understanding/consistent-help.html). Implementation checks are not an independent accessibility certification.
 - Service references for wording and workflow: [Empathy](https://www.empathy.com/solutions/loss-support), [Sunset](https://www.hellosunset.com/), [Settld](https://www.settld.care/). No visual identity was copied. These services also make novelty claims inappropriate.
 
-Warm paper and evergreen are brand choices, not claims that particular colors universally improve grief or cognition. Serif typography is reserved primarily for welcoming headings, source documents, letters and memories. Tasks and controls use a sans-serif. Amber identifies uncertainty with an accompanying text label. There is no grief score, emotional countdown or celebration animation.
+The September 24 visual refresh uses graphite, silver, white and restrained cobalt, inspired by [HP’s ZGX Nano product design](https://www.hp.com/us-en/workstations/zgx-nano-ai-station.html). Plus Jakarta Sans gives the interface a precise geometric character; original document and memory passages keep their reading typography. Amber identifies uncertainty with an accompanying text label. This is an independent concept, not an HP product or an endorsed service. There is no grief score, emotional countdown or celebration animation.
+
+The official HP hardware photograph in `dist/assets/hp-zgx-nano.jpg` comes from [HP’s ZGX product page asset](https://www.hp.com/content/dam/sites/worldwide/workstations/zgx-nano-ai-station/hero-banner-z6-desktop-v3.jpg). HP retains the rights to its product imagery and trademarks. It is used here to identify the target hardware, not as an Afterword logo.
 
 ## Production boundary and next engineering work
 
