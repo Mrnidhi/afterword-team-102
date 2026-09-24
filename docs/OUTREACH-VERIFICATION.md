@@ -8,6 +8,13 @@ machine. Static fixture parity, every frontend JavaScript syntax check and asset
 version checks passed. No email was sent. The approved demo recipient is stored
 in local settings and is not included in the repository.
 
+Published implementation commit: `092fc9445c45c2e27369ccac48a5e7d99496fba5`.
+[GitHub Actions run 36063210632](https://github.com/Mrnidhi/afterword-team-102/actions/runs/36063210632)
+passed both validation and Pages deployment. A read-back of the public website
+confirmed that its HTML and all four outreach JS/CSS assets match the released
+files byte for byte. GitHub Pages runs the static mode; it does not host Python,
+the private database or Google tokens.
+
 **The complete acceptance gate is still open.** Nano model/vision execution,
 Google OAuth and real draft creation, approved live lookup, an actual sent/replied
 mailbox rehearsal, and the requested Nano/manual timing comparison have not been
