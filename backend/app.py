@@ -13,6 +13,8 @@ Config (env vars, all optional):
   ROUND_TRIP_THRESHOLD   default 0.85  (validated in phase 0 — see MULTILINGUAL-PLAN.md)
   PROMPT_VERSION         default "2" — bump to invalidate the cache after a prompt change
   DB_PATH                default ~/Documents/Afterword-Integration/runtime/translations.sqlite3
+  PROMPT_VERSION         default "2" — bump to invalidate the cache after a prompt change
+  DB_PATH                default ~/Documents/Afterword-Integration/runtime/translations.sqlite3
 """
 import hashlib
 import json
@@ -24,12 +26,15 @@ import threading
 import time
 from contextlib import contextmanager
 from collections import Counter
+from collections import Counter
 from pathlib import Path
+from urllib.parse import urlsplit
 from urllib.parse import urlsplit
 
 import httpx
 from fastapi import FastAPI, HTTPException, Request, Response
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import FileResponse, RedirectResponse
 from fastapi.responses import FileResponse, RedirectResponse
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel, Field
@@ -47,6 +52,11 @@ PROMPT_VERSION = os.environ.get('PROMPT_VERSION', '2')
 # must not replay translations accepted before the protected-details guard.
 TOKEN_GUARD_VERSION = '2'
 DB_PATH = Path(os.environ.get('DB_PATH', Path.home() / 'Documents/Afterword-Integration/runtime/translations.sqlite3'))
+PROMPT_VERSION = os.environ.get('PROMPT_VERSION', '2')
+# Separate from the operator's prompt version: even a pinned old environment
+# must not replay translations accepted before the protected-details guard.
+TOKEN_GUARD_VERSION = '2'
+DB_PATH = Path(os.environ.get('DB_PATH', Path.home() / 'Documents/Afterword-Integration/runtime/translations.sqlite3'))
 MAX_CHARS = 12000
 REQUEST_TIMEOUT = 60.0
 
@@ -58,8 +68,14 @@ LANGUAGES = {
     'hi': {'name': 'Hindi', 'native_name': 'हिन्दी', 'script': 'Devanagari',
            'font': {'family': 'Noto Sans Devanagari',
                     'css_url': None}},
+                    'css_url': None}},
 }
 KINDS = {'summary', 'letter', 'instruction'}
+CORS_ORIGINS = ['http://127.0.0.1:8080', 'http://localhost:8080']
+HINDI_GLOSSARY_HINT = (
+    '\nFor Hindi, keep insurance policy as पॉलिसी and provider as प्रदाता when those terms occur.'
+)
+NEGATION_RE = re.compile(r'\b(?:no|not|never|none|neither|nor|without|cannot|can\'t|won\'t|don\'t|isn\'t|wasn\'t|weren\'t|didn\'t|doesn\'t|hasn\'t|haven\'t|hadn\'t)\b', re.I)
 CORS_ORIGINS = ['http://127.0.0.1:8080', 'http://localhost:8080']
 HINDI_GLOSSARY_HINT = (
     '\nFor Hindi, keep insurance policy as पॉलिसी and provider as प्रदाता when those terms occur.'
@@ -118,7 +134,14 @@ app = FastAPI(title='Afterword translation service')
 # CORS needed). Locally, dist/ and this API usually run on different ports —
 # permissive CORS unblocks that without special-casing every dev port.
 _client = httpx.Client(timeout=REQUEST_TIMEOUT,trust_env=False,follow_redirects=False)
+# Dev-only: the real demo serves dist/ from this same device (same origin, no
+# CORS needed). Locally, dist/ and this API usually run on different ports —
+# permissive CORS unblocks that without special-casing every dev port.
+_client = httpx.Client(timeout=REQUEST_TIMEOUT,trust_env=False,follow_redirects=False)
 _model_id_cache = {'id': None}
+_prewarm = {'done': 0, 'total': 0, 'started': False}
+app.add_middleware(CORSMiddleware, allow_origins=CORS_ORIGINS,
+                   allow_methods=['GET', 'POST', 'PUT'], allow_headers=['*'])
 _prewarm = {'done': 0, 'total': 0, 'started': False}
 app.add_middleware(CORSMiddleware, allow_origins=CORS_ORIGINS,
                    allow_methods=['GET', 'POST', 'PUT'], allow_headers=['*'])
@@ -161,11 +184,14 @@ def init_db():
         ''')
         columns = {row[1] for row in db.execute('PRAGMA table_info(translations)')}
         if 'negation_flip' not in columns:
+        columns = {row[1] for row in db.execute('PRAGMA table_info(translations)')}
+        if 'negation_flip' not in columns:
             db.execute('ALTER TABLE translations ADD COLUMN negation_flip INTEGER NOT NULL DEFAULT 0')
 
 
 @contextmanager
 def db_conn():
+    db = sqlite3.connect(DB_PATH)
     db = sqlite3.connect(DB_PATH)
     db.row_factory = sqlite3.Row
     try:
@@ -188,7 +214,22 @@ def llm_model_id():
     response=_client.get(f'{LLM_URL}/models')
     response.raise_for_status()
     _model_id_cache['id'] = response.json()['data'][0]['id']
+    # Discover at request time: swapping weights must not require a backend restart.
+    local_endpoint(LLM_URL,8000)
+    response=_client.get(f'{LLM_URL}/models')
+    response.raise_for_status()
+    _model_id_cache['id'] = response.json()['data'][0]['id']
     return _model_id_cache['id']
+
+
+def local_endpoint(url,port):
+    try:
+        parsed=urlsplit(url)
+        valid=(parsed.scheme=='http' and parsed.hostname in {'127.0.0.1','localhost','::1'} and parsed.port==port and not parsed.username and not parsed.password and not parsed.query and not parsed.fragment and parsed.path.rstrip('/')=='/v1')
+    except ValueError:
+        valid=False
+    if not valid:
+        raise HTTPException(503,'Translation requires the configured local model service.')
 
 
 def local_endpoint(url,port):
@@ -203,6 +244,7 @@ def local_endpoint(url,port):
 
 def chat(system, text):
     local_endpoint(LLM_URL,8000)
+    local_endpoint(LLM_URL,8000)
     r = _client.post(f'{LLM_URL}/chat/completions', json={
         'messages': [{'role': 'system', 'content': system}, {'role': 'user', 'content': text}],
         'temperature': 0, 'max_tokens': 2048})
@@ -211,6 +253,7 @@ def chat(system, text):
 
 
 def embed(texts):
+    local_endpoint(EMBED_URL,8003)
     local_endpoint(EMBED_URL,8003)
     r = _client.post(f'{EMBED_URL}/embeddings', json={'input': texts})
     r.raise_for_status()
@@ -228,14 +271,54 @@ def translate_with_retry(system, masked, tokens):
     token survived, from whichever attempt did best."""
     translated = chat(system, masked)
     problems = protected_problems(translated, tokens)
+    problems = protected_problems(translated, tokens)
     if problems:
         retry = chat(system, masked)
+        retry_problems = protected_problems(retry, tokens)
         retry_problems = protected_problems(retry, tokens)
         if len(retry_problems) < len(problems):
             return retry, retry_problems
     return translated, problems
 
 
+_TOKEN_MARKUP = re.compile(r'[⟦⟧]|\\u27e[67]|\[{1,2}\s*[Tt]\s*\d+\s*\]{1,2}', re.I)
+
+
+def protected_problems(text, tokens):
+    """Check exact known tokens and reject unknown or malformed marker remnants."""
+    if not isinstance(text, str) or not text.strip():
+        return ['empty translation']
+    problems = check(text, tokens)
+    remainder = text
+    for token in tokens:
+        remainder = remainder.replace(token.sentinel, '')
+    if _TOKEN_MARKUP.search(remainder):
+        problems.append('unknown or corrupted protected-detail marker')
+    return problems
+
+
+def restored_details_ok(text, tokens):
+    if not isinstance(text, str) or not text.strip() or _TOKEN_MARKUP.search(text):
+        return False
+    required = Counter(token.value for token in tokens)
+    observed = Counter(token.value for token in protect(text)[1])
+    return all(observed[value] >= count for value, count in required.items())
+
+
+def unsafe_translation():
+    # The existing frontend keeps the complete English text above its error
+    # state. Never label an English fallback or broken placeholders as translated.
+    raise HTTPException(503, 'Local translation did not preserve the protected details. Original text remains available.')
+
+
+def forward_prompt(language):
+    prompt = FORWARD_PROMPT.format(language=language)
+    return prompt + HINDI_GLOSSARY_HINT if language == 'Hindi' else prompt
+
+
+def negation_flip(source, round_trip):
+    """Flag changes in whether the English source contains a negation."""
+    return bool(NEGATION_RE.search(source)) != bool(NEGATION_RE.search(round_trip))
 _TOKEN_MARKUP = re.compile(r'[⟦⟧]|\\u27e[67]|\[{1,2}\s*[Tt]\s*\d+\s*\]{1,2}', re.I)
 
 
@@ -282,13 +365,22 @@ def do_translate(text, target_lang, kind, bypass_cache=False):
     if kind not in KINDS:
         raise HTTPException(422, f'kind must be one of {sorted(KINDS)}')
 
+    if target_lang not in LANGUAGES:
+        raise HTTPException(422, f'target_lang must be one of {sorted(LANGUAGES)}')
+    if kind not in KINDS:
+        raise HTTPException(422, f'kind must be one of {sorted(KINDS)}')
+
     t0 = time.perf_counter()
+    if _TOKEN_MARKUP.search(text):
+        unsafe_translation()
+    masked, tokens = protect(text)
     if _TOKEN_MARKUP.search(text):
         unsafe_translation()
     masked, tokens = protect(text)
     source_hash = hashlib.sha256(text.encode()).hexdigest()
     model_id = llm_model_id()
     language = LANGUAGES[target_lang]['name']
+    cache_version = PROMPT_VERSION + ':protected-' + TOKEN_GUARD_VERSION
     cache_version = PROMPT_VERSION + ':protected-' + TOKEN_GUARD_VERSION
 
     if not bypass_cache:
@@ -298,8 +390,11 @@ def do_translate(text, target_lang, kind, bypass_cache=False):
                 'AND prompt_version=? AND model_id=?',
                 (target_lang, kind, source_hash, cache_version, model_id)).fetchone()
         if row and bool(row['protected_tokens_ok']) and restored_details_ok(row['text'], tokens):
+                (target_lang, kind, source_hash, cache_version, model_id)).fetchone()
+        if row and bool(row['protected_tokens_ok']) and restored_details_ok(row['text'], tokens):
             return TranslateResponse(
                 text=row['text'], lang=target_lang, cached=True,
+                round_trip_score=row['round_trip_score'], protected_tokens_ok=True,
                 round_trip_score=row['round_trip_score'], protected_tokens_ok=True,
                 low_confidence=(row['round_trip_score'] < THRESHOLD) or bool(row['negation_flip']),
                 ms=round((time.perf_counter() - t0) * 1000))
@@ -307,13 +402,20 @@ def do_translate(text, target_lang, kind, bypass_cache=False):
     translated, problems = translate_with_retry(forward_prompt(language), masked, tokens)
     if problems:
         unsafe_translation()
+    if problems:
+        unsafe_translation()
     back = chat(BACK_PROMPT.format(language=language), translated)
+    if protected_problems(back, tokens):
+        unsafe_translation()
     if protected_problems(back, tokens):
         unsafe_translation()
     restored_back = restore(back, tokens)
     score = cosine(text, restored_back)
     flipped = negation_flip(text, restored_back)
+    flipped = negation_flip(text, restored_back)
     final_text = restore(translated, tokens)
+    if not restored_details_ok(final_text, tokens):
+        unsafe_translation()
     if not restored_details_ok(final_text, tokens):
         unsafe_translation()
     ms = round((time.perf_counter() - t0) * 1000)
@@ -322,6 +424,7 @@ def do_translate(text, target_lang, kind, bypass_cache=False):
         db.execute('''INSERT OR REPLACE INTO translations
             (lang, kind, source_hash, prompt_version, model_id, text, round_trip_score, protected_tokens_ok, negation_flip, ms)
             VALUES (?,?,?,?,?,?,?,?,?,?)''',
+            (target_lang, kind, source_hash, cache_version, model_id, final_text, score, True, flipped, ms))
             (target_lang, kind, source_hash, cache_version, model_id, final_text, score, True, flipped, ms))
         db.commit()
     return TranslateResponse(text=final_text, lang=target_lang, cached=False,
@@ -406,6 +509,8 @@ def session(request: Request):
 def logout(request: Request, response: Response):
     current = auth.current_session(request)
     auth.require_csrf(request, current)
+    current = auth.current_session(request)
+    auth.require_csrf(request, current)
     auth.end_session(request)
     auth.clear_session_cookie(response)
     return {'ok': True}
@@ -415,6 +520,8 @@ def logout(request: Request, response: Response):
 def get_workspace(request: Request):
     current = auth.current_session(request)
     return auth.read_workspace(current['id'])
+    current = auth.current_session(request)
+    return auth.read_workspace(current['id'])
 
 
 @app.put('/api/workspace')
@@ -422,8 +529,12 @@ def put_workspace(req: WorkspaceRequest, request: Request):
     current = auth.current_session(request)
     auth.require_csrf(request, current)
     return auth.write_workspace(current['id'], req.state)
+    current = auth.current_session(request)
+    auth.require_csrf(request, current)
+    return auth.write_workspace(current['id'], req.state)
 
 
+# ---- public landing and protected application shells ----------------------
 # ---- public landing and protected application shells ----------------------
 
 _dist_dir = Path(__file__).resolve().parent.parent / 'dist'
