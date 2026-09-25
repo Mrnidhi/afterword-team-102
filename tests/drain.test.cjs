@@ -6,8 +6,8 @@ const css = fs.readFileSync(path.join(__dirname, '../dist/drain.css'), 'utf8').r
 const snapshot = JSON.parse(fs.readFileSync(path.join(__dirname, '../dist/data/drain_snapshot.json'), 'utf8'));
 const escapeHTML = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'}[c]));
 
-function harness(serve) {
-  const calls = [], dialog = {open: false, html: ''}, toasts = [];
+function harness(serve, {workspace = false, authenticated = true, profileReady = true} = {}) {
+  const calls = [], dialog = {open: false, html: '', close() { this.open = false; }}, toasts = [], listeners = {};
   const state = {completed: ['notify-employer', 'gather-records'], route: 'overview', activity: []};
   const json = (status, body) => ({ok: status < 400, status, headers: {get: () => 'application/json'}, json: async () => body});
   const html = status => ({ok: false, status, headers: {get: () => 'text/html'}, json: async () => { throw new Error('html'); }});
@@ -16,7 +16,8 @@ function harness(serve) {
     icon: () => '<svg></svg>', button: (label, action, primary) => `<button data-action="${action}" class="${primary ? 'primary' : ''}">${label}</button>`,
     modal: (title, body, foot) => { dialog.open = true; dialog.html = title + body + (foot || ''); },
     toast: text => toasts.push(text), persist: () => true, recordActivity: text => state.activity.push(text), render: () => { context.renders++; if (state.route === 'overview') context.AfterwordDrain?.card(); },
-    AfterwordStore: {validDate: v => /^\d{4}-\d{2}-\d{2}$/.test(v)}, $: () => null, $$: () => [],
+    AfterwordRuntime: {workspace},
+    AfterwordStore: {validDate: v => /^\d{4}-\d{2}-\d{2}$/.test(v)}, $: selector => selector === '#detail-dialog' ? dialog : selector === '#dialog-content' ? {set textContent(value) {dialog.html = value;}} : selector === '#drain-breakdown' && dialog.open && dialog.html.includes('id="drain-breakdown"') ? {} : null, $$: () => [],
     document: {addEventListener: () => {}}, location: {origin: 'http://127.0.0.1:4173'}, renders: 0,
     tasks: [{id: 'storage', category: 'Personal belongings'}, {id: 'subscriptions', category: 'Subscriptions'}, {id: 'insurance', category: 'Insurance'}],
     documentLink: id => ['storage', 'statement'].includes(id) ? `<button class="source-link" data-action="document" data-id="${id}">${id}</button>` : '',
@@ -25,9 +26,13 @@ function harness(serve) {
     fetch: async (url, options = {}) => { calls.push({url: String(url), method: options.method || 'GET', body: options.body}); return serve(String(url), options, {json, html}); },
   };
   context.window = context; context.actions = {};
+  const emit = name => { for (const fn of listeners[name] || []) fn(); };
+  context.addEventListener = (name, fn) => (listeners[name] ??= []).push(fn);
+  const profile = {canAccessData: () => authenticated, lock() { authenticated = false; dialog.close(); dialog.html = ''; emit('afterword-locked'); context.render(); }};
+  if (profileReady) context.AfterwordProfile = profile;
   vm.createContext(context);
   vm.runInContext(source, context);
-  return {context, calls, dialog, toasts, drain: context.AfterwordDrain};
+  return {context, calls, dialog, toasts, drain: context.AfterwordDrain, lock: () => profile.lock(), login() { authenticated = true; context.AfterwordProfile = profile; emit('afterword-profile-changed'); }};
 }
 const settle = () => new Promise(r => setImmediate(r));
 const base = snapshot.variants[''];
@@ -142,6 +147,45 @@ const service = body => (url, options, r) => url.includes('/drain') ? r.json(200
   assert.doesNotMatch(css, /\bred\b|crimson|#f00\b|#ff0000|danger/i);
   assert.match(css, /\.drain-figure strong\{[^}]*Newsreader/);
   assert.doesNotMatch(source, /setInterval|requestAnimationFrame/, 'the number updates on render, never on a timer');
+
+  // The module can load before profile.js, but must not fetch or display
+  // protected records until the profile announces an authenticated session.
+  const gated = harness(service(base), {workspace: true, authenticated: false, profileReady: false});
+  assert.equal(gated.calls.length, 0); assert.equal(gated.drain.card(), ''); assert.equal(gated.drain.caption('storage'), '');
+  gated.context.actions['drain-breakdown'](); gated.context.actions['drain-date']({dataset:{}}); gated.context.actions['drain-date-clear']();
+  assert.equal(gated.dialog.open, false); assert.equal(gated.calls.length, 0);
+  gated.login(); await settle(); assert.match(gated.drain.card(), /\$4\.24/);
+  gated.context.actions['drain-breakdown'](); assert.equal(gated.dialog.open, true);
+  gated.lock(); assert.equal(gated.drain.card(), ''); assert.equal(gated.drain.caption('storage'), ''); assert.equal(gated.dialog.open, false); assert.equal(gated.dialog.html, '');
+  const callsAtLock = gated.calls.length; gated.drain.reload(); assert.equal(gated.calls.length, callsAtLock);
+
+  // A response for the old session cannot win even when login starts a new
+  // request for the same completed-task key.
+  let releaseOld, requests = 0;
+  const stale = harness((url, options, r) => {
+    requests++;
+    if (requests === 1) return new Promise(resolve => { releaseOld = () => resolve(r.json(200, {...base, daily:99})); });
+    return r.json(200, {...base, daily:1.25});
+  }, {workspace:true});
+  stale.lock(); stale.login(); await settle(); assert.match(stale.drain.card(), /\$1\.25/);
+  releaseOld(); await settle(); assert.match(stale.drain.card(), /\$1\.25/); assert.doesNotMatch(stale.drain.card(), /\$99\.00/);
+
+  // Authentication failures clear the displayed cache and never fall back to
+  // fictional figures, including an HTML 401 rather than JSON.
+  let denied = false;
+  const expired = harness((url, options, r) => denied ? r.html(401) : r.json(200, base), {workspace:true});
+  await settle(); assert.match(expired.drain.card(), /\$4\.24/);
+  denied = true; expired.drain.reload(); await settle(); assert.equal(expired.drain.card(), '');
+  assert.ok(!expired.calls.some(call => call.url.includes('drain_snapshot')));
+
+  // A date save that completes after logout cannot re-open private dialogs,
+  // record activity, toast success, or fetch records for the old session.
+  let releaseSave;
+  const saving = harness((url, options, r) => options.method === 'POST' ? new Promise(resolve => { releaseSave = () => resolve(r.json(200, {})); }) : r.json(200, base), {workspace:true});
+  await settle(); const dateSave = saving.context.actions['drain-date-clear'](); saving.lock(); releaseSave(); await dateSave; await settle();
+  assert.equal(saving.context.state.activity.length,0); assert.equal(saving.toasts.length,0); assert.equal(saving.dialog.open,false); assert.equal(saving.drain.card(),'');
+  const deniedSave = harness((url, options, r) => options.method === 'POST' ? r.json(401,{detail:'Session ended'}) : r.json(200,base), {workspace:true});
+  await settle(); await deniedSave.context.actions['drain-date-clear'](); assert.equal(deniedSave.drain.card(),''); assert.equal(deniedSave.context.state.activity.length,0);
 
   console.log('Drain UI passed: card states, recompute on completion, static snapshot, service error, breakdown buckets, source links, safe actions, escaping and level tone.');
 })().catch(error => { console.error(error); process.exit(1); });

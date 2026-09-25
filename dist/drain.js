@@ -5,45 +5,71 @@
   'use strict';
   const esc = escapeHTML;
   let data = null, mode = 'loading', failure = '', loadedKey = null, pendingKey = null, serviceSeen = false, snapshot = null, saving = false;
+  let authEpoch = 0;
+  const canAccess = () => !window.AfterwordRuntime?.workspace || window.AfterwordProfile?.canAccessData() === true;
 
   class ServiceError extends Error {}
+  class StaleRequest extends ServiceError {}
+  function checkAccess(epoch) {
+    if (epoch !== authEpoch || !canAccess()) throw new StaleRequest('This request belongs to an earlier session.');
+  }
+  function clearPrivateData() {
+    authEpoch++; data = null; snapshot = null; mode = 'loading'; failure = ''; loadedKey = null; pendingKey = null; serviceSeen = false; saving = false;
+    if ($('#drain-breakdown') || $('#drain-date-form')) {
+      $('#detail-dialog')?.close();
+      const content = $('#dialog-content'); if (content) content.textContent = '';
+    }
+  }
+  function unauthorized() {
+    clearPrivateData();
+    window.AfterwordProfile?.lock();
+    throw new ServiceError('Sign in to your local workspace to continue.');
+  }
   const completedIds = () => [...state.completed].sort();
   const money = value => '$' + value.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2});
   const wholeMoney = value => '$' + Math.round(value).toLocaleString('en-US');
   const longDate = iso => new Date(iso + 'T12:00:00').toLocaleDateString('en-US', {month: 'long', day: 'numeric'});
   const today = () => { const d = new Date(); return new Date(d.getTime() - d.getTimezoneOffset() * 60000).toISOString().slice(0, 10); };
 
-  async function fetchService(ids) {
+  async function fetchService(ids, epoch) {
+    checkAccess(epoch);
     const url = new URL('/drain', location.origin);
     if (ids.length) url.searchParams.set('done', ids.join(','));
     const response = await fetch(url, {headers: {Accept: 'application/json'}, credentials: 'same-origin', redirect: 'error'});
+    checkAccess(epoch);
+    if (response.status === 401) unauthorized();
     // GitHub Pages and plain static servers answer 404 with HTML: no local service here.
     if (!(response.headers.get('content-type') || '').includes('application/json')) return null;
     const body = await response.json();
+    checkAccess(epoch);
     if (!response.ok) throw new ServiceError(typeof body.detail === 'string' ? body.detail : 'The local service could not work out the charges.');
     return body;
   }
 
-  async function fetchSnapshot(ids) {
+  async function fetchSnapshot(ids, epoch) {
     if (!snapshot) {
       const response = await fetch('data/drain_snapshot.json', {redirect: 'error'});
+      checkAccess(epoch);
       if (!response.ok) throw new Error('The sample figures could not be loaded.');
-      snapshot = await response.json();
+      const next = await response.json();
+      checkAccess(epoch); snapshot = next;
     }
     return snapshot.variants[ids.filter(id => snapshot.variant_ids.includes(id)).join(',')] || snapshot.variants[''];
   }
 
   async function load(ids, key) {
+    const epoch = authEpoch;
     try {
       let body = null;
-      try { body = await fetchService(ids); }
+      try { body = await fetchService(ids, epoch); }
       catch (error) { if (error instanceof ServiceError || serviceSeen) throw error; }
-      const next = body || await fetchSnapshot(ids);
-      if (pendingKey !== key) return;
+      checkAccess(epoch);
+      const next = body || await fetchSnapshot(ids, epoch);
+      if (epoch !== authEpoch || !canAccess() || pendingKey !== key) return;
       data = next; mode = body ? 'service' : 'snapshot'; failure = '';
       if (body) serviceSeen = true;
     } catch (error) {
-      if (pendingKey !== key) return;
+      if (epoch !== authEpoch || !canAccess() || pendingKey !== key) return;
       failure = error.message || 'The charges could not be loaded.';
       if (!data) mode = 'error';
     }
@@ -54,6 +80,7 @@
 
   // Called while rendering; fetches only when the set of completed tasks changes.
   function ensure() {
+    if (!canAccess()) return;
     const ids = completedIds(), key = ids.join(',');
     if (key === loadedKey || key === pendingKey) return;
     pendingKey = key;
@@ -69,6 +96,7 @@
   }
 
   function card() {
+    if (!canAccess()) return '';
     ensure();
     if (!data) {
       return mode === 'error'
@@ -92,6 +120,7 @@
 
   // A quiet caption on a plan row: why stopping this action matters, from the server's per-action rate.
   function caption(taskId) {
+    if (!canAccess()) return '';
     ensure();
     const rate = data?.by_finding?.[taskId];
     if (!rate) return '';
@@ -101,6 +130,7 @@
   }
 
   function openDateDialog(returnTo) {
+    if (!canAccess()) return;
     const offline = mode !== 'service';
     const current = data?.date_of_death || '';
     modal('Date of death', `<p>Afterword uses this date to estimate what the recurring charges have cost since then. It is saved on the Afterword device, not shared.</p>
@@ -110,15 +140,19 @@
   }
 
   async function saveDate(value, returnTo) {
-    if (saving) return;
+    if (saving || !canAccess()) return;
+    const epoch = authEpoch;
     saving = true;
     const status = $('#drain-date-state');
     $$('#detail-dialog .modal-foot button').forEach(b => { b.disabled = true; });
     try {
       const response = await fetch(new URL('/estate/date-of-death', location.origin), {method: 'POST', credentials: 'same-origin', redirect: 'error',
         headers: {Accept: 'application/json', 'Content-Type': 'application/json', 'X-Afterword-Client': 'web'}, body: JSON.stringify({date: value})});
+      checkAccess(epoch);
+      if (response.status === 401) unauthorized();
       let body = {};
       try { body = await response.json(); } catch {}
+      checkAccess(epoch);
       if (!response.ok) throw new Error(typeof body.detail === 'string' ? body.detail : 'The date could not be saved.');
       recordActivity(value ? 'Updated the date of death' : 'Removed the date of death');
       persist();
@@ -126,9 +160,10 @@
       if (returnTo === 'breakdown') openBreakdown(); else $('#detail-dialog').close();
       reload();
     } catch (error) {
+      if (epoch !== authEpoch || !canAccess()) return;
       if (status) { status.textContent = error.message; status.setAttribute('role', 'alert'); }
       $$('#detail-dialog .modal-foot button').forEach(b => { b.disabled = false; });
-    } finally { saving = false; }
+    } finally { if (epoch === authEpoch) saving = false; }
   }
 
   const TIERS = {confirmed: ['Confirmed', 'neutral'], possible: ['Less sure', 'amber']};
@@ -165,7 +200,7 @@
   }
 
   function openBreakdown() {
-    if (!data) return;
+    if (!canAccess() || !data) return;
     const summary = data.daily > 0
       ? `<p class="drain-summary-figure"><strong>${money(data.daily)}</strong> a day · ${wholeMoney(data.annual)} over a year if nothing changes</p>`
       : `<p class="drain-summary-figure">${data.possible_daily > 0 ? 'Nothing we can confirm is charging his accounts right now.' : 'Nothing is charging his accounts right now.'}</p>`;
@@ -187,6 +222,7 @@
   Object.assign(window.actions, {
     'drain-breakdown': () => openBreakdown(),
     'drain-source': a => {
+      if (!canAccess()) return;
       openDocument(a.dataset.id);
       const foot = $('#detail-dialog .modal-foot');
       if (foot) foot.innerHTML = button('Back to charges', 'drain-breakdown', false, 'arrow');
@@ -208,5 +244,7 @@
   });
 
   window.AfterwordDrain = {card, caption, reload, openBreakdown, money, wholeMoney};
+  window.addEventListener?.('afterword-locked', clearPrivateData);
+  window.addEventListener?.('afterword-profile-changed', () => { if (canAccess()) reload(); });
   render();
 })();

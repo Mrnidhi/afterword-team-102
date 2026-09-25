@@ -36,13 +36,20 @@ function home() {
   <aside class="home-side"><section class="review-summary"><div class="review-icon">${icon('eye')}</div><h3>Review the source records.</h3><p>Compare each finding with its original excerpt and see what still needs confirmation.</p><a class="text-link" href="#evidence">Explore the evidence ${icon('arrow')}</a></section><section><div class="section-title"><h2>Workspace activity</h2></div><div class="activity-list"><div class="activity"><span class="activity-icon">${icon('files')}</span><div><p>Eight sample records available</p><small>Fictional archive · September 2026</small></div></div><div class="activity"><span class="activity-icon">${icon('eye')}</span><div><p>${state.reviewed.length} of 3 findings read</p><small>Your review does not confirm a finding</small></div></div><div class="activity"><span class="activity-icon">${icon('check')}</span><div><p>${state.completed.length} actions marked complete</p><small>Progress saved in this browser</small></div></div></div></section></aside></div>`;
 }
 function render() {
+  if(window.AfterwordRuntime?.workspace&&!window.AfterwordProfile){
+    $('#app').innerHTML='<main id="main" class="main" tabindex="-1"><p role="status">Opening your local workspace…</p></main>';
+    return;
+  }
+  const gate=window.AfterwordProfile?.gate();
+  if(gate){$('#app').innerHTML=gate;document.documentElement.dataset.page='welcome';return;}
+
   if(window.AfterwordRuntime?.extraction && !window.AfterwordFindings){
     $('#app').innerHTML='<main id="main" class="main" tabindex="-1"><p role="status">Opening your local workspace…</p></main>';
     return;
   }
   const focus=window.captureWorkspaceFocus?.();
   window.prepareRoute?.();
-  const known = nav.some(n => n[0] === state.route) || ['ask'].includes(state.route);
+  const known = nav.some(n => n[0] === state.route) || ['ask','profile'].includes(state.route);
   const route = known ? state.route : 'overview';
   const name = nav.find(n => n[0] === route)?.[2] || ({ask:'Questions about records'}[route]);
   const displayName = window.uiLabel?.(name) || name;

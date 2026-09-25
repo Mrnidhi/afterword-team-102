@@ -5,10 +5,10 @@ const C=require('../dist/outreach-core.js'),archive=JSON.parse(fs.readFileSync(p
 const fields={writer_name:'Priya Rao',writer_phone:'+1 408 555 0100',relationship:'daughter',date_of_death:'2026-09-18'};
 const ref=(id,provider_id,last)=>({id,provider_id,kind:'account',masked_identifier:'account ending '+last,source_title:id+'.eml',evidence:[{doc_id:id,quote:'Account number '+last,start:20,end:39}]});
 function harness(options={}){
- const calls=[],routes=[],messages=[],elements=new Map(),storage=new Map(),listeners={};
+ const calls=[],routes=[],messages=[],modals=[],elements=new Map(),storage=new Map(),listeners={};
  if(options.saved)storage.set('afterword-outreach-v1',JSON.stringify(options.saved));
  const state={route:'overview',completed:options.completed||[],waiting:[],outreachReview:[],reminders:{},drafts:{},activeTask:'insurance'};
- const control={history:options.history||[],references:[],ingest:[],hold:null};
+ const control={history:options.history||[],references:[],ingest:[],hold:null,holdPatch:null};
  const actions={'task-complete':()=>{state.completed=state.completed.includes(state.activeTask)?state.completed.filter(x=>x!==state.activeTask):[...state.completed,state.activeTask];state.waiting=state.waiting.filter(x=>x!==state.activeTask);},'task-wait':()=>{state.waiting=state.waiting.includes(state.activeTask)?state.waiting.filter(x=>x!==state.activeTask):[...state.waiting,state.activeTask];state.completed=state.completed.filter(x=>x!==state.activeTask);}};
  const response=value=>({ok:true,json:async()=>value});
  let clock=Date.now();
@@ -34,17 +34,17 @@ function harness(options={}){
    const d=C.buildDraft({...f,finding_id:f.id,masked_identifier:r?.masked_identifier||''},body.template_id,body.fields,body.recipient,{...p,source_kind:'directory'});
    return response({...d,id:'server-'+(++clock),reference_id:body.reference_id,reference:r||null});
   }
-  if(opts.method==='PATCH'&&route.startsWith('/outreach/'))return response({...JSON.parse(JSON.stringify(context.window.AfterwordOutreach.currentDraft())),...body});
+  if(opts.method==='PATCH'&&route.startsWith('/outreach/')){const snapshot=JSON.parse(JSON.stringify(context.window.AfterwordOutreach.currentDraft()));if(control.holdPatch){const pending=control.holdPatch;control.holdPatch=null;await pending;}return response({...snapshot,...body});}
   throw Error('Unexpected API route '+route);
  };
  class FormData{constructor(form){this.values=form.values||{};}get(key){return this.values[key]||'';}*[Symbol.iterator](){yield* Object.entries(this.values);}}
- const context={window:{OutreachCore:C,views:{exposure:()=>'',settings:()=>''},actions,addEventListener:()=>{},openImport:()=>{}},state,tasks:archive.findings.map(f=>({id:f.id,title:f.title})),escapeHTML:value=>String(value??'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/"/g,'&quot;'),$:selector=>elements.get(selector)||null,$$:()=>[],icon:()=>'',heading:()=>'',button:()=>'',persist:()=>{},recordActivity:()=>{},render:()=>{},afterRender:()=>{},modal:()=>{},closeDialog:()=>{},toast:value=>messages.push(value),go:route=>{routes.push(route);context.location.hash='#'+route;},location:{origin:'http://127.0.0.1:4174',hash:'#overview'},localStorage:{getItem:key=>storage.get(key)||null,setItem:(key,value)=>storage.set(key,value)},document:{addEventListener:(name,fn)=>(listeners[name]??=[]).push(fn)},fetch,AbortController,setTimeout,clearTimeout,URL,URLSearchParams,TextEncoder,FormData,crypto,performance,console,formatDate:value=>value,formatTime:value=>value,fileSize:value=>value,exposureGroups:[]};
- const instrumented=source.replace('  initialize();\n  render();','  window.__test={initialize,ingestFiles,hydrate:d=>updateTask(d,true),apply:d=>updateTask(d),resolve,getSaved:()=>saved};');
+ const context={window:{OutreachCore:C,views:{exposure:()=>'',settings:()=>''},actions,addEventListener:()=>{},openImport:()=>{}},state,tasks:archive.findings.map(f=>({id:f.id,title:f.title})),escapeHTML:value=>String(value??'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/"/g,'&quot;'),$:selector=>elements.get(selector)||null,$$:()=>[],icon:()=>'',heading:()=>'',button:()=>'',persist:()=>{},recordActivity:()=>{},render:()=>{},afterRender:()=>{},modal:(...args)=>modals.push(args),closeDialog:()=>{},toast:value=>messages.push(value),go:route=>{routes.push(route);context.location.hash='#'+route;},location:{origin:'http://127.0.0.1:4174',hash:'#overview'},localStorage:{getItem:key=>storage.get(key)||null,setItem:(key,value)=>storage.set(key,value)},document:{addEventListener:(name,fn)=>(listeners[name]??=[]).push(fn)},fetch,AbortController,setTimeout,clearTimeout,URL,URLSearchParams,TextEncoder,FormData,crypto,performance,console,formatDate:value=>value,formatTime:value=>value,fileSize:value=>value,exposureGroups:[]};
+ const instrumented=source.replace('  initialize();\n  render();','  window.__test={initialize,ingestFiles,hydrate:d=>updateTask(d,true),apply:d=>updateTask(d),resolve,syncDraft,getSaved:()=>saved};');
  assert.notEqual(instrumented,source,'Test boot hook must attach to the real module');vm.runInNewContext(instrumented,context);
  const test=context.window.__test,bridge=context.window.AfterwordOutreach;
  const idle=async()=>{for(let i=0;i<8;i++)await new Promise(setImmediate);};
  const ingest=async(providerId,rows)=>{control.ingest=rows;elements.set('#outreach-ingest-files',{files:rows.map((r,i)=>({name:'letter-'+i+'.eml',size:100,text:async()=>r.document?.text||'From: support@valley-storage.example\n\nFictional letter'}))});elements.set('#outreach-ingest-state',{textContent:''});await test.ingestFiles({values:{provider_id:providerId,date:''},querySelector:()=>({disabled:false})});await idle();};
- return {context,control,state,calls,routes,messages,elements,storage,test,bridge,actions,listeners,idle,ingest,init:()=>test.initialize()};
+ return {context,control,state,calls,routes,messages,elements,storage,test,bridge,actions,listeners,idle,ingest,modals,init:()=>test.initialize()};
 }
 (async()=>{
  const h=harness();await h.init();
@@ -80,5 +80,46 @@ function harness(options={}){
  const migration=harness({completed:['insurance']});migration.test.hydrate(replied);assert.deepEqual([...migration.state.completed],['insurance'],'Existing completion survives first watermark migration');
  reload.test.apply({...replied,id:'new-sent',status:'waiting',sent_at:new Date().toISOString()});assert.deepEqual([...reload.state.completed],[]);assert.deepEqual([...reload.state.waiting],['insurance'],'A new explicit sent action can update the plan');
  manual.actions['task-wait']();assert.deepEqual([...manual.state.waiting],['insurance']);manual.test.hydrate(replied);assert.deepEqual([...manual.state.waiting],['insurance']);
+ // A blocked review keeps the user in the editable form, with one linked error per missing field.
+ const blocked=harness();await blocked.init();blocked.bridge.openProviderLetter('cedar-life','insurance');await blocked.idle();
+ const validation={innerHTML:''};blocked.elements.set('#outreach-validation',validation);
+ await blocked.actions['outreach-review']();assert.equal(blocked.modals.length,0,'Incomplete drafts cannot enter the consent modal');
+ assert.match(validation.innerHTML,/outreach-fix-field/);assert.match(validation.innerHTML,/Add your phone/);assert.doesNotMatch(validation.innerHTML,/Fill the remaining placeholders/);
+ const ready=blocked.bridge.currentDraft();ready.fields={...fields};ready.body=C.buildDraft(findingForTest(),'policy_information',fields,'approved@university.edu').body;ready.origin='browser';
+ await blocked.actions['outreach-review']();assert.equal(blocked.modals.length,1,'Completing the same draft opens review');assert.match(blocked.modals[0][0],/Review what/);assert.doesNotMatch(blocked.modals[0][1],/Before handoff/);
+ // Static browser handoff preserves the chosen inbox and exact sent snapshot
+ // across contact refresh and reinitialization. No real browser or email is used.
+ const staticMode=harness({saved:{version:1,config:{runtime:'browser'},drafts:{}}});
+ staticMode.context.window.AfterwordProfile={current:()=>({demo_mailbox:'team@university.edu',demo_mailbox_confirmed:true}),fields:()=>({...fields})};
+ await staticMode.init();staticMode.state.route='letters';staticMode.bridge.openProviderLetter('cedar-life','insurance');await staticMode.idle();
+ const original=staticMode.bridge.currentDraft();assert.ok(C.reservedEmail(original.recipient),'The fixture begins at its reserved record contact.');
+ staticMode.actions['outreach-use-mailbox']();
+ const approved=staticMode.bridge.currentDraft();approved.subject='Controlled test subject';approved.body='Controlled test letter. Please reply with the next steps.';approved.body_edited=true;
+ staticMode.elements.set('#outreach-recipient-confirm',{checked:true});
+ staticMode.elements.set('#outreach-sender-confirm',{checked:true});
+ const handoffURLs=[];staticMode.context.window.open=()=>({opener:{},location:{replace:url=>handoffURLs.push(url)},close:()=>{}});
+ await staticMode.actions['outreach-review']();await staticMode.actions['outreach-gmail']();
+ assert.equal(handoffURLs.length,1);assert.equal(new URL(handoffURLs[0]).searchParams.get('to'),'team@university.edu');
+ assert.match(staticMode.context.window.views.letters(),/Mark as sent/);
+ const approvedSnapshot=C.canonicalSnapshot(staticMode.bridge.currentDraft());
+ await staticMode.test.resolve('insurance',true);await staticMode.init();await staticMode.idle();
+ assert.equal(C.canonicalSnapshot(staticMode.bridge.currentDraft()),approvedSnapshot,'Contact refresh must preserve the reviewed recipient, subject and body.');
+ assert.match(staticMode.context.window.views.letters(),/Mark as sent/);
+ const staticReload=harness({saved:JSON.parse(staticMode.storage.get('afterword-outreach-v1'))});staticReload.context.window.AfterwordProfile=staticMode.context.window.AfterwordProfile;
+ await staticReload.init();staticReload.state.route='letters';staticReload.bridge.openProviderLetter('cedar-life','insurance');await staticReload.idle();
+ assert.equal(C.canonicalSnapshot(staticReload.bridge.currentDraft()),approvedSnapshot,'Browser storage reload must preserve the chosen inbox.');
+ assert.match(staticReload.context.window.views.letters(),/Mark as sent/);
+ // A previous service save must not restore its old recipient over an inbox
+ // the user explicitly chose while that save was in flight.
+ const race=harness();race.context.window.AfterwordProfile=staticMode.context.window.AfterwordProfile;
+ await race.init();race.bridge.openProviderLetter('cedar-life','insurance');await race.idle();
+ race.bridge.storeDraft({...race.bridge.currentDraft(),id:'server-recipient-race',recipient:'claims@cedar-life.example',fields:{...fields},subject:'Retain this subject',body:'Retain this edited letter.',body_edited:true,updated_at:'2026-01-01T00:00:00Z'},'server');
+ let releasePatch;race.control.holdPatch=new Promise(resolve=>releasePatch=resolve);
+ const oldSave=race.test.syncDraft(race.bridge.currentDraft());await race.idle();
+ race.actions['outreach-use-mailbox']();assert.equal(race.bridge.currentDraft().recipient,'team@university.edu');
+ releasePatch();await oldSave;
+ assert.equal(race.bridge.currentDraft().recipient,'team@university.edu','An old PATCH response must not overwrite a later approved-inbox selection.');
+ assert.equal(race.bridge.currentDraft().subject,'Retain this subject');assert.equal(race.bridge.currentDraft().body,'Retain this edited letter.');
+ function findingForTest(){return {finding_id:'insurance',masked_identifier:'policy ending 4471'};}
  console.log('Outreach navigation passed: actual ingest/provider routing, forced refresh races, account-reference selection, and manual lifecycle hydration.');
 })().catch(error=>{console.error(error);process.exitCode=1;});
