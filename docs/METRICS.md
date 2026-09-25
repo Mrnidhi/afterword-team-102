@@ -83,3 +83,7 @@ or resolver outputs; evaluating output against itself is not an answer key.
 
 For external integrations, record only a redacted summary in the public repository.
 Keep Google tokens, family documents and full email content outside version control.
+
+## Daily drain
+
+The daily drain counter has its own answer key and evaluation (`python scripts/evaluate_drain.py`): rate accuracy, bucket precision, keep-for-now harms reported separately, coverage and evidence completeness. Results and boundaries are in `docs/DRAIN-COUNTER.md`.
