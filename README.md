@@ -2,7 +2,7 @@
 
 An interactive design prototype by Team 102, designed around HP ZGX Nano.
 
-[Website](https://mrnidhi.github.io/afterword-team-102/) · [Deployment workflow](https://github.com/Mrnidhi/afterword-team-102/actions/workflows/pages.yml)
+[Website](https://mrnidhi.github.io/afterword-team-102/)
 
 A family workspace for organizing the practical work after a loss. This is a complete browser-side demonstration using fictional records for Arun Rao and Priya Rao. It is an independent concept for HP ZGX, not an HP product or endorsement. No private source-document credentials or real personal records are included.
 
@@ -55,15 +55,22 @@ node scripts/version-assets.cjs
 node scripts/version-assets.cjs --check
 ```
 
-The deployment workflow also syntax-checks every frontend JavaScript file.
+Run frontend syntax checks locally when needed; there is no automated CI/CD workflow.
 
 ## Hosting on GitHub Pages
 
-GitHub Pages is the selected host. The workflow in `.github/workflows/pages.yml` validates the JavaScript and uploads only `dist/`, then deploys it to the `github-pages` environment. A push to `main` that changes the website or workflow triggers deployment; it can also be run manually from Actions. All asset URLs are relative, so the app works under the repository path `/afterword-team-102/`.
+The existing public sample is hosted on GitHub Pages. Repository CI/CD workflows
+have been removed, so pushes do not build, test or publish the website. Updating
+the hosted sample requires a separate publishing setup. Local development and
+manual tests remain available.
 
-The repository uses GitHub Actions as its Pages publishing source. There is no API key, server, database or paid hosting dependency. Official actions are pinned to verified release commit hashes. The GitHub website and this repository are public; use fictional records only.
+`dist/` contains the static website; backend services, databases and private
+records are not part of the hosted sample. All asset URLs are relative to support
+`/afterword-team-102/`. The website and repository are public; use fictional
+records only.
 
-The `.openai/hosting.json` file records the earlier private design-preview deployment. It is retained as historical configuration, not the active GitHub deployment configuration. Updating this repository deploys through GitHub Pages, not the earlier host.
+The `.openai/hosting.json` file records the earlier private design-preview target.
+It is historical configuration and does not trigger deployment on a Git push.
 
 ## Design rationale and research
 
