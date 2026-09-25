@@ -1,0 +1,679 @@
+{
+  "summary": {
+    "round_trip_similarity": {
+      "es": {
+        "median": 0.953,
+        "worst": 0.8856,
+        "n": 13
+      },
+      "vi": {
+        "median": 0.9088,
+        "worst": 0.7823,
+        "n": 13
+      },
+      "hi": {
+        "median": 0.9007,
+        "worst": 0.8026,
+        "n": 13
+      }
+    },
+    "protected_tokens": {
+      "preserved": 60,
+      "total": 60
+    },
+    "latency_ms_median": {
+      "instruction": {
+        "es": 5308,
+        "vi": 5703,
+        "hi": 11481
+      },
+      "letter": {
+        "es": 22897,
+        "vi": 24435,
+        "hi": 50554
+      },
+      "summary": {
+        "es": 22566,
+        "vi": 25404,
+        "hi": 51899
+      }
+    },
+    "coverage": 1.0,
+    "low_confidence_count": 4,
+    "low_confidence_items": [
+      "instruction/task0/vi",
+      "instruction/task2/vi",
+      "instruction/task3/vi",
+      "instruction/task3/hi"
+    ],
+    "human_check": null
+  },
+  "rows": [
+    {
+      "kind": "summary",
+      "id": "insurance",
+      "lang": "es",
+      "text_len": 464,
+      "token_count": 4,
+      "round_trip_score": 0.983367899013126,
+      "protected_tokens_ok": true,
+      "low_confidence": false,
+      "cached": true
+    },
+    {
+      "kind": "summary",
+      "id": "insurance",
+      "lang": "vi",
+      "text_len": 464,
+      "token_count": 4,
+      "round_trip_score": 0.9781969214649635,
+      "protected_tokens_ok": true,
+      "low_confidence": false,
+      "cached": true
+    },
+    {
+      "kind": "summary",
+      "id": "insurance",
+      "lang": "hi",
+      "text_len": 464,
+      "token_count": 4,
+      "round_trip_score": 0.9668512261319456,
+      "protected_tokens_ok": true,
+      "low_confidence": false,
+      "cached": true
+    },
+    {
+      "kind": "summary",
+      "id": "medical",
+      "lang": "es",
+      "text_len": 360,
+      "token_count": 5,
+      "round_trip_score": 0.8856305471300419,
+      "protected_tokens_ok": true,
+      "low_confidence": false,
+      "cached": true
+    },
+    {
+      "kind": "summary",
+      "id": "medical",
+      "lang": "vi",
+      "text_len": 360,
+      "token_count": 5,
+      "round_trip_score": 0.9294753749371978,
+      "protected_tokens_ok": true,
+      "low_confidence": false,
+      "cached": true
+    },
+    {
+      "kind": "summary",
+      "id": "medical",
+      "lang": "hi",
+      "text_len": 360,
+      "token_count": 5,
+      "round_trip_score": 0.9115028843857981,
+      "protected_tokens_ok": true,
+      "low_confidence": false,
+      "cached": true
+    },
+    {
+      "kind": "summary",
+      "id": "storage",
+      "lang": "es",
+      "text_len": 362,
+      "token_count": 1,
+      "round_trip_score": 0.9656928221229356,
+      "protected_tokens_ok": true,
+      "low_confidence": false,
+      "cached": true
+    },
+    {
+      "kind": "summary",
+      "id": "storage",
+      "lang": "vi",
+      "text_len": 362,
+      "token_count": 1,
+      "round_trip_score": 0.885794869354607,
+      "protected_tokens_ok": true,
+      "low_confidence": false,
+      "cached": true
+    },
+    {
+      "kind": "summary",
+      "id": "storage",
+      "lang": "hi",
+      "text_len": 362,
+      "token_count": 1,
+      "round_trip_score": 0.8881946732057657,
+      "protected_tokens_ok": true,
+      "low_confidence": false,
+      "cached": true
+    },
+    {
+      "kind": "letter",
+      "id": "insurance",
+      "lang": "es",
+      "text_len": 438,
+      "token_count": 2,
+      "round_trip_score": 0.9747615851074616,
+      "protected_tokens_ok": true,
+      "low_confidence": false,
+      "cached": true
+    },
+    {
+      "kind": "letter",
+      "id": "insurance",
+      "lang": "vi",
+      "text_len": 438,
+      "token_count": 2,
+      "round_trip_score": 0.9568722733469135,
+      "protected_tokens_ok": true,
+      "low_confidence": false,
+      "cached": true
+    },
+    {
+      "kind": "letter",
+      "id": "insurance",
+      "lang": "hi",
+      "text_len": 438,
+      "token_count": 2,
+      "round_trip_score": 0.9249705046117602,
+      "protected_tokens_ok": true,
+      "low_confidence": false,
+      "cached": true
+    },
+    {
+      "kind": "instruction",
+      "id": "subject-insurance",
+      "lang": "es",
+      "text_len": 48,
+      "token_count": 0,
+      "round_trip_score": 0.9473384629554634,
+      "protected_tokens_ok": true,
+      "low_confidence": false,
+      "cached": true
+    },
+    {
+      "kind": "instruction",
+      "id": "subject-insurance",
+      "lang": "vi",
+      "text_len": 48,
+      "token_count": 0,
+      "round_trip_score": 0.9074741546299014,
+      "protected_tokens_ok": true,
+      "low_confidence": false,
+      "cached": true
+    },
+    {
+      "kind": "instruction",
+      "id": "subject-insurance",
+      "lang": "hi",
+      "text_len": 48,
+      "token_count": 0,
+      "round_trip_score": 0.9427211980684629,
+      "protected_tokens_ok": true,
+      "low_confidence": false,
+      "cached": true
+    },
+    {
+      "kind": "letter",
+      "id": "medical",
+      "lang": "es",
+      "text_len": 431,
+      "token_count": 5,
+      "round_trip_score": 0.9894709734458093,
+      "protected_tokens_ok": true,
+      "low_confidence": false,
+      "cached": true
+    },
+    {
+      "kind": "letter",
+      "id": "medical",
+      "lang": "vi",
+      "text_len": 431,
+      "token_count": 5,
+      "round_trip_score": 0.9706016592579547,
+      "protected_tokens_ok": true,
+      "low_confidence": false,
+      "cached": true
+    },
+    {
+      "kind": "letter",
+      "id": "medical",
+      "lang": "hi",
+      "text_len": 431,
+      "token_count": 5,
+      "round_trip_score": 0.8753380620842468,
+      "protected_tokens_ok": true,
+      "low_confidence": false,
+      "cached": true
+    },
+    {
+      "kind": "instruction",
+      "id": "subject-medical",
+      "lang": "es",
+      "text_len": 39,
+      "token_count": 0,
+      "round_trip_score": 0.9162244107925608,
+      "protected_tokens_ok": true,
+      "low_confidence": false,
+      "cached": true
+    },
+    {
+      "kind": "instruction",
+      "id": "subject-medical",
+      "lang": "vi",
+      "text_len": 39,
+      "token_count": 0,
+      "round_trip_score": 0.8615969488298758,
+      "protected_tokens_ok": true,
+      "low_confidence": false,
+      "cached": true
+    },
+    {
+      "kind": "instruction",
+      "id": "subject-medical",
+      "lang": "hi",
+      "text_len": 39,
+      "token_count": 0,
+      "round_trip_score": 0.9006938646756365,
+      "protected_tokens_ok": true,
+      "low_confidence": false,
+      "cached": true
+    },
+    {
+      "kind": "letter",
+      "id": "storage",
+      "lang": "es",
+      "text_len": 416,
+      "token_count": 2,
+      "round_trip_score": 0.9643820855228832,
+      "protected_tokens_ok": true,
+      "low_confidence": false,
+      "cached": true
+    },
+    {
+      "kind": "letter",
+      "id": "storage",
+      "lang": "vi",
+      "text_len": 416,
+      "token_count": 2,
+      "round_trip_score": 0.9277429326599641,
+      "protected_tokens_ok": true,
+      "low_confidence": false,
+      "cached": true
+    },
+    {
+      "kind": "letter",
+      "id": "storage",
+      "lang": "hi",
+      "text_len": 416,
+      "token_count": 2,
+      "round_trip_score": 0.9055595915822607,
+      "protected_tokens_ok": true,
+      "low_confidence": false,
+      "cached": true
+    },
+    {
+      "kind": "instruction",
+      "id": "subject-storage",
+      "lang": "es",
+      "text_len": 55,
+      "token_count": 0,
+      "round_trip_score": 0.9412548607679628,
+      "protected_tokens_ok": false,
+      "low_confidence": false,
+      "cached": true
+    },
+    {
+      "kind": "instruction",
+      "id": "subject-storage",
+      "lang": "vi",
+      "text_len": 55,
+      "token_count": 0,
+      "round_trip_score": 0.8967272458004266,
+      "protected_tokens_ok": true,
+      "low_confidence": false,
+      "cached": true
+    },
+    {
+      "kind": "instruction",
+      "id": "subject-storage",
+      "lang": "hi",
+      "text_len": 55,
+      "token_count": 0,
+      "round_trip_score": 0.8582947648257829,
+      "protected_tokens_ok": true,
+      "low_confidence": false,
+      "cached": true
+    },
+    {
+      "kind": "instruction",
+      "id": "task0",
+      "lang": "es",
+      "text_len": 121,
+      "token_count": 0,
+      "round_trip_score": 0.8951258471303162,
+      "protected_tokens_ok": true,
+      "low_confidence": false,
+      "cached": true
+    },
+    {
+      "kind": "instruction",
+      "id": "task0",
+      "lang": "vi",
+      "text_len": 121,
+      "token_count": 0,
+      "round_trip_score": 0.8446190401119195,
+      "protected_tokens_ok": true,
+      "low_confidence": true,
+      "cached": true
+    },
+    {
+      "kind": "instruction",
+      "id": "task0",
+      "lang": "hi",
+      "text_len": 121,
+      "token_count": 0,
+      "round_trip_score": 0.8993570224810034,
+      "protected_tokens_ok": true,
+      "low_confidence": false,
+      "cached": true
+    },
+    {
+      "kind": "instruction",
+      "id": "task1",
+      "lang": "es",
+      "text_len": 83,
+      "token_count": 1,
+      "round_trip_score": 0.9576129108697344,
+      "protected_tokens_ok": true,
+      "low_confidence": false,
+      "cached": true
+    },
+    {
+      "kind": "instruction",
+      "id": "task1",
+      "lang": "vi",
+      "text_len": 83,
+      "token_count": 1,
+      "round_trip_score": 0.9087620097654883,
+      "protected_tokens_ok": true,
+      "low_confidence": false,
+      "cached": true
+    },
+    {
+      "kind": "instruction",
+      "id": "task1",
+      "lang": "hi",
+      "text_len": 83,
+      "token_count": 1,
+      "round_trip_score": 0.9485812882524213,
+      "protected_tokens_ok": true,
+      "low_confidence": false,
+      "cached": true
+    },
+    {
+      "kind": "instruction",
+      "id": "task2",
+      "lang": "es",
+      "text_len": 92,
+      "token_count": 0,
+      "round_trip_score": 0.9529779676849858,
+      "protected_tokens_ok": true,
+      "low_confidence": false,
+      "cached": true
+    },
+    {
+      "kind": "instruction",
+      "id": "task2",
+      "lang": "vi",
+      "text_len": 92,
+      "token_count": 0,
+      "round_trip_score": 0.9574567457992708,
+      "protected_tokens_ok": true,
+      "low_confidence": true,
+      "cached": true
+    },
+    {
+      "kind": "instruction",
+      "id": "task2",
+      "lang": "hi",
+      "text_len": 92,
+      "token_count": 0,
+      "round_trip_score": 0.8870315257623842,
+      "protected_tokens_ok": false,
+      "low_confidence": false,
+      "cached": true
+    },
+    {
+      "kind": "instruction",
+      "id": "task3",
+      "lang": "es",
+      "text_len": 94,
+      "token_count": 0,
+      "round_trip_score": 0.9467722473063576,
+      "protected_tokens_ok": true,
+      "low_confidence": false,
+      "cached": true
+    },
+    {
+      "kind": "instruction",
+      "id": "task3",
+      "lang": "vi",
+      "text_len": 94,
+      "token_count": 0,
+      "round_trip_score": 0.7823025170102748,
+      "protected_tokens_ok": true,
+      "low_confidence": true,
+      "cached": true
+    },
+    {
+      "kind": "instruction",
+      "id": "task3",
+      "lang": "hi",
+      "text_len": 94,
+      "token_count": 0,
+      "round_trip_score": 0.8026265109790317,
+      "protected_tokens_ok": true,
+      "low_confidence": true,
+      "cached": true
+    }
+  ],
+  "latency_rows": [
+    {
+      "kind": "summary",
+      "lang": "es",
+      "ms": 27273
+    },
+    {
+      "kind": "summary",
+      "lang": "vi",
+      "ms": 32374
+    },
+    {
+      "kind": "summary",
+      "lang": "hi",
+      "ms": 63654
+    },
+    {
+      "kind": "summary",
+      "lang": "es",
+      "ms": 22566
+    },
+    {
+      "kind": "summary",
+      "lang": "vi",
+      "ms": 25404
+    },
+    {
+      "kind": "summary",
+      "lang": "hi",
+      "ms": 51899
+    },
+    {
+      "kind": "summary",
+      "lang": "es",
+      "ms": 20397
+    },
+    {
+      "kind": "summary",
+      "lang": "vi",
+      "ms": 20711
+    },
+    {
+      "kind": "summary",
+      "lang": "hi",
+      "ms": 47668
+    },
+    {
+      "kind": "letter",
+      "lang": "es",
+      "ms": 20664
+    },
+    {
+      "kind": "letter",
+      "lang": "vi",
+      "ms": 23939
+    },
+    {
+      "kind": "letter",
+      "lang": "hi",
+      "ms": 50554
+    },
+    {
+      "kind": "instruction",
+      "lang": "es",
+      "ms": 2288
+    },
+    {
+      "kind": "instruction",
+      "lang": "vi",
+      "ms": 2807
+    },
+    {
+      "kind": "instruction",
+      "lang": "hi",
+      "ms": 7551
+    },
+    {
+      "kind": "letter",
+      "lang": "es",
+      "ms": 25274
+    },
+    {
+      "kind": "letter",
+      "lang": "vi",
+      "ms": 27570
+    },
+    {
+      "kind": "letter",
+      "lang": "hi",
+      "ms": 55163
+    },
+    {
+      "kind": "instruction",
+      "lang": "es",
+      "ms": 2130
+    },
+    {
+      "kind": "instruction",
+      "lang": "vi",
+      "ms": 2799
+    },
+    {
+      "kind": "instruction",
+      "lang": "hi",
+      "ms": 5897
+    },
+    {
+      "kind": "letter",
+      "lang": "es",
+      "ms": 22897
+    },
+    {
+      "kind": "letter",
+      "lang": "vi",
+      "ms": 24435
+    },
+    {
+      "kind": "letter",
+      "lang": "hi",
+      "ms": 46598
+    },
+    {
+      "kind": "instruction",
+      "lang": "es",
+      "ms": 6597
+    },
+    {
+      "kind": "instruction",
+      "lang": "vi",
+      "ms": 4183
+    },
+    {
+      "kind": "instruction",
+      "lang": "hi",
+      "ms": 8190
+    },
+    {
+      "kind": "instruction",
+      "lang": "es",
+      "ms": 6094
+    },
+    {
+      "kind": "instruction",
+      "lang": "vi",
+      "ms": 6476
+    },
+    {
+      "kind": "instruction",
+      "lang": "hi",
+      "ms": 19468
+    },
+    {
+      "kind": "instruction",
+      "lang": "es",
+      "ms": 5308
+    },
+    {
+      "kind": "instruction",
+      "lang": "vi",
+      "ms": 5703
+    },
+    {
+      "kind": "instruction",
+      "lang": "hi",
+      "ms": 11481
+    },
+    {
+      "kind": "instruction",
+      "lang": "es",
+      "ms": 5430
+    },
+    {
+      "kind": "instruction",
+      "lang": "vi",
+      "ms": 6882
+    },
+    {
+      "kind": "instruction",
+      "lang": "hi",
+      "ms": 29758
+    },
+    {
+      "kind": "instruction",
+      "lang": "es",
+      "ms": 5213
+    },
+    {
+      "kind": "instruction",
+      "lang": "vi",
+      "ms": 5905
+    },
+    {
+      "kind": "instruction",
+      "lang": "hi",
+      "ms": 13126
+    }
+  ]
+}

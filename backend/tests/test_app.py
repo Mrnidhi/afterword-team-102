@@ -1,9 +1,11 @@
+import sqlite3
 import sys
 import unittest
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 import app as app_module  # noqa: E402
+from demo_content import demo_texts  # noqa: E402
 from fastapi.testclient import TestClient  # noqa: E402
 from translate import protect  # noqa: E402
 
@@ -64,6 +66,7 @@ class AppTest(unittest.TestCase):
         app_module.DB_PATH.unlink(missing_ok=True)
         app_module.init_db()
         app_module._model_id_cache['id'] = None
+        app_module._prewarm.update(done=0, total=0, started=False)
         self.client = TestClient(app_module.app)
 
     def tearDown(self):
@@ -85,11 +88,23 @@ class AppTest(unittest.TestCase):
 
     def test_health_reports_reachable_servers(self):
         self.use(FakeClient(up=True))
-        self.assertEqual(self.client.get('/health').json(), {'status': 'ok', 'llm': True, 'embeddings': True})
+        body = self.client.get('/health').json()
+        self.assertEqual({k: v for k, v in body.items() if k != 'prewarm'},
+                          {'status': 'ok', 'llm': True, 'embeddings': True})
 
     def test_health_reports_unreachable_server(self):
         self.use(FakeClient(up=False))
-        self.assertEqual(self.client.get('/health').json(), {'status': 'ok', 'llm': False, 'embeddings': False})
+        body = self.client.get('/health').json()
+        self.assertEqual({k: v for k, v in body.items() if k != 'prewarm'},
+                          {'status': 'ok', 'llm': False, 'embeddings': False})
+
+    def test_health_reports_prewarm_state(self):
+        # A bare TestClient() (no `with`) never fires the startup event, so
+        # this only exercises the "not started" branch — real prewarm
+        # progress is checked against the live server in the plan's phase 6
+        # verification, not here.
+        self.use(FakeClient())
+        self.assertEqual(self.client.get('/health').json()['prewarm'], 'not started')
 
     # -- validation -----------------------------------------------------------
 
@@ -263,6 +278,68 @@ class AppTest(unittest.TestCase):
                                                    'target_lang': 'vi', 'kind': 'summary'}).json()
         self.assertFalse(r['low_confidence'])
 
+    # -- negation guard (phase 0's known blind spot: a flipped negation can
+    # -- still score above the round-trip threshold) ---------------------------
+
+    def test_negation_flip_is_flagged_even_with_a_high_similarity_score(self):
+        # The "translation" round-trips almost perfectly by cosine (identical
+        # vectors) but a negation was silently added on the way back — this is
+        # exactly the failure mode phase 0's calibration found round-trip
+        # cosine alone cannot catch.
+        def flip_back_translation(system, text):
+            return text.replace('was applied', 'was not applied') if 'into English' in system else text
+
+        self.use(FakeClient(chat_fn=flip_back_translation, embed_fn=identical_embed))
+        r = self.client.post('/translate', json={'text': 'The payment was applied to the invoice.',
+                                                   'target_lang': 'es', 'kind': 'summary'}).json()
+        self.assertGreaterEqual(r['round_trip_score'], app_module.THRESHOLD)  # cosine alone would pass this
+        self.assertTrue(r['low_confidence'])  # the negation guard catches it anyway
+
+    def test_negation_on_both_sides_is_not_a_flip(self):
+        # Both source and round-trip mention a negation in the same place —
+        # not a flip, shouldn't trip the guard.
+        self.use(FakeClient(chat_fn=lambda s, t: t, embed_fn=identical_embed))
+        r = self.client.post('/translate', json={'text': 'The payment was not applied to the invoice.',
+                                                   'target_lang': 'es', 'kind': 'summary'}).json()
+        self.assertFalse(r['low_confidence'])
+
+    def test_negation_flip_flag_survives_a_cache_hit(self):
+        def flip_back_translation(system, text):
+            return text.replace('was applied', 'was not applied') if 'into English' in system else text
+
+        self.use(FakeClient(chat_fn=flip_back_translation, embed_fn=identical_embed))
+        body = {'text': 'The payment was applied to the invoice.', 'target_lang': 'es', 'kind': 'summary'}
+        first = self.client.post('/translate', json=body).json()
+        second = self.client.post('/translate', json=body).json()
+        self.assertTrue(second['cached'])
+        self.assertTrue(second['low_confidence'])  # not lost when served from the DB instead of computed fresh
+
+    # -- Hindi glossary hint (phase 0/6's "policy"/"provider" weaknesses) -------
+
+    def test_hindi_prompt_includes_the_glossary_hint(self):
+        seen = {}
+
+        def spy(system, text):
+            seen.setdefault('systems', []).append(system)
+            return text
+
+        self.use(FakeClient(chat_fn=spy, embed_fn=identical_embed))
+        self.client.post('/translate', json={'text': 'Ask about the policy.', 'target_lang': 'hi', 'kind': 'instruction'})
+        forward_system = seen['systems'][0]
+        self.assertIn('पॉलिसी', forward_system)
+        self.assertIn('प्रदाता', forward_system)
+
+    def test_spanish_prompt_has_no_hindi_specific_hint(self):
+        seen = {}
+
+        def spy(system, text):
+            seen.setdefault('systems', []).append(system)
+            return text
+
+        self.use(FakeClient(chat_fn=spy, embed_fn=identical_embed))
+        self.client.post('/translate', json={'text': 'Ask about the policy.', 'target_lang': 'es', 'kind': 'instruction'})
+        self.assertNotIn('पॉलिसी', seen['systems'][0])
+
     # -- protection --------------------------------------------------------------
 
     def test_translator_never_receives_the_raw_amount(self):
@@ -277,6 +354,86 @@ class AppTest(unittest.TestCase):
                                                'target_lang': 'es', 'kind': 'letter'})
         self.assertNotIn('$250,000', seen['text'])
         self.assertIn('⟦T1⟧', seen['text'])
+
+    # -- bypass_cache (used by metrics.py's cold-latency measurement) ------------
+
+    def test_bypass_cache_forces_a_real_call_even_when_cached(self):
+        fake = FakeClient(chat_fn=lambda s, t: t, embed_fn=identical_embed)
+        self.use(fake)
+        app_module.do_translate('Please confirm the balance.', 'es', 'summary')
+        calls_after_first = len(fake.chat_calls)
+        app_module.do_translate('Please confirm the balance.', 'es', 'summary', bypass_cache=True)
+        self.assertGreater(len(fake.chat_calls), calls_after_first)
+
+    def test_bypass_cache_result_still_gets_cached_for_next_time(self):
+        fake = FakeClient(chat_fn=lambda s, t: t, embed_fn=identical_embed)
+        self.use(fake)
+        app_module.do_translate('Please confirm the balance.', 'es', 'summary', bypass_cache=True)
+        calls_after_bypass = len(fake.chat_calls)
+        r = app_module.do_translate('Please confirm the balance.', 'es', 'summary')
+        self.assertTrue(r.cached)
+        self.assertEqual(len(fake.chat_calls), calls_after_bypass)  # no extra call on the normal cached path
+
+    # -- prewarm ---------------------------------------------------------------
+
+    def test_prewarm_translates_every_demo_text_into_every_language(self):
+        fake = FakeClient(chat_fn=lambda s, t: t, embed_fn=identical_embed)
+        self.use(fake)
+        expected = len(demo_texts()) * len(app_module.LANGUAGES)
+        app_module.run_prewarm()
+        self.assertEqual(app_module._prewarm['total'], expected)
+        self.assertEqual(app_module._prewarm['done'], expected)
+        with app_module.db_conn() as db:
+            count = db.execute('SELECT COUNT(*) c FROM translations').fetchone()['c']
+        self.assertEqual(count, expected)
+
+    def test_prewarm_keeps_going_after_one_item_fails(self):
+        calls = {'n': 0}
+
+        def flaky(system, text):
+            calls['n'] += 1
+            if calls['n'] == 1:
+                raise RuntimeError('simulated model server hiccup')
+            return text
+
+        self.use(FakeClient(chat_fn=flaky, embed_fn=identical_embed))
+        expected = len(demo_texts()) * len(app_module.LANGUAGES)
+        app_module.run_prewarm()
+        self.assertEqual(app_module._prewarm['done'], expected)  # every item still attempted
+        with app_module.db_conn() as db:
+            count = db.execute('SELECT COUNT(*) c FROM translations').fetchone()['c']
+        self.assertEqual(count, expected - 1)  # the one that raised never got a cache row
+
+
+    # -- schema migration (an afterword.db from before the negation guard) -----
+
+    def test_init_db_migrates_a_table_missing_the_negation_flip_column(self):
+        # Simulates the real backend/afterword.db from before this fix: a
+        # translations table with the original columns only.
+        with sqlite3.connect(app_module.DB_PATH) as db:
+            db.execute('DROP TABLE translations')
+            db.execute('''CREATE TABLE translations (
+                lang TEXT NOT NULL, kind TEXT NOT NULL, source_hash TEXT NOT NULL,
+                prompt_version TEXT NOT NULL, model_id TEXT NOT NULL, text TEXT NOT NULL,
+                round_trip_score REAL NOT NULL, protected_tokens_ok INTEGER NOT NULL,
+                ms INTEGER NOT NULL, created_at TEXT NOT NULL DEFAULT (datetime('now')),
+                PRIMARY KEY (lang, kind, source_hash, prompt_version, model_id))''')
+        app_module.init_db()  # must not raise, and must add the missing column
+        with app_module.db_conn() as db:
+            cols = {row['name'] for row in db.execute('PRAGMA table_info(translations)')}
+        self.assertIn('negation_flip', cols)
+
+    # -- static frontend mount ---------------------------------------------------
+
+    def test_dist_is_served_from_the_same_origin(self):
+        r = self.client.get('/')
+        self.assertEqual(r.status_code, 200)
+        self.assertIn('Afterword', r.text)
+
+    # -- CORS ---------------------------------------------------------------------
+
+    def test_cors_defaults_to_permissive_for_local_dev(self):
+        self.assertEqual(app_module.CORS_ORIGINS, ['*'])
 
 
 class ProtectSmokeTest(unittest.TestCase):
