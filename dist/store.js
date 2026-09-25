@@ -1,6 +1,7 @@
 /* Browser-local demo state. This is not an encrypted archive or a backend. */
 const AfterwordStore = (() => {
   const KEY = 'afterword-workspace-v3';
+  let remote = false, csrfToken = '', saveTimer = 0, pending = null;
   const taskIds = ['insurance','storage','subscriptions','medical','bonds','notify-employer','gather-records'];
   const findingIds = ['insurance','medical','storage'];
   const memoryIds = ['tea','sunday','walk'];
@@ -51,8 +52,32 @@ const AfterwordStore = (() => {
     } catch { return defaults(); }
   }
   function save(value) {
+    if (remote) {
+      pending = clean(value);
+      clearTimeout(saveTimer);
+      saveTimer = setTimeout(async () => {
+        const state = pending; pending = null;
+        try {
+          const response = await fetch('/api/workspace', {method:'PUT',credentials:'same-origin',headers:{'Content-Type':'application/json','X-CSRF-Token':csrfToken},body:JSON.stringify({state})});
+          if (!response.ok) throw new Error('save failed');
+        } catch { window.dispatchEvent(new CustomEvent('afterword:save-error')); }
+      }, 350);
+      return true;
+    }
     try { localStorage.setItem(KEY, JSON.stringify({version:3,...clean(value)})); return true; }
     catch { return false; }
+  }
+  async function enableRemote(onLoad, onError) {
+    try {
+      const session = await fetch('/api/auth/session', {credentials:'same-origin'});
+      if (!session.ok) throw new Error('session unavailable');
+      csrfToken = (await session.json()).csrf_token;
+      const workspace = await fetch('/api/workspace', {credentials:'same-origin'});
+      if (!workspace.ok) throw new Error('workspace unavailable');
+      const body = await workspace.json(); remote = true;
+      try { localStorage.removeItem(KEY); localStorage.removeItem('afterword-design-v2'); } catch {}
+      onLoad(clean(body.state));
+    } catch (error) { onError?.(error); }
   }
   function validateFile(file) {
     if (!/\.(pdf|txt|csv|eml|md)$/i.test(file.name)) return 'Use a PDF, TXT, CSV, EML or Markdown file.';
@@ -60,5 +85,5 @@ const AfterwordStore = (() => {
     if (file.size > 20*1024*1024) return 'This file exceeds the 20 MB limit.';
     return '';
   }
-  return {KEY,defaults,clean,load,save,validateFile,validDate};
+  return {KEY,defaults,clean,load,save,enableRemote,validateFile,validDate};
 })();
