@@ -94,6 +94,19 @@ def check(translated, tokens):
 
 
 def restore(translated, tokens):
-    """Substitute original values back. Callers must run check() first."""
+    """Substitute original values back. Callers must run check() first.
+
+    A sentinel-looking match that isn't one of ours -- the model inventing an
+    extra ⟦Tn⟧ that was never in the input, a known failure mode phase 0
+    flagged -- has no real value to restore. It used to be echoed back
+    verbatim, which meant a fabricated sentinel could leak into the text a
+    family actually reads as raw, meaningless bracket syntax; check() already
+    flags this case as a problem, so restore()'s job is to keep it out of
+    what anyone reads, not just report it. Found via metrics.py surfacing a
+    live '... discarded. ⟦T1⟧' case in a Hindi task instruction with nothing
+    to protect in the first place -- see MULTILINGUAL-PLAN.md's gap-
+    resolution notes.
+    """
     values = {t.sentinel: t.value for t in tokens}
-    return SENTINEL_RE.sub(lambda m: values.get(m.group(), m.group()), translated)
+    restored = SENTINEL_RE.sub(lambda m: values.get(m.group(), ''), translated)
+    return re.sub(r'[ \t]{2,}', ' ', restored).strip()

@@ -17,6 +17,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / 'backend'))
+from demo_content import demo_texts  # noqa: E402
 from translate import SENTINEL_RE, check, protect, restore  # noqa: E402
 
 LLM = 'http://127.0.0.1:8000/v1'
@@ -56,24 +57,6 @@ def chat(system, text):
 def cosine(a, b):
     v = [d['embedding'] for d in post(f'{EMBED}/embeddings', {'input': [a, b]})['data']]
     return sum(x * y for x, y in zip(*v))  # vectors are normalized
-
-
-def demo_texts():
-    src = (ROOT / 'dist/pages.js').read_text()
-    unq = lambda s: s.replace("\\'", "'").replace('\\n', '\n')
-    field = lambda block, key: unq(re.search(rf"\b{key}:'((?:[^'\\]|\\.)*)'", block).group(1))
-    texts = []
-    findings = src[src.index('const findings='):src.index('function evidencePage')]
-    for fid in ('insurance', 'medical', 'storage'):
-        block = findings[findings.index(fid + ':{'):]
-        texts.append(('summary', fid, '\n\n'.join(field(block, k) for k in ('lead', 'known', 'unknown', 'next'))))
-    letters = src[src.index('const letterTemplates='):]
-    for fid in ('insurance', 'medical', 'storage'):
-        texts.append(('letter', fid, field(letters[letters.index(fid + ':{'):], 'body')))
-    task = src[src.index('function openTask'):src.index('function documentsPage')]
-    for i, s in enumerate(re.findall(r"\?'([A-Z][^'<]{40,})'|:'([A-Z][^'<]{40,})'", task)):
-        texts.append(('instruction', f'task{i}', next(x for x in s if x)))
-    return texts
 
 
 def to_format(masked, fmt):
