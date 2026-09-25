@@ -167,12 +167,18 @@ def _cancellation(charge, documents, directory):
         if doc['id'] in evidence_docs:
             continue
         text = doc.get('text') or ''
-        about = (charge['provider_id'] and doc.get('provider_id') == charge['provider_id']) or any(n in text.lower() for n in names)
         doc_date = parse_date(doc.get('date'))
-        if about and (doc_date is None or charge['last_seen'] is None or doc_date >= charge['last_seen']):
-            match = CANCELLED.search(text)
+        if not (doc_date is None or charge['last_seen'] is None or doc_date >= charge['last_seen']):
+            continue
+        if charge['provider_id'] and doc.get('provider_id') == charge['provider_id']:
+            spans = [(0, text)]
+        else:
+            # In a document about several providers, only a line naming this one can close it.
+            spans = [(m.start(), m.group(0)) for m in re.finditer(r'[^\n]+', text) if any(n in m.group(0).lower() for n in names)]
+        for offset, span in spans:
+            match = CANCELLED.search(span)
             if match:
-                return {'doc_id': doc['id'], 'quote': match.group(0), 'start': match.start(), 'end': match.end()}
+                return {'doc_id': doc['id'], 'quote': match.group(0), 'start': offset + match.start(), 'end': offset + match.end()}
     return None
 
 
@@ -264,8 +270,10 @@ def mount_drain(app, service, model=local_bucket_model, rules_path=None):
     @app.get('/drain', response_model=DrainResponse)
     def drain(done: str = Query(default='', max_length=500), as_of: Optional[str] = Query(default=None, max_length=10)):
         ids = [i for i in done.split(',') if i]
-        if len(ids) > 20 or any(not service.repo.get('findings', i) for i in ids):
-            raise HTTPException(422, 'done must list known finding ids.')
+        if len(ids) > 50 or any(not re.fullmatch(r'[\w-]{1,100}', i) for i in ids):
+            raise HTTPException(422, 'done must be a comma-separated list of action ids.')
+        # Completed actions that aren't findings carry no charges; ignore them rather than fail the card.
+        ids = [i for i in ids if service.repo.get('findings', i)]
         when = parse_date(as_of) if as_of else date.today()
         if as_of and not when:
             raise HTTPException(422, 'Use YYYY-MM-DD for as_of.')
