@@ -12,7 +12,7 @@ Config (env vars, all optional):
   EMBED_URL              default http://127.0.0.1:8003/v1
   ROUND_TRIP_THRESHOLD   default 0.85  (validated in phase 0 — see MULTILINGUAL-PLAN.md)
   PROMPT_VERSION         default "1" — bump to invalidate the cache after a prompt change
-  DB_PATH                default backend/afterword.db
+  DB_PATH                default ~/Documents/Afterword-Integration/runtime/translations.sqlite3
 """
 import hashlib
 import os
@@ -21,6 +21,7 @@ import sys
 import time
 from contextlib import contextmanager
 from pathlib import Path
+from urllib.parse import urlsplit
 
 import httpx
 from fastapi import FastAPI, HTTPException
@@ -34,7 +35,7 @@ LLM_URL = os.environ.get('LLM_URL', 'http://127.0.0.1:8000/v1')
 EMBED_URL = os.environ.get('EMBED_URL', 'http://127.0.0.1:8003/v1')
 THRESHOLD = float(os.environ.get('ROUND_TRIP_THRESHOLD', '0.85'))
 PROMPT_VERSION = os.environ.get('PROMPT_VERSION', '1')
-DB_PATH = Path(os.environ.get('DB_PATH', Path(__file__).resolve().parent / 'afterword.db'))
+DB_PATH = Path(os.environ.get('DB_PATH', Path.home() / 'Documents/Afterword-Integration/runtime/translations.sqlite3'))
 MAX_CHARS = 12000
 REQUEST_TIMEOUT = 60.0
 
@@ -45,7 +46,7 @@ LANGUAGES = {
     'vi': {'name': 'Vietnamese', 'native_name': 'Tiếng Việt', 'script': 'Latin', 'font': None},
     'hi': {'name': 'Hindi', 'native_name': 'हिन्दी', 'script': 'Devanagari',
            'font': {'family': 'Noto Sans Devanagari',
-                    'css_url': 'https://fonts.googleapis.com/css2?family=Noto+Sans+Devanagari:wght@400;600&display=swap'}},
+                    'css_url': None}},
 }
 KINDS = {'summary', 'letter', 'instruction'}
 
@@ -85,8 +86,7 @@ app = FastAPI(title='Afterword translation service')
 # Dev-only: the real demo serves dist/ from this same device (same origin, no
 # CORS needed). Locally, dist/ and this API usually run on different ports —
 # permissive CORS unblocks that without special-casing every dev port.
-app.add_middleware(CORSMiddleware, allow_origins=['*'], allow_methods=['GET', 'POST'], allow_headers=['*'])
-_client = httpx.Client(timeout=REQUEST_TIMEOUT)
+_client = httpx.Client(timeout=REQUEST_TIMEOUT,trust_env=False,follow_redirects=False)
 _model_id_cache = {'id': None}
 
 
@@ -130,14 +130,26 @@ def _startup():
 # ---- model calls -----------------------------------------------------------
 
 def llm_model_id():
-    # Cached for the process lifetime. Restart the service to pick up a model
-    # swap on the Nano — that also naturally busts the cache (see PROMPT_VERSION).
-    if not _model_id_cache['id']:
-        _model_id_cache['id'] = _client.get(f'{LLM_URL}/models').json()['data'][0]['id']
+    # Discover at request time: swapping weights must not require a backend restart.
+    local_endpoint(LLM_URL,8000)
+    response=_client.get(f'{LLM_URL}/models')
+    response.raise_for_status()
+    _model_id_cache['id'] = response.json()['data'][0]['id']
     return _model_id_cache['id']
 
 
+def local_endpoint(url,port):
+    try:
+        parsed=urlsplit(url)
+        valid=(parsed.scheme=='http' and parsed.hostname in {'127.0.0.1','localhost','::1'} and parsed.port==port and not parsed.username and not parsed.password and not parsed.query and not parsed.fragment and parsed.path.rstrip('/')=='/v1')
+    except ValueError:
+        valid=False
+    if not valid:
+        raise HTTPException(503,'Translation requires the configured local model service.')
+
+
 def chat(system, text):
+    local_endpoint(LLM_URL,8000)
     r = _client.post(f'{LLM_URL}/chat/completions', json={
         'messages': [{'role': 'system', 'content': system}, {'role': 'user', 'content': text}],
         'temperature': 0, 'max_tokens': 2048})
@@ -146,6 +158,7 @@ def chat(system, text):
 
 
 def embed(texts):
+    local_endpoint(EMBED_URL,8003)
     r = _client.post(f'{EMBED_URL}/embeddings', json={'input': texts})
     r.raise_for_status()
     return [d['embedding'] for d in r.json()['data']]
@@ -181,8 +194,9 @@ def languages():
 def health():
     def up(url):
         try:
+            local_endpoint(url,8000 if url==LLM_URL else 8003)
             return _client.get(f'{url}/models', timeout=3).status_code == 200
-        except httpx.HTTPError:
+        except (httpx.HTTPError,HTTPException):
             return False
     return {'status': 'ok', 'llm': up(LLM_URL), 'embeddings': up(EMBED_URL)}
 

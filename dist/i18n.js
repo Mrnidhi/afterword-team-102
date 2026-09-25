@@ -6,32 +6,30 @@
   // Same origin in the real demo (dist/ served by the device). During local
   // development dist/ and the backend usually run on different ports, so
   // point at the backend explicitly, or override with window.AFTERWORD_API.
-  const API = window.AFTERWORD_API ?? (location.port === '8080' ? 'http://127.0.0.1:8010' : '');
+  const API = ''; // The application and local translation API share one origin.
   // Phase 0 finding: Vietnamese needs no extra font — the app's body font
   // (Plus Jakarta Sans) already covers it. Hindi needs Noto Sans Devanagari.
   const LANGUAGES = [
     {code:'en',native:'English'},
     {code:'es',native:'Español'},
     {code:'vi',native:'Tiếng Việt'},
-    {code:'hi',native:'हिन्दी',font:{family:'Noto Sans Devanagari',cssUrl:'https://fonts.googleapis.com/css2?family=Noto+Sans+Devanagari:wght@400;600&display=swap'}},
+    {code:'hi',native:'हिन्दी'},
   ];
   const loadedFonts = new Set();
   let backendUp = null; // null = not checked yet; select stays enabled until we know it's down
 
   function ensureFont(lang) {
-    const entry = LANGUAGES.find(l => l.code === lang);
-    if (!entry?.font || loadedFonts.has(lang)) return;
+    // System script fonts are available offline; never fetch a font stylesheet.
     loadedFonts.add(lang);
-    const link = document.createElement('link');
-    link.rel = 'stylesheet';
-    link.href = entry.font.cssUrl;
-    document.head.appendChild(link);
   }
 
   async function checkTranslationHealth() {
     const controller = new AbortController();
     const timer = setTimeout(() => controller.abort(), 3000);
-    try { backendUp = (await fetch(API + '/health', {signal: controller.signal})).ok; }
+    try {
+      if(window.AfterwordRuntime?.translation===false){backendUp=false;}
+      else {const response=await fetch(API+'/health',{signal:controller.signal});const data=response.ok?await response.json():{};backendUp=!!(data.capabilities?.translation??data.embeddings);}
+    }
     catch { backendUp = false; }
     finally { clearTimeout(timer); }
     for (const select of $$('#reading-language, .lang-toggle')) select.disabled = backendUp === false;
@@ -63,11 +61,11 @@
   const translationCache = new Map();
   const cacheKey = (lang, kind, text) => `${lang}|${kind}|${text}`;
 
-  async function requestTranslation(text, kind) {
+  async function requestTranslation(text, kind, lang) {
     try {
       const r = await fetch(API + '/translate', {
-        method: 'POST', headers: {'content-type': 'application/json'},
-        body: JSON.stringify({text, target_lang: state.lang, kind}),
+        method: 'POST', headers: {'content-type': 'application/json','X-Afterword-Client':'web'},
+        body: JSON.stringify({text, target_lang: lang, kind}),
       });
       if (!r.ok) throw new Error('http ' + r.status);
       return {status: 'ok', ...(await r.json())};
@@ -90,6 +88,7 @@
   // (findings/tasks never change their own text, so this only matters for
   // letters — see letterTranslationState below).
   const lastOkText = {};
+  const activeTranslationKeys = {};
 
   // blockId must be a stable, unique id for this content (e.g. one per
   // finding or task) so a resolved fetch can patch the right element in
@@ -97,13 +96,17 @@
   // never touches, so a targeted DOM patch is used instead of re-rendering.
   window.translatedBlock = (text, kind, blockId) => {
     if (state.lang === 'en') return '';
+    if(window.AfterwordRuntime?.translation===false)return '<p class="fine">On-device translation is available in the local application.</p>';
+    const requestedLang=state.lang;
     const key = cacheKey(state.lang, kind, text);
+    activeTranslationKeys[blockId] = key;
     let cached = translationCache.get(key);
     if (!cached) {
       cached = {status: 'loading'};
       translationCache.set(key, cached);
-      requestTranslation(text, kind).then(result => {
+      requestTranslation(text, kind, requestedLang).then(result => {
         translationCache.set(key, result);
+        if(state.lang!==requestedLang||activeTranslationKeys[blockId]!==key)return;
         if (result.status === 'ok') lastOkText[blockId] = text;
         const el = document.getElementById(blockId);
         if (el) el.outerHTML = translatedBlockMarkup(blockId, result);
@@ -179,6 +182,7 @@
       if (note) note.hidden = true; // the block's own loading state covers the wait
     },
     'open-gmail': () => {
+      if(window.AfterwordRuntime?.offline){toast('Email handoffs are unavailable in this offline workspace.');return;}
       if (!validLetter()) return;
       const d = captureLetter();
       const useTranslated = sendTranslated && state.lang !== 'en';

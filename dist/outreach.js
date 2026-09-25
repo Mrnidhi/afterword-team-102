@@ -1,6 +1,7 @@
 /* Provider outreach. Local templates work on Pages; authenticated same-origin service enables Nano processing. */
 (() => {
   'use strict';
+  if(window.AfterwordRuntime?.extraction)return;
   const C=window.OutreachCore, KEY='afterword-outreach-v1', esc=escapeHTML;
   let providers=[], archive={findings:[],documents:[]}, service=null, gmailStatus=null, connection='checking', loadError='', activeFinding='insurance', activeTemplate=C.defaults.insurance;
   let resolved={}, sessions={}, pending=new Set(), refreshAfterPending=new Set(), contactTargets={}, review=null, saveTimer, syncQueue=Promise.resolve(), localAvailable=true, privacyServer=null;
@@ -243,6 +244,7 @@
   async function handoff(channel) {
     let target;
     try {
+      if(window.AfterwordRuntime?.offline)throw new Error('Email handoffs are unavailable in this offline workspace. You can review and copy the letter locally.');
       reviewStillValid();if(!review.check.compose_available)throw new Error('This letter is too long for a compose link. Copy it instead.');
       // Open synchronously while the user gesture is active. Detach opener before navigating.
       if(channel==='gmail') {target=window.open('about:blank','_blank');if(!target)throw new Error('Your browser blocked the new tab. Allow pop-ups for Afterword, or copy the letter.');target.opener=null;}

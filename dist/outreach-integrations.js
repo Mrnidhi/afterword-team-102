@@ -1,6 +1,7 @@
 /* Optional connected workflows. All network calls go through the same-origin API. */
 (() => {
   'use strict';
+  if(window.AfterwordRuntime?.offline)return;
   const O = () => window.AfterwordOutreach;
   const esc = value => String(value ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
   const call = (path, body, method='POST') => O().api(path, {method, ...(body !== undefined ? {body} : {}), long:true});

@@ -292,7 +292,7 @@ button{border:0}
 .lang-toggle-field{min-width:0}
 .lang-toggle{font:inherit;font-size:.75rem;padding:5px 8px;border-radius:8px;border:1px solid var(--line);background:var(--surface);color:var(--ink)}
 /* Devanagari glyphs sit taller above and below the baseline than Latin text. */
-[lang="hi"]{font-family:'Noto Sans Devanagari',var(--sans);line-height:1.8}
+[lang="hi"]{font-family:'Noto Sans Devanagari','Kohinoor Devanagari','Nirmala UI',system-ui,sans-serif;line-height:1.8}
 
 /* Bilingual letter view (phase 5). English is what gets sent; the second
    column is comprehension support, never the reverse. */
