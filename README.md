@@ -47,7 +47,7 @@ establish entitlement, current account status, or a legal deadline.
 
 The website keeps ten family-facing views:
 
-1. **Overview** — next action, archive counts and recent browser-local activity.
+1. **Overview** — the daily drain (what recurring charges still cost each day, traced to their sources), next action, archive counts and recent browser-local activity.
 2. **Action plan** — status/category/search filters, date/amount sorting, notes, reminders, completion/waiting/reopening and CSV export.
 3. **Documents** — searchable fictional excerpts, source previews and a validated file-name staging queue. With the local service, scanned PNG/JPEG letters can be read, compared with their OCR text, corrected and submitted to the configured local vision model for source-checked contacts.
 4. **Evidence review** — source comparisons, known/unknown distinctions, working review notes, read acknowledgements, timestamps, JSON export and print.
@@ -82,6 +82,7 @@ The frontend remains buildless HTML, CSS and JavaScript, with no new frontend de
 - `backend/scans.py`, `dist/outreach-scans.js`: bounded local Tesseract OCR, original-scan preview, versioned human corrections and confirmed local vision extraction with exact source spans.
 - `data/`: fictional archive, curated provider directory and independent resolver answer key. The public fixture copies under `dist/data/` must match.
 - `PLAN.md`, `docs/OUTREACH-TEST-PLAN.md`, `docs/METRICS.md`: feature requirements, verification coverage and measured/unmeasured boundaries.
+- `backend/drain.py`, `backend/buckets.py`, `data/charge_buckets.json`, `dist/drain.js`, `drain.css`: the daily drain counter — charges read from document text with verbatim quotes, safety-first stoppable / keep-for-now / decide-later rules, `GET /drain` and `POST /estate/date-of-death`, the overview card, breakdown and plan captions. `dist/data/drain_snapshot.json` carries the backend's figures to the static site. See `docs/DRAIN-COUNTER.md`.
 
 Tasks, reminders, notes, read marks, favorites, drafts, file metadata, reading size and background motion persist under `afterword-workspace-v3`. Legacy `afterword-design-v2` data is validated and migrated. Working notes and drafts autosave after a short typing pause and flush on navigation or page exit. Invalid reminder entries remain visibly unsaved until corrected. The last edited letter template is restored. Stored input is escaped before rendering; CSV exports neutralize formula-like values. Storage failure is visible and export remains available.
 
@@ -102,6 +103,7 @@ node tests/outreach-scans.test.cjs
 node tests/outreach-navigation.test.cjs
 node tests/findings-core.test.cjs
 node tests/findings-ui.test.cjs
+node tests/drain.test.cjs
 node scripts/check-outreach-data.cjs
 node scripts/version-assets.cjs
 node scripts/version-assets.cjs --check
@@ -163,7 +165,10 @@ Run backend verification and the independent fixture evaluation:
 ```sh
 .venv/bin/python -m pytest tests/ -q
 .venv/bin/python scripts/evaluate_outreach.py
+.venv/bin/python scripts/evaluate_drain.py
 ```
+
+After changing the archive, `data/charge_buckets.json` or `backend/drain.py`, regenerate the static site's drain figures with `.venv/bin/python scripts/drain_snapshot.py`; a test fails while that file is stale. The date of death for the daily drain is entered by the family and stored only in the local database.
 
 ## Use a reference from the records
 
