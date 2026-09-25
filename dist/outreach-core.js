@@ -53,25 +53,28 @@
     return result;
   }
   function preflight(draft, options={}) {
-    const s=snapshot(draft), issues=[], blocked=blockedFields(draft), ph=[...new Set((s.subject+'\n'+s.body).match(/\[[^\]\r\n]+\]/g)||[])];
-    if(!validEmail(s.recipient))issues.push('Enter one valid recipient email address.');
-    else if(reservedEmail(s.recipient))issues.push('This is a reserved example address. Choose a mailbox you control.');
-    else if(noReply(s.recipient))issues.push('Choose a contact address that accepts replies.');
-    if(!s.subject.trim())issues.push('Add a subject.');
-    if(/[\r\n]/.test(s.subject))issues.push('Keep the subject on one line.');
-    if(!s.body.trim())issues.push('Write the letter before reviewing.');
-    if(draft.reference_review_required||draft.reference_selection_pending)issues.push('Prepare the letter again with the selected account reference, or explicitly leave the reference out.');
-    if(ph.length)issues.push('Fill the remaining placeholders: '+ph.join(', ')+'.');
-    for(const [field,label] of Object.entries(fieldLabels))if(!String(draft.fields?.[field]||'').trim())issues.push('Add '+label.toLowerCase()+'.');
-    if(draft.fields?.writer_phone&&!validPhone(draft.fields.writer_phone))issues.push('Enter a valid contact phone number.');
-    if(draft.fields?.date_of_death&&!validDate(draft.fields.date_of_death))issues.push('Enter a valid date of death.');
-    else if(draft.fields?.date_of_death&&draft.fields.date_of_death>new Date().toISOString().slice(0,10))issues.push('Date of death cannot be in the future.');
-    if(blocked.length)issues.push('Remove '+blocked.join(', ')+'. Ask for a secure portal or postal process instead.');
+    const s=snapshot(draft), issues=[], fieldIssues=[], blocked=blockedFields(draft), ph=[...new Set((s.subject+'\n'+s.body).match(/\[[^\]\r\n]+\]/g)||[])];
+    const add=(field,message)=>{issues.push(message);fieldIssues.push({field,message});};
+    if(!validEmail(s.recipient))add('recipient','Enter one valid recipient email address.');
+    else if(reservedEmail(s.recipient))add('recipient','Choose an approved demo inbox. The address in this sample record cannot receive mail.');
+    else if(noReply(s.recipient))add('recipient','Choose a contact address that accepts replies.');
+    if(!s.subject.trim())add('subject','Add a subject.');
+    if(/[\r\n]/.test(s.subject))add('subject','Keep the subject on one line.');
+    if(!s.body.trim())add('body','Write the letter before reviewing.');
+    if(draft.reference_review_required||draft.reference_selection_pending)add('reference','Prepare the letter again with the selected account reference, or explicitly leave the reference out.');
+    const missing=Object.keys(fieldLabels).filter(field=>!String(draft.fields?.[field]||'').trim());
+    for(const field of missing)add(field,'Add '+fieldLabels[field].toLowerCase()+'.');
+    const unresolved=ph.filter(value=>!missing.some(field=>placeholders[field]===value));
+    if(unresolved.length)add('generate','Update the letter to replace: '+unresolved.join(', ')+'.');
+    if(draft.fields?.writer_phone&&!validPhone(draft.fields.writer_phone))add('writer_phone','Enter a valid contact phone number.');
+    if(draft.fields?.date_of_death&&!validDate(draft.fields.date_of_death))add('date_of_death','Enter a valid date of death.');
+    else if(draft.fields?.date_of_death&&draft.fields.date_of_death>new Date().toISOString().slice(0,10))add('date_of_death','Date of death cannot be in the future.');
+    if(blocked.length)add('body','Remove '+blocked.join(', ')+'. Ask for a secure portal or postal process instead.');
     const provider=draft.recipient_provider||{}, provenance=provider.source_kind||'user';
     const known=(options.verifiedDomains||[]).includes(emailDomain(s.recipient));
     const owned=validEmail(options.demoMailbox)&&emailDomain(options.demoMailbox)===emailDomain(s.recipient)&&s.recipient.split('@')[0].split('+')[0].toLowerCase()===options.demoMailbox.split('@')[0].split('+')[0].toLowerCase();
-    const domainWarning=validEmail(s.recipient)&&!known&&!owned;
-    return {snapshot:s,issues,blocked_fields:blocked,placeholders:ph,disclosed_fields:disclosures(draft),can_handoff:issues.length===0,compose_available:s.body.length<1500,recipient_confirmation_required:domainWarning||provenance==='lookup'||provenance==='user',domain_warning:domainWarning,source_kind:provenance};
+    const domainWarning=validEmail(s.recipient)&&!reservedEmail(s.recipient)&&!known&&!owned;
+    return {snapshot:s,issues,field_issues:fieldIssues,blocked_fields:blocked,placeholders:ph,disclosed_fields:disclosures(draft),can_handoff:issues.length===0,compose_available:s.body.length<1500,recipient_confirmation_required:domainWarning||provenance==='lookup'||provenance==='user',domain_warning:domainWarning,source_kind:provenance};
   }
   function gmailURL(draft) {
     const s=snapshot(draft);

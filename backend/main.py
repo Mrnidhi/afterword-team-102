@@ -11,7 +11,7 @@ from .service import OutreachService
 ROOT=Path(__file__).resolve().parent.parent
 
 
-def create_app(db_path=None,data_dir=None,selector=None,allowed_hosts=None,offline=False,findings_db=None,extractor=None,translations_db=None):
+def create_app(db_path=None,data_dir=None,selector=None,allowed_hosts=None,offline=False,findings_db=None,extractor=None,translations_db=None,workspace_db=None,require_login=None):
     app=FastAPI(title='Afterword local provider outreach',version='1',docs_url='/api-docs')
     runtime=Path.home()/'Documents/Afterword-Integration/runtime'
     default_outreach=runtime/'outreach.sqlite3' if offline else Path.home()/'.local/share/afterword/outreach.sqlite3'
@@ -28,6 +28,12 @@ def create_app(db_path=None,data_dir=None,selector=None,allowed_hosts=None,offli
     service=OutreachService(db_path or os.environ.get('AFTERWORD_DB',str(default_outreach)),data_dir or ROOT/'data',effective_selector)
     app.state.service=service
     app.state.offline=offline
+    from .workspace import mount_workspace
+    # Explicit temporary application DBs keep the companion workspace DB local
+    # to their directory; normal deployments use the configured runtime folder.
+    if workspace_db is None and db_path is not None and not os.environ.get('AFTERWORD_WORKSPACE_DB') and not os.environ.get('AFTERWORD_DATA_DIR'):
+        workspace_db=':memory:' if str(db_path)==':memory:' else Path(db_path).parent/'workspace.sqlite3'
+    workspace=mount_workspace(app,db_path=workspace_db,require_login=require_login,static_dir=ROOT/'dist')
     allowed_hosts=set(allowed_hosts or {'127.0.0.1','localhost','::1'})
     extraction=None
     translation=None
@@ -57,7 +63,7 @@ def create_app(db_path=None,data_dir=None,selector=None,allowed_hosts=None,offli
     @app.get('/runtime-config.js')
     def runtime_configuration():
         import json
-        settings={'offline':offline,'extraction':offline,'translation':offline,'preview':False}
+        settings={'offline':offline,'extraction':offline,'translation':offline,'preview':False,'workspace':True,'requireLogin':workspace.require_login}
         return Response('window.AfterwordRuntime=Object.freeze('+json.dumps(settings)+');',media_type='application/javascript')
 
     @app.middleware('http')
@@ -101,7 +107,7 @@ def create_app(db_path=None,data_dir=None,selector=None,allowed_hosts=None,offli
     @app.get('/health')
     def health():
         setting=service.repo.get('settings','demo_mailbox')
-        result={'service':'afterword-local','version':'1','offline':offline,'capabilities':{'outreach':True,'send_email':False,'local_llm':{'endpoint_configured':bool(os.environ.get('AFTERWORD_LLM_URL')),'default_loopback_endpoint':'http://127.0.0.1:8000/v1','verified':False},'contact_ingest':True,'gmail_compose':not offline,'extract':offline,'translation':False},'demo_mailbox':setting['email'] if setting and not offline else None}
+        result={'service':'afterword-local','version':'1','offline':offline,'capabilities':{'outreach':True,'send_email':False,'local_llm':{'endpoint_configured':bool(os.environ.get('AFTERWORD_LLM_URL')),'default_loopback_endpoint':'http://127.0.0.1:8000/v1','verified':False},'contact_ingest':True,'gmail_compose':not offline,'extract':offline,'translation':False},'demo_mailbox':setting['email'] if setting and not offline and not workspace.require_login else None}
         if extraction:
             model=extraction.health()
             result.update(contract=model['contract'],model=model.get('model'),model_status=model)
@@ -186,5 +192,6 @@ def create_app(db_path=None,data_dir=None,selector=None,allowed_hosts=None,offli
 
 if __name__=='__main__':
     import uvicorn
+    os.environ.setdefault('AFTERWORD_REQUIRE_LOGIN','1')
     runtime=Path.home()/'Documents/Afterword-Integration/runtime'
     uvicorn.run(create_app(offline=True,db_path=os.environ.get('AFTERWORD_DB',str(runtime/'outreach.sqlite3')),findings_db=os.environ.get('AFTERWORD_FINDINGS_DB',str(runtime/'findings.sqlite3'))),host='127.0.0.1',port=int(os.environ.get('AFTERWORD_PORT','4173')),workers=1)
