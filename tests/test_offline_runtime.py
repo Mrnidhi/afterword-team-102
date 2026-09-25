@@ -49,7 +49,7 @@ def test_live_contract_routes_and_offline_health_share_one_origin(client):
 
 
 def test_offline_app_has_no_cloud_routes_even_with_configured_environment(client):
-    routes={route.path for route in client.app.routes}
+    routes=set(client.app.openapi()['paths'])
     for path in ['/providers/lookup','/integrations/gmail/authorize','/integrations/gmail/callback','/outreach/{outreach_id}/gmail-draft']:
         assert path not in routes
     assert client.post('/providers/lookup',json={},headers=HEADERS).status_code in {404,405}
