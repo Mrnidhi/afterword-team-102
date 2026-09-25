@@ -1,1 +1,31 @@
-<!doctype html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#111318"><title>Account — Afterword</title><link rel="stylesheet" href="/landing.css"></head><body class="auth-body"><a class="skip" href="#main">Skip to content</a><header class="auth-nav"><a class="landing-brand" href="/"><span>a<span>·</span></span>afterword</a><a class="quiet-link" href="/">← Back to home</a></header><main id="main" class="auth-main"><section class="auth-aside"><p class="overline">PRIVATE FAMILY WORKSPACE</p><h1>Keep the practical work in one place.</h1><p>Afterword keeps account data, workspace activity, and translation on the HP system used for this demonstration.</p><div class="auth-principle"><i></i><span>Nothing is sent outside your workspace without your explicit choice.</span></div></section><section class="auth-card"><div class="auth-heading"><p class="overline" id="form-eyebrow">WELCOME BACK</p><h2 id="form-title">Sign in to your workspace.</h2><p id="form-description">Use your local Afterword account to continue.</p></div><form id="auth-form" novalidate><div id="signup-fields" hidden><label>Display name<input id="display-name" name="display_name" autocomplete="name" maxlength="80"></label></div><label>Username<input id="username" name="username" autocomplete="username" autocapitalize="none" minlength="3" maxlength="32" required></label><label>Password<input id="password" name="password" type="password" autocomplete="current-password" minlength="12" maxlength="128" required></label><p class="form-error" id="form-error" role="alert"></p><button class="cta auth-submit" id="submit-button" type="submit">Sign in <span>→</span></button></form><p class="auth-switch" id="auth-switch">New to Afterword? <a href="/signup">Create a private account</a></p><p class="auth-fine">This hackathon workspace uses local account storage. Use a unique demonstration password.</p></section></main><script src="/auth.js"></script></body></html>
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#111318">
+  <title>Account — Afterword</title>
+  <link rel="stylesheet" href="/landing.css">
+</head>
+<body class="auth-body">
+  <a class="skip" href="#main">Skip to content</a>
+  <header class="auth-nav"><a class="landing-brand" href="/"><span>a<span>·</span></span>afterword</a><a class="quiet-link" href="/">← Back to home</a></header>
+  <main id="main" class="auth-main">
+    <section class="auth-aside"><p class="overline">PRIVATE FAMILY WORKSPACE</p><h1>Keep the practical work in one place.</h1><p>Afterword keeps account data, workspace activity, and translation on the HP system used for this demonstration.</p><div class="auth-principle"><i></i><span>Nothing is sent outside your workspace without your explicit choice.</span></div></section>
+    <section class="auth-card">
+      <div class="auth-heading"><p class="overline" id="form-eyebrow">WELCOME BACK</p><h2 id="form-title">Sign in to your workspace.</h2><p id="form-description">Use your local Afterword account to continue.</p></div>
+      <form id="auth-form" novalidate>
+        <div id="signup-fields" hidden><label>Display name<input id="display-name" name="display_name" autocomplete="name" maxlength="80"></label></div>
+        <label>Username<input id="username" name="username" autocomplete="username" autocapitalize="none" minlength="3" maxlength="32" required></label>
+        <label>Password<span class="password-field"><input id="password" name="password" type="password" autocomplete="current-password" minlength="8" maxlength="128" required><button id="toggle-password" class="password-toggle" type="button" aria-controls="password" aria-pressed="false">Show</button></span></label>
+        <p class="password-hint" id="password-hint" hidden>Use 8+ characters with uppercase, lowercase, a number, and a special character.</p>
+        <p class="form-error" id="form-error" role="alert"></p>
+        <button class="cta auth-submit" id="submit-button" type="submit">Sign in <span>→</span></button>
+      </form>
+      <p class="auth-switch" id="auth-switch">New to Afterword? <a href="/signup">Create a private account</a></p>
+      <p class="auth-fine">This hackathon workspace uses local account storage. Use a unique demonstration password.</p>
+    </section>
+  </main>
+  <script src="/auth.js"></script>
+</body>
+</html>
