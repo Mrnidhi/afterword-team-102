@@ -153,15 +153,17 @@ def init_db():
                 text TEXT NOT NULL,
                 round_trip_score REAL NOT NULL,
                 protected_tokens_ok INTEGER NOT NULL,
-                negation_flip INTEGER NOT NULL DEFAULT 0,
                 ms INTEGER NOT NULL,
                 created_at TEXT NOT NULL DEFAULT (datetime('now')),
                 PRIMARY KEY (lang, kind, source_hash, prompt_version, model_id)
             )
         ''')
+<<<<<<< Updated upstream
         columns = {row[1] for row in db.execute('PRAGMA table_info(translations)')}
         if 'negation_flip' not in columns:
             db.execute('ALTER TABLE translations ADD COLUMN negation_flip INTEGER NOT NULL DEFAULT 0')
+=======
+>>>>>>> Stashed changes
 
 
 @contextmanager
@@ -266,6 +268,7 @@ def unsafe_translation():
     raise HTTPException(503, 'Local translation did not preserve the protected details. Original text remains available.')
 
 
+<<<<<<< Updated upstream
 def forward_prompt(language):
     prompt = FORWARD_PROMPT.format(language=language)
     return prompt + HINDI_GLOSSARY_HINT if language == 'Hindi' else prompt
@@ -352,6 +355,8 @@ def _start_prewarm():
         threading.Thread(target=run_prewarm, daemon=True).start()
 
 
+=======
+>>>>>>> Stashed changes
 # ---- endpoints ---------------------------------------------------------------
 
 @app.get('/languages')
@@ -372,7 +377,64 @@ def health():
 
 @app.post('/translate', response_model=TranslateResponse)
 def translate(req: TranslateRequest):
+<<<<<<< Updated upstream
     return do_translate(req.text, req.target_lang, req.kind)
+=======
+    if req.target_lang not in LANGUAGES:
+        raise HTTPException(422, f'target_lang must be one of {sorted(LANGUAGES)}')
+    if req.kind not in KINDS:
+        raise HTTPException(422, f'kind must be one of {sorted(KINDS)}')
+
+    t0 = time.perf_counter()
+    if _TOKEN_MARKUP.search(req.text):
+        # Literal protocol markers in source text would collide with new masks.
+        unsafe_translation()
+    masked, tokens = protect(req.text)
+    source_hash = hashlib.sha256(req.text.encode()).hexdigest()
+    model_id = llm_model_id()
+    language = LANGUAGES[req.target_lang]['name']
+    cache_version = PROMPT_VERSION + ':protected-' + TOKEN_GUARD_VERSION
+
+    with db_conn() as db:
+        row = db.execute(
+            'SELECT * FROM translations WHERE lang=? AND kind=? AND source_hash=? '
+            'AND prompt_version=? AND model_id=?',
+            (req.target_lang, req.kind, source_hash, cache_version, model_id)).fetchone()
+    if row and bool(row['protected_tokens_ok']) and restored_details_ok(row['text'], tokens):
+        return TranslateResponse(
+            text=row['text'], lang=req.target_lang, cached=True,
+            round_trip_score=row['round_trip_score'], protected_tokens_ok=bool(row['protected_tokens_ok']),
+            low_confidence=row['round_trip_score'] < THRESHOLD, ms=round((time.perf_counter() - t0) * 1000))
+
+    translated, problems = translate_with_retry(FORWARD_PROMPT.format(language=language), masked, tokens)
+    if problems:
+        unsafe_translation()
+
+    # The forward output already carries live sentinels, so it goes straight
+    # into the back-translation call without re-masking.
+    back = chat(BACK_PROMPT.format(language=language), translated)
+    if protected_problems(back, tokens):
+        unsafe_translation()
+    score = cosine(req.text, restore(back, tokens))
+
+    final_text = restore(translated, tokens)
+    if not restored_details_ok(final_text, tokens):
+        unsafe_translation()
+    tokens_ok = True
+    ms = round((time.perf_counter() - t0) * 1000)
+
+    with db_conn() as db:
+        db.execute('''INSERT OR REPLACE INTO translations
+            (lang, kind, source_hash, prompt_version, model_id, text, round_trip_score, protected_tokens_ok, ms)
+            VALUES (?,?,?,?,?,?,?,?,?)''',
+            (req.target_lang, req.kind, source_hash, cache_version, model_id,
+             final_text, score, tokens_ok, ms))
+        db.commit()
+
+    return TranslateResponse(text=final_text, lang=req.target_lang, cached=False,
+                              round_trip_score=score, protected_tokens_ok=tokens_ok,
+                              low_confidence=score < THRESHOLD, ms=ms)
+>>>>>>> Stashed changes
 
 
 # ---- HP-local accounts and workspace state --------------------------------
@@ -409,8 +471,11 @@ def logout(request: Request, response: Response):
     current = auth.current_session(request)
     auth.require_csrf(request, current)
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
     current = auth.current_session(request)
     auth.require_csrf(request, current)
+=======
+>>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
     auth.end_session(request)
@@ -423,8 +488,11 @@ def get_workspace(request: Request):
     current = auth.current_session(request)
     return auth.read_workspace(current['id'])
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
     current = auth.current_session(request)
     return auth.read_workspace(current['id'])
+=======
+>>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
 
@@ -435,6 +503,7 @@ def put_workspace(req: WorkspaceRequest, request: Request):
     auth.require_csrf(request, current)
     return auth.write_workspace(current['id'], req.state)
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
     current = auth.current_session(request)
     auth.require_csrf(request, current)
     return auth.write_workspace(current['id'], req.state)
@@ -442,6 +511,11 @@ def put_workspace(req: WorkspaceRequest, request: Request):
 
 # ---- public landing and protected application shells ----------------------
 # ---- public landing and protected application shells ----------------------
+=======
+
+
+# ---- public landing and protected application shells ----------------------
+>>>>>>> Stashed changes
 =======
 
 
