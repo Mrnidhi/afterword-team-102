@@ -8,3 +8,11 @@ node_modules/
 *.log
 .idea/
 .vscode/
+
+backend/afterword.db
+*.db
+*.sqlite*
+__pycache__/
+*.pyc
+.runtime/
+.venv/
