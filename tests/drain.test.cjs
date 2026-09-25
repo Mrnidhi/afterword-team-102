@@ -18,6 +18,10 @@ function harness(serve) {
     toast: text => toasts.push(text), persist: () => true, recordActivity: text => state.activity.push(text), render: () => { context.renders++; if (state.route === 'overview') context.AfterwordDrain?.card(); },
     AfterwordStore: {validDate: v => /^\d{4}-\d{2}-\d{2}$/.test(v)}, $: () => null, $$: () => [],
     document: {addEventListener: () => {}}, location: {origin: 'http://127.0.0.1:4173'}, renders: 0,
+    tasks: [{id: 'storage', category: 'Personal belongings'}, {id: 'subscriptions', category: 'Subscriptions'}, {id: 'insurance', category: 'Insurance'}],
+    documentLink: id => ['storage', 'statement'].includes(id) ? `<button class="source-link" data-action="document" data-id="${id}">${id}</button>` : '',
+    OutreachCore: {defaults: {storage: 'request_records', subscriptions: 'cancel_service', insurance: 'policy_information'}},
+    openDocument: id => { dialog.document = id; },
     fetch: async (url, options = {}) => { calls.push({url: String(url), method: options.method || 'GET', body: options.body}); return serve(String(url), options, {json, html}); },
   };
   context.window = context; context.actions = {};
@@ -84,11 +88,50 @@ const service = body => (url, options, r) => url.includes('/drain') ? r.json(200
   assert.match(card, /data-action="drain-retry"/);
   assert.ok(!h.calls.some(c => c.url.includes('drain_snapshot')));
 
+  // Breakdown: three buckets, verbatim quotes, source links that return here, existing action controls.
+  h = harness(service(base));
+  await settle();
+  assert.match(h.drain.card(), /data-action="drain-breakdown"/);
+  h.context.actions['drain-breakdown']();
+  let d = h.dialog.html;
+  assert.match(d, /What’s still charging/);
+  for (const title of ['You can stop these whenever you’re ready', 'Keep these running for now', 'These need a decision, not a cancellation']) assert.ok(d.includes(title), title);
+  assert.match(d, /<q>Monthly charge: \$129<\/q>/);
+  assert.match(d, /\$129\.00 monthly · <span class="drain-row-rate">\$4\.24 a day<\/span>/);
+  assert.match(d, /\$39\.99 monthly, assumed from one monthly statement/);
+  assert.match(d, /data-action="drain-source" data-id="storage"/);
+  assert.doesNotMatch(d, /data-action="document"/);
+  assert.match(d, /data-task="storage">Plan visit</);
+  assert.match(d, /data-action="outreach-from-task" data-id="subscriptions">Ask to cancel</);
+  assert.match(d, /Confirmed<\/span>/); assert.match(d, /Less sure<\/span>/);
+  assert.equal((d.match(/Nothing in the records belongs here\./g) || []).length, 2, 'empty buckets say so');
+  assert.match(d, /No date of death added yet/);
+  assert.match(d, /divided by 30\.44 days/);
+
+  // A keep-for-now charge is explained and can only be opened, never offered for cancellation.
+  const keep = {...base.buckets.stoppable[1], id: 'keep', label: 'Oakridge Home Insurance', bucket: 'keep_for_now', tier: 'confirmed',
+    note: 'Home insurance usually needs to stay active while the estate is settled, even if the house is empty.', finding_id: 'subscriptions'};
+  const hostile = {...base.buckets.stoppable[0], id: 'hostile', label: '<img src=x onerror=alert(1)>', stopped: true};
+  h = harness(service({...base, buckets: {stoppable: [hostile], keep_for_now: [keep], decide_later: []}, confirmed: [hostile, keep], possible: [],
+    excluded: [{id: 'x', label: 'Harbor Gym', amount: 39.99, frequency: 'monthly', reason: 'cancelled_later', evidence: []}]}));
+  await settle();
+  h.context.actions['drain-breakdown']();
+  d = h.dialog.html;
+  const keepRow = d.slice(d.indexOf('Oakridge Home Insurance'), d.indexOf('</li>', d.indexOf('Oakridge Home Insurance')));
+  assert.match(keepRow, /usually needs to stay active/);
+  assert.match(keepRow, />Open action</);
+  assert.doesNotMatch(keepRow, /cancel/i);
+  assert.ok(!d.includes('<img src=x'), 'labels are escaped');
+  assert.match(d, /&lt;img src=x onerror=alert\(1\)&gt;/);
+  const stoppedRow = d.slice(d.indexOf('&lt;img'), d.indexOf('</li>', d.indexOf('&lt;img')));
+  assert.match(stoppedRow, />Stopped</); assert.doesNotMatch(stoppedRow, /<button class="button"/);
+  assert.match(d, /Not counted \(1\)/); assert.match(d, /a later document shows it was cancelled/);
+
   // Tone: no red, no motion, serif figure.
   assert.doesNotMatch(css, /animation|@keyframes|transition/);
   assert.doesNotMatch(css, /\bred\b|crimson|#f00\b|#ff0000|danger/i);
   assert.match(css, /\.drain-figure strong\{[^}]*Newsreader/);
   assert.doesNotMatch(source, /setInterval|requestAnimationFrame/, 'the number updates on render, never on a timer');
 
-  console.log('Drain card passed: loading, service figures, date total, recompute on completion, empty, static snapshot, service error and level tone.');
+  console.log('Drain UI passed: card states, recompute on completion, static snapshot, service error, breakdown buckets, source links, safe actions, escaping and level tone.');
 })().catch(error => { console.error(error); process.exit(1); });
