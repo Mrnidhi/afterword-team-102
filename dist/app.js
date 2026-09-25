@@ -22,7 +22,7 @@ function home() {
     <a href="#plan"><span>Open actions</span><strong>${open.length.toString().padStart(2,'0')}</strong><small>${state.completed.length} completed ${icon('arrow')}</small></a>
     <a href="#evidence"><span>Unread findings</span><strong>${String(3-state.reviewed.length).padStart(2,'0')}</strong><small>3 findings · ${state.reviewed.length} read ${icon('arrow')}</small></a>
     <a href="#memories"><span>Saved memories</span><strong>${state.favorite.length.toString().padStart(2,'0')}</strong><small>A space for the personal ${icon('arrow')}</small></a>
-  </div>
+  </div>${window.AfterwordDrain?.card()||''}
   <div class="studio-hero-grid">
     <section class="next-step-card"><div class="next-step-top"><span class="eyebrow">NEXT ACTION</span></div>
       <h2>${next ? escapeHTML(next.title) : 'A little breathing room.'}</h2>
