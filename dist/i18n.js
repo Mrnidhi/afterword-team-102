@@ -13,7 +13,9 @@
     {code:'en',native:'English'},
     {code:'es',native:'Español'},
     {code:'vi',native:'Tiếng Việt'},
-    {code:'hi',native:'हिन्दी',font:{family:'Noto Sans Devanagari',cssUrl:'https://fonts.googleapis.com/css2?family=Noto+Sans+Devanagari:wght@400;600&display=swap'}},
+    // This may use an HP-installed Devanagari font when present. We do not
+    // fetch a web font: the local deployment has no third-party font traffic.
+    {code:'hi',native:'हिन्दी',font:{family:'Noto Sans Devanagari'}},
   ];
   // Phase 7 (L9, stretch): the 12 highest-traffic chrome strings — the 9 nav
   // page headings plus the 3 letter-page action buttons — pre-translated
@@ -68,10 +70,7 @@
     const entry = LANGUAGES.find(l => l.code === lang);
     if (!entry?.font || loadedFonts.has(lang)) return;
     loadedFonts.add(lang);
-    const link = document.createElement('link');
-    link.rel = 'stylesheet';
-    link.href = entry.font.cssUrl;
-    document.head.appendChild(link);
+    document.documentElement.style.setProperty('--local-script-font', entry.font.family);
   }
 
   async function checkTranslationHealth() {
@@ -279,30 +278,7 @@
       const note = $('#stale-note-' + letterType);
       if (note) note.hidden = true; // the block's own loading state covers the wait
     },
-    'open-gmail': () => {
-      if (!validLetter()) return;
-      const d = captureLetter();
-      const useTranslated = sendTranslated && state.lang !== 'en';
-      const langName = LANGUAGES.find(l => l.code === state.lang)?.native || state.lang;
-      let body = d.body;
-      if (useTranslated) {
-        const cached = translationCache.get(cacheKey(state.lang, 'letter', d.body));
-        if (cached?.status === 'ok') body = cached.text; // else: fall back to English rather than send nothing
-      }
-      const fullBody = `Dear team,\n\n${body}\n\nThank you,\n${d.name}`;
-      const compose = (b) => `https://mail.google.com/mail/?view=cm&to=${encodeURIComponent(d.recipient)}&su=${encodeURIComponent(d.subject)}&body=${encodeURIComponent(b)}`;
-      const url = compose(fullBody);
-      // Percent-encoded Devanagari/Vietnamese roughly triples in length; Gmail's
-      // compose link has practical length limits well under a typical URL max.
-      if (url.length > 1800) {
-        navigator.clipboard?.writeText(fullBody).catch(() => {});
-        window.open(compose(''), '_blank');
-        modal('Letter copied instead', `<p>This letter is long enough that Gmail's link could not carry it${useTranslated ? ` in ${langName}` : ''}. It has been copied to your clipboard — paste it into the message body. Gmail is open with the recipient and subject already filled in.</p>`, button('Done', 'close-modal', true));
-      } else {
-        window.open(url, '_blank');
-      }
-      recordActivity(`Opened Gmail with the ${useTranslated ? langName : 'English'} version of the ${letterTemplates[letterType].title.toLowerCase()}`);
-    },
+    'open-gmail': () => modal('External sending is disabled', '<p>This HP-hosted demonstration keeps letters inside your private workspace. Export or print a reviewed draft if you choose to send it yourself.</p>', button('Close', 'close-modal', true)),
   });
 
   // --- Whole-page translation (phase 8) --------------------------------------

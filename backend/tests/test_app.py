@@ -347,8 +347,40 @@ class AppTest(unittest.TestCase):
 
     # -- CORS ---------------------------------------------------------------------
 
-    def test_cors_defaults_to_permissive_for_local_dev(self):
-        self.assertEqual(app_module.CORS_ORIGINS, ['*'])
+    def test_cors_defaults_to_explicit_local_development_origins(self):
+        self.assertEqual(app_module.CORS_ORIGINS,
+                         ['http://127.0.0.1:8080', 'http://localhost:8080'])
+
+
+class AuthRoutesTest(unittest.TestCase):
+    def setUp(self):
+        self.path = Path(__file__).resolve().parent / f'_auth_{self.id().split(".")[-1]}.db'
+        for suffix in ('', '-wal', '-shm'):
+            Path(str(self.path) + suffix).unlink(missing_ok=True)
+        app_module.auth.AUTH_DB_PATH = self.path
+        app_module.auth.init_db()
+        self.client = TestClient(app_module.app)
+
+    def tearDown(self):
+        for suffix in ('', '-wal', '-shm'):
+            Path(str(self.path) + suffix).unlink(missing_ok=True)
+
+    def test_signup_authenticates_and_persists_workspace_on_hp(self):
+        signed_up = self.client.post('/api/auth/signup', json={
+            'username': 'family.demo', 'display_name': 'Family Demo',
+            'password': 'a secure local password'})
+        self.assertEqual(signed_up.status_code, 200)
+        csrf = signed_up.json()['csrf_token']
+        self.assertEqual(self.client.get('/api/auth/session').json()['user']['username'], 'family.demo')
+        saved = self.client.put('/api/workspace', headers={'X-CSRF-Token': csrf},
+                                json={'state': {'completed': ['insurance']}})
+        self.assertEqual(saved.status_code, 200)
+        self.assertEqual(self.client.get('/api/workspace').json()['state']['completed'], ['insurance'])
+
+    def test_workspace_route_requires_a_session(self):
+        response = self.client.get('/app/', follow_redirects=False)
+        self.assertEqual(response.status_code, 303)
+        self.assertEqual(response.headers['location'], '/login?next=/app/')
 
 
 class ProtectSmokeTest(unittest.TestCase):

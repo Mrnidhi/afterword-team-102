@@ -20,6 +20,7 @@ Config (env vars, all optional):
   CORS_ORIGINS           default "*" — comma-separated allowlist for any deployment that isn't same-origin
 """
 import hashlib
+import json
 import os
 import re
 import sqlite3
@@ -30,14 +31,16 @@ from contextlib import contextmanager
 from pathlib import Path
 
 import httpx
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, Request, Response
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import FileResponse, JSONResponse, RedirectResponse
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel, Field
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from demo_content import demo_texts  # noqa: E402
 from translate import check, protect, restore  # noqa: E402
+import auth  # noqa: E402
 
 LLM_URL = os.environ.get('LLM_URL', 'http://127.0.0.1:8000/v1')
 EMBED_URL = os.environ.get('EMBED_URL', 'http://127.0.0.1:8003/v1')
@@ -57,7 +60,11 @@ REQUEST_TIMEOUT = 60.0
 # backend, no cross-origin request ever happens and this setting is moot —
 # for any other deployment, set CORS_ORIGINS to an explicit comma-separated
 # allowlist instead of leaving the wildcard in place.
-CORS_ORIGINS = os.environ.get('CORS_ORIGINS', '*').split(',')
+# Same-origin is the normal application mode.  The explicit local-dev list
+# preserves the existing split-port developer workflow without allowing every
+# website on a network to call this service.
+CORS_ORIGINS = [origin for origin in os.environ.get(
+    'CORS_ORIGINS', 'http://127.0.0.1:8080,http://localhost:8080').split(',') if origin]
 
 # Phase 0 findings: Vietnamese renders fine in the app's body font (Plus
 # Jakarta Sans) with no fallback; Hindi needs Noto Sans Devanagari.
@@ -135,10 +142,40 @@ class TranslateResponse(BaseModel):
     ms: int
 
 
+class SignupRequest(BaseModel):
+    username: str
+    display_name: str
+    password: str
+
+
+class LoginRequest(BaseModel):
+    username: str
+    password: str
+
+
+class WorkspaceRequest(BaseModel):
+    state: dict
+
+
 app = FastAPI(title='Afterword translation service')
 app.add_middleware(CORSMiddleware, allow_origins=CORS_ORIGINS, allow_methods=['GET', 'POST'], allow_headers=['*'])
 _client = httpx.Client(timeout=REQUEST_TIMEOUT)
 _model_id_cache = {'id': None}
+
+
+@app.middleware('http')
+async def privacy_headers(request, call_next):
+    """Keep the browser on the HP-hosted application boundary by default."""
+    response = await call_next(request)
+    response.headers['X-Content-Type-Options'] = 'nosniff'
+    response.headers['X-Frame-Options'] = 'DENY'
+    response.headers['Referrer-Policy'] = 'no-referrer'
+    response.headers['Permissions-Policy'] = 'camera=(), microphone=(), geolocation=()'
+    response.headers['Content-Security-Policy'] = (
+        "default-src 'self'; connect-src 'self'; img-src 'self' data:; "
+        "font-src 'self'; style-src 'self'; script-src 'self'; "
+        "object-src 'none'; base-uri 'self'; frame-ancestors 'none'; form-action 'self'")
+    return response
 
 
 # ---- storage -------------------------------------------------------------
@@ -206,6 +243,7 @@ def run_prewarm():
 @app.on_event('startup')
 def _startup():
     init_db()
+    auth.init_db()
     _prewarm['started'] = True
     threading.Thread(target=run_prewarm, daemon=True).start()
 
@@ -330,6 +368,91 @@ def translate(req: TranslateRequest):
     return do_translate(req.text, req.target_lang, req.kind)
 
 
+# ---- HP-local accounts and workspace state --------------------------------
+
+def session_payload(session):
+    return {'user': {'id': session['id'], 'username': session['username'],
+                     'display_name': session['display_name']},
+            'csrf_token': session['csrf_token']}
+
+
+@app.post('/api/auth/signup')
+def signup(req: SignupRequest, response: Response):
+    user = auth.create_user(req.username, req.display_name, req.password)
+    token, csrf = auth.begin_session(user)
+    auth.set_session_cookie(response, token)
+    return {'user': user, 'csrf_token': csrf}
+
+
+@app.post('/api/auth/login')
+def login(req: LoginRequest, response: Response):
+    user = auth.verify_user(req.username, req.password)
+    token, csrf = auth.begin_session(user)
+    auth.set_session_cookie(response, token)
+    return {'user': user, 'csrf_token': csrf}
+
+
+@app.get('/api/auth/session')
+def session(request: Request):
+    return session_payload(auth.current_session(request))
+
+
+@app.post('/api/auth/logout')
+def logout(request: Request, response: Response):
+    session = auth.current_session(request)
+    auth.require_csrf(request, session)
+    auth.end_session(request)
+    auth.clear_session_cookie(response)
+    return {'ok': True}
+
+
+@app.get('/api/workspace')
+def get_workspace(request: Request):
+    session = auth.current_session(request)
+    return auth.read_workspace(session['id'])
+
+
+@app.put('/api/workspace')
+def put_workspace(req: WorkspaceRequest, request: Request):
+    session = auth.current_session(request)
+    auth.require_csrf(request, session)
+    return auth.write_workspace(session['id'], req.state)
+
+
+# ---- application shells -----------------------------------------------------
+
+_dist_dir = Path(__file__).resolve().parent.parent / 'dist'
+
+
+def static_file(name):
+    return FileResponse(_dist_dir / name)
+
+
+@app.get('/')
+def landing():
+    return static_file('landing.html')
+
+
+@app.get('/login')
+@app.get('/signup')
+def auth_page():
+    return static_file('auth.html')
+
+
+@app.get('/app')
+def app_without_slash():
+    return RedirectResponse('/app/', status_code=307)
+
+
+@app.get('/app/')
+def workspace_page(request: Request):
+    try:
+        auth.current_session(request)
+    except HTTPException:
+        return RedirectResponse('/login?next=/app/', status_code=303)
+    return static_file('app.html')
+
+
 # ---- static frontend (the real, same-origin demo path) --------------------
 # Phase 2 left this "not wired up yet" — dev has always run dist/ on its own
 # `python3 -m http.server`, cross-origin from this API. Mounted last, after
@@ -342,6 +465,5 @@ def translate(req: TranslateRequest):
 # #evidence or #letters. Run the whole demo from one origin with:
 #   cd backend && uvicorn app:app --port 8010
 # then open http://<device>:8010/ — no CORS, no dev-port guess in i18n.js.
-_dist_dir = Path(__file__).resolve().parent.parent / 'dist'
 if _dist_dir.is_dir():
     app.mount('/', StaticFiles(directory=_dist_dir, html=True), name='dist')
