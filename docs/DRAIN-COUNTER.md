@@ -60,7 +60,7 @@ Keywords match whole words only. Because the safety rules run first, "Harbor Gym
 **Not counted:**
 - One-time or unknown-frequency charges.
 - Confidence below 0.5.
-- A charge that a later document for the same provider says was cancelled.
+- A charge that a later document for the same provider says was cancelled. In a document that mentions several providers, only a cancellation on the line naming this provider counts.
 - A charge last seen more than one billing period before the date of death.
 
 Excluded charges are returned with their reason and evidence, and are listed under "Not counted" in the breakdown.
@@ -87,7 +87,7 @@ GET  /drain?done=storage,subscriptions&as_of=YYYY-MM-DD
 POST /estate/date-of-death  { "date": "YYYY-MM-DD" | null }
 ```
 
-- **`done`** takes the ids of completed plan actions, which the browser keeps in local storage. Unknown ids return 422.
+- **`done`** takes the ids of completed plan actions, which the browser keeps in local storage. Ids that aren't findings are ignored, because they carry no charges. Malformed ids, or more than 50, return 422.
 - **`as_of`** defaults to the server's current date.
 - **The date of death** is stored once as the `estate` setting in the local SQLite database. It must be a real date, not in the future and not before 1900. `null` clears it.
 - **The event log** records that the date changed, but never the date itself.

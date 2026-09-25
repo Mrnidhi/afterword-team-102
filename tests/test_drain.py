@@ -160,6 +160,11 @@ def test_a_later_cancellation_document_closes_the_charge():
     excluded = {e['label']: e for e in result['excluded']}['Harbor Gym']
     assert excluded['reason'] == 'cancelled_later'
     assert excluded['evidence'][-1]['quote'] == 'has been cancelled'
+    shared = doc('mixed', 'Account notices\nHarbor Gym: your membership has been cancelled.\nStreamly renews next month.', '2026-09-20')
+    result = drain(ARCHIVE['documents'] + [shared])
+    assert 'Harbor Gym' not in by_label(result) and 'Streamly' in by_label(result)
+    quote = {e['label']: e for e in result['excluded']}['Harbor Gym']['evidence'][-1]
+    assert shared['text'][quote['start']:quote['end']] == quote['quote'] == 'has been cancelled'
     earlier = doc('gym-cancel', 'Harbor Gym\nYour membership has been cancelled.', '2026-08-01', 'harbor-gym')
     assert 'Harbor Gym' in by_label(drain(ARCHIVE['documents'] + [earlier]))
 
@@ -213,7 +218,10 @@ def test_get_drain_returns_the_documented_shape(client):
 def test_done_ids_update_stopped_so_far_and_are_validated(client):
     body = client.get('/drain', params={'done': 'storage'}).json()
     assert body['daily'] == 0 and body['stopped_so_far'] == pytest.approx(129 / MONTHLY)
-    assert client.get('/drain', params={'done': 'storage,unknown'}).status_code == 422
+    lenient = client.get('/drain', params={'done': 'storage,a-new-plan-action'})
+    assert lenient.status_code == 200 and lenient.json()['stopped_so_far'] == pytest.approx(129 / MONTHLY)
+    assert client.get('/drain', params={'done': 'storage,<script>'}).status_code == 422
+    assert client.get('/drain', params={'done': ','.join(['storage'] * 51)}).status_code == 422
     assert client.get('/drain', params={'as_of': '24/09/2026'}).status_code == 422
 
 
