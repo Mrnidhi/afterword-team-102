@@ -93,7 +93,7 @@ The original static file queue accepts PDF, TXT, CSV, EML and Markdown names, up
 
 The app also feature-detects the browser's experimental WebMCP API and registers one read-only tool for the fictional action plan. It grants no external access. Ordinary UI operation does not depend on this API.
 
-To run locally, serve `dist/` with any static server. There is no dependency installation or build step. Before committing frontend changes, run:
+To run locally, serve `dist/` with any static server. There is no dependency installation or build step. Optional local frontend checks:
 
 ```sh
 node tests/state.test.cjs
@@ -109,7 +109,7 @@ node scripts/version-assets.cjs
 node scripts/version-assets.cjs --check
 ```
 
-The deployment workflow also syntax-checks every frontend JavaScript file.
+These checks run locally when requested; the deployment workflow only packages and publishes the website.
 
 ## Run the earlier outreach service
 
@@ -274,13 +274,13 @@ boundaries separate.
 
 ## Hosting on GitHub Pages
 
-GitHub Pages is the selected host. The workflow in `.github/workflows/pages.yml` validates the JavaScript and uploads only `dist/`, then deploys it to the `github-pages` environment. A push to `main` that changes the website or workflow triggers deployment; it can also be run manually from Actions. All asset URLs are relative, so the app works under the repository path `/afterword-team-102/`.
+GitHub Pages is the selected host. The workflow in `.github/workflows/pages.yml` uploads only `dist/`, then deploys it to the `github-pages` environment. A push to `main` that changes the website or workflow triggers deployment; it can also be run manually from Actions. All asset URLs are relative, so the app works under the repository path `/afterword-team-102/`.
 
 The repository uses GitHub Actions as its Pages publishing source. The public
 static site needs no API key or paid hosting. The local service and its database
 are not uploaded as a Pages artifact. Official actions are pinned to verified
 release commit hashes. The website and repository are public; use fictional
-records only. CI validates both the Python service and the static frontend.
+records only. Automated test and validation gates are disabled. Tests remain available for local use.
 
 The `.openai/hosting.json` file records the earlier private design-preview deployment. It is retained as historical configuration, not the active GitHub deployment configuration. Updating this repository deploys through GitHub Pages, not the earlier host.
 
