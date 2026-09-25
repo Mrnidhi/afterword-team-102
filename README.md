@@ -8,22 +8,23 @@ A family workspace for organizing the practical work after a loss. The public we
 
 ## Open and explore
 
-The website keeps ten family-facing views:
+The site opens with a public landing page that explains the purpose of Afterword and links into the existing workspace through **Try the workspace**. The workspace remains available directly at `#overview`.
+
+The website keeps nine family-facing views:
 
 1. **Overview** — the daily drain (what recurring charges still cost each day, traced to their sources), next action, archive counts and recent browser-local activity.
 2. **Action plan** — status/category/search filters, date/amount sorting, notes, reminders, completion/waiting/reopening and CSV export.
 3. **Documents** — searchable fictional excerpts, source previews and a validated file-name staging queue. With the local service, scanned PNG/JPEG letters can be read, compared with their OCR text, corrected and submitted to the configured local vision model for source-checked contacts.
 4. **Evidence review** — source comparisons, known/unknown distinctions, working review notes, read acknowledgements, timestamps, JSON export and print.
-5. **Letters** — provider contacts with source evidence, five templates, family details, exact disclosure review, Gmail/mailto/copy handoff and separately recorded sent/replied states.
-6. **Memories** — a typography-led archive of fictional writing with reading dialogs and favorites.
-7. **Ask Afterword** — four scripted source-linked examples and an honest unsupported-question response.
-8. **Privacy** — storage and connection status, outreach/disclosure history, consent records and export.
-9. **Activity** — searchable history of real changes made in this browser, with export.
-10. **Settings** — reading size, background motion, JSON export, reset and session-scoped undo.
+5. **Memories** — a typography-led archive of fictional writing with reading dialogs and favorites.
+6. **Ask Afterword** — four scripted source-linked examples and an honest unsupported-question response.
+7. **Privacy** — storage and connection status, consent records and export.
+8. **Activity** — searchable history of real changes made in this browser, with export.
+9. **Settings** — reading size, background motion, JSON export, reset and session-scoped undo.
 
 Hardware promotion, model-routing diagrams and design-research pages are deliberately kept out of the family workflow. Technical architecture and references belong in this document. The overview prioritizes the next action and dates to keep in view.
 
-Global search opens with the search control or Command/Ctrl+K. Evidence topics and sources, letter templates and document previews support hash query links. Source inspection returns to the originating action without discarding working notes. Source-tab changes preserve scroll and keyboard focus. Letters link back to the source review and related action.
+Global search opens with the search control or Command/Ctrl+K. Evidence topics and sources and document previews support hash query links. Source inspection returns to the originating action without discarding working notes. Source-tab changes preserve scroll and keyboard focus.
 
 All amounts, dates, providers, people and passages are fictional. Provider response dates and user reminders are not statutory deadlines. The policy and will excerpts concern potentially different assets and do not establish a beneficiary entitlement. The medical receipt does not establish the current balance.
 

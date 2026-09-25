@@ -102,7 +102,7 @@ const service = body => (url, options, r) => url.includes('/drain') ? r.json(200
   assert.match(d, /data-action="drain-source" data-id="storage"/);
   assert.doesNotMatch(d, /data-action="document"/);
   assert.match(d, /data-task="storage">Plan visit</);
-  assert.match(d, /data-action="outreach-from-task" data-id="subscriptions">Ask to cancel</);
+  assert.doesNotMatch(d, /data-action="outreach-from-task"|Ask to cancel/);
   assert.match(d, /Confirmed<\/span>/); assert.match(d, /Less sure<\/span>/);
   assert.equal((d.match(/Nothing in the records belongs here\./g) || []).length, 2, 'empty buckets say so');
   assert.match(d, /No date of death added yet/);

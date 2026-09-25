@@ -126,7 +126,7 @@
   async function resolve(id=activeFinding,force=false) {
     if(pending.has(id)){if(force)refreshAfterPending.add(id);return;}
     if(resolved[id]&&!force)return;
-    pending.add(id);if(state.route==='letters')render();
+    pending.add(id);
     try {
       const result=service?await api('/providers/resolve',{method:'POST',body:{finding_id:id}}):localResolve(id);
       resolved[id]=result;
@@ -138,7 +138,7 @@
       }
       loadError='';
     } catch(e){loadError=e.message;}
-    finally {pending.delete(id);if(refreshAfterPending.delete(id))await resolve(id,true);else if(state.route==='letters')render();}
+    finally {pending.delete(id);if(refreshAfterPending.delete(id))await resolve(id,true);}
   }
   function selectFinding(id,template,options={}) {
     if(!tasks.some(t=>t.id===id))return;
@@ -296,7 +296,7 @@
         if(results[1].status==='fulfilled')for(const d of [...(results[1].value.outreach||[])].sort((a,b)=>lifecycleTime(a)-lifecycleTime(b))){const stored=saved.drafts[d.finding_id+':'+d.template_id];if(!stored||Date.parse(d.updated_at)>=Date.parse(stored.updated_at))storeDraft(d,'server');updateTask(d,true);}
         else loadError='Could not reload local service drafts. Browser edits have been preserved.';
       }
-    } finally {if(connection==='checking')connection='browser';resolved={};localSave();if(['letters','settings','exposure'].includes(state.route))render();if(state.route==='letters'){startSession(activeFinding);resolve(activeFinding);}if(['letters','exposure'].includes(state.route))loadPrivacy();}
+    } finally {if(connection==='checking')connection='browser';resolved={};localSave();if(['settings','exposure'].includes(state.route))render();if(state.route==='exposure')loadPrivacy();}
   }
   async function saveSettings(form) {
     const values=new FormData(form),mailbox=String(values.get('demo_mailbox')||'').trim(),confirmed=values.get('confirmed_control')==='on';
@@ -313,7 +313,8 @@
     if(window.AfterwordOutreachIntegrations?.lookup){await window.AfterwordOutreachIntegrations.lookup({finding_id:activeFinding,provider:p,onComplete:()=>resolve(activeFinding,true)});return;}
     modal('Review a public contact lookup',`<p>This request contains only the provider’s public name and country.</p><dl class="outreach-review-envelope"><div><dt>Company</dt><dd>${esc(p.display_name)}</dd></div><div><dt>Country</dt><dd>${esc(p.country||'US')}</dd></div></dl><p class="fine">No family names, policy numbers, amounts, document excerpts or personal fields are included. Returned addresses need your verification.</p><p>The lookup connection is not configured in this interface. You can enter a verified contact yourself.</p>`,button('Keep working locally','close-modal'));
   }
-  Object.assign(window.views,{letters:lettersView,exposure:privacyView,settings:settingsView});
+  // Provider outreach remains available to the local document-ingestion internals,
+  // but it is no longer registered as a family-facing workspace view.
   Object.assign(window.actions,{
     'finding-letter':()=>selectFinding(state.selectedFinding),
     'outreach-template':a=>selectFinding(activeFinding,a.dataset.id),
@@ -339,8 +340,6 @@
     'outreach-lookup':()=>lookupDialog(),
     'outreach-gmail-settings':()=>window.AfterwordOutreachIntegrations?.gmailSettings?.()||toast('Gmail API drafts require local OAuth configuration. Gmail compose works without it.'),
     'outreach-gmail-draft':async()=>{try{reviewStillValid();if(!window.AfterwordOutreachIntegrations?.gmailDraft)throw Error('Gmail API connection is not configured. Use Open in Gmail instead.');await window.AfterwordOutreachIntegrations.gmailDraft({draft:review.draft,onComplete:({draft:completed,consent:row})=>{storeDraft(completed,'server');rememberServerConsent(row,completed);closeDialog();render();}});}catch(e){reviewError(e);}},
-    'export-exposure':()=>exportFile('afterword-privacy-report.json',JSON.stringify({exported_at:new Date().toISOString(),browserStorage:'unencrypted',localService:!!service,notice:'Outreach authorization is not a delivery receipt.',categories:exposureGroups,browserOutreach:{drafts:Object.values(saved.drafts),consents:saved.consents,events:saved.events},serviceOutreach:privacyServer},null,2),'application/json'),
-    'export-workspace':()=>exportFile('afterword-workspace.json',JSON.stringify({version:4,exportedAt:new Date().toISOString(),workspace:AfterwordStore.clean(state),outreach:saved,notice:'Contains personal draft text and editable browser history. Store the export safely.'},null,2),'application/json')
   });
   for(const action of ['task-complete','task-wait']){
     const original=window.actions[action];
@@ -357,9 +356,6 @@
   const resetAction=window.actions['confirm-reset'],undoResetAction=window.actions['undo-reset'];
   window.actions['confirm-reset']=()=>{outreachResetBackup=JSON.parse(JSON.stringify(saved));saved=empty();localSave();resolved={};resetAction();};
   window.actions['undo-reset']=()=>{if(outreachResetBackup){saved=outreachResetBackup;outreachResetBackup=null;localSave();resolved={};}undoResetAction();};
-  const priorTaskOpener=window.openTask;
-  window.openTask=id=>{startSession(id);priorTaskOpener(id);const footer=$('.modal-foot');if(footer)footer.insertAdjacentHTML('afterbegin',`<button class="button" data-action="outreach-from-task" data-id="${esc(id)}">Prepare a letter</button>`);};
-  window.actions['outreach-from-task']=a=>{closeDialog();selectFinding(a.dataset.id);};
   const stagedImport=window.openImport;
   window.openImport=()=>{
     if(!service){stagedImport();return;}
@@ -391,13 +387,10 @@
   document.addEventListener('change',e=>{if(e.target.id==='outreach-finding')selectFinding(e.target.value);else if(e.target.id==='outreach-reference'){const d=draft(),value=e.target.value;if(value==='omit'||referenceOptions(d).some(r=>r.id===value)){d.reference_choice=value;d.reference_choice_explicit=true;reconcileReference(d);localSave();render();}}else if(e.target.dataset.outreachAttachment)updateDraftValue(e.target);});
   document.addEventListener('submit',e=>{if(e.target.id==='outreach-settings-form'){e.preventDefault();saveSettings(e.target);}else if(e.target.id==='outreach-fields')e.preventDefault();});
   window.addEventListener('pagehide',()=>{clearTimeout(saveTimer);localSave();});
-  window.addEventListener('hashchange',()=>{if(state.route==='letters'){startSession(activeFinding);resolve(activeFinding);}if(['letters','exposure'].includes(state.route))loadPrivacy();});
+  window.addEventListener('hashchange',()=>{if(state.route==='exposure')loadPrivacy();});
   const outreachAfterRender=afterRender;
   afterRender=()=>{
     outreachAfterRender();
-    if(state.route==='letters'){
-      saveHint();
-    }
   };
   // Integration hooks expose safe operations, not service secrets or arbitrary endpoints.
   window.AfterwordOutreach={api,getService:()=>service,currentDraft:()=>draft(),refreshContacts:()=>resolve(activeFinding,true),openProviderLetter,storeDraft,showReview,reviewError,log,refreshPrivacy:loadPrivacy,rememberServerConsent,summary:()=>({draftCount:Object.keys(saved.drafts).length,localService:!!service,gmail:gmailStatus}),setGmailStatus:value=>{gmailStatus=value;}};

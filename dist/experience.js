@@ -2,8 +2,6 @@
 let autosaveTimer, autosavePending=false, autosaveDescription='', invalidReminder=false;
 function updateSaveStatus() {
   const label=state.storageAvailable===false?'Session only · storage unavailable':autosavePending?'Saving…':'Saved in this browser';
-  const draft=$('#draft-state');if(draft&&Object.hasOwn(state.drafts,letterType))draft.textContent=label;
-  const count=$('.saved-draft-list strong');if(count)count.textContent=Object.keys(state.drafts).length+' of 3 drafts';
   const storageLabel=$('.node-label small');if(storageLabel)storageLabel.textContent=state.storageAvailable===false?'Session only · not saved':autosavePending?'Saving changes…':'Changes saved in this browser';
   for(const id of ['task-note-state','review-note-state']){const node=$('#'+id);if(node)node.textContent=label;}
   if(!autosavePending&&state.storageAvailable!==false){if($('#task-note-state')&&!state.taskNotes[state.activeTask]&&!state.reminders[state.activeTask])$('#task-note-state').textContent='Changes save automatically in this browser.';if($('#review-note-state')&&!state.reviewNotes[state.selectedFinding])$('#review-note-state').textContent='Changes save automatically in this browser.';}
@@ -14,7 +12,6 @@ function updateSaveStatus() {
 window.flushAutosave=()=>{if(!autosavePending)return;clearTimeout(autosaveTimer);autosavePending=false;if(autosaveDescription){if(state.activity[0]?.text===autosaveDescription)state.activity[0].at=new Date().toISOString();else recordActivity(autosaveDescription);}persist();updateSaveStatus();};
 function scheduleAutosave(){autosavePending=true;updateSaveStatus();clearTimeout(autosaveTimer);autosaveTimer=setTimeout(window.flushAutosave,600);}
 document.addEventListener('input',e=>{
-  if(e.target.closest('#letter-form')&&!letterPreview){state.drafts[letterType]={...captureLetter()};state.lastDraft=letterType;autosaveDescription='Updated '+letterTemplates[letterType].title.toLowerCase()+' draft';scheduleAutosave();}
   if(e.target.closest('#task-details-form')){
     const form=new FormData($('#task-details-form')),date=String(form.get('reminder'));
     const dateControl=$('#task-details-form [name="reminder"]');

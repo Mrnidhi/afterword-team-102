@@ -147,8 +147,6 @@
   function rowAction(line) {
     const task = tasks.find(t => t.id === line.finding_id);
     if (!task || line.stopped) return '';
-    if (line.bucket === 'stoppable' && window.OutreachCore?.defaults?.[task.id] === 'cancel_service')
-      return `<button class="button" data-action="outreach-from-task" data-id="${esc(task.id)}">Ask to cancel</button>`;
     if (line.bucket === 'stoppable' && task.category === 'Personal belongings')
       return `<button class="button" data-task="${esc(task.id)}">Plan visit</button>`;
     return `<button class="button" data-task="${esc(task.id)}">Open action</button>`;
