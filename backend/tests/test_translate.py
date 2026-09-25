@@ -81,6 +81,23 @@ class CheckTest(unittest.TestCase):
     def test_invented_sentinel(self):
         self.assertEqual(check(self.masked + ' ⟦T9⟧', self.tokens), ['unexpected ⟦T9⟧'])
 
+    def test_restore_strips_an_invented_sentinel_instead_of_echoing_it(self):
+        # check() already flags this via 'unexpected ⟦T9⟧' above -- restore()
+        # must not also leak the raw, meaningless ⟦T9⟧ syntax into text a
+        # family actually reads.
+        restored = restore(self.masked + ' ⟦T9⟧', self.tokens)
+        self.assertNotIn('⟦T9⟧', restored)
+        self.assertEqual(restored, restore(self.masked, self.tokens))
+
+    def test_restore_strips_an_invented_sentinel_with_nothing_protected(self):
+        # The exact shape of the live bug this closes: a short sentence with
+        # zero real protected tokens, where the model still fabricated one.
+        text = 'Do not assume belongings can be discarded.'
+        masked, tokens = protect(text)
+        self.assertEqual(tokens, [])
+        restored = restore(masked + ' ⟦T1⟧', tokens)
+        self.assertEqual(restored, text)
+
 
 if __name__ == '__main__':
     unittest.main()

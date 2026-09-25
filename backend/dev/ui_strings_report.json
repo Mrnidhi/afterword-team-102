@@ -1,0 +1,226 @@
+{
+ "es": {
+  "$1,240 before a recorded $400 payment": {
+   "text": "$1,240 antes de un pago registrado $400",
+   "verdict": "ok",
+   "reasons": [],
+   "round_trip_score": 0.939
+  },
+  "$129 monthly charge": {
+   "text": "$129 cargo mensual",
+   "verdict": "ok",
+   "reasons": [],
+   "round_trip_score": 0.851
+  },
+  "$250,000 mentioned in a 2019 letter": {
+   "text": "$250,000 mencionó en una 2019 carta",
+   "verdict": "ok",
+   "reasons": [],
+   "round_trip_score": 1.0
+  },
+  "$55.48 in monthly charges": {
+   "text": "$55.48 en cargos mensuales",
+   "verdict": "ok",
+   "reasons": [],
+   "round_trip_score": 0.957
+  },
+  "0 file names · no contents": {
+   "text": "0 nombres de archivos · sin contenido",
+   "verdict": "ok",
+   "reasons": [],
+   "round_trip_score": 0.983
+  },
+  "0 of 3 drafts": {
+   "text": "0 de 3 bocetos",
+   "verdict": "flag",
+   "reasons": [
+    "round-trip 0.84"
+   ],
+   "round_trip_score": 0.842
+  },
+  "Overview": {
+   "override": "Resumen"
+  },
+  "Action plan": {
+   "override": "Plan de acción"
+  },
+  "Documents": {
+   "override": "Documentos"
+  },
+  "Evidence review": {
+   "override": "Revisión de la evidencia"
+  },
+  "Letters": {
+   "override": "Cartas"
+  },
+  "Memories": {
+   "override": "Recuerdos"
+  },
+  "Privacy": {
+   "override": "Privacidad"
+  },
+  "Activity": {
+   "override": "Actividad"
+  },
+  "Settings": {
+   "override": "Ajustes"
+  },
+  "Save draft": {
+   "override": "Guardar borrador"
+  },
+  "Print letter": {
+   "override": "Imprimir la carta"
+  },
+  "Open in Gmail": {
+   "override": "Abrir en Gmail"
+  }
+ },
+ "vi": {
+  "$1,240 before a recorded $400 payment": {
+   "text": "$1,240 trước khi có khoản thanh toán được ghi nhận $400",
+   "verdict": "ok",
+   "reasons": [],
+   "round_trip_score": 0.98
+  },
+  "$129 monthly charge": {
+   "text": "$129 phí hàng tháng",
+   "verdict": "ok",
+   "reasons": [],
+   "round_trip_score": 0.964
+  },
+  "$250,000 mentioned in a 2019 letter": {
+   "text": "$250,000 đã đề cập trong bức thư 2019",
+   "verdict": "ok",
+   "reasons": [],
+   "round_trip_score": 0.989
+  },
+  "$55.48 in monthly charges": {
+   "text": "$55.48 trong phí hàng tháng",
+   "verdict": "ok",
+   "reasons": [],
+   "round_trip_score": 0.955
+  },
+  "0 file names · no contents": {
+   "text": "0 tên tệp · không có nội dung",
+   "verdict": "ok",
+   "reasons": [],
+   "round_trip_score": 0.983
+  },
+  "0 of 3 drafts": {
+   "text": "0 của 3 bản thảo",
+   "verdict": "ok",
+   "reasons": [],
+   "round_trip_score": 1.0
+  },
+  "Overview": {
+   "override": "Tổng quan"
+  },
+  "Action plan": {
+   "override": "Kế hoạch hành động"
+  },
+  "Documents": {
+   "override": "Các văn bản"
+  },
+  "Evidence review": {
+   "override": "Kiểm tra bằng chứng"
+  },
+  "Letters": {
+   "override": "Thư từ"
+  },
+  "Memories": {
+   "override": "Những kỷ niệm"
+  },
+  "Privacy": {
+   "override": "Quyền riêng tư"
+  },
+  "Activity": {
+   "override": "Hoạt động"
+  },
+  "Settings": {
+   "override": "Cài đặt"
+  },
+  "Save draft": {
+   "override": "Lưu bản nháp"
+  },
+  "Print letter": {
+   "override": "In thư"
+  },
+  "Open in Gmail": {
+   "override": "Mở trong Gmail"
+  }
+ },
+ "hi": {
+  "$1,240 before a recorded $400 payment": {
+   "text": "$1,240 एक रिकॉर्ड किए गए $400 भुगतान से पहले",
+   "verdict": "ok",
+   "reasons": [],
+   "round_trip_score": 0.993
+  },
+  "$129 monthly charge": {
+   "text": "$129 मासिक शुल्क",
+   "verdict": "ok",
+   "reasons": [],
+   "round_trip_score": 0.964
+  },
+  "$250,000 mentioned in a 2019 letter": {
+   "text": "$250,000 ने एक 2019 पत्र में बताया गया है",
+   "verdict": "ok",
+   "reasons": [],
+   "round_trip_score": 0.995
+  },
+  "$55.48 in monthly charges": {
+   "text": "$55.48 मासिक शुल्क में",
+   "verdict": "ok",
+   "reasons": [],
+   "round_trip_score": 0.949
+  },
+  "0 file names · no contents": {
+   "text": "0 फ़ाइल नाम · कोई सामग्री नहीं",
+   "verdict": "ok",
+   "reasons": [],
+   "round_trip_score": 0.969
+  },
+  "0 of 3 drafts": {
+   "text": "0 ऑफ 3 ड्राफ्ट्स",
+   "verdict": "ok",
+   "reasons": [],
+   "round_trip_score": 1.0
+  },
+  "Overview": {
+   "override": "सारांश"
+  },
+  "Action plan": {
+   "override": "कार्य योजना"
+  },
+  "Documents": {
+   "override": "दस्तावेज़"
+  },
+  "Evidence review": {
+   "override": "साक्ष्य की जांच"
+  },
+  "Letters": {
+   "override": "पत्र"
+  },
+  "Memories": {
+   "override": "यादें"
+  },
+  "Privacy": {
+   "override": "गोपनीयता"
+  },
+  "Activity": {
+   "override": "गतिविधि"
+  },
+  "Settings": {
+   "override": "सेटिंग्स"
+  },
+  "Save draft": {
+   "override": "ड्राफ्ट सहेजें"
+  },
+  "Print letter": {
+   "override": "पत्र छापें"
+  },
+  "Open in Gmail": {
+   "override": "जीमेल में खोलें"
+  }
+ }
+}

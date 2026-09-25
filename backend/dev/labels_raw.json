@@ -1,0 +1,332 @@
+{
+  "es": {
+    "Overview": {
+      "text": "Resumen",
+      "lang": "es",
+      "cached": false,
+      "round_trip_score": 0.7152960985548236,
+      "protected_tokens_ok": true,
+      "low_confidence": true,
+      "ms": 461
+    },
+    "Action plan": {
+      "text": "Plan de acción\n\n⟦T1⟧\n\n⟦T2⟧",
+      "lang": "es",
+      "cached": false,
+      "round_trip_score": 0.8694860997871949,
+      "protected_tokens_ok": false,
+      "low_confidence": false,
+      "ms": 2010
+    },
+    "Documents": {
+      "text": "Documentos",
+      "lang": "es",
+      "cached": false,
+      "round_trip_score": 1.0000000121270163,
+      "protected_tokens_ok": true,
+      "low_confidence": false,
+      "ms": 269
+    },
+    "Evidence review": {
+      "text": "Revisión de la evidencia",
+      "lang": "es",
+      "cached": false,
+      "round_trip_score": 0.9999998478146105,
+      "protected_tokens_ok": true,
+      "low_confidence": false,
+      "ms": 503
+    },
+    "Letters": {
+      "text": "Cartas",
+      "lang": "es",
+      "cached": false,
+      "round_trip_score": 0.6612739132974284,
+      "protected_tokens_ok": true,
+      "low_confidence": true,
+      "ms": 268
+    },
+    "Memories": {
+      "text": "Recuerdos",
+      "lang": "es",
+      "cached": false,
+      "round_trip_score": 1.0000001190341083,
+      "protected_tokens_ok": true,
+      "low_confidence": false,
+      "ms": 365
+    },
+    "Privacy": {
+      "text": "Privacidad",
+      "lang": "es",
+      "cached": false,
+      "round_trip_score": 1.0000000180524098,
+      "protected_tokens_ok": true,
+      "low_confidence": false,
+      "ms": 269
+    },
+    "Activity": {
+      "text": "Actividad",
+      "lang": "es",
+      "cached": false,
+      "round_trip_score": 1.0000000524621049,
+      "protected_tokens_ok": true,
+      "low_confidence": false,
+      "ms": 261
+    },
+    "Settings": {
+      "text": "Ajustes",
+      "lang": "es",
+      "cached": false,
+      "round_trip_score": 0.7410643971246925,
+      "protected_tokens_ok": true,
+      "low_confidence": true,
+      "ms": 357
+    },
+    "Save draft": {
+      "text": "Guardar borrador",
+      "lang": "es",
+      "cached": false,
+      "round_trip_score": 1.0000001084812988,
+      "protected_tokens_ok": true,
+      "low_confidence": false,
+      "ms": 358
+    },
+    "Print letter": {
+      "text": "Imprimir la carta",
+      "lang": "es",
+      "cached": false,
+      "round_trip_score": 0.9608210443610112,
+      "protected_tokens_ok": true,
+      "low_confidence": false,
+      "ms": 454
+    },
+    "Open in Gmail": {
+      "text": "Abrir en Gmail",
+      "lang": "es",
+      "cached": false,
+      "round_trip_score": 1.0000000493550378,
+      "protected_tokens_ok": true,
+      "low_confidence": false,
+      "ms": 456
+    }
+  },
+  "vi": {
+    "Overview": {
+      "text": "Tổng quan",
+      "lang": "vi",
+      "cached": false,
+      "round_trip_score": 1.0000001234079443,
+      "protected_tokens_ok": true,
+      "low_confidence": false,
+      "ms": 413
+    },
+    "Action plan": {
+      "text": "Kế hoạch hành động\n\n⟦Tn⟧",
+      "lang": "vi",
+      "cached": false,
+      "round_trip_score": 0.899101241450745,
+      "protected_tokens_ok": true,
+      "low_confidence": false,
+      "ms": 944
+    },
+    "Documents": {
+      "text": "Các văn bản",
+      "lang": "vi",
+      "cached": false,
+      "round_trip_score": 0.9071491191513882,
+      "protected_tokens_ok": true,
+      "low_confidence": false,
+      "ms": 414
+    },
+    "Evidence review": {
+      "text": "Kiểm tra bằng chứng",
+      "lang": "vi",
+      "cached": false,
+      "round_trip_score": 0.8224335694830591,
+      "protected_tokens_ok": true,
+      "low_confidence": true,
+      "ms": 464
+    },
+    "Letters": {
+      "text": "Thông báo",
+      "lang": "vi",
+      "cached": false,
+      "round_trip_score": 0.6296885702127405,
+      "protected_tokens_ok": true,
+      "low_confidence": true,
+      "ms": 268
+    },
+    "Memories": {
+      "text": "Những kỷ niệm",
+      "lang": "vi",
+      "cached": false,
+      "round_trip_score": 1.0000001190341083,
+      "protected_tokens_ok": true,
+      "low_confidence": false,
+      "ms": 413
+    },
+    "Privacy": {
+      "text": "Bảo mật",
+      "lang": "vi",
+      "cached": false,
+      "round_trip_score": 0.7388516154943275,
+      "protected_tokens_ok": true,
+      "low_confidence": true,
+      "ms": 317
+    },
+    "Activity": {
+      "text": "Hoạt động",
+      "lang": "vi",
+      "cached": false,
+      "round_trip_score": 1.0000000524621049,
+      "protected_tokens_ok": true,
+      "low_confidence": false,
+      "ms": 311
+    },
+    "Settings": {
+      "text": "Cài đặt",
+      "lang": "vi",
+      "cached": false,
+      "round_trip_score": 0.6778255171160995,
+      "protected_tokens_ok": true,
+      "low_confidence": true,
+      "ms": 310
+    },
+    "Save draft": {
+      "text": "Lưu bản nháp",
+      "lang": "vi",
+      "cached": false,
+      "round_trip_score": 1.0000001084812988,
+      "protected_tokens_ok": true,
+      "low_confidence": false,
+      "ms": 456
+    },
+    "Print letter": {
+      "text": "In phiếu thư",
+      "lang": "vi",
+      "cached": false,
+      "round_trip_score": 0.8233319570526444,
+      "protected_tokens_ok": true,
+      "low_confidence": true,
+      "ms": 407
+    },
+    "Open in Gmail": {
+      "text": "Mở trong Gmail",
+      "lang": "vi",
+      "cached": false,
+      "round_trip_score": 0.9246863086605434,
+      "protected_tokens_ok": true,
+      "low_confidence": false,
+      "ms": 692
+    }
+  },
+  "hi": {
+    "Overview": {
+      "text": "सारांश",
+      "lang": "hi",
+      "cached": false,
+      "round_trip_score": 0.7152960985548236,
+      "protected_tokens_ok": true,
+      "low_confidence": true,
+      "ms": 462
+    },
+    "Action plan": {
+      "text": "कार्य योजना",
+      "lang": "hi",
+      "cached": false,
+      "round_trip_score": 0.7909752898733641,
+      "protected_tokens_ok": true,
+      "low_confidence": true,
+      "ms": 751
+    },
+    "Documents": {
+      "text": "दस्तावेज़",
+      "lang": "hi",
+      "cached": false,
+      "round_trip_score": 0.8955435597133844,
+      "protected_tokens_ok": true,
+      "low_confidence": false,
+      "ms": 646
+    },
+    "Evidence review": {
+      "text": "साक्ष्य की जांच",
+      "lang": "hi",
+      "cached": false,
+      "round_trip_score": 0.8448739793572585,
+      "protected_tokens_ok": true,
+      "low_confidence": true,
+      "ms": 898
+    },
+    "Letters": {
+      "text": "पत्र लिखना",
+      "lang": "hi",
+      "cached": false,
+      "round_trip_score": 0.7900044884343913,
+      "protected_tokens_ok": true,
+      "low_confidence": true,
+      "ms": 995
+    },
+    "Memories": {
+      "text": "यादें",
+      "lang": "hi",
+      "cached": false,
+      "round_trip_score": 1.0000001190341083,
+      "protected_tokens_ok": true,
+      "low_confidence": false,
+      "ms": 462
+    },
+    "Privacy": {
+      "text": "गुप्तचरता",
+      "lang": "hi",
+      "cached": false,
+      "round_trip_score": 0.5928386837231284,
+      "protected_tokens_ok": true,
+      "low_confidence": true,
+      "ms": 649
+    },
+    "Activity": {
+      "text": "क्रिया",
+      "lang": "hi",
+      "cached": false,
+      "round_trip_score": 0.7942478355301139,
+      "protected_tokens_ok": true,
+      "low_confidence": true,
+      "ms": 408
+    },
+    "Settings": {
+      "text": "सेटिंग्स",
+      "lang": "hi",
+      "cached": false,
+      "round_trip_score": 0.9999999275002287,
+      "protected_tokens_ok": true,
+      "low_confidence": false,
+      "ms": 552
+    },
+    "Save draft": {
+      "text": "द्रफ्ट बचाएं",
+      "lang": "hi",
+      "cached": false,
+      "round_trip_score": 1.0000001084812988,
+      "protected_tokens_ok": true,
+      "low_confidence": false,
+      "ms": 745
+    },
+    "Print letter": {
+      "text": "पत्र छापें",
+      "lang": "hi",
+      "cached": false,
+      "round_trip_score": 0.8608861341445763,
+      "protected_tokens_ok": true,
+      "low_confidence": false,
+      "ms": 939
+    },
+    "Open in Gmail": {
+      "text": "गूगल गमेल में खोलें",
+      "lang": "hi",
+      "cached": false,
+      "round_trip_score": 0.9107923000331969,
+      "protected_tokens_ok": true,
+      "low_confidence": false,
+      "ms": 1473
+    }
+  }
+}
