@@ -7,11 +7,13 @@ from fastapi.responses import JSONResponse, Response
 from fastapi.staticfiles import StaticFiles
 from .models import DraftRequest, EditRequest, ResolveRequest, ConsentRequest, SentRequest, RepliedRequest, MailboxRequest, IngestRequest
 from .service import OutreachService
+from .buckets import local_bucket_model
+from .drain import mount_drain
 
 ROOT=Path(__file__).resolve().parent.parent
 
 
-def create_app(db_path=None,data_dir=None,selector=None,allowed_hosts=None,offline=False,findings_db=None,extractor=None,translations_db=None):
+def create_app(db_path=None,data_dir=None,selector=None,allowed_hosts=None,offline=False,findings_db=None,extractor=None,translations_db=None,bucket_model=local_bucket_model):
     app=FastAPI(title='Afterword local provider outreach',version='1',docs_url='/api-docs')
     runtime=Path.home()/'Documents/Afterword-Integration/runtime'
     default_outreach=runtime/'outreach.sqlite3' if offline else Path.home()/'.local/share/afterword/outreach.sqlite3'
@@ -180,6 +182,7 @@ def create_app(db_path=None,data_dir=None,selector=None,allowed_hosts=None,offli
         mount_integrations(app,service)
         from .scans import mount_scans
         mount_scans(app,service,app.state.vision_integration)
+    mount_drain(app,service,bucket_model)
     app.mount('/',StaticFiles(directory=ROOT/'dist',html=True),name='frontend')
     return app
 
