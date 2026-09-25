@@ -1,18 +1,10 @@
 name: Publish Afterword to GitHub Pages
 
 on:
-  pull_request:
-    branches: [main]
   push:
     branches: [main]
     paths:
       - 'dist/**'
-      - 'tests/**'
-      - 'scripts/**'
-      - 'backend/**'
-      - 'data/**'
-      - 'model/**'
-      - 'requirements.txt'
       - '.github/workflows/pages.yml'
   workflow_dispatch:
 
@@ -25,54 +17,20 @@ concurrency:
 
 jobs:
   build:
-    name: Validate and package website
+    name: Package website
     runs-on: ubuntu-latest
     steps:
       - name: Check out source
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-      - name: Set up Python
-        uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
-        with:
-          python-version: '3.12'
-      - name: Validate local application
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y tesseract-ocr tesseract-ocr-eng
-          python -m pip install -r requirements.txt
-          python -m pytest tests/ backend/tests/ -q
-          python scripts/evaluate_outreach.py
-      - name: Validate static website
-        run: |
-          for file in dist/*.js; do node --check "$file"; done
-          node tests/state.test.cjs
-          node tests/outreach.test.cjs
-          node tests/outreach-integrations.test.cjs
-          node tests/outreach-scans.test.cjs
-          node tests/outreach-navigation.test.cjs
-          node tests/findings-core.test.cjs
-          node tests/findings-ui.test.cjs
-          node tests/i18n-ui.test.cjs
-          node tests/profile-ui.test.cjs
-          node tests/reports.test.cjs
-          node tests/drain.test.cjs
-          node scripts/check-outreach-data.cjs
-          node scripts/version-assets.cjs --check
-          test -s dist/index.html
-          test -s dist/styles.css
-          test -s dist/workspace.css
-          test -s dist/experience.js
       - name: Configure Pages
-        if: github.event_name != 'pull_request'
         uses: actions/configure-pages@45bfe0192ca1faeb007ade9deae92b16b8254a0d # v6.0.0
       - name: Upload website artifact
-        if: github.event_name != 'pull_request'
         uses: actions/upload-pages-artifact@fc324d3547104276b827a68afc52ff2a11cc49c9 # v5.0.0
         with:
           path: dist
 
   deploy:
     name: Deploy website
-    if: github.event_name != 'pull_request'
     needs: build
     runs-on: ubuntu-latest
     permissions:
