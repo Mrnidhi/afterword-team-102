@@ -26,6 +26,10 @@ SESSION_DAYS = int(os.environ.get('SESSION_DAYS', '7'))
 COOKIE_SECURE = os.environ.get('COOKIE_SECURE', '').lower() in {'1', 'true', 'yes'}
 MAX_STATE_BYTES = 220_000
 USERNAME_RE = re.compile(r'^[a-z0-9][a-z0-9_.-]{2,31}$')
+PASSWORD_UPPER_RE = re.compile(r'[A-Z]')
+PASSWORD_LOWER_RE = re.compile(r'[a-z]')
+PASSWORD_DIGIT_RE = re.compile(r'\d')
+PASSWORD_SPECIAL_RE = re.compile(r'[^A-Za-z0-9]')
 _passwords = PasswordHasher()
 
 
@@ -88,8 +92,12 @@ def _validate_signup(username, display_name, password):
         raise HTTPException(422, 'Use 3–32 lowercase letters, numbers, dots, dashes, or underscores for your username.')
     if not 1 <= len(display_name) <= 80:
         raise HTTPException(422, 'Enter a display name between 1 and 80 characters.')
-    if not 12 <= len(str(password or '')) <= 128:
-        raise HTTPException(422, 'Use a password of 12–128 characters.')
+    password = str(password or '')
+    if not 8 <= len(password) <= 128:
+        raise HTTPException(422, 'Use a password of 8–128 characters.')
+    if not (PASSWORD_UPPER_RE.search(password) and PASSWORD_LOWER_RE.search(password)
+            and PASSWORD_DIGIT_RE.search(password) and PASSWORD_SPECIAL_RE.search(password)):
+        raise HTTPException(422, 'Use an uppercase letter, lowercase letter, number, and special character.')
     return username, display_name
 
 
