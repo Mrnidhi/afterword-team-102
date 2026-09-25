@@ -230,3 +230,28 @@ def test_invalid_dates_of_death_are_rejected(client, value):
 def test_date_of_death_requires_the_same_origin_client(client):
     response = client.post('/estate/date-of-death', json={'date': '2026-09-03'}, headers={'X-Afterword-Client': ''})
     assert response.status_code == 403
+
+
+# ---- release checks: the public snapshot and the answer-key evaluation ---------
+
+def _script(name):
+    import importlib.util
+    spec = importlib.util.spec_from_file_location(name, ROOT / 'scripts' / (name + '.py'))
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module
+
+
+def test_static_snapshot_matches_the_backend_computation():
+    snapshot = _script('drain_snapshot')
+    assert snapshot.OUTPUT.read_text() == snapshot.render(), 'Run: python scripts/drain_snapshot.py'
+    data = json.loads(snapshot.OUTPUT.read_text())
+    assert data['variant_ids'] == ['storage', 'subscriptions']
+    assert all(v['date_of_death'] is None and v['since_death'] is None for v in data['variants'].values())
+
+
+def test_answer_key_evaluation_has_no_harms_or_mismatches():
+    evaluation = _script('evaluate_drain')
+    report = evaluation.evaluate()
+    assert evaluation.failures(report) == []
+    assert report['keep_for_now_harms']['synthetic_keep_for_now_cases'] >= 7
