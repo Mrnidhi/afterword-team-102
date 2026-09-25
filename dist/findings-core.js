@@ -159,6 +159,16 @@
     return [...new Set(reasons)];
   }
 
+  function fieldNeedsReview(value, field) {
+    if (!['amt', 'due'].includes(field)) return false;
+    if (value?.checks?.grounded?.[field] === false) return true;
+    const fieldPattern = new RegExp("(^|\\s)[\"'`]?" + field + "[\"'`]?(?=\\s|:|=|$)");
+    const errors = Array.isArray(value?.checks?.schema_errors) ? value.checks.schema_errors : [];
+    if (errors.some(error => object(error) && error.field === field || fieldPattern.test(typeof error === 'string' ? error : object(error) && typeof error.message === 'string' ? error.message : ''))) return true;
+    const returned = value?.finding?.[field];
+    return returned != null && (field === 'due' ? !Number.isSafeInteger(returned) : !finite(returned));
+  }
+
   function reviewPresentation(value) {
     const reasons = reviewReasons(value), error = value?.checks?.error;
     const unavailable = value?.status === 'failed' && typeof error === 'string' && /connection[ _-]?refused|connectionerror|failed to establish a new connection|local model (?:service )?(?:is )?unavailable|could not connect|cannot connect|ECONNREFUSED/i.test(error);
@@ -197,5 +207,5 @@
     };
   }
 
-  return Object.freeze({CONTRACT, ORDERING_BASIS, validateResult, validDate, numberValue, recordTitle, categoryLabel, actionLabel, comparePriority, sortFindings, partitionFindings, splitLines, evidenceLines, reviewReasons, reviewPresentation, statusPresentation, amountComparison, aggregateTelemetry});
+  return Object.freeze({CONTRACT, ORDERING_BASIS, validateResult, validDate, numberValue, recordTitle, categoryLabel, actionLabel, comparePriority, sortFindings, partitionFindings, splitLines, evidenceLines, reviewReasons, fieldNeedsReview, reviewPresentation, statusPresentation, amountComparison, aggregateTelemetry});
 });

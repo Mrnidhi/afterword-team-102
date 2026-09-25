@@ -105,6 +105,7 @@ def create_app(db_path=None,data_dir=None,selector=None,allowed_hosts=None,offli
         if extraction:
             model=extraction.health()
             result.update(contract=model['contract'],model=model.get('model'),model_status=model)
+            result['capabilities']['local_llm'].update(verified=bool(model.get('available')),model=model.get('model'))
             ready=translation.health()
             result['capabilities']['translation']=bool(ready['llm'] and ready['embeddings'])
             result['telemetry']={'entities_sent_to_cloud':0,'cloud_equivalent_cost':None,'scope':'current_offline_application','basis':'External integrations disabled; model and OCR processing confined to this device.'}

@@ -26,6 +26,18 @@ assert.deepEqual(C.reviewPresentation(connectionFailure), {reasons:['The local m
 assert.equal(JSON.stringify(connectionFailure),originalFailure,'Display simplification does not rewrite stored checks.');
 assert.deepEqual(C.reviewPresentation(row('failed',{}, {status:'failed',checks:{schema_errors:['unparseable']}})),{reasons:['unparseable'],details:null});
 
+// Unverified fields remain unchanged but must be presented as provisional.
+const unsupported=row('unsupported',{due:0,deadline_date:'2026-09-01',amt:0,money_at_stake:0},{status:'needs_review',checks:{schema_errors:[],grounded:{due:false,amt:false}}});
+const originalUnsupported=JSON.stringify(unsupported);
+assert.equal(C.fieldNeedsReview(unsupported,'due'),true);assert.equal(C.fieldNeedsReview(unsupported,'amt'),true);
+assert.equal(C.fieldNeedsReview(row('grounded',{due:0,amt:0},{checks:{schema_errors:[],grounded:{due:true,amt:true}}}),'due'),false);
+assert.equal(C.fieldNeedsReview(row('schema', {due:0}, {checks:{schema_errors:["'due' not an integer"],grounded:{due:true}}}),'due'),true);
+assert.equal(C.fieldNeedsReview(row('schema', {amt:0}, {checks:{schema_errors:[{field:'amt',message:'Invalid value'}],grounded:{amt:true}}}),'amt'),true);
+assert.equal(C.fieldNeedsReview(row('other', {due:0}, {checks:{schema_errors:["'kind'='due' not an allowed value"],grounded:{due:true}}}),'due'),false);
+assert.equal(C.fieldNeedsReview(row('invalid',{due:'soon'}),'due'),true);
+assert.equal(JSON.stringify(unsupported),originalUnsupported);
+assert.equal(C.sortFindings([row('later',{due:30,money_at_stake:900}),unsupported])[0],unsupported,'Provisional display does not rewrite engine priority.');
+
 // Strict calendar dates, with no browser-dependent parsing or deadline interpretation.
 for (const date of ['2026-01-31','2028-02-29','2000-02-29','0001-01-01']) assert.equal(C.validDate(date), true);
 for (const date of ['09/24/2026','2026-9-24','2026-02-29','1900-02-29','2026-04-31','2026-00-01','2026-01-00','2026-01-01T00:00:00Z','tomorrow',0,null,'0000-01-01']) assert.equal(C.validDate(date), false);
