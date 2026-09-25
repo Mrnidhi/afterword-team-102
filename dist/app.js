@@ -41,7 +41,8 @@ function render() {
   const known = nav.some(n => n[0] === state.route) || ['ask'].includes(state.route);
   const route = known ? state.route : 'overview';
   const name = nav.find(n => n[0] === route)?.[2] || ({ask:'Questions about records'}[route]);
-  document.title = name + ' — Afterword';
+  const displayName = window.uiLabel?.(name) || name;
+  document.title = displayName + ' — Afterword';
   document.documentElement.style.fontSize = state.largeText ? '18px' : '16px';
   document.documentElement.dataset.page = route;
   $('#app').innerHTML = `<aside class="sidebar">
@@ -50,13 +51,13 @@ function render() {
     <nav aria-label="Main navigation"><div class="nav-label">WORKSPACE</div><div class="nav-list">${nav.slice(0,6).map(n=>navItem(n,route)).join('')}</div><div class="nav-label">YOUR WORKSPACE</div><div class="nav-list">${nav.slice(6).map(n=>navItem(n,route)).join('')}</div></nav>
     <div class="sidebar-bottom"><a class="node-label" href="#settings">${icon('files')}<span>Sample workspace<small>Changes saved in this browser</small></span>${icon('chevron')}</a><div class="profile"><span class="avatar">PR</span><div><strong>Priya Rao</strong><small>Sample workspace</small></div><button data-action="preferences" aria-label="Appearance preferences">${icon('settings')}</button></div></div>
   </aside><button class="mobile-overlay" data-action="menu" aria-label="Close navigation"></button>
-  <div class="work-area"><header class="topbar"><button class="icon-button menu-button" data-action="menu" aria-label="Open navigation" aria-expanded="false">${icon('menu')}</button><div class="breadcrumbs"><a class="crumb-parent" href="#overview">Workspace</a><span>/</span><b>${name}</b></div><div class="top-actions"><button class="workspace-search" data-action="command" aria-label="Search workspace">${icon('search')}<span>Search workspace</span><kbd>⌘ K</kbd></button><span class="demo-label">DEMO</span><a class="ask-button" href="#ask" aria-label="Ask about records">${icon('search')}<span>Ask about records</span></a></div></header>
+  <div class="work-area"><header class="topbar"><button class="icon-button menu-button" data-action="menu" aria-label="Open navigation" aria-expanded="false">${icon('menu')}</button><div class="breadcrumbs"><a class="crumb-parent" href="#overview">Workspace</a><span>/</span><b>${displayName}</b></div><div class="top-actions"><button class="workspace-search" data-action="command" aria-label="Search workspace">${icon('search')}<span>Search workspace</span><kbd>⌘ K</kbd></button><span class="demo-label">DEMO</span><a class="ask-button" href="#ask" aria-label="Ask about records">${icon('search')}<span>Ask about records</span></a></div></header>
   <main id="main" class="main page-enter" tabindex="-1">${(window.views?.[route]||home)()}</main>
   <footer class="footnote"><span><b>AFTERWORD</b> / TEAM 102</span><span>Fictional records · Browser-local demo</span><button class="footer-help" data-action="workspace-info">How to use Afterword</button></footer></div>`;
   afterRender();
   window.restoreWorkspaceFocus?.(focus);
 }
-function navItem(n,r){return `<a class="nav-link ${n[0]===r?'active':''}" href="#${n[0]}" ${n[0]===r?'aria-current="page"':''}>${icon(n[1])}${n[2]}${n[0]==='plan'?`<span class="count">${tasks.filter(t=>status(t)!=='done').length}</span>`:''}</a>`}
+function navItem(n,r){return `<a class="nav-link ${n[0]===r?'active':''}" href="#${n[0]}" ${n[0]===r?'aria-current="page"':''}>${icon(n[1])}${window.uiLabel?.(n[2])||n[2]}${n[0]==='plan'?`<span class="count">${tasks.filter(t=>status(t)!=='done').length}</span>`:''}</a>`}
 function afterRender(){}
 document.addEventListener('click',e=>{const a=e.target.closest('[data-action]');if(!a)return;const type=a.dataset.action;if(type==='close-modal')$('#detail-dialog').close();else if(type==='menu'){const open=$('.sidebar').classList.toggle('open');$('.menu-button').setAttribute('aria-expanded',open)}else if(type==='preferences'){window.checkTranslationHealth?.();modal('Make yourself comfortable',`<p>Set the reading size and background movement that feel comfortable.</p><label class="field"><span>Text size</span><select id="text-size"><option value="normal" ${!state.largeText?'selected':''}>Standard</option><option value="large" ${state.largeText?'selected':''}>Larger</option></select></label>${window.appearanceFields?.()||''}${window.languageField?.()||''}<p class="fine">These preferences stay in this browser.</p>`,button('Save preferences','save-preferences',true))}else if(type==='save-preferences'){state.largeText=$('#text-size').value==='large';if($('#background-motion'))state.ambientMotion=$('#background-motion').value==='gentle';if($('#reading-language')){state.lang=$('#reading-language').value;window.ensureFont?.(state.lang);}const saved=persist();$('#detail-dialog').close();render();if(saved)toast('Appearance preferences saved')}else if(type==='import')window.openImport?.();else window.actions?.[type]?.(a,e)});
 document.addEventListener('click',e=>{const t=e.target.closest('[data-task]');if(t)window.openTask?.(t.dataset.task)});

@@ -1,0 +1,20 @@
+{
+ "es": {
+  "Overview": "Resumen", "Action plan": "Plan de acción", "Documents": "Documentos",
+  "Evidence review": "Revisión de la evidencia", "Letters": "Cartas", "Memories": "Recuerdos",
+  "Privacy": "Privacidad", "Activity": "Actividad", "Settings": "Ajustes",
+  "Save draft": "Guardar borrador", "Print letter": "Imprimir la carta", "Open in Gmail": "Abrir en Gmail"
+ },
+ "vi": {
+  "Overview": "Tổng quan", "Action plan": "Kế hoạch hành động", "Documents": "Các văn bản",
+  "Evidence review": "Kiểm tra bằng chứng", "Letters": "Thư từ", "Memories": "Những kỷ niệm",
+  "Privacy": "Quyền riêng tư", "Activity": "Hoạt động", "Settings": "Cài đặt",
+  "Save draft": "Lưu bản nháp", "Print letter": "In thư", "Open in Gmail": "Mở trong Gmail"
+ },
+ "hi": {
+  "Overview": "सारांश", "Action plan": "कार्य योजना", "Documents": "दस्तावेज़",
+  "Evidence review": "साक्ष्य की जांच", "Letters": "पत्र", "Memories": "यादें",
+  "Privacy": "गोपनीयता", "Activity": "गतिविधि", "Settings": "सेटिंग्स",
+  "Save draft": "ड्राफ्ट सहेजें", "Print letter": "पत्र छापें", "Open in Gmail": "जीमेल में खोलें"
+ }
+}

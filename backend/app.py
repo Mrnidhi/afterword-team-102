@@ -7,17 +7,24 @@ Run it (needs fastapi/uvicorn/httpx — present in the `zgx` conda env):
 
   cd backend && /home/hp24/miniforge3/envs/zgx/bin/python -m uvicorn app:app --port 8010
 
+This also now serves dist/ itself at that same address (see the static mount
+at the bottom of this file) — open http://<device>:8010/ for a same-origin
+demo that needs no CORS and none of dist/i18n.js's dev-port URL guessing.
+
 Config (env vars, all optional):
   LLM_URL               default http://127.0.0.1:8000/v1
   EMBED_URL              default http://127.0.0.1:8003/v1
   ROUND_TRIP_THRESHOLD   default 0.85  (validated in phase 0 — see MULTILINGUAL-PLAN.md)
-  PROMPT_VERSION         default "1" — bump to invalidate the cache after a prompt change
+  PROMPT_VERSION         default "3" — bump to invalidate the cache after a prompt or QC-check change
   DB_PATH                default backend/afterword.db
+  CORS_ORIGINS           default "*" — comma-separated allowlist for any deployment that isn't same-origin
 """
 import hashlib
 import os
+import re
 import sqlite3
 import sys
+import threading
 import time
 from contextlib import contextmanager
 from pathlib import Path
@@ -25,18 +32,32 @@ from pathlib import Path
 import httpx
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel, Field
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
+from demo_content import demo_texts  # noqa: E402
 from translate import check, protect, restore  # noqa: E402
 
 LLM_URL = os.environ.get('LLM_URL', 'http://127.0.0.1:8000/v1')
 EMBED_URL = os.environ.get('EMBED_URL', 'http://127.0.0.1:8003/v1')
 THRESHOLD = float(os.environ.get('ROUND_TRIP_THRESHOLD', '0.85'))
-PROMPT_VERSION = os.environ.get('PROMPT_VERSION', '1')
+# Bumped '1' -> '2' -> '3': the negation guard and Hindi glossary hint (v2),
+# then translate.py's restore() no longer echoing an invented sentinel
+# verbatim (v3) all change what counts as a trustworthy, clean translation —
+# every cached row needs a fresh round trip through the new checks, not just
+# a new prompt string.
+PROMPT_VERSION = os.environ.get('PROMPT_VERSION', '3')
 DB_PATH = Path(os.environ.get('DB_PATH', Path(__file__).resolve().parent / 'afterword.db'))
 MAX_CHARS = 12000
 REQUEST_TIMEOUT = 60.0
+# Dev default stays permissive: dist/ and this API commonly run on different
+# ports locally. Once dist/ is served from this same app (see the static
+# mount at the bottom of this file) or from the same origin as a deployed
+# backend, no cross-origin request ever happens and this setting is moot —
+# for any other deployment, set CORS_ORIGINS to an explicit comma-separated
+# allowlist instead of leaving the wildcard in place.
+CORS_ORIGINS = os.environ.get('CORS_ORIGINS', '*').split(',')
 
 # Phase 0 findings: Vietnamese renders fine in the app's body font (Plus
 # Jakarta Sans) with no fallback; Hindi needs Noto Sans Devanagari.
@@ -64,6 +85,39 @@ BACK_PROMPT = (
     'Keep every token that looks like ⟦Tn⟧ exactly as written, once each.'
 )
 
+# Phase 0 and phase 6 both found this model repeatedly mistranslating two
+# specific insurance/admin terms into Hindi ("policy" -> "नियमित नियम" /
+# "नियमित प्रकाशन", "provider" -> "उपकरण"). es/vi never showed this problem, so
+# this is a targeted glossary hint, not a general instruction added for every
+# language. See MULTILINGUAL-PLAN.md's gap-resolution notes for the before/
+# after re-translation that confirmed this actually fixes both cases.
+HINDI_GLOSSARY_HINT = (
+    "\n- For an insurance or financial 'policy', use पॉलिसी. For a service, "
+    "insurance or medical 'provider', use प्रदाता. Do not paraphrase either word."
+)
+
+
+def forward_prompt(language):
+    prompt = FORWARD_PROMPT.format(language=language)
+    return prompt + HINDI_GLOSSARY_HINT if language == 'Hindi' else prompt
+
+
+# Phase 0's calibration found round-trip cosine can score a flipped negation
+# ("was applied" -> "was not applied") *above* the 0.85 threshold, since the
+# two sentences are near-paraphrases in embedding space — a known blind spot,
+# not something a similarity score alone can close. This is a cheap,
+# deliberately narrow second check: it doesn't understand meaning, it only
+# asks whether a negation word appears on one side of the round trip and not
+# the other. That's enough to catch the specific failure mode phase 0 found
+# without trying to build a general fact-checker.
+NEGATION_RE = re.compile(
+    r"\b(not|never|cannot|can't|won't|doesn't|didn't|isn't|wasn't|aren't|weren't|"
+    r"hasn't|hadn't|no longer|without)\b", re.IGNORECASE)
+
+
+def negation_flip(original, round_tripped):
+    return bool(NEGATION_RE.search(original)) != bool(NEGATION_RE.search(round_tripped))
+
 
 class TranslateRequest(BaseModel):
     text: str = Field(min_length=1, max_length=MAX_CHARS)
@@ -82,10 +136,7 @@ class TranslateResponse(BaseModel):
 
 
 app = FastAPI(title='Afterword translation service')
-# Dev-only: the real demo serves dist/ from this same device (same origin, no
-# CORS needed). Locally, dist/ and this API usually run on different ports —
-# permissive CORS unblocks that without special-casing every dev port.
-app.add_middleware(CORSMiddleware, allow_origins=['*'], allow_methods=['GET', 'POST'], allow_headers=['*'])
+app.add_middleware(CORSMiddleware, allow_origins=CORS_ORIGINS, allow_methods=['GET', 'POST'], allow_headers=['*'])
 _client = httpx.Client(timeout=REQUEST_TIMEOUT)
 _model_id_cache = {'id': None}
 
@@ -105,16 +156,26 @@ def init_db():
                 text TEXT NOT NULL,
                 round_trip_score REAL NOT NULL,
                 protected_tokens_ok INTEGER NOT NULL,
+                negation_flip INTEGER NOT NULL DEFAULT 0,
                 ms INTEGER NOT NULL,
                 created_at TEXT NOT NULL DEFAULT (datetime('now')),
                 PRIMARY KEY (lang, kind, source_hash, prompt_version, model_id)
             )
         ''')
+        # Migrates a database created before the negation guard existed —
+        # CREATE TABLE IF NOT EXISTS above is a no-op against an existing
+        # table, so an old afterword.db needs this column added explicitly.
+        cols = {row[1] for row in db.execute('PRAGMA table_info(translations)')}
+        if 'negation_flip' not in cols:
+            db.execute('ALTER TABLE translations ADD COLUMN negation_flip INTEGER NOT NULL DEFAULT 0')
 
 
 @contextmanager
 def db_conn():
-    db = sqlite3.connect(DB_PATH)
+    # timeout=30: retry instead of failing immediately if another writer
+    # (the prewarm thread, a concurrent request, metrics.py run alongside
+    # the live server) holds the lock for a moment.
+    db = sqlite3.connect(DB_PATH, timeout=30)
     db.row_factory = sqlite3.Row
     try:
         yield db
@@ -122,9 +183,31 @@ def db_conn():
         db.close()
 
 
+_prewarm = {'done': 0, 'total': 0, 'started': False}
+
+
+def run_prewarm():
+    """Translates every finding, letter and task instruction into es/vi/hi at
+    startup, so the demo never waits on a cold translation on stage. Each
+    call goes through do_translate exactly as a real request would — a
+    prior run's SQLite cache just makes most of these instant."""
+    texts = demo_texts()
+    _prewarm['total'] = len(texts) * len(LANGUAGES)
+    for kind, content_id, text in texts:
+        for lang in LANGUAGES:
+            try:
+                do_translate(text, lang, kind)
+            except Exception as e:  # noqa: BLE001 — one bad item must not stop the rest
+                print(f'[prewarm] failed: {kind}/{content_id}/{lang}: {e}')
+            _prewarm['done'] += 1
+    print(f"[prewarm] done: {_prewarm['done']}/{_prewarm['total']}")
+
+
 @app.on_event('startup')
 def _startup():
     init_db()
+    _prewarm['started'] = True
+    threading.Thread(target=run_prewarm, daemon=True).start()
 
 
 # ---- model calls -----------------------------------------------------------
@@ -184,7 +267,58 @@ def health():
             return _client.get(f'{url}/models', timeout=3).status_code == 200
         except httpx.HTTPError:
             return False
-    return {'status': 'ok', 'llm': up(LLM_URL), 'embeddings': up(EMBED_URL)}
+    return {'status': 'ok', 'llm': up(LLM_URL), 'embeddings': up(EMBED_URL),
+            'prewarm': f"{_prewarm['done']}/{_prewarm['total']}" if _prewarm['started'] else 'not started'}
+
+
+def do_translate(text, target_lang, kind, bypass_cache=False):
+    """The actual translate pipeline, shared by the /translate route, the
+    startup prewarm, and metrics.py's cold-latency measurements (which pass
+    bypass_cache=True to force a real model call instead of a cache hit —
+    the result is still written to cache afterward, so it isn't wasted)."""
+    t0 = time.perf_counter()
+    source_hash = hashlib.sha256(text.encode()).hexdigest()
+    model_id = llm_model_id()
+    language = LANGUAGES[target_lang]['name']
+
+    if not bypass_cache:
+        with db_conn() as db:
+            row = db.execute(
+                'SELECT * FROM translations WHERE lang=? AND kind=? AND source_hash=? '
+                'AND prompt_version=? AND model_id=?',
+                (target_lang, kind, source_hash, PROMPT_VERSION, model_id)).fetchone()
+        if row:
+            return TranslateResponse(
+                text=row['text'], lang=target_lang, cached=True,
+                round_trip_score=row['round_trip_score'], protected_tokens_ok=bool(row['protected_tokens_ok']),
+                low_confidence=(row['round_trip_score'] < THRESHOLD) or bool(row['negation_flip']),
+                ms=round((time.perf_counter() - t0) * 1000))
+
+    masked, tokens = protect(text)
+    translated, problems = translate_with_retry(forward_prompt(language), masked, tokens)
+    tokens_ok = not problems
+
+    # The forward output already carries live sentinels, so it goes straight
+    # into the back-translation call without re-masking.
+    back = chat(BACK_PROMPT.format(language=language), translated)
+    restored_back = restore(back, tokens)
+    score = cosine(text, restored_back)
+    neg_flip = negation_flip(text, restored_back)
+
+    final_text = restore(translated, tokens)
+    ms = round((time.perf_counter() - t0) * 1000)
+
+    with db_conn() as db:
+        db.execute('''INSERT OR REPLACE INTO translations
+            (lang, kind, source_hash, prompt_version, model_id, text, round_trip_score, protected_tokens_ok, negation_flip, ms)
+            VALUES (?,?,?,?,?,?,?,?,?,?)''',
+            (target_lang, kind, source_hash, PROMPT_VERSION, model_id,
+             final_text, score, tokens_ok, neg_flip, ms))
+        db.commit()
+
+    return TranslateResponse(text=final_text, lang=target_lang, cached=False,
+                              round_trip_score=score, protected_tokens_ok=tokens_ok,
+                              low_confidence=(score < THRESHOLD) or neg_flip, ms=ms)
 
 
 @app.post('/translate', response_model=TranslateResponse)
@@ -193,43 +327,21 @@ def translate(req: TranslateRequest):
         raise HTTPException(422, f'target_lang must be one of {sorted(LANGUAGES)}')
     if req.kind not in KINDS:
         raise HTTPException(422, f'kind must be one of {sorted(KINDS)}')
+    return do_translate(req.text, req.target_lang, req.kind)
 
-    t0 = time.perf_counter()
-    source_hash = hashlib.sha256(req.text.encode()).hexdigest()
-    model_id = llm_model_id()
-    language = LANGUAGES[req.target_lang]['name']
 
-    with db_conn() as db:
-        row = db.execute(
-            'SELECT * FROM translations WHERE lang=? AND kind=? AND source_hash=? '
-            'AND prompt_version=? AND model_id=?',
-            (req.target_lang, req.kind, source_hash, PROMPT_VERSION, model_id)).fetchone()
-    if row:
-        return TranslateResponse(
-            text=row['text'], lang=req.target_lang, cached=True,
-            round_trip_score=row['round_trip_score'], protected_tokens_ok=bool(row['protected_tokens_ok']),
-            low_confidence=row['round_trip_score'] < THRESHOLD, ms=round((time.perf_counter() - t0) * 1000))
-
-    masked, tokens = protect(req.text)
-    translated, problems = translate_with_retry(FORWARD_PROMPT.format(language=language), masked, tokens)
-    tokens_ok = not problems
-
-    # The forward output already carries live sentinels, so it goes straight
-    # into the back-translation call without re-masking.
-    back = chat(BACK_PROMPT.format(language=language), translated)
-    score = cosine(req.text, restore(back, tokens))
-
-    final_text = restore(translated, tokens)
-    ms = round((time.perf_counter() - t0) * 1000)
-
-    with db_conn() as db:
-        db.execute('''INSERT OR REPLACE INTO translations
-            (lang, kind, source_hash, prompt_version, model_id, text, round_trip_score, protected_tokens_ok, ms)
-            VALUES (?,?,?,?,?,?,?,?,?)''',
-            (req.target_lang, req.kind, source_hash, PROMPT_VERSION, model_id,
-             final_text, score, tokens_ok, ms))
-        db.commit()
-
-    return TranslateResponse(text=final_text, lang=req.target_lang, cached=False,
-                              round_trip_score=score, protected_tokens_ok=tokens_ok,
-                              low_confidence=score < THRESHOLD, ms=ms)
+# ---- static frontend (the real, same-origin demo path) --------------------
+# Phase 2 left this "not wired up yet" — dev has always run dist/ on its own
+# `python3 -m http.server`, cross-origin from this API. Mounted last, after
+# every API route above: FastAPI/Starlette tries routes in registration
+# order, so /translate, /languages and /health always match their own exact
+# route first, and only a path none of them own falls through to this mount.
+# dist/ is a static, buildless SPA that routes with a URL hash (never sent to
+# a server), so serving the one index.html plus its asset files is enough —
+# no server-side catch-all/rewrite is needed for client-side routes like
+# #evidence or #letters. Run the whole demo from one origin with:
+#   cd backend && uvicorn app:app --port 8010
+# then open http://<device>:8010/ — no CORS, no dev-port guess in i18n.js.
+_dist_dir = Path(__file__).resolve().parent.parent / 'dist'
+if _dist_dir.is_dir():
+    app.mount('/', StaticFiles(directory=_dist_dir, html=True), name='dist')
