@@ -279,3 +279,42 @@ button{border:0}
 .task-details-form .fine,#review-note-state{min-height:22px}
 @media(max-width:1230px){.privacy-practical{grid-template-columns:1fr;gap:20px}.privacy-facts>div{grid-template-columns:.7fr 1fr}.upcoming-panel{padding:22px 18px}}
 @media(max-width:740px){.upcoming-panel{padding:22px 0}.upcoming-row{padding:19px 0}.upcoming-row time{font-size:.9375rem}.privacy-facts>div{grid-template-columns:1fr;gap:8px;padding:20px 0}.privacy-facts dt{font-size:.875rem}.privacy-facts dd{font-size:.9375rem}.privacy-facts small{margin-top:7px}.letter-context{flex-wrap:wrap;gap:15px;align-items:flex-start;font-size:.8125rem}.letter-context>span{width:100%}.footer-help{margin-left:0}.footnote{align-items:flex-start}.footnote>span:nth-child(2){order:0}#toast{font-size:.8125rem;gap:14px;padding:13px 16px}}
+
+/* Multilingual summaries and letters (see MULTILINGUAL-PLAN.md). Reuses
+   .subtle-box's own look rather than redefining background/padding. */
+.translated-block{background:var(--soft);border-radius:10px;padding:15px;font-size:.83rem;line-height:1.6;color:var(--muted);margin-top:16px}
+.translated-block p{margin:0 0 10px}
+.translated-block p:last-child{margin-bottom:0}
+.translated-block.loading .translated-label,.translated-block.error .translated-label{font-style:italic}
+.translated-label{display:flex;align-items:center;gap:6px;font-size:.75rem;font-weight:500;color:var(--green);margin:0 0 8px}
+.translated-label svg{width:14px;height:14px}
+.translated-block .pill.amber{margin-left:2px}
+.lang-toggle-field{min-width:0}
+.lang-toggle{font:inherit;font-size:.75rem;padding:5px 8px;border-radius:8px;border:1px solid var(--line);background:var(--surface);color:var(--ink)}
+/* Devanagari glyphs sit taller above and below the baseline than Latin text. */
+[lang="hi"]{font-family:'Noto Sans Devanagari','Kohinoor Devanagari','Nirmala UI',system-ui,sans-serif;line-height:1.8}
+
+/* Bilingual letter view (phase 5). English is what gets sent; the second
+   column is comprehension support, never the reverse. */
+.editor-toolbar-actions{display:flex;align-items:center;gap:14px}
+.letter-bilingual{display:grid;grid-template-columns:1fr;gap:0}
+@media(min-width:900px){.letter-bilingual{grid-template-columns:1fr 1fr}.letter-column-en{border-right:1px solid var(--line)}}
+.letter-column{min-width:0}
+.letter-column-label{margin:0;padding:14px 24px 0;font-size:.72rem;font-weight:600;letter-spacing:.03em;color:var(--muted);text-transform:uppercase}
+.letter-column-translated{border-top:1px solid var(--line)}
+@media(min-width:900px){.letter-column-translated{border-top:0}}
+.translated-paper{background:var(--soft)}
+.translated-block.dimmed{opacity:.5;transition:opacity .15s}
+.stale-note{display:flex;align-items:center;gap:6px;font-size:.75rem;color:var(--amber);background:var(--amber-bg);border-radius:8px;padding:8px 12px;margin:12px 0 0}
+.stale-note button{color:inherit;font-weight:600;text-decoration:underline}
+.checkbox-field{display:flex;align-items:center;gap:9px;padding:16px 24px 0;font-size:.85rem;margin-bottom:0}
+.checkbox-field input{width:16px;height:16px;flex-shrink:0}
+.checkbox-field:has(input:disabled){color:var(--muted)}
+.letter-column-translated>.fine{padding:6px 24px 18px;margin:0}
+
+@media print{
+  .letter-bilingual{display:grid!important;grid-template-columns:1fr 1fr!important;gap:24px}
+  .letter-column-en{border-right:1px dashed #999!important}
+  .checkbox-field,.stale-note,.letter-column-translated>.fine{display:none!important}
+  .letter-column-translated::after{content:"Translated on this device for comprehension. It was not reviewed by a person. The English column is what was sent.";display:block;margin-top:14px;font-size:9pt;color:#555!important}
+}

@@ -11,6 +11,7 @@
   function previewPath(id){if(typeof id!=='string'||!/^[\w.-]{1,120}$/.test(id))throw Error('The local service returned an invalid scan reference.');return '/scans/'+encodeURIComponent(id)+'/image';}
   function signatureMatches(bytes,type){return type==='image/png'?bytes.length>=8&&[137,80,78,71,13,10,26,10].every((v,i)=>bytes[i]===v):type==='image/jpeg'&&bytes.length>=3&&bytes[0]===255&&bytes[1]===216&&bytes[2]===255;}
   if(typeof module==='object'&&module.exports){module.exports={validateScanFile,previewPath,signatureMatches};return;}
+  if(window.AfterwordRuntime?.extraction)return;
   const O=()=>window.AfterwordOutreach,esc=escapeHTML,$id=id=>document.getElementById(id),KEY='afterword-pending-scans-v1';
   let current=null,engine=null,providers=[],findings=[],pending=[],uiToken=0,reviewerName='';
   try {pending=JSON.parse(localStorage.getItem(KEY)||'[]');if(!Array.isArray(pending))pending=[];pending=pending.filter(v=>v&&typeof v.id==='string'&&/^[\w.-]{1,120}$/.test(v.id)&&typeof v.filename==='string').slice(0,10);}catch{pending=[];}

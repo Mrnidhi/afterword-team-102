@@ -1,0 +1,36 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>store.js check</title></head>
+<body>
+<!-- Runs dist/store.js in a real browser against real localStorage, since no
+     `node` binary exists on this machine to run tests/state.test.cjs.
+     Mirrors that file's assertions, focused on the new `lang` field. -->
+<pre id="out">running…</pre>
+<script src="../../dist/store.js"></script>
+<script>
+const results = [];
+const assert = (label, actual, expected) => {
+  const ok = JSON.stringify(actual) === JSON.stringify(expected);
+  results.push(`${ok ? 'PASS' : 'FAIL'}  ${label}  ${ok ? '' : `got ${JSON.stringify(actual)} want ${JSON.stringify(expected)}`}`);
+};
+const clean = v => JSON.parse(JSON.stringify(AfterwordStore.clean(v)));
+
+assert('defaults().lang', clean({}).lang, 'en');
+assert('unknown lang falls back', clean({lang: 'fr'}).lang, 'en');
+assert('valid lang kept: es', clean({lang: 'es'}).lang, 'es');
+assert('valid lang kept: vi', clean({lang: 'vi'}).lang, 'vi');
+assert('valid lang kept: hi', clean({lang: 'hi'}).lang, 'hi');
+assert('prototype-pollution attempt rejected', clean({lang: '__proto__'}).lang, 'en');
+assert('non-string rejected', clean({lang: 3}).lang, 'en');
+
+localStorage.clear();
+localStorage.setItem('afterword-design-v2', JSON.stringify({savedDraft: {template: 'medical', name: 'Priya', recipient: 'x', subject: 'y', body: 'z'}}));
+assert('v2 migration defaults lang to en (v2 never had lang)', AfterwordStore.load().lang, 'en');
+
+localStorage.clear();
+AfterwordStore.save({lang: 'hi'});
+assert('save/load round-trips lang', AfterwordStore.load().lang, 'hi');
+
+document.title = results.some(r => r.startsWith('FAIL')) ? 'FAIL' : 'ALL PASS';
+document.getElementById('out').textContent = results.join('\n');
+</script>
+</body></html>

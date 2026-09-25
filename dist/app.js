@@ -64,6 +64,10 @@ function landingPage() {
   </div>`;
 }
 function render() {
+  if(window.AfterwordRuntime?.extraction && !window.AfterwordFindings){
+    $('#app').innerHTML='<main id="main" class="main" tabindex="-1"><p role="status">Opening your local workspace…</p></main>';
+    return;
+  }
   const focus=window.captureWorkspaceFocus?.();
   window.prepareRoute?.();
   const known = state.route === 'landing' || nav.some(n => n[0] === state.route) || ['ask'].includes(state.route);
@@ -75,24 +79,25 @@ function render() {
     return;
   }
   const name = nav.find(n => n[0] === route)?.[2] || ({ask:'Questions about records'}[route]);
-  document.title = name + ' — Afterword';
+  const displayName = window.uiLabel?.(name) || name;
+  document.title = displayName + ' — Afterword';
   document.documentElement.style.fontSize = state.largeText ? '18px' : '16px';
   document.documentElement.dataset.page = route;
   $('#app').innerHTML = `<aside class="sidebar">
     <a class="brand" href="#overview" aria-label="Afterword home"><span class="brand-mark">a<span>·</span></span><span>afterword<small>FAMILY WORKSPACE</small></span></a>
     <button class="estate-label" data-action="workspace-info" aria-label="About this sample workspace"><span class="avatar">AR</span><span><small>Family workspace</small><strong>Arun Rao</strong></span>${icon('info')}</button>
     <nav aria-label="Main navigation"><div class="nav-label">WORKSPACE</div><div class="nav-list">${nav.slice(0,6).map(n=>navItem(n,route)).join('')}</div><div class="nav-label">YOUR WORKSPACE</div><div class="nav-list">${nav.slice(6).map(n=>navItem(n,route)).join('')}</div></nav>
-    <div class="sidebar-bottom"><a class="node-label" href="#settings">${icon('files')}<span>Sample workspace<small>Changes saved in this browser</small></span>${icon('chevron')}</a><div class="profile"><span class="avatar">PR</span><div><strong>Priya Rao</strong><small>Sample workspace</small></div><button data-action="preferences" aria-label="Appearance preferences">${icon('settings')}</button></div></div>
+    <div class="sidebar-bottom"><a class="node-label" href="#settings">${icon('server')}<span>Private workspace<small>Saved on this HP system</small></span>${icon('chevron')}</a><div class="profile"><span class="avatar">PR</span><div><strong>Priya Rao</strong><small>Sample workspace</small></div><button data-action="preferences" aria-label="Appearance preferences">${icon('settings')}</button></div></div>
   </aside><button class="mobile-overlay" data-action="menu" aria-label="Close navigation"></button>
-  <div class="work-area"><header class="topbar"><button class="icon-button menu-button" data-action="menu" aria-label="Open navigation" aria-expanded="false">${icon('menu')}</button><div class="breadcrumbs"><a class="crumb-parent" href="#overview">Workspace</a><span>/</span><b>${name}</b></div><div class="top-actions"><button class="workspace-search" data-action="command" aria-label="Search workspace">${icon('search')}<span>Search workspace</span><kbd>⌘ K</kbd></button><span class="demo-label">DEMO</span><a class="ask-button" href="#ask" aria-label="Ask about records">${icon('search')}<span>Ask about records</span></a></div></header>
+  <div class="work-area"><header class="topbar"><button class="icon-button menu-button" data-action="menu" aria-label="Open navigation" aria-expanded="false">${icon('menu')}</button><div class="breadcrumbs"><a class="crumb-parent" href="#overview">Workspace</a><span>/</span><b>${displayName}</b></div><div class="top-actions"><button class="workspace-search" data-action="command" aria-label="Search workspace">${icon('search')}<span>Search workspace</span><kbd>⌘ K</kbd></button><span class="demo-label">DEMO</span><a class="ask-button" href="#ask" aria-label="Ask about records">${icon('search')}<span>Ask about records</span></a></div></header>
   <main id="main" class="main page-enter" tabindex="-1">${(window.views?.[route]||home)()}</main>
-  <footer class="footnote"><span><b>AFTERWORD</b> / TEAM 102</span><span>Fictional records · Browser-local demo</span><button class="footer-help" data-action="workspace-info">How to use Afterword</button></footer></div>`;
+  <footer class="footnote"><span><b>AFTERWORD</b> / TEAM 102</span><span>Fictional records · Private HP-hosted workspace</span><button class="footer-help" data-action="workspace-info">How to use Afterword</button></footer></div>`;
   afterRender();
   window.restoreWorkspaceFocus?.(focus);
 }
-function navItem(n,r){return `<a class="nav-link ${n[0]===r?'active':''}" href="#${n[0]}" ${n[0]===r?'aria-current="page"':''}>${icon(n[1])}${n[2]}${n[0]==='plan'?`<span class="count">${tasks.filter(t=>status(t)!=='done').length}</span>`:''}</a>`}
+function navItem(n,r){return `<a class="nav-link ${n[0]===r?'active':''}" href="#${n[0]}" ${n[0]===r?'aria-current="page"':''}>${icon(n[1])}${window.uiLabel?.(n[2])||n[2]}${n[0]==='plan'?`<span class="count">${tasks.filter(t=>status(t)!=='done').length}</span>`:''}</a>`}
 function afterRender(){}
-document.addEventListener('click',e=>{const a=e.target.closest('[data-action]');if(!a)return;const type=a.dataset.action;if(type==='close-modal')$('#detail-dialog').close();else if(type==='menu'){const open=$('.sidebar').classList.toggle('open');$('.menu-button').setAttribute('aria-expanded',open)}else if(type==='preferences')modal('Make yourself comfortable',`<p>Set the reading size and background movement that feel comfortable.</p><label class="field"><span>Text size</span><select id="text-size"><option value="normal" ${!state.largeText?'selected':''}>Standard</option><option value="large" ${state.largeText?'selected':''}>Larger</option></select></label>${window.appearanceFields?.()||''}<p class="fine">These preferences stay in this browser.</p>`,button('Save preferences','save-preferences',true));else if(type==='save-preferences'){state.largeText=$('#text-size').value==='large';if($('#background-motion'))state.ambientMotion=$('#background-motion').value==='gentle';const saved=persist();$('#detail-dialog').close();render();if(saved)toast('Appearance preferences saved')}else if(type==='import')window.openImport?.();else window.actions?.[type]?.(a,e)});
+document.addEventListener('click',e=>{const a=e.target.closest('[data-action]');if(!a)return;const type=a.dataset.action;if(type==='close-modal')$('#detail-dialog').close();else if(type==='menu'){const open=$('.sidebar').classList.toggle('open');$('.menu-button').setAttribute('aria-expanded',open)}else if(type==='preferences'){window.checkTranslationHealth?.();modal('Make yourself comfortable',`<p>Set the reading size and background movement that feel comfortable.</p><label class="field"><span>Text size</span><select id="text-size"><option value="normal" ${!state.largeText?'selected':''}>Standard</option><option value="large" ${state.largeText?'selected':''}>Larger</option></select></label>${window.appearanceFields?.()||''}${window.languageField?.()||''}<p class="fine">These preferences are saved with your private workspace.</p>`,button('Save preferences','save-preferences',true))}else if(type==='save-preferences'){state.largeText=$('#text-size').value==='large';if($('#background-motion'))state.ambientMotion=$('#background-motion').value==='gentle';if($('#reading-language')){state.lang=$('#reading-language').value;window.ensureFont?.(state.lang);}const saved=persist();$('#detail-dialog').close();render();if(saved)toast('Appearance preferences saved')}else if(type==='import')window.openImport?.();else window.actions?.[type]?.(a,e)});
 document.addEventListener('click',e=>{const t=e.target.closest('[data-task]');if(t)window.openTask?.(t.dataset.task)});
 $('#detail-dialog').addEventListener('click',e=>{if(e.target===$('#detail-dialog'))$('#detail-dialog').close()});
 window.addEventListener('hashchange',()=>{const hash=location.hash.slice(1).split('?')[0];if(state.route==='landing'&&['how-it-helps','workspace-features'].includes(hash)){document.getElementById(hash)?.scrollIntoView({behavior:'smooth'});return;}const previous=state.route;window.flushAutosave?.();state.route=hash||'landing';const changed=previous!==state.route;state.pageChanged=changed;$('#detail-dialog').close();render();if(changed){window.scrollTo({top:0});$('#main')?.focus({preventScroll:true});}});
@@ -102,6 +107,7 @@ window.actions={
   command:()=>openCommand()
 };
 function openCommand() {
+  if(window.AfterwordFindings?.active()){go('ask');return;}
   modal('Search your workspace','<label class="search-field command-field">'+icon('search')+'<input id="command-input" placeholder="Search pages, documents or actions…" aria-label="Search pages, documents or actions" autocomplete="off"></label><div id="command-results">'+commandResults('')+'</div>');
   $('#command-input').focus();
 }
@@ -116,3 +122,16 @@ window.actions['command-go']=a=>{$('#detail-dialog').close();go(a.dataset.route)
 document.addEventListener('input',e=>{if(e.target.id==='command-input')$('#command-results').innerHTML=commandResults(e.target.value)});
 document.addEventListener('keydown',e=>{if((e.metaKey||e.ctrlKey)&&e.key.toLowerCase()==='k'){e.preventDefault();openCommand()}});
 render();
+// Authenticated deployments use the HP-hosted workspace as the only
+// authoritative store.  The small localStorage path remains solely for the
+// standalone static prototype and its existing offline tests.
+AfterwordStore.enableRemote(remoteState=>{
+  Object.assign(state,remoteState); state.storageAvailable=true; render();
+},()=>{
+  state.storageAvailable=false;
+  toast('Your private workspace could not be reached. Changes will not be saved until it reconnects.');
+});
+window.addEventListener('afterword:save-error',()=>{
+  state.storageAvailable=false;
+  toast('We could not save to the HP workspace. Check the connection and try again.');
+});

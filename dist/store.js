@@ -1,6 +1,7 @@
 /* Browser-local demo state. This is not an encrypted archive or a backend. */
 const AfterwordStore = (() => {
   const KEY = 'afterword-workspace-v3';
+  let remote = false, csrfToken = '', saveTimer = 0, pending = null;
   const taskIds = ['insurance','storage','subscriptions','medical','bonds','notify-employer','gather-records'];
   const findingIds = ['insurance','medical','storage'];
   const memoryIds = ['tea','sunday','walk'];
@@ -8,7 +9,8 @@ const AfterwordStore = (() => {
   const text = (v, limit = 2000) => typeof v === 'string' ? v.slice(0, limit) : '';
   const ids = (v, allowed, fallback = []) => Array.isArray(v) ? [...new Set(v.filter(x => allowed.includes(x)))] : fallback;
   const validDate = v => typeof v === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(v) && !Number.isNaN(Date.parse(v)) && new Date(v).toISOString().slice(0,10) === v;
-  const defaults = () => ({completed:['notify-employer','gather-records'],waiting:[],outreachReview:[],reviewed:[],favorite:[],drafts:{},lastDraft:'insurance',taskNotes:{},reminders:{},reviewNotes:{},reviewTimes:{},staged:[],imported:false,largeText:false,ambientMotion:true,activity:[]});
+  const languageIds = ['en','es','vi','hi'];
+  const defaults = () => ({completed:['notify-employer','gather-records'],waiting:[],outreachReview:[],reviewed:[],favorite:[],drafts:{},lastDraft:'insurance',taskNotes:{},reminders:{},reviewNotes:{},reviewTimes:{},staged:[],imported:false,largeText:false,ambientMotion:true,lang:'en',activity:[]});
   function clean(input) {
     const d = defaults(), v = object(input) ? input : {};
     d.completed = ids(v.completed, taskIds, d.completed);
@@ -19,6 +21,7 @@ const AfterwordStore = (() => {
     d.largeText = v.largeText === true;
     d.ambientMotion = typeof v.ambientMotion === 'boolean' ? v.ambientMotion : true;
     d.imported = v.imported === true;
+    d.lang = languageIds.includes(v.lang) ? v.lang : 'en';
     d.lastDraft = findingIds.includes(v.lastDraft) ? v.lastDraft : 'insurance';
     for (const id of taskIds) {
       if (object(v.taskNotes)) d.taskNotes[id] = text(v.taskNotes[id]);
@@ -49,8 +52,34 @@ const AfterwordStore = (() => {
     } catch { return defaults(); }
   }
   function save(value) {
+    if (remote) {
+      pending = clean(value);
+      clearTimeout(saveTimer);
+      saveTimer = setTimeout(async () => {
+        const state = pending; pending = null;
+        try {
+          const response = await fetch('/api/workspace', {method:'PUT',credentials:'same-origin',headers:{'Content-Type':'application/json','X-CSRF-Token':csrfToken},body:JSON.stringify({state})});
+          if (!response.ok) throw new Error('save failed');
+        } catch { window.dispatchEvent(new CustomEvent('afterword:save-error')); }
+      }, 350);
+      return true;
+    }
     try { localStorage.setItem(KEY, JSON.stringify({version:3,...clean(value)})); return true; }
     catch { return false; }
+  }
+  async function enableRemote(onLoad, onError) {
+    try {
+      const session = await fetch('/api/auth/session', {credentials:'same-origin'});
+      // No account service on this host (GitHub Pages, the offline runtime): stay browser-local.
+      if (session.status === 404) return;
+      if (!session.ok) throw new Error('session unavailable');
+      csrfToken = (await session.json()).csrf_token;
+      const workspace = await fetch('/api/workspace', {credentials:'same-origin'});
+      if (!workspace.ok) throw new Error('workspace unavailable');
+      const body = await workspace.json(); remote = true;
+      try { localStorage.removeItem(KEY); localStorage.removeItem('afterword-design-v2'); } catch {}
+      onLoad(clean(body.state));
+    } catch (error) { onError?.(error); }
   }
   function validateFile(file) {
     if (!/\.(pdf|txt|csv|eml|md)$/i.test(file.name)) return 'Use a PDF, TXT, CSV, EML or Markdown file.';
@@ -58,5 +87,5 @@ const AfterwordStore = (() => {
     if (file.size > 20*1024*1024) return 'This file exceeds the 20 MB limit.';
     return '';
   }
-  return {KEY,defaults,clean,load,save,validateFile,validDate};
+  return {KEY,defaults,clean,load,save,enableRemote,validateFile,validDate};
 })();

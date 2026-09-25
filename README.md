@@ -1,14 +1,51 @@
 # Afterword — Team 102
 
-An Afterword prototype with a local provider-outreach service, by Team 102.
+A local family-record workspace built against `afterword.finding/v1`, by Team 102.
 
-[Website](https://mrnidhi.github.io/afterword-team-102/) · [Deployment workflow](https://github.com/Mrnidhi/afterword-team-102/actions/workflows/pages.yml)
+[Website](https://mrnidhi.github.io/afterword-team-102/)
 
-A family workspace for organizing the practical work after a loss. The public website uses fictional records for Arun Rao and Priya Rao. A Python service adds local provider contact mining, reviewed email preparation and consent/outreach persistence. It is an independent concept for HP ZGX, not an HP product or endorsement. No private credentials or real family records are included in the repository.
+A family workspace for organizing the practical work after a loss. The local application ingests individual records, calls the on-device extraction engine, stores exact source text and findings, and presents actions, evidence and memories. The public website remains a clearly separate fictional sample. It is an independent concept for HP ZGX, not an HP product or endorsement. No private credentials or real family records are included in the repository.
 
-## Open and explore
+## Local extraction application
 
-The site opens with a public landing page that explains the purpose of Afterword and links into the existing workspace through **Try the workspace**. The workspace remains available directly at `#overview`.
+See [integration requirements](docs/FINDING-INTEGRATION-SPEC.md) and
+[integration guide](docs/FINDING-INTEGRATION.md) for the full contract, and
+[verified results](docs/FINDING-INTEGRATION-VERIFICATION.md) for observed execution and limits.
+The normal `python -m backend.main` command starts the **offline extraction runtime**.
+It serves the interface and API together. Extraction calls only the existing chat
+model on loopback port 8000. Translation uses ports 8000 and 8003. It does not
+start, stop or load a model. Gmail and public-search routes are not mounted.
+
+```sh
+python -m venv .venv
+.venv/bin/python -m pip install -r requirements.txt
+AFTERWORD_PORT=8081 .venv/bin/python -m backend.main
+```
+
+Open `http://127.0.0.1:8081`. Default runtime databases are under
+`~/Documents/Afterword-Integration/runtime/`. The HP integration checkout,
+environment, logs and verification reports live under
+`~/Documents/Afterword-Integration/`; teammates' existing services remain intact.
+
+Import EML/MBOX email, SMS CSV (`date,sender,body`), Android SMS XML, text, PDFs,
+or images. Each message/page has a stable source identity and is processed
+sequentially. The exact extracted text is retained for numbered evidence review.
+RapidOCR runs on the CPU using installed local assets. Failed extraction is
+visible and can be retried; it never becomes an invented successful finding.
+
+The engine and schema recovered from hp24 are retained under `model/`, with
+provenance in [model/README.md](model/README.md). `AFTERWORD_MODEL_DIR` can point
+at the team's existing model-code directory. Changing the served weights on
+port 8000 needs no backend or UI code change. Run the shared-box status command
+before GPU work and coordinate with Prakhar before restarting that server.
+
+Source amounts and derived financial exposure remain separate. Deadlines come
+from stated days and the supplied reference date. Verification status does not
+establish entitlement, current account status, or a legal deadline.
+
+## Public sample preview and earlier outreach work
+
+The site opens with a public landing page that explains the purpose of Afterword and links into the workspace through **Try the workspace**. The workspace remains available directly at `#overview`.
 
 The website keeps nine family-facing views:
 
@@ -18,7 +55,7 @@ The website keeps nine family-facing views:
 4. **Evidence review** — source comparisons, known/unknown distinctions, working review notes, read acknowledgements, timestamps, JSON export and print.
 5. **Memories** — a typography-led archive of fictional writing with reading dialogs and favorites.
 6. **Ask Afterword** — four scripted source-linked examples and an honest unsupported-question response.
-7. **Privacy** — storage and connection status, consent records and export.
+7. **Privacy** — storage and connection status, outreach/disclosure history, consent records and export.
 8. **Activity** — searchable history of real changes made in this browser, with export.
 9. **Settings** — reading size, background motion, JSON export, reset and session-scoped undo.
 
@@ -30,7 +67,7 @@ All amounts, dates, providers, people and passages are fictional. Provider respo
 
 ## Implementation
 
-The frontend remains buildless HTML, CSS and JavaScript, with no new frontend dependencies. `dist/` is the GitHub Pages website. Google Fonts supplies Plus Jakarta Sans, with system-font fallbacks. `backend/` is an optional local FastAPI/Pydantic/SQLite service; GitHub Pages cannot run that service. No analytics are included.
+The frontend remains buildless HTML, CSS and JavaScript, with no new frontend dependencies. `dist/` is the GitHub Pages website. System fonts allow the interface to run without external font requests. `backend/` is a local FastAPI/Pydantic/SQLite service; GitHub Pages cannot run that service. No analytics are included. Earlier outreach implementation and tests remain in source; its connected Gmail/lookup runtime is separate from the offline extraction application.
 
 - `dist/store.js`: bounded state validation, v2-to-v3 migration, storage failure handling and file metadata validation.
 - `dist/app.js`: application shell, routing, task fixtures, overview, dialogs and workspace search.
@@ -57,7 +94,7 @@ The original static file queue accepts PDF, TXT, CSV, EML and Markdown names, up
 
 The app also feature-detects the browser's experimental WebMCP API and registers one read-only tool for the fictional action plan. It grants no external access. Ordinary UI operation does not depend on this API.
 
-To run locally, serve `dist/` with any static server. There is no dependency installation or build step. Before committing frontend changes, run:
+To run locally, serve `dist/` with any static server. There is no dependency installation or build step. Optional local frontend checks:
 
 ```sh
 node tests/state.test.cjs
@@ -65,26 +102,31 @@ node tests/outreach.test.cjs
 node tests/outreach-integrations.test.cjs
 node tests/outreach-scans.test.cjs
 node tests/outreach-navigation.test.cjs
+node tests/findings-core.test.cjs
+node tests/findings-ui.test.cjs
 node tests/drain.test.cjs
 node scripts/check-outreach-data.cjs
 node scripts/version-assets.cjs
 node scripts/version-assets.cjs --check
 ```
 
-The deployment workflow also syntax-checks every frontend JavaScript file.
+These checks run locally when requested. There is no automated CI/CD workflow.
 
-## Run the local outreach service
+## Run the earlier outreach service
+
+This optional runtime permits explicitly configured external integrations. Use
+the offline extraction application above for the contract demo.
 
 Use Python 3.9 or newer in a virtual environment:
 
 ```sh
 python3 -m venv .venv
 .venv/bin/python -m pip install -r requirements.txt
-.venv/bin/python -m backend.main
+.venv/bin/python -m uvicorn backend.main:create_app --factory --host 127.0.0.1 --port 4173
 ```
 
 Open `http://127.0.0.1:4173/`. The server serves the existing frontend and its API
-on the same origin. `AFTERWORD_PORT` selects another port. By default the SQLite
+on the same origin. `--port` selects another port. By default the SQLite
 database is stored outside the repository under `~/.local/share/afterword/`;
 `AFTERWORD_DB` can select a different local path. The service binds to loopback and
 rejects unapproved origins/hosts. This is a single-workspace local prototype, not
@@ -150,7 +192,11 @@ correct source or an explicit omission. Source evidence is checked again during
 review. The consent snapshot includes the selected reference as well as the
 provider and exact letter contents.
 
-## Read a scanned letter locally
+## Earlier outreach scan workflow (optional)
+
+This section applies only to the earlier outreach factory runtime above. The
+offline extraction application uses CPU RapidOCR through `/ingest/preview` and
+`/ingest/extract`; it does not use Tesseract, a vision model or `/scans`.
 
 The scan workflow requires the local service; GitHub Pages cannot run OCR or a
 model. Python dependencies, including Pillow image validation, are installed by
@@ -229,15 +275,18 @@ boundaries separate.
 
 ## Hosting on GitHub Pages
 
-GitHub Pages is the selected host. The workflow in `.github/workflows/pages.yml` validates the JavaScript and uploads only `dist/`, then deploys it to the `github-pages` environment. A push to `main` that changes the website or workflow triggers deployment; it can also be run manually from Actions. All asset URLs are relative, so the app works under the repository path `/afterword-team-102/`.
+The existing public sample is hosted on GitHub Pages. Repository CI/CD workflows
+have been removed, so pushes do not build, test or publish the website. Updating
+the hosted sample requires a separate publishing setup. Local development and
+manual tests remain available.
 
-The repository uses GitHub Actions as its Pages publishing source. The public
-static site needs no API key or paid hosting. The local service and its database
-are not uploaded as a Pages artifact. Official actions are pinned to verified
-release commit hashes. The website and repository are public; use fictional
-records only. CI validates both the Python service and the static frontend.
+`dist/` contains the static website; backend services, databases and private
+records are not part of the hosted sample. All asset URLs are relative to support
+`/afterword-team-102/`. The website and repository are public; use fictional
+records only.
 
-The `.openai/hosting.json` file records the earlier private design-preview deployment. It is retained as historical configuration, not the active GitHub deployment configuration. Updating this repository deploys through GitHub Pages, not the earlier host.
+The `.openai/hosting.json` file records the earlier private design-preview target.
+It is historical configuration and does not trigger deployment on a Git push.
 
 ## Design rationale and research
 

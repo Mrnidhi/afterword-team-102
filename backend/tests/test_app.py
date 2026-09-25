@@ -1,0 +1,292 @@
+import sys
+import unittest
+from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+import app as app_module  # noqa: E402
+from fastapi.testclient import TestClient  # noqa: E402
+from translate import protect  # noqa: E402
+
+
+class FakeResponse:
+    def __init__(self, data):
+        self._data = data
+        self.status_code = 200
+
+    def json(self):
+        return self._data
+
+    def raise_for_status(self):
+        pass
+
+
+class FakeClient:
+    """Stands in for app._client. chat_fn(system, text) -> str;
+    embed_fn(texts) -> list[list[float]]. Both are swappable per test."""
+
+    def __init__(self, chat_fn=None, embed_fn=None, model_id='fake-model-1', up=True):
+        self.chat_fn = chat_fn or (lambda system, text: text)  # identity by default
+        self.embed_fn = embed_fn or (lambda texts: [[1.0, 0.0] for _ in texts])
+        self.model_id = model_id
+        self.up = up
+        self.chat_calls = []
+
+    def get(self, url, timeout=None):
+        if not self.up:
+            raise app_module.httpx.ConnectError('down')
+        assert url.endswith('/models')
+        return FakeResponse({'data': [{'id': self.model_id}]})
+
+    def post(self, url, json=None):
+        if url.endswith('/chat/completions'):
+            system, text = json['messages'][0]['content'], json['messages'][1]['content']
+            self.chat_calls.append(text)
+            return FakeResponse({'choices': [{'message': {'content': self.chat_fn(system, text)}}]})
+        if url.endswith('/embeddings'):
+            vecs = self.embed_fn(json['input'])
+            return FakeResponse({'data': [{'embedding': v} for v in vecs]})
+        raise ValueError(url)
+
+
+def identical_embed(texts):
+    # Same vector for everything -> cosine 1.0, i.e. a "perfect" round trip.
+    return [[1.0, 0.0] for _ in texts]
+
+
+def orthogonal_embed(texts):
+    # First text vs the rest are unrelated -> cosine ~0, a "bad" round trip.
+    return [[1.0, 0.0]] + [[0.0, 1.0] for _ in texts[1:]]
+
+
+class AppTest(unittest.TestCase):
+    def setUp(self):
+        app_module.DB_PATH = Path(__file__).resolve().parent / f'_test_{self.id().split(".")[-1]}.db'
+        app_module.DB_PATH.unlink(missing_ok=True)
+        app_module.init_db()
+        app_module._model_id_cache['id'] = None
+        self.client = TestClient(app_module.app)
+
+    def tearDown(self):
+        app_module.DB_PATH.unlink(missing_ok=True)
+
+    def use(self, fake_client):
+        app_module._client = fake_client
+
+    # -- languages / health --------------------------------------------------
+
+    def test_languages_lists_all_three_with_correct_fonts(self):
+        body = self.client.get('/languages').json()
+        by_code = {row['code']: row for row in body}
+        self.assertEqual(set(by_code), {'es', 'vi', 'hi'})
+        self.assertIsNone(by_code['es']['font'])
+        self.assertIsNone(by_code['vi']['font'])
+        self.assertEqual(by_code['hi']['font']['family'], 'Noto Sans Devanagari')
+        self.assertEqual(by_code['hi']['native_name'], 'हिन्दी')
+
+    def test_health_reports_reachable_servers(self):
+        self.use(FakeClient(up=True))
+        self.assertEqual(self.client.get('/health').json(), {'status': 'ok', 'llm': True, 'embeddings': True})
+
+    def test_health_reports_unreachable_server(self):
+        self.use(FakeClient(up=False))
+        self.assertEqual(self.client.get('/health').json(), {'status': 'ok', 'llm': False, 'embeddings': False})
+
+    # -- validation -----------------------------------------------------------
+
+    def test_rejects_unknown_language(self):
+        self.use(FakeClient(embed_fn=identical_embed))
+        r = self.client.post('/translate', json={'text': 'Hello', 'target_lang': 'fr', 'kind': 'summary'})
+        self.assertEqual(r.status_code, 422)
+
+    def test_rejects_unknown_kind(self):
+        self.use(FakeClient(embed_fn=identical_embed))
+        r = self.client.post('/translate', json={'text': 'Hello', 'target_lang': 'es', 'kind': 'novel'})
+        self.assertEqual(r.status_code, 422)
+
+    def test_rejects_text_over_the_length_cap(self):
+        r = self.client.post('/translate', json={'text': 'x' * (app_module.MAX_CHARS + 1),
+                                                   'target_lang': 'es', 'kind': 'summary'})
+        self.assertEqual(r.status_code, 422)
+
+    # -- cache -----------------------------------------------------------------
+
+    def test_second_call_is_served_from_cache_without_calling_the_model_again(self):
+        fake = FakeClient(chat_fn=lambda s, t: t, embed_fn=identical_embed)
+        self.use(fake)
+        body = {'text': 'Please confirm the current balance.', 'target_lang': 'es', 'kind': 'summary'}
+        first = self.client.post('/translate', json=body).json()
+        calls_after_first = len(fake.chat_calls)
+        second = self.client.post('/translate', json=body).json()
+        self.assertFalse(first['cached'])
+        self.assertTrue(second['cached'])
+        self.assertEqual(first['text'], second['text'])
+        self.assertEqual(len(fake.chat_calls), calls_after_first)  # no extra LLM call on the cache hit
+
+    def test_different_language_is_a_separate_cache_entry(self):
+        self.use(FakeClient(chat_fn=lambda s, t: t, embed_fn=identical_embed))
+        body = {'text': 'Please confirm the current balance.', 'kind': 'summary'}
+        es = self.client.post('/translate', json={**body, 'target_lang': 'es'}).json()
+        vi = self.client.post('/translate', json={**body, 'target_lang': 'vi'}).json()
+        self.assertFalse(es['cached'])
+        self.assertFalse(vi['cached'])  # not served from the Spanish entry
+
+    # -- protected tokens --------------------------------------------------------
+
+    def test_intact_tokens_are_restored_and_marked_ok(self):
+        # The "translation" just relabels the language in brackets; sentinels pass through untouched.
+        self.use(FakeClient(chat_fn=lambda s, t: f'[ES] {t}', embed_fn=identical_embed))
+        r = self.client.post('/translate', json={'text': 'Pay $400 by September 30, 2026.',
+                                                   'target_lang': 'es', 'kind': 'letter'}).json()
+        self.assertTrue(r['protected_tokens_ok'])
+        self.assertIn('$400', r['text'])
+        self.assertIn('September 30, 2026', r['text'])
+
+    def test_dropped_token_is_recovered_on_retry(self):
+        calls = {'n': 0}
+
+        def flaky(system, text):
+            calls['n'] += 1
+            return text.replace('⟦T1⟧', '') if calls['n'] == 1 else text  # drop it, then don't
+
+        self.use(FakeClient(chat_fn=flaky, embed_fn=identical_embed))
+        r = self.client.post('/translate', json={'text': 'Paid $400 in total.',
+                                                   'target_lang': 'hi', 'kind': 'summary'}).json()
+        self.assertTrue(r['protected_tokens_ok'])
+        self.assertIn('$400', r['text'])
+        # 2 forward attempts (the retry) + 1 back-translation call = 3 total.
+        self.assertEqual(calls['n'], 3)
+
+    def test_token_still_missing_after_retry_preserves_original_instead_of_publishing_loss(self):
+        fake = FakeClient(chat_fn=lambda s, t: t.replace('⟦T1⟧', ''), embed_fn=identical_embed)
+        self.use(fake)
+        response = self.client.post('/translate', json={'text': 'Paid $400 in total.',
+                                                       'target_lang': 'hi', 'kind': 'summary'})
+        self.assertEqual(response.status_code, 503)
+        self.assertIn('Original text remains available', response.json()['detail'])
+        self.assertNotIn('text', response.json())
+        self.assertEqual(len(fake.chat_calls), 2)  # No misleading back-translation score.
+        with app_module.db_conn() as db:
+            self.assertEqual(db.execute('SELECT COUNT(*) FROM translations').fetchone()[0], 0)
+
+    def test_unknown_tokens_with_no_protected_source_details_are_not_displayed(self):
+        fake = FakeClient(chat_fn=lambda s, t: 'Confirme el saldo ⟦T1⟧ y ⟦T2⟧.')
+        self.use(fake)
+        response = self.client.post('/translate', json={'text':'Please confirm the balance.',
+                                                       'target_lang':'es','kind':'summary'})
+        self.assertEqual(response.status_code, 503)
+        self.assertNotIn('⟦', response.text)
+        self.assertEqual(len(fake.chat_calls), 2)
+
+    def test_malformed_or_duplicated_masks_never_become_usable_translation(self):
+        corruptions = [lambda text: text + ' ⟦T1⟧',
+                       lambda text: text.replace('⟦T1⟧', '⟦ T1 ⟧'),
+                       lambda text: text.replace('⟦T1⟧', '[T1]'),
+                       lambda text: text + ' ⟦T99',
+                       lambda text: text + ' \\u27e6T99\\u27e7']
+        for corrupt in corruptions:
+            with self.subTest(corruption=corrupt):
+                self.use(FakeClient(chat_fn=lambda s, t: corrupt(t)))
+                response = self.client.post('/translate', json={'text':'Paid $400 in total.',
+                                                               'target_lang':'es','kind':'summary'})
+                self.assertEqual(response.status_code, 503)
+        with app_module.db_conn() as db:
+            self.assertEqual(db.execute('SELECT COUNT(*) FROM translations').fetchone()[0], 0)
+
+    def test_bad_back_translation_does_not_create_false_high_confidence(self):
+        def corrupt_back(system, text):
+            return text.replace('⟦T1⟧', '') if 'into English' in system else text
+        fake = FakeClient(chat_fn=corrupt_back, embed_fn=identical_embed)
+        self.use(fake)
+        response = self.client.post('/translate', json={'text':'Paid $400 in total.',
+                                                       'target_lang':'es','kind':'summary'})
+        self.assertEqual(response.status_code, 503)
+        with app_module.db_conn() as db:
+            self.assertEqual(db.execute('SELECT COUNT(*) FROM translations').fetchone()[0], 0)
+
+    def test_old_cache_version_is_not_replayed_and_original_entry_is_preserved(self):
+        source = 'Please confirm the balance.'
+        source_hash = app_module.hashlib.sha256(source.encode()).hexdigest()
+        with app_module.db_conn() as db:
+            db.execute('''INSERT INTO translations
+                (lang,kind,source_hash,prompt_version,model_id,text,round_trip_score,protected_tokens_ok,ms)
+                VALUES (?,?,?,?,?,?,?,?,?)''',
+                ('es','summary',source_hash,app_module.PROMPT_VERSION,'fake-model-1','Balance ⟦T1⟧',1.0,1,1))
+            db.commit()
+        fake = FakeClient(chat_fn=lambda s, t: t)
+        self.use(fake)
+        result = self.client.post('/translate',json={'text':source,'target_lang':'es','kind':'summary'}).json()
+        self.assertFalse(result['cached'])
+        self.assertNotIn('⟦',result['text'])
+        self.assertEqual(len(fake.chat_calls),2)
+        with app_module.db_conn() as db:
+            self.assertEqual(db.execute('SELECT COUNT(*) FROM translations').fetchone()[0],2)
+
+    def test_corrupted_current_cache_is_revalidated_before_reuse(self):
+        source = 'Paid $400 in total.'
+        source_hash = app_module.hashlib.sha256(source.encode()).hexdigest()
+        cache_version = app_module.PROMPT_VERSION + ':protected-' + app_module.TOKEN_GUARD_VERSION
+        for cached_text in ['Paid ⟦T1⟧ in total.','Paid in total.']:
+            with self.subTest(cached_text=cached_text):
+                with app_module.db_conn() as db:
+                    db.execute('''INSERT OR REPLACE INTO translations
+                        (lang,kind,source_hash,prompt_version,model_id,text,round_trip_score,protected_tokens_ok,ms)
+                        VALUES (?,?,?,?,?,?,?,?,?)''',
+                        ('es','summary',source_hash,cache_version,'fake-model-1',cached_text,1.0,1,1))
+                    db.commit()
+                fake = FakeClient(chat_fn=lambda s, t: t)
+                self.use(fake)
+                result = self.client.post('/translate',json={'text':source,'target_lang':'es','kind':'summary'}).json()
+                self.assertFalse(result['cached'])
+                self.assertEqual(result['text'],source)
+                self.assertEqual(len(fake.chat_calls),2)
+
+    def test_source_with_literal_protocol_marker_is_preserved_without_model_call(self):
+        fake = FakeClient()
+        self.use(fake)
+        response = self.client.post('/translate',json={'text':'A note saying ⟦T1⟧.',
+                                                      'target_lang':'es','kind':'summary'})
+        self.assertEqual(response.status_code,503)
+        self.assertEqual(fake.chat_calls,[])
+
+    # -- round-trip confidence ------------------------------------------------------
+
+    def test_low_confidence_flag_below_threshold(self):
+        self.use(FakeClient(chat_fn=lambda s, t: t, embed_fn=orthogonal_embed))
+        r = self.client.post('/translate', json={'text': 'Please confirm the balance.',
+                                                   'target_lang': 'vi', 'kind': 'summary'}).json()
+        self.assertLess(r['round_trip_score'], app_module.THRESHOLD)
+        self.assertTrue(r['low_confidence'])
+
+    def test_high_confidence_not_flagged(self):
+        self.use(FakeClient(chat_fn=lambda s, t: t, embed_fn=identical_embed))
+        r = self.client.post('/translate', json={'text': 'Please confirm the balance.',
+                                                   'target_lang': 'vi', 'kind': 'summary'}).json()
+        self.assertFalse(r['low_confidence'])
+
+    # -- protection --------------------------------------------------------------
+
+    def test_translator_never_receives_the_raw_amount(self):
+        seen = {}
+
+        def spy(system, text):
+            seen['text'] = text
+            return text
+
+        self.use(FakeClient(chat_fn=spy, embed_fn=identical_embed))
+        self.client.post('/translate', json={'text': 'A payment of $250,000 was recorded.',
+                                               'target_lang': 'es', 'kind': 'letter'})
+        self.assertNotIn('$250,000', seen['text'])
+        self.assertIn('⟦T1⟧', seen['text'])
+
+
+class ProtectSmokeTest(unittest.TestCase):
+    """Confirms app.py's own imports of translate.py still line up."""
+
+    def test_protect_is_importable_from_app_module(self):
+        masked, tokens = protect('$5 on June 1, 2026')
+        self.assertTrue(tokens)
+        self.assertNotIn('$5', masked)
+
+
+if __name__ == '__main__':
+    unittest.main()

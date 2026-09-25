@@ -250,6 +250,62 @@ def test_date_of_death_requires_the_same_origin_client(client):
     assert response.status_code == 403
 
 
+# ---- offline runtime: the classifier shares the extraction model -----------------
+
+UNRULED_CHARGE = {'id': 'riverside-club', 'title': 'Riverside Club', 'text': 'Monthly fee: $12.00', 'date': '2026-09-10'}
+
+
+def offline_app(tmp_path, monkeypatch, bucket_model):
+    from backend import app as translation
+    monkeypatch.setattr(translation, 'health', lambda: {'status': 'ok', 'llm': False, 'embeddings': False})
+    return create_app(db_path=tmp_path / 'outreach.sqlite3', findings_db=tmp_path / 'findings.sqlite3',
+                      translations_db=tmp_path / 'translations.sqlite3', offline=True, allowed_hosts={'testserver'},
+                      extractor=lambda *a, **k: None, bucket_model=bucket_model)
+
+
+def test_offline_classifier_holds_the_shared_inference_lock(tmp_path, monkeypatch):
+    from concurrent.futures import ThreadPoolExecutor
+    from threading import Event
+    from backend.extraction_service import MODEL_LOCK
+    entered, release = Event(), Event()
+
+    def model(label, context):
+        entered.set()
+        if not release.wait(3):
+            raise RuntimeError('Test did not release the simulated classification.')
+        return {'bucket': 'stoppable'}
+
+    monkeypatch.setenv('AFTERWORD_LLM_URL', 'http://127.0.0.1:8000/v1')
+    with TestClient(offline_app(tmp_path, monkeypatch, model), headers=HEADERS) as c, ThreadPoolExecutor(max_workers=1) as pool:
+        assert c.post('/documents/ingest', json=UNRULED_CHARGE).status_code == 200
+        pending = pool.submit(c.get, '/drain')
+        try:
+            assert entered.wait(3), 'An unruled charge never reached the classifier model.'
+            acquired = MODEL_LOCK.acquire(blocking=False)
+            if acquired:
+                MODEL_LOCK.release()
+            assert acquired is False, 'Drain classification bypassed the shared inference lock.'
+        finally:
+            release.set()
+        response = pending.result(timeout=3)
+    assert response.status_code == 200, response.text
+    line = {l['label']: l for l in response.json()['confirmed']}['Riverside Club']
+    assert (line['bucket'], line['bucket_source']) == ('stoppable', 'local_model')
+
+
+@pytest.mark.parametrize('endpoint', ['http://127.0.0.1:8090/v1', 'http://127.0.0.1:8003/v1', 'https://external.example/v1'])
+def test_offline_classifier_rejects_wrong_model_destination(tmp_path, monkeypatch, endpoint):
+    calls = []
+    monkeypatch.setenv('AFTERWORD_LLM_URL', endpoint)
+    with TestClient(offline_app(tmp_path, monkeypatch, lambda label, context: calls.append(label) or {'bucket': 'stoppable'}), headers=HEADERS) as c:
+        assert c.post('/documents/ingest', json=UNRULED_CHARGE).status_code == 200
+        body = c.get('/drain').json()
+    assert calls == [], 'A forbidden destination reached the classifier model.'
+    line = {l['label']: l for l in body['confirmed']}['Riverside Club']
+    assert (line['bucket'], line['bucket_source']) == ('decide_later', 'default')
+    assert body['daily'] == pytest.approx(129 / MONTHLY)
+
+
 # ---- release checks: the public snapshot and the answer-key evaluation ---------
 
 def _script(name):
