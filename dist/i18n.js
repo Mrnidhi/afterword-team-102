@@ -6,14 +6,16 @@
   // Same origin in the real demo (dist/ served by the device). During local
   // development dist/ and the backend usually run on different ports, so
   // point at the backend explicitly, or override with window.AFTERWORD_API.
-  const API = ''; // The application and local translation API share one origin.
+  const API = window.AFTERWORD_API ?? (location.port === '8080' ? 'http://127.0.0.1:8010' : '');
   // Phase 0 finding: Vietnamese needs no extra font — the app's body font
   // (Plus Jakarta Sans) already covers it. Hindi needs Noto Sans Devanagari.
   const LANGUAGES = [
     {code:'en',native:'English'},
     {code:'es',native:'Español'},
     {code:'vi',native:'Tiếng Việt'},
-    {code:'hi',native:'हिन्दी'},
+    // This may use an HP-installed Devanagari font when present. We do not
+    // fetch a web font: the local deployment has no third-party font traffic.
+    {code:'hi',native:'हिन्दी',font:{family:'Noto Sans Devanagari'}},
   ];
   // Phase 7 (L9, stretch): the 12 highest-traffic chrome strings — the 9 nav
   // page headings plus the 3 letter-page action buttons — pre-translated
@@ -65,17 +67,16 @@
   let backendUp = null; // null = not checked yet; select stays enabled until we know it's down
 
   function ensureFont(lang) {
-    // System script fonts are available offline; never fetch a font stylesheet.
+    const entry = LANGUAGES.find(l => l.code === lang);
+    if (!entry?.font || loadedFonts.has(lang)) return;
     loadedFonts.add(lang);
+    document.documentElement.style.setProperty('--local-script-font', entry.font.family);
   }
 
   async function checkTranslationHealth() {
     const controller = new AbortController();
     const timer = setTimeout(() => controller.abort(), 3000);
-    try {
-      if(window.AfterwordRuntime?.translation===false){backendUp=false;}
-      else {const response=await fetch(API+'/health',{signal:controller.signal});const data=response.ok?await response.json():{};backendUp=!!(data.capabilities?.translation??data.embeddings);}
-    }
+    try { backendUp = (await fetch(API + '/health', {signal: controller.signal})).ok; }
     catch { backendUp = false; }
     finally { clearTimeout(timer); }
     for (const select of $$('#reading-language, .lang-toggle')) select.disabled = backendUp === false;
@@ -107,11 +108,11 @@
   const translationCache = new Map();
   const cacheKey = (lang, kind, text) => `${lang}|${kind}|${text}`;
 
-  async function requestTranslation(text, kind, lang) {
+  async function requestTranslation(text, kind) {
     try {
       const r = await fetch(API + '/translate', {
-        method: 'POST', headers: {'content-type': 'application/json','X-Afterword-Client':'web'},
-        body: JSON.stringify({text, target_lang: lang, kind}),
+        method: 'POST', headers: {'content-type': 'application/json'},
+        body: JSON.stringify({text, target_lang: state.lang, kind}),
       });
       if (!r.ok) throw new Error('http ' + r.status);
       return {status: 'ok', ...(await r.json())};
@@ -143,7 +144,6 @@
   // (findings/tasks never change their own text, so this only matters for
   // letters — see letterTranslationState below).
   const lastOkText = {};
-  const activeTranslationKeys = {};
 
   // blockId must be a stable, unique id for this content (e.g. one per
   // finding or task) so a resolved fetch can patch the right element in
@@ -151,17 +151,13 @@
   // never touches, so a targeted DOM patch is used instead of re-rendering.
   window.translatedBlock = (text, kind, blockId) => {
     if (state.lang === 'en') return '';
-    if(window.AfterwordRuntime?.translation===false)return '<p class="fine">On-device translation is available in the local application.</p>';
-    const requestedLang=state.lang;
     const key = cacheKey(state.lang, kind, text);
-    activeTranslationKeys[blockId] = key;
     let cached = translationCache.get(key);
     if (!cached) {
       cached = {status: 'loading'};
       translationCache.set(key, cached);
-      requestTranslation(text, kind, requestedLang).then(result => {
+      requestTranslation(text, kind).then(result => {
         translationCache.set(key, result);
-        if(state.lang!==requestedLang||activeTranslationKeys[blockId]!==key)return;
         if (result.status === 'ok') lastOkText[blockId] = text;
         const el = document.getElementById(blockId);
         if (el) el.outerHTML = translatedBlockMarkup(blockId, result);
@@ -282,31 +278,7 @@
       const note = $('#stale-note-' + letterType);
       if (note) note.hidden = true; // the block's own loading state covers the wait
     },
-    'open-gmail': () => {
-      if(window.AfterwordRuntime?.offline){toast('Email handoffs are unavailable in this offline workspace.');return;}
-      if (!validLetter()) return;
-      const d = captureLetter();
-      const useTranslated = sendTranslated && state.lang !== 'en';
-      const langName = LANGUAGES.find(l => l.code === state.lang)?.native || state.lang;
-      let body = d.body;
-      if (useTranslated) {
-        const cached = translationCache.get(cacheKey(state.lang, 'letter', d.body));
-        if (cached?.status === 'ok') body = cached.text; // else: fall back to English rather than send nothing
-      }
-      const fullBody = `Dear team,\n\n${body}\n\nThank you,\n${d.name}`;
-      const compose = (b) => `https://mail.google.com/mail/?view=cm&to=${encodeURIComponent(d.recipient)}&su=${encodeURIComponent(d.subject)}&body=${encodeURIComponent(b)}`;
-      const url = compose(fullBody);
-      // Percent-encoded Devanagari/Vietnamese roughly triples in length; Gmail's
-      // compose link has practical length limits well under a typical URL max.
-      if (url.length > 1800) {
-        navigator.clipboard?.writeText(fullBody).catch(() => {});
-        window.open(compose(''), '_blank');
-        modal('Letter copied instead', `<p>This letter is long enough that Gmail's link could not carry it${useTranslated ? ` in ${langName}` : ''}. It has been copied to your clipboard — paste it into the message body. Gmail is open with the recipient and subject already filled in.</p>`, button('Done', 'close-modal', true));
-      } else {
-        window.open(url, '_blank');
-      }
-      recordActivity(`Opened Gmail with the ${useTranslated ? langName : 'English'} version of the ${letterTemplates[letterType].title.toLowerCase()}`);
-    },
+    'open-gmail': () => modal('External sending is disabled', '<p>This HP-hosted demonstration keeps letters inside your private workspace. Export or print a reviewed draft if you choose to send it yourself.</p>', button('Close', 'close-modal', true)),
   });
 
   // --- Whole-page translation (phase 8) --------------------------------------
