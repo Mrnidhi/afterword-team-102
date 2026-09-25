@@ -49,6 +49,7 @@
     }
     pendingKey = null; loadedKey = key;
     if (['overview', 'plan'].includes(state.route)) render();
+    if ($('#detail-dialog')?.open && $('#drain-breakdown')) openBreakdown();
   }
 
   // Called while rendering; fetches only when the set of completed tasks changes.
@@ -86,7 +87,7 @@
       ? 'Sample figures from the fictional records, worked out by the Afterword service.'
       : data.daily > 0 ? 'Only charges the records show. You can stop these whenever you’re ready.' : 'Only charges the records show.';
     const stale = failure ? `<p class="fine" role="status">Couldn’t refresh just now. These are the last figures. <button class="text-link" data-action="drain-retry">Try again</button></p>` : '';
-    return `<section class="drain-card" aria-labelledby="drain-title"><div class="drain-copy"><h2 id="drain-title" class="drain-label">Still being charged</h2>${headline}<div class="drain-lines">${detail}</div>${stale}</div><div class="drain-actions"><p class="fine">${note}</p></div></section>`;
+    return `<section class="drain-card" aria-labelledby="drain-title"><div class="drain-copy"><h2 id="drain-title" class="drain-label">Still being charged</h2>${headline}<div class="drain-lines">${detail}</div>${stale}</div><div class="drain-actions">${data.confirmed.length + data.possible.length + data.excluded.length ? `<button class="button" data-action="drain-breakdown">See what’s charging ${icon('arrow')}</button>` : ''}<p class="fine">${note}</p></div></section>`;
   }
 
   function openDateDialog(returnTo) {
@@ -112,7 +113,7 @@
       recordActivity(value ? 'Updated the date of death' : 'Removed the date of death');
       persist();
       toast(value ? 'Date saved. The totals now include it.' : 'Date removed.');
-      $('#detail-dialog').close();
+      if (returnTo === 'breakdown') openBreakdown(); else $('#detail-dialog').close();
       reload();
     } catch (error) {
       if (status) { status.textContent = error.message; status.setAttribute('role', 'alert'); }
@@ -120,7 +121,66 @@
     } finally { saving = false; }
   }
 
+  const TIERS = {confirmed: ['Confirmed', 'neutral'], possible: ['Less sure', 'amber']};
+  const BASIS = {stated: '', observed: ', seen in more than one statement', assumed_statement_period: ', assumed from one monthly statement'};
+  const REASONS = {one_time_or_unknown: 'not recurring, or how often it repeats is unknown', low_confidence: 'too uncertain to count',
+    cancelled_later: 'a later document shows it was cancelled', ended_before_death: 'last seen well before the date of death'};
+  const SECTIONS = [
+    ['stoppable', 'You can stop these whenever you’re ready', 'Confirmed charges here make up the daily figure.'],
+    ['keep_for_now', 'Keep these running for now', 'Not counted. Stopping these could leave the home or a car unprotected.'],
+    ['decide_later', 'These need a decision, not a cancellation', 'Not counted. Talk with whoever is handling the estate before changing these.'],
+  ];
+  const fullDate = iso => new Date(iso + 'T12:00:00').toLocaleDateString('en-US', {month: 'long', day: 'numeric', year: 'numeric'});
+  // Reuse the workspace's source-link markup; drain-source returns here instead of to the workspace.
+  const sourceLinks = evidence => [...new Set(evidence.map(e => e.doc_id))].map(id => (documentLink(id) || '').replace('data-action="document"', 'data-action="drain-source"')).join('');
+
+  function rowAction(line) {
+    const task = tasks.find(t => t.id === line.finding_id);
+    if (!task || line.stopped) return '';
+    if (line.bucket === 'stoppable' && window.OutreachCore?.defaults?.[task.id] === 'cancel_service')
+      return `<button class="button" data-action="outreach-from-task" data-id="${esc(task.id)}">Ask to cancel</button>`;
+    if (line.bucket === 'stoppable' && task.category === 'Personal belongings')
+      return `<button class="button" data-task="${esc(task.id)}">Plan visit</button>`;
+    return `<button class="button" data-task="${esc(task.id)}">Open action</button>`;
+  }
+
+  function row(line) {
+    const [pill, tone] = line.stopped ? ['Stopped', 'neutral'] : TIERS[line.tier];
+    const action = rowAction(line);
+    return `<li class="drain-row${line.stopped ? ' is-stopped' : ''}"><div class="drain-row-head"><strong>${esc(line.label)}</strong><span class="pill ${tone}">${pill}</span></div>
+      <p class="drain-row-meta">${money(line.amount)} ${esc(line.frequency)}${BASIS[line.frequency_basis] || ''} · <span class="drain-row-rate">${money(line.daily_rate)} a day</span></p>
+      <p class="drain-row-note">${esc(line.note)}</p>
+      <div class="drain-row-evidence">${line.evidence.map(e => `<q>${esc(e.quote)}</q>`).join('')}${sourceLinks(line.evidence)}</div>
+      ${action ? `<div class="drain-row-actions">${action}</div>` : ''}</li>`;
+  }
+
+  function openBreakdown() {
+    if (!data) return;
+    const summary = data.daily > 0
+      ? `<p class="drain-summary-figure"><strong>${money(data.daily)}</strong> a day · ${wholeMoney(data.annual)} over a year if nothing changes</p>`
+      : `<p class="drain-summary-figure">${data.possible_daily > 0 ? 'Nothing we can confirm is charging his accounts right now.' : 'Nothing is charging his accounts right now.'}</p>`;
+    const extra = [data.possible_daily > 0 ? `+ up to ${money(data.possible_daily)} a day we’re less sure about` : '',
+      data.stopped_so_far > 0 ? `You’ve already stopped ${money(data.stopped_so_far)} a day.` : ''].filter(Boolean).map(t => `<p>${t}</p>`).join('');
+    const date = data.date_of_death
+      ? `<p>Date of death: ${esc(fullDate(data.date_of_death))}${data.daily > 0 && data.since_death !== null ? ` · about ${wholeMoney(data.since_death)} since then, approximate` : ''}. <button class="text-link" data-action="drain-date" data-return="breakdown">Change</button></p>`
+      : `<p>No date of death added yet. <button class="text-link" data-action="drain-date" data-return="breakdown">Add the date</button> to see the total so far.</p>`;
+    const sections = SECTIONS.map(([bucket, title, intro]) => {
+      const lines = data.buckets[bucket];
+      return `<section class="drain-section" aria-labelledby="drain-${bucket}"><h3 id="drain-${bucket}">${title}</h3><p class="fine">${intro}</p>${lines.length ? `<ul class="drain-rows">${lines.map(row).join('')}</ul>` : '<p class="drain-none">Nothing in the records belongs here.</p>'}</section>`;
+    }).join('');
+    const excluded = data.excluded.length ? `<details class="drain-excluded"><summary>Not counted (${data.excluded.length})</summary><ul>${data.excluded.map(e => `<li><strong>${esc(e.label)}</strong> · ${money(e.amount)}: ${REASONS[e.reason] || 'not counted'}${sourceLinks(e.evidence)}</li>`).join('')}</ul></details>` : '';
+    modal('What’s still charging', `<div id="drain-breakdown"><div class="drain-summary">${summary}${extra}${date}</div>${sections}${excluded}
+      <p class="fine drain-fine">Never counted: one-time bills, charges last seen more than one billing period before the date of death, charges a later document shows were cancelled, and anything we’re less than half sure of. A monthly charge is divided by 30.44 days. The total since the date of death is approximate, because some providers stop billing when they’re told and some don’t.${mode === 'snapshot' ? ' These are sample figures from the fictional records.' : ''}</p></div>`,
+      button('Close', 'close-modal'));
+  }
+
   Object.assign(window.actions, {
+    'drain-breakdown': () => openBreakdown(),
+    'drain-source': a => {
+      openDocument(a.dataset.id);
+      const foot = $('#detail-dialog .modal-foot');
+      if (foot) foot.innerHTML = button('Back to charges', 'drain-breakdown', false, 'arrow');
+    },
     'drain-retry': () => reload(),
     'drain-date': a => openDateDialog(a.dataset.return),
     'drain-date-clear': () => saveDate(null, $('#drain-date-form')?.dataset.return),
@@ -137,6 +197,6 @@
     saveDate(value, e.target.dataset.return);
   });
 
-  window.AfterwordDrain = {card, reload, money, wholeMoney};
+  window.AfterwordDrain = {card, reload, openBreakdown, money, wholeMoney};
   render();
 })();
