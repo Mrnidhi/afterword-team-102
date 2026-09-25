@@ -97,6 +97,56 @@ class MailboxRequest(StrictModel):
     email: str = Field(max_length=254)
     confirmed_control: bool
 
+class ChargeLine(StrictModel):
+    id: str
+    finding_id: Optional[str] = None
+    provider_id: Optional[str] = None
+    label: str
+    amount: float
+    frequency: Literal['daily','weekly','biweekly','monthly','quarterly','yearly']
+    frequency_basis: Literal['stated','observed','assumed_statement_period']
+    daily_rate: float
+    bucket: Literal['stoppable','keep_for_now','decide_later']
+    bucket_source: Literal['rules','institution','local_model','default']
+    note: str
+    tier: Literal['confirmed','possible']
+    confidence: float = Field(ge=0, le=1)
+    periods: int
+    last_seen: Optional[str] = None
+    stopped: bool = False
+    evidence: list[Evidence]
+
+class ExcludedCharge(StrictModel):
+    id: str
+    label: str
+    amount: float
+    frequency: str
+    reason: Literal['one_time_or_unknown','low_confidence','cancelled_later','ended_before_death']
+    evidence: list[Evidence]
+
+class DrainBuckets(StrictModel):
+    stoppable: list[ChargeLine]
+    keep_for_now: list[ChargeLine]
+    decide_later: list[ChargeLine]
+
+class DrainResponse(StrictModel):
+    daily: float
+    possible_daily: float
+    annual: float
+    since_death: Optional[float] = None
+    days_since_death: Optional[int] = None
+    stopped_so_far: float
+    as_of: str
+    date_of_death: Optional[str] = None
+    date_of_death_source: Optional[Literal['family','archive']] = None
+    confirmed: list[ChargeLine]
+    possible: list[ChargeLine]
+    buckets: DrainBuckets
+    excluded: list[ExcludedCharge]
+
+class DateOfDeathRequest(StrictModel):
+    date: Optional[str] = Field(default=None, max_length=10)
+
 class IngestRequest(StrictModel):
     id: str = Field(min_length=1,max_length=120,pattern=r'^[\w.\-]+$')
     text: str = Field(min_length=1,max_length=2000000)
