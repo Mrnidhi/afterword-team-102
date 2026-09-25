@@ -49,6 +49,7 @@ jobs:
           node tests/outreach-navigation.test.cjs
           node tests/findings-core.test.cjs
           node tests/findings-ui.test.cjs
+          node tests/drain.test.cjs
           node scripts/check-outreach-data.cjs
           node scripts/version-assets.cjs --check
           test -s dist/index.html
