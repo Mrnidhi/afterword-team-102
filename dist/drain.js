@@ -17,7 +17,9 @@
     const url = new URL('/drain', location.origin);
     if (ids.length) url.searchParams.set('done', ids.join(','));
     const response = await fetch(url, {headers: {Accept: 'application/json'}, credentials: 'same-origin', redirect: 'error'});
-    // GitHub Pages and plain static servers answer 404 with HTML: no local service here.
+    // No local service here: static hosts answer 404 for /drain, as HTML (GitHub Pages) or as
+    // their own JSON error page (Vercel). Either way there is nothing to read, so fall back.
+    if (response.status === 404) return null;
     if (!(response.headers.get('content-type') || '').includes('application/json')) return null;
     const body = await response.json();
     if (!response.ok) throw new ServiceError(typeof body.detail === 'string' ? body.detail : 'The local service could not work out the charges.');

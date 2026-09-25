@@ -79,6 +79,14 @@ const service = body => (url, options, r) => url.includes('/drain') ? r.json(200
   assert.match(card, /\$4\.24/);
   assert.match(card, /Sample figures from the fictional records/);
 
+  // Vercel and other static hosts answer 404 with their own JSON error page: still no service.
+  h = harness((url, options, r) => url.endsWith('data/drain_snapshot.json') ? r.json(200, snapshot)
+    : r.json(404, {error: {code: '404', message: 'The page could not be found'}}));
+  await settle(); await settle();
+  card = h.drain.card();
+  assert.match(card, /\$4\.24/);
+  assert.match(card, /Sample figures from the fictional records/);
+
   // A service error is shown, not replaced by sample figures.
   h = harness((url, options, r) => url.includes('/drain') ? r.json(500, {detail: 'Database is locked.'}) : r.json(200, snapshot));
   await settle();
