@@ -75,8 +75,9 @@ git diff --check
 ```
 
 Observed Python result: **138 passed in 4.60 seconds** on the development machine,
-including two tests executing the installed Tesseract engine. CI installs English
-Tesseract so these tests also execute there rather than silently skip.
+including two tests executing the installed Tesseract engine. The former CI setup
+installed English Tesseract for those runs. CI has since been removed; local runs
+need Tesseract installed to execute these optional real-engine tests.
 This is test-run duration, not model latency. The independent evaluation also ran
 with the user-approved inbox supplied via a local environment variable. That
 report contains eight proposed provider/address pairs, all matching the answer
