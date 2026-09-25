@@ -11,12 +11,14 @@ import re
 import secrets
 import sqlite3
 from contextlib import contextmanager
-from datetime import UTC, datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
 from argon2 import PasswordHasher
 from argon2.exceptions import InvalidHashError, VerifyMismatchError
 from fastapi import HTTPException, Request, Response
+
+UTC = timezone.utc  # datetime.UTC needs Python 3.11; the README supports 3.9+.
 
 
 AUTH_DB_PATH = Path(os.environ.get(
