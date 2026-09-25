@@ -7,11 +7,13 @@ from fastapi.responses import JSONResponse
 from fastapi.staticfiles import StaticFiles
 from .models import DraftRequest, EditRequest, ResolveRequest, ConsentRequest, SentRequest, RepliedRequest, MailboxRequest, IngestRequest
 from .service import OutreachService
+from .buckets import local_bucket_model
+from .drain import mount_drain
 
 ROOT=Path(__file__).resolve().parent.parent
 
 
-def create_app(db_path=None,data_dir=None,selector=None,allowed_hosts=None):
+def create_app(db_path=None,data_dir=None,selector=None,allowed_hosts=None,bucket_model=local_bucket_model):
     app=FastAPI(title='Afterword local provider outreach',version='1',docs_url='/api-docs')
     service=OutreachService(db_path or os.environ.get('AFTERWORD_DB',str(Path.home()/'.local/share/afterword/outreach.sqlite3')),data_dir or ROOT/'data',selector)
     app.state.service=service
@@ -130,6 +132,7 @@ def create_app(db_path=None,data_dir=None,selector=None,allowed_hosts=None):
         mount_integrations(app,service)
         from .scans import mount_scans
         mount_scans(app,service,app.state.vision_integration)
+    mount_drain(app,service,bucket_model)
     app.mount('/',StaticFiles(directory=ROOT/'dist',html=True),name='frontend')
     return app
 
