@@ -1,0 +1,34 @@
+{
+  "version": 1,
+  "notice": "Hand-labelled from the fictional archive text, independently of backend/drain.py. archive_charges are every recurring charge in data/demo_archive.json. classifier_cases are synthetic labels that exercise the bucket safety rules; they are not in the archive.",
+  "archive_charges": [
+    {"provider_id": "valley-storage", "doc_id": "storage", "amount": 129.0, "frequency": "monthly", "tier": "confirmed", "bucket": "stoppable", "why": "The renewal email states 'Monthly charge: $129'."},
+    {"provider_id": "harbor-gym", "doc_id": "statement", "amount": 39.99, "frequency": "monthly", "tier": "possible", "bucket": "stoppable", "why": "One line on a single monthly statement labelled recurring; no stated frequency."},
+    {"provider_id": "streamly", "doc_id": "statement", "amount": 15.49, "frequency": "monthly", "tier": "possible", "bucket": "stoppable", "why": "One line on a single monthly statement labelled recurring; no stated frequency."}
+  ],
+  "not_recurring": [
+    {"doc_id": "medical", "amount": 1240.0, "why": "One invoice amount."},
+    {"doc_id": "receipt", "amount": 400.0, "why": "One payment."},
+    {"doc_id": "policy", "amount": 250000.0, "why": "Recorded coverage, not a charge."}
+  ],
+  "classifier_cases": [
+    {"label": "Oakridge Home Insurance", "bucket": "keep_for_now"},
+    {"label": "Maple Homeowners Policy", "bucket": "keep_for_now"},
+    {"label": "Harbor Auto Insurance", "bucket": "keep_for_now"},
+    {"label": "City Electric", "bucket": "keep_for_now"},
+    {"label": "County Water & Sewer", "bucket": "keep_for_now"},
+    {"label": "Lakeview HOA", "bucket": "keep_for_now"},
+    {"label": "Brightline Alarm Monitoring", "bucket": "keep_for_now"},
+    {"label": "Harbor Auto Loan", "bucket": "decide_later"},
+    {"label": "First Street Mortgage", "bucket": "decide_later"},
+    {"label": "Sunset Timeshare", "bucket": "decide_later"},
+    {"label": "Cedar Life Insurance", "bucket": "decide_later"},
+    {"label": "Northstar Credit Card", "bucket": "decide_later"},
+    {"label": "Harbor Gym", "provider_id": "harbor-gym", "bucket": "stoppable"},
+    {"label": "Streamly", "provider_id": "streamly", "bucket": "stoppable"},
+    {"label": "Valley Storage", "provider_id": "valley-storage", "bucket": "stoppable"},
+    {"label": "Morning Ledger News", "bucket": "stoppable"},
+    {"label": "Pine Cloud Storage", "bucket": "stoppable"},
+    {"label": "Quill Magazine", "bucket": "stoppable"}
+  ]
+}

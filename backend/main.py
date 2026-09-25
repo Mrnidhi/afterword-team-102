@@ -7,15 +7,18 @@ from fastapi.responses import JSONResponse, Response
 from fastapi.staticfiles import StaticFiles
 from .models import DraftRequest, EditRequest, ResolveRequest, ConsentRequest, SentRequest, RepliedRequest, MailboxRequest, IngestRequest
 from .service import OutreachService
+from .buckets import local_bucket_model
+from .drain import mount_drain
 
 ROOT=Path(__file__).resolve().parent.parent
 
 
-def create_app(db_path=None,data_dir=None,selector=None,allowed_hosts=None,offline=False,findings_db=None,extractor=None,translations_db=None,workspace_db=None,require_login=None):
+def create_app(db_path=None,data_dir=None,selector=None,allowed_hosts=None,offline=False,findings_db=None,extractor=None,translations_db=None,workspace_db=None,require_login=None,bucket_model=local_bucket_model):
     app=FastAPI(title='Afterword local provider outreach',version='1',docs_url='/api-docs')
     runtime=Path.home()/'Documents/Afterword-Integration/runtime'
     default_outreach=runtime/'outreach.sqlite3' if offline else Path.home()/'.local/share/afterword/outreach.sqlite3'
     effective_selector=selector
+    effective_bucket_model=bucket_model
     if offline:
         from .extraction_service import MODEL_LOCK
         from .extraction_engine import local_model_url
@@ -25,6 +28,13 @@ def create_app(db_path=None,data_dir=None,selector=None,allowed_hosts=None,offli
             with MODEL_LOCK:
                 return (selector or local_tone_selector)(choices,context)
         effective_selector=offline_tone_selector
+        if bucket_model:
+            # Charge sorting uses the same served model as extraction, so it takes the same lock and destination check.
+            def offline_bucket_model(label,context):
+                local_model_url(os.environ.get('AFTERWORD_LLM_URL','http://127.0.0.1:8000/v1'))
+                with MODEL_LOCK:
+                    return bucket_model(label,context)
+            effective_bucket_model=offline_bucket_model
     service=OutreachService(db_path or os.environ.get('AFTERWORD_DB',str(default_outreach)),data_dir or ROOT/'data',effective_selector)
     app.state.service=service
     app.state.offline=offline
@@ -186,6 +196,7 @@ def create_app(db_path=None,data_dir=None,selector=None,allowed_hosts=None,offli
         mount_integrations(app,service)
         from .scans import mount_scans
         mount_scans(app,service,app.state.vision_integration)
+    mount_drain(app,service,effective_bucket_model)
     app.mount('/',StaticFiles(directory=ROOT/'dist',html=True),name='frontend')
     return app
 

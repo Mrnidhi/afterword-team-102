@@ -54,6 +54,7 @@ jobs:
           node tests/i18n-ui.test.cjs
           node tests/profile-ui.test.cjs
           node tests/reports.test.cjs
+          node tests/drain.test.cjs
           node scripts/check-outreach-data.cjs
           node scripts/version-assets.cjs --check
           test -s dist/index.html

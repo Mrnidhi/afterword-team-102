@@ -24,7 +24,7 @@ The initial workspace setup is intended for the owner on the loopback-bound devi
 
 ## Verification performed on September 25, 2026
 
-- Python suite: 281 tests passed, covering the new workspace API, password/session handling, existing backend services and route protection. Four pre-existing FastAPI deprecation warnings remain.
+- Python suite after integrating current main: 350 tests passed, covering the new workspace API, password/session handling, existing backend services and route protection. Four pre-existing FastAPI deprecation warnings remain.
 - All JavaScript test suites, syntax checks, outreach fixture parity, deterministic outreach evaluation and asset hash validation passed.
 - Computer-use testing in the actual static UI covered onboarding, profile edits and validation, letter field correction, approved-inbox selection, review consent, sender acknowledgement, route/reload persistence, search, action status/notes/reminders, document filtering and excerpts, evidence notes, memories, activity, privacy and reading preferences.
 - Spanish was selected without a connected translation service, persisted across reload, then switched back to English. Authored content stayed unchanged.
@@ -32,8 +32,10 @@ The initial workspace setup is intended for the owner on the loopback-bound devi
 - Real browser PDF downloads were opened and rendered. The plan with a saved note spans three readable pages containing all seven actions; the activity report contains five events on one page. The clean seven-action fixture also has a two-page regression check. Larger multilingual stress reports cover pagination and unsupported-character handling.
 - One explicitly authorized, non-sensitive test email was sent and found in the sender's Gmail Sent folder. Recipient delivery was not verified. No further email was sent after the personal-sender concern. The subsequent sender-check failure path was verified without opening compose.
 
-Responsive verification is limited: the browser viewport override did not reliably produce the requested 390-pixel viewport. Narrow rendering and welcome-heading contrast were inspected, but this is not a completed device/browser accessibility matrix. No fresh HP inference benchmark or HP deployment was performed for this change.
+Responsive verification is limited: the browser viewport override did not reliably produce the requested 390-pixel viewport. The welcome-heading contrast was corrected and narrow rendering was inspected, but this is not a completed device/browser accessibility matrix. No fresh HP inference benchmark or HP deployment was performed for this change.
 
 ## Version control and deployment
 
 Changes are isolated on `fix/workspace-onboarding-and-outreach` and proposed through a pull request. CI validates pull requests; Pages configuration, artifact upload and deployment are skipped for pull-request events. The current public site and HP checkout remain unchanged until a separate integration/deployment step.
+
+The latest main branch (`d179d25`) was merged without rewriting teammate commits. The daily drain overview and source breakdown were checked in the browser, and its API was checked before login, after setup and after logout. Existing drain limitations remain: its date setting is separate from the letter/profile date, and it computes from the outreach records rather than the live findings database.
