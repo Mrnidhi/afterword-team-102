@@ -50,4 +50,19 @@ assert.equal(store.save({ambientMotion:false}),true);
 assert.equal(store.load().ambientMotion,false);
 failWrites=true;
 assert.equal(store.save({favorite:[]}),false);
-console.log('State validation passed: corruption, migration, ID allowlists, bounds, dates, file validation and unavailable storage.');
+// A host without the HP account service (GitHub Pages, the offline runtime) keeps the
+// browser-local prototype without an outage warning; a failing service is still reported.
+(async () => {
+  const remote = status => {
+    const ctx = vm.createContext({localStorage:{getItem:()=>null,setItem:()=>{},removeItem:()=>{}},window:{dispatchEvent(){}},CustomEvent:class{},
+      fetch:async()=>({ok:status<400,status,json:async()=>({csrf_token:'test',state:{}})})});
+    vm.runInContext(fs.readFileSync('dist/store.js','utf8')+'\nthis.store = AfterwordStore;',ctx);
+    return ctx.store;
+  };
+  const calls = [];
+  await remote(404).enableRemote(() => calls.push('load'), () => calls.push('error'));
+  assert.deepEqual(calls, [], 'A host without the account service stays browser-local without an outage warning.');
+  await remote(503).enableRemote(() => calls.push('load'), () => calls.push('error'));
+  assert.deepEqual(calls, ['error'], 'A failing account service is still reported.');
+  console.log('State validation passed: corruption, migration, ID allowlists, bounds, dates, file validation, unavailable storage and the static-host fallback.');
+})().catch(error => { console.error(error); process.exit(1); });

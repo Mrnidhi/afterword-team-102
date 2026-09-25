@@ -70,6 +70,8 @@ const AfterwordStore = (() => {
   async function enableRemote(onLoad, onError) {
     try {
       const session = await fetch('/api/auth/session', {credentials:'same-origin'});
+      // No account service on this host (GitHub Pages, the offline runtime): stay browser-local.
+      if (session.status === 404) return;
       if (!session.ok) throw new Error('session unavailable');
       csrfToken = (await session.json()).csrf_token;
       const workspace = await fetch('/api/workspace', {credentials:'same-origin'});
