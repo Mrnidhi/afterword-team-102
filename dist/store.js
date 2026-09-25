@@ -8,7 +8,8 @@ const AfterwordStore = (() => {
   const text = (v, limit = 2000) => typeof v === 'string' ? v.slice(0, limit) : '';
   const ids = (v, allowed, fallback = []) => Array.isArray(v) ? [...new Set(v.filter(x => allowed.includes(x)))] : fallback;
   const validDate = v => typeof v === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(v) && !Number.isNaN(Date.parse(v)) && new Date(v).toISOString().slice(0,10) === v;
-  const defaults = () => ({completed:['notify-employer','gather-records'],waiting:[],outreachReview:[],reviewed:[],favorite:[],drafts:{},lastDraft:'insurance',taskNotes:{},reminders:{},reviewNotes:{},reviewTimes:{},staged:[],imported:false,largeText:false,ambientMotion:true,activity:[]});
+  const languageIds = ['en','es','vi','hi'];
+  const defaults = () => ({completed:['notify-employer','gather-records'],waiting:[],outreachReview:[],reviewed:[],favorite:[],drafts:{},lastDraft:'insurance',taskNotes:{},reminders:{},reviewNotes:{},reviewTimes:{},staged:[],imported:false,largeText:false,ambientMotion:true,lang:'en',activity:[]});
   function clean(input) {
     const d = defaults(), v = object(input) ? input : {};
     d.completed = ids(v.completed, taskIds, d.completed);
@@ -19,6 +20,7 @@ const AfterwordStore = (() => {
     d.largeText = v.largeText === true;
     d.ambientMotion = typeof v.ambientMotion === 'boolean' ? v.ambientMotion : true;
     d.imported = v.imported === true;
+    d.lang = languageIds.includes(v.lang) ? v.lang : 'en';
     d.lastDraft = findingIds.includes(v.lastDraft) ? v.lastDraft : 'insurance';
     for (const id of taskIds) {
       if (object(v.taskNotes)) d.taskNotes[id] = text(v.taskNotes[id]);

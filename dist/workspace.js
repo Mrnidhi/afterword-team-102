@@ -108,7 +108,7 @@ function completeEvidencePage() {
 function selectLetter(id) {
   if(!Object.hasOwn(letterTemplates,id))return;
   if(state.route==='letters') sessionDrafts[letterType]=captureLetter();
-  letterType=id;state.lastDraft=id;persist();letterDraft=sessionDrafts[id]||state.drafts[id]||null;letterPreview=false;
+  letterType=id;state.lastDraft=id;persist();letterDraft=sessionDrafts[id]||state.drafts[id]||null;letterPreview=false;sendTranslated=false;
   go('letters?template='+id);
 }
 const originalLettersPage=lettersPage;
@@ -179,6 +179,7 @@ document.addEventListener('change',e=>{
   if(e.target.id==='plan-category'){planCategory=e.target.value;$('#plan-results').innerHTML=planResults();}
   if(e.target.id==='plan-sort'){planSort=e.target.value;$('#plan-results').innerHTML=planResults();}
   if(e.target.id==='intake-files')queueFiles([...e.target.files]);
+  if(e.target.id==='send-translated-checkbox')sendTranslated=e.target.checked;
 });
 document.addEventListener('dragover',e=>{if(e.target.closest('#file-dropzone')){e.preventDefault();$('#file-dropzone').classList.add('drag-over');}});
 document.addEventListener('dragleave',e=>{if(e.target.closest('#file-dropzone'))$('#file-dropzone').classList.remove('drag-over');});

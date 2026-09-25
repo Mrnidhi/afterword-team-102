@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Glyph check</title>
+<!-- Phase 0 check 4: open in the demo browser. Every row must say "covered". -->
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600&family=DM+Sans:wght@400&family=Noto+Sans+Devanagari:wght@400;600&display=block">
+<style>
+  body{font:16px/1.5 system-ui,sans-serif;margin:24px;max-width:900px;background:#faf8f2;color:#15191f}
+  table{border-collapse:collapse;width:100%}td,th{border-bottom:1px solid #ddd;padding:10px 8px;text-align:left;vertical-align:top}
+  .sample{font-size:22px;line-height:1.9}.ok{color:#2d6a2d;font-weight:600}.bad{color:#a02020;font-weight:600}
+</style>
+</head>
+<body>
+<h1>Afterword glyph check</h1>
+<p id="status">Loading fonts…</p>
+<table><thead><tr><th>Font</th><th>Sample</th><th>Result</th></tr></thead><tbody id="rows"></tbody></table>
+<script>
+const vi = 'Hợp đồng bảo hiểm vẫn còn hiệu lực. ế ộ ữ ặ ẫ ỡ ỷ Ư ơ đ Đ ẵ ẩ';
+const hi = 'नमस्ते। बीमा पॉलिसी का भुगतान क्षत्र श्री द्व्य ट्र र्क';
+const rows = [
+  ['Plus Jakarta Sans', vi, 'vi', 'app font (studio.css --sans)'],
+  ['DM Sans', vi, 'vi', 'imported by styles.css, overridden'],
+  ['Noto Sans Devanagari', hi, 'hi', 'to add for Hindi'],
+  ['Plus Jakarta Sans', hi, 'hi', 'expected to fail'],
+];
+// A glyph the font lacks renders exactly as the bare fallback would, under every fallback.
+const ctx = document.createElement('canvas').getContext('2d');
+const width = (font, text) => { ctx.font = `22px ${font}`; return ctx.measureText(text).width; };
+const fallsBack = (family, ch) => ['monospace', 'serif', 'sans-serif']
+  .every(fb => Math.abs(width(`'${family}', ${fb}`, ch) - width(fb, ch)) < 0.01);
+(async () => {
+  await Promise.all(rows.map(([f, s]) => document.fonts.load(`22px '${f}'`, s)));
+  let bad = 0;
+  document.getElementById('rows').innerHTML = rows.map(([f, s, lang, note]) => {
+    const missing = [...new Set(s.replace(/[\s.।]/g, ''))].filter(ch => fallsBack(f, ch));
+    const covered = !missing.length;
+    if (!covered && !note.includes('fail') && !note.includes('overridden')) bad++;
+    return `<tr><td>${f}<br><small>${note}</small></td><td class="sample" lang="${lang}" style="font-family:'${f}',monospace">${s}</td><td class="${covered ? 'ok' : 'bad'}">${covered ? 'covered' : 'falls back: ' + missing.join(' ')}</td></tr>`;
+  }).join('');
+  document.getElementById('status').textContent = bad ? `${bad} required font(s) missing glyphs` : 'Required fonts cover every glyph.';
+  document.title = 'DONE';
+})();
+</script>
+</body>
+</html>
