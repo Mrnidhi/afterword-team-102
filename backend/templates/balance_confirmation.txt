@@ -1,0 +1,15 @@
+{salutation}
+
+My name is {writer_name}. I am writing in my capacity as {relationship} regarding {person_name}, who died on {date_of_death}.
+
+{identifier_sentence}
+
+1. Please provide an updated statement and confirm the current balance.
+2. Please explain which payments have been applied and identify any unresolved charges.
+
+I can supply a death certificate and documentation of my authority through your preferred secure process.
+
+Please contact me at {writer_phone} or reply to this email.
+
+{closing}
+{writer_name}

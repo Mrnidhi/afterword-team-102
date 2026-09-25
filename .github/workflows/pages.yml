@@ -7,6 +7,10 @@ on:
       - 'dist/**'
       - 'tests/**'
       - 'scripts/**'
+      - 'backend/**'
+      - 'data/**'
+      - 'model/**'
+      - 'requirements.txt'
       - '.github/workflows/pages.yml'
   workflow_dispatch:
 
@@ -24,10 +28,29 @@ jobs:
     steps:
       - name: Check out source
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - name: Set up Python
+        uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
+        with:
+          python-version: '3.12'
+      - name: Validate local application
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y tesseract-ocr tesseract-ocr-eng
+          python -m pip install -r requirements.txt
+          python -m pytest tests/ backend/tests/ -q
+          python scripts/evaluate_outreach.py
       - name: Validate static website
         run: |
           for file in dist/*.js; do node --check "$file"; done
           node tests/state.test.cjs
+          node tests/outreach.test.cjs
+          node tests/outreach-integrations.test.cjs
+          node tests/outreach-scans.test.cjs
+          node tests/outreach-navigation.test.cjs
+          node tests/findings-core.test.cjs
+          node tests/findings-ui.test.cjs
+          node tests/drain.test.cjs
+          node scripts/check-outreach-data.cjs
           node scripts/version-assets.cjs --check
           test -s dist/index.html
           test -s dist/styles.css

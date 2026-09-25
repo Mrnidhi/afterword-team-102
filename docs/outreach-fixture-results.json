@@ -1,0 +1,113 @@
+{
+  "scope": "Deterministic fictional fixtures; approved inbox configured in temporary evaluation workspace",
+  "evaluated_at": "2026-09-24T21:37:51.054935+00:00",
+  "execution_mode": "CPU fixture evaluation with model transport disabled; not a hardware benchmark",
+  "answer_key_version": 1,
+  "findings_evaluated": 7,
+  "resolution_by_tier": {
+    "records": 2,
+    "directory": 3,
+    "lookup": 0,
+    "none": 2
+  },
+  "contact_resolution_rate": 0.7142857142857143,
+  "deliverable_contact_rate": 0.7142857142857143,
+  "proposed_email_count": 8,
+  "correct_proposed_email_count": 8,
+  "contact_precision": 1.0,
+  "actual_external_lookup_count": 0,
+  "disclosure_samples": [
+    {
+      "template_id": "policy_information",
+      "personal_field_categories": 6,
+      "body_words": 95,
+      "body_characters": 561
+    },
+    {
+      "template_id": "account_status",
+      "personal_field_categories": 6,
+      "body_words": 92,
+      "body_characters": 545
+    },
+    {
+      "template_id": "cancel_service",
+      "personal_field_categories": 6,
+      "body_words": 97,
+      "body_characters": 572
+    },
+    {
+      "template_id": "balance_confirmation",
+      "personal_field_categories": 6,
+      "body_words": 93,
+      "body_characters": 553
+    },
+    {
+      "template_id": "request_records",
+      "personal_field_categories": 6,
+      "body_words": 92,
+      "body_characters": 530
+    }
+  ],
+  "average_personal_field_categories_in_template_reviews": 6.0,
+  "blocked_disclosure_cases": [
+    {
+      "category": "Social Security number",
+      "blocked": true
+    },
+    {
+      "category": "Full account or policy number",
+      "blocked": true
+    },
+    {
+      "category": "Date of birth",
+      "blocked": true
+    }
+  ],
+  "nano_end_to_end_seconds": null,
+  "manual_baseline_seconds": null,
+  "email_delivery_verified": false,
+  "cases": [
+    {
+      "finding_id": "insurance",
+      "selected_tier": "records",
+      "proposed_count": 2,
+      "matches_answer_key": true
+    },
+    {
+      "finding_id": "medical",
+      "selected_tier": "records",
+      "proposed_count": 2,
+      "matches_answer_key": true
+    },
+    {
+      "finding_id": "storage",
+      "selected_tier": "directory",
+      "proposed_count": 1,
+      "matches_answer_key": true
+    },
+    {
+      "finding_id": "subscriptions",
+      "selected_tier": "directory",
+      "proposed_count": 2,
+      "matches_answer_key": true
+    },
+    {
+      "finding_id": "bonds",
+      "selected_tier": "none",
+      "proposed_count": 0,
+      "matches_answer_key": true
+    },
+    {
+      "finding_id": "notify-employer",
+      "selected_tier": "directory",
+      "proposed_count": 1,
+      "matches_answer_key": true
+    },
+    {
+      "finding_id": "gather-records",
+      "selected_tier": "none",
+      "proposed_count": 0,
+      "matches_answer_key": true
+    }
+  ]
+}

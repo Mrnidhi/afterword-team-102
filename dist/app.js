@@ -6,7 +6,7 @@ const nav=[['overview','home','Overview'],['plan','plan','Action plan'],['docume
 let state={route:(location.hash.slice(1).split('?')[0]||'overview'),filter:'all',docFilter:'all',query:'',selectedFinding:'insurance',...AfterwordStore.load()};
 const persist=()=>{const ok=AfterwordStore.save(state);state.storageAvailable=ok;if(!ok)toast('Browser storage is unavailable. Export your workspace to keep your changes.');return ok};
 const tasks=[{id:'insurance',title:'Ask about a possible life insurance policy',description:'Compare the historical policy and family will before contacting the insurer.',icon:'shield',tone:'amber',status:'review',date:'Follow up Sep 24',category:'Insurance',source:'2 source records',doc:'policy',value:'$250,000 mentioned in a 2019 letter'}, {id:'storage',title:'Visit the storage unit before cancelling',description:'There may be personal belongings inside. Arrange a visit first.',icon:'files',tone:'',status:'ready',date:'Your reminder · Sep 26',category:'Personal belongings',source:'1 source record',doc:'storage',value:'$129 monthly charge'}, {id:'subscriptions',title:'Review two recurring subscriptions',description:'A gym membership and a streaming service still appear on the statement.',icon:'refresh',tone:'blue',status:'ready',date:'When you’re ready',category:'Subscriptions',source:'1 source record',doc:'statement',value:'$55.48 in monthly charges'}, {id:'medical',title:'Confirm the balance on a medical bill',description:'The invoice and payment receipt show different stages of the balance.',icon:'files',tone:'amber',status:'review',date:'Provider requests reply by Sep 30',category:'Bills',source:'2 source records',doc:'medical',value:'$1,240 before a recorded $400 payment'}, {id:'bonds',title:'Look for the blue folder',description:'A voice-note transcript mentions savings bonds in the hall closet.',icon:'mic',tone:'',status:'ready',date:'No date set',category:'Personal belongings',source:'1 source record',doc:'voice',value:'Value unknown'}, {id:'notify-employer',title:'Notify the former employer',description:'You recorded that the notice was sent on September 19.',icon:'mail',tone:'',status:'done',date:'Completed Sep 19',category:'Notifications',source:'Personal note',doc:'pension',value:''},{id:'gather-records',title:'Bring the first records together',description:'Eight fictional records are ready to explore in this workspace.',icon:'files',tone:'',status:'done',date:'Completed Sep 20',category:'Getting started',source:'8 sample records',doc:'policy',value:''}];
-const status=t=>state.completed.includes(t.id)?'done':state.waiting.includes(t.id)?'waiting':t.status==='done'?'ready':t.status;
+const status=t=>state.completed.includes(t.id)?'done':state.waiting.includes(t.id)?'waiting':state.outreachReview?.includes(t.id)?'review':t.status==='done'?'ready':t.status;
 function go(route){if(location.hash.slice(1)===route){state.route=route.split('?')[0];render()}else location.hash=route}
 function toast(text){$('#toast').textContent=text;$('#toast').classList.add('visible');clearTimeout(window.toastTimer);window.toastTimer=setTimeout(()=>$('#toast').classList.remove('visible'),3500)}
 function modal(title,body,footer=''){const d=$('#detail-dialog');$('#dialog-content').innerHTML=`<div class="modal-head"><h2 id="dialog-title">${title}</h2><button class="icon-button" data-action="close-modal" aria-label="Close dialog">${icon('close')}</button></div><div class="modal-body">${body}</div>${footer?`<div class="modal-foot">${footer}</div>`:''}`;if(!d.open)d.showModal()}
@@ -22,7 +22,7 @@ function home() {
     <a href="#plan"><span>Open actions</span><strong>${open.length.toString().padStart(2,'0')}</strong><small>${state.completed.length} completed ${icon('arrow')}</small></a>
     <a href="#evidence"><span>Unread findings</span><strong>${String(3-state.reviewed.length).padStart(2,'0')}</strong><small>3 findings · ${state.reviewed.length} read ${icon('arrow')}</small></a>
     <a href="#memories"><span>Saved memories</span><strong>${state.favorite.length.toString().padStart(2,'0')}</strong><small>A space for the personal ${icon('arrow')}</small></a>
-  </div>
+  </div>${window.AfterwordDrain?.card()||''}
   <div class="studio-hero-grid">
     <section class="next-step-card"><div class="next-step-top"><span class="eyebrow">NEXT ACTION</span></div>
       <h2>${next ? escapeHTML(next.title) : 'A little breathing room.'}</h2>
@@ -36,6 +36,10 @@ function home() {
   <aside class="home-side"><section class="review-summary"><div class="review-icon">${icon('eye')}</div><h3>Review the source records.</h3><p>Compare each finding with its original excerpt and see what still needs confirmation.</p><a class="text-link" href="#evidence">Explore the evidence ${icon('arrow')}</a></section><section><div class="section-title"><h2>Workspace activity</h2></div><div class="activity-list"><div class="activity"><span class="activity-icon">${icon('files')}</span><div><p>Eight sample records available</p><small>Fictional archive · September 2026</small></div></div><div class="activity"><span class="activity-icon">${icon('eye')}</span><div><p>${state.reviewed.length} of 3 findings read</p><small>Your review does not confirm a finding</small></div></div><div class="activity"><span class="activity-icon">${icon('check')}</span><div><p>${state.completed.length} actions marked complete</p><small>Progress saved in this browser</small></div></div></div></section></aside></div>`;
 }
 function render() {
+  if(window.AfterwordRuntime?.extraction && !window.AfterwordFindings){
+    $('#app').innerHTML='<main id="main" class="main" tabindex="-1"><p role="status">Opening your local workspace…</p></main>';
+    return;
+  }
   const focus=window.captureWorkspaceFocus?.();
   window.prepareRoute?.();
   const known = nav.some(n => n[0] === state.route) || ['ask'].includes(state.route);
@@ -69,6 +73,7 @@ window.actions={
   command:()=>openCommand()
 };
 function openCommand() {
+  if(window.AfterwordFindings?.active()){go('ask');return;}
   modal('Search your workspace','<label class="search-field command-field">'+icon('search')+'<input id="command-input" placeholder="Search pages, documents or actions…" aria-label="Search pages, documents or actions" autocomplete="off"></label><div id="command-results">'+commandResults('')+'</div>');
   $('#command-input').focus();
 }

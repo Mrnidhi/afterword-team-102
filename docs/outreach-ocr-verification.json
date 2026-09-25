@@ -1,0 +1,27 @@
+{
+  "fixture": "tests/fixtures/cedar-life-scan.png",
+  "fixture_sha256": "accebbd397d7b06fcec71d8268feaa6408f0c56b69b0fd9ecec6d079bac766d4",
+  "engine_version": "tesseract 5.5.3",
+  "environment": "macOS development machine; not the HP Nano",
+  "execution": "actual local Tesseract through browser upload and scan API",
+  "original_image_byte_match": true,
+  "raw_ocr_email": "clains@cedar-life.example",
+  "expected_email": "claims@cedar-life.example",
+  "raw_ocr_heading_missing": true,
+  "human_correction_saved": true,
+  "raw_ocr_preserved": true,
+  "correction_history_count": 1,
+  "stale_confirmation_http_status": 409,
+  "missing_vision_confirmation_http_status": 409,
+  "missing_vision_created_no_documents": true,
+  "live_vision_inference_verified": false,
+  "email_sent": false,
+  "browser_widths_verified_css_px": [
+    320,
+    390,
+    1440
+  ],
+  "scan_dialog_no_horizontal_overflow": true,
+  "correction_resumed_after_service_restart_and_page_reload": true,
+  "approval_reset_on_resume": true
+}
