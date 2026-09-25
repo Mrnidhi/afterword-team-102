@@ -9,7 +9,8 @@ A family workspace for organizing the practical work after a loss. The local app
 ## Local extraction application
 
 See [integration requirements](docs/FINDING-INTEGRATION-SPEC.md) and
-[integration guide](docs/FINDING-INTEGRATION.md) for the full contract and verification.
+[integration guide](docs/FINDING-INTEGRATION.md) for the full contract, and
+[verified results](docs/FINDING-INTEGRATION-VERIFICATION.md) for observed execution and limits.
 The normal `python -m backend.main` command starts the **offline extraction runtime**.
 It serves the interface and API together. Extraction calls only the existing chat
 model on loopback port 8000. Translation uses ports 8000 and 8003. It does not
