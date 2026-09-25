@@ -281,6 +281,10 @@ def do_translate(text, target_lang, kind, bypass_cache=False):
         raise HTTPException(422, f'target_lang must be one of {sorted(LANGUAGES)}')
     if kind not in KINDS:
         raise HTTPException(422, f'kind must be one of {sorted(KINDS)}')
+<<<<<<< Updated upstream
+=======
+
+>>>>>>> Stashed changes
     t0 = time.perf_counter()
     if _TOKEN_MARKUP.search(text):
         unsafe_translation()
@@ -404,8 +408,11 @@ def session(request: Request):
 def logout(request: Request, response: Response):
     current = auth.current_session(request)
     auth.require_csrf(request, current)
+<<<<<<< Updated upstream
     current = auth.current_session(request)
     auth.require_csrf(request, current)
+=======
+>>>>>>> Stashed changes
     auth.end_session(request)
     auth.clear_session_cookie(response)
     return {'ok': True}
@@ -415,8 +422,11 @@ def logout(request: Request, response: Response):
 def get_workspace(request: Request):
     current = auth.current_session(request)
     return auth.read_workspace(current['id'])
+<<<<<<< Updated upstream
     current = auth.current_session(request)
     return auth.read_workspace(current['id'])
+=======
+>>>>>>> Stashed changes
 
 
 @app.put('/api/workspace')
@@ -424,6 +434,7 @@ def put_workspace(req: WorkspaceRequest, request: Request):
     current = auth.current_session(request)
     auth.require_csrf(request, current)
     return auth.write_workspace(current['id'], req.state)
+<<<<<<< Updated upstream
     current = auth.current_session(request)
     auth.require_csrf(request, current)
     return auth.write_workspace(current['id'], req.state)
@@ -431,6 +442,11 @@ def put_workspace(req: WorkspaceRequest, request: Request):
 
 # ---- public landing and protected application shells ----------------------
 # ---- public landing and protected application shells ----------------------
+=======
+
+
+# ---- public landing and protected application shells ----------------------
+>>>>>>> Stashed changes
 
 _dist_dir = Path(__file__).resolve().parent.parent / 'dist'
 
