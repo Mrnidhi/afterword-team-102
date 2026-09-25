@@ -182,7 +182,17 @@
     "keep_for_now": [],
     "decide_later": []
    },
-   "excluded": []
+   "excluded": [],
+   "by_finding": {
+    "storage": {
+     "daily": 4.238193018480493,
+     "possible_daily": 0.0
+    },
+    "subscriptions": {
+     "daily": 0.0,
+     "possible_daily": 1.8227515400410679
+    }
+   }
   },
   "storage": {
    "daily": 0.0,
@@ -360,7 +370,17 @@
     "keep_for_now": [],
     "decide_later": []
    },
-   "excluded": []
+   "excluded": [],
+   "by_finding": {
+    "storage": {
+     "daily": 0.0,
+     "possible_daily": 0.0
+    },
+    "subscriptions": {
+     "daily": 0.0,
+     "possible_daily": 1.8227515400410679
+    }
+   }
   },
   "subscriptions": {
    "daily": 4.238193018480493,
@@ -538,7 +558,17 @@
     "keep_for_now": [],
     "decide_later": []
    },
-   "excluded": []
+   "excluded": [],
+   "by_finding": {
+    "storage": {
+     "daily": 4.238193018480493,
+     "possible_daily": 0.0
+    },
+    "subscriptions": {
+     "daily": 0.0,
+     "possible_daily": 0.0
+    }
+   }
   },
   "storage,subscriptions": {
    "daily": 0.0,
@@ -716,7 +746,17 @@
     "keep_for_now": [],
     "decide_later": []
    },
-   "excluded": []
+   "excluded": [],
+   "by_finding": {
+    "storage": {
+     "daily": 0.0,
+     "possible_daily": 0.0
+    },
+    "subscriptions": {
+     "daily": 0.0,
+     "possible_daily": 0.0
+    }
+   }
   }
  }
 }

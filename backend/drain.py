@@ -230,6 +230,10 @@ def compute_drain(documents, findings, directory, classifier, date_of_death=None
         'possible': [l for l in lines if l['tier'] == 'possible'],
         'buckets': {bucket: [l for l in lines if l['bucket'] == bucket] for bucket in ('stoppable', 'keep_for_now', 'decide_later')},
         'excluded': excluded,
+        # Per-action rates for the plan captions, still stoppable and not yet stopped.
+        'by_finding': {finding: {'daily': math.fsum(l['daily_rate'] for l in stoppable if l['finding_id'] == finding and l['tier'] == 'confirmed' and not l['stopped']),
+                                 'possible_daily': math.fsum(l['daily_rate'] for l in stoppable if l['finding_id'] == finding and l['tier'] == 'possible' and not l['stopped'])}
+                       for finding in sorted({l['finding_id'] for l in stoppable if l['finding_id']})},
     }
 
 

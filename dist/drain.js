@@ -90,6 +90,16 @@
     return `<section class="drain-card" aria-labelledby="drain-title"><div class="drain-copy"><h2 id="drain-title" class="drain-label">Still being charged</h2>${headline}<div class="drain-lines">${detail}</div>${stale}</div><div class="drain-actions">${data.confirmed.length + data.possible.length + data.excluded.length ? `<button class="button" data-action="drain-breakdown">See what’s charging ${icon('arrow')}</button>` : ''}<p class="fine">${note}</p></div></section>`;
   }
 
+  // A quiet caption on a plan row: why stopping this action matters, from the server's per-action rate.
+  function caption(taskId) {
+    ensure();
+    const rate = data?.by_finding?.[taskId];
+    if (!rate) return '';
+    if (rate.daily > 0) return `<span class="drain-caption">${icon('refresh')}${money(rate.daily)} a day</span>`;
+    if (rate.possible_daily > 0) return `<span class="drain-caption">${icon('refresh')}Possibly ${money(rate.possible_daily)} a day</span>`;
+    return '';
+  }
+
   function openDateDialog(returnTo) {
     const offline = mode !== 'service';
     const current = data?.date_of_death || '';
@@ -197,6 +207,6 @@
     saveDate(value, e.target.dataset.return);
   });
 
-  window.AfterwordDrain = {card, reload, openBreakdown, money, wholeMoney};
+  window.AfterwordDrain = {card, caption, reload, openBreakdown, money, wholeMoney};
   render();
 })();

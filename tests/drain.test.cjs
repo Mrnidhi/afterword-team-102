@@ -127,6 +127,16 @@ const service = body => (url, options, r) => url.includes('/drain') ? r.json(200
   assert.match(stoppedRow, />Stopped</); assert.doesNotMatch(stoppedRow, /<button class="button"/);
   assert.match(d, /Not counted \(1\)/); assert.match(d, /a later document shows it was cancelled/);
 
+  // Plan captions come from the server's per-action rates, never summed here.
+  h = harness(service(base));
+  await settle();
+  assert.match(h.drain.caption('storage'), /\$4\.24 a day/);
+  assert.match(h.drain.caption('subscriptions'), /Possibly \$1\.82 a day/);
+  assert.equal(h.drain.caption('insurance'), '');
+  h = harness(service(snapshot.variants['storage,subscriptions']));
+  await settle();
+  assert.equal(h.drain.caption('storage'), '', 'completed actions show no rate');
+
   // Tone: no red, no motion, serif figure.
   assert.doesNotMatch(css, /animation|@keyframes|transition/);
   assert.doesNotMatch(css, /\bred\b|crimson|#f00\b|#ff0000|danger/i);
