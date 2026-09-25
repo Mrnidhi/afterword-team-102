@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <base href="/">
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#111318">
+  <meta name="description" content="Afterword is a private family workspace for the practical things after a loss, hosted locally on HP ZGX.">
+  <title>Afterword — A little clarity, one step at a time</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='10' fill='%2315191f'/%3E%3Ctext x='17' y='47' font-family='Arial' font-size='48' font-weight='700' fill='%23faf8f2'%3Ea%3C/text%3E%3C/svg%3E">
+  <link rel="stylesheet" href="styles.css?v=8ffaae907962">
+  <link rel="stylesheet" href="studio.css?v=5ba7fce3b807">
+  <link rel="stylesheet" href="workspace.css?v=773abb837163">
+  <link rel="stylesheet" href="ambient.css?v=45b83724ca58">
+  <script src="store.js?v=302a3ee4290b" defer></script>
+  <script src="app.js?v=29e872b30d80" defer></script>
+  <script src="pages.js?v=49f8f9f2d325" defer></script>
+  <script src="workspace.js?v=2685dbfdf63c" defer></script>
+  <script src="experience.js?v=66cb0c15ff89" defer></script>
+  <script src="ambient.js?v=de8a4f7e2f17" defer></script>
+  <script src="ui-translate.js?v=72ca32ccc0b7" defer></script>
+  <script src="ui-strings.js?v=690e4373b86e" defer></script>
+  <script src="i18n.js?v=82b4a833f594" defer></script>
+</head>
+<body>
+  <a class="skip" href="#main">Skip to content</a>
+  <div id="ambient-daylight" aria-hidden="true" inert>
+    <svg viewBox="0 0 1200 440" preserveAspectRatio="xMidYMid slice" focusable="false">
+      <defs>
+        <linearGradient id="daylight-paper" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0" stop-color="var(--daylight-white)"/>
+          <stop offset=".54" stop-color="var(--daylight-silver)"/>
+          <stop offset="1" stop-color="var(--daylight-blue)"/>
+        </linearGradient>
+        <linearGradient id="daylight-fold" x1="0" y1="0" x2=".8" y2="1">
+          <stop offset="0" stop-color="var(--daylight-warm)"/>
+          <stop offset=".48" stop-color="var(--daylight-white)"/>
+          <stop offset="1" stop-color="var(--daylight-silver)"/>
+        </linearGradient>
+        <linearGradient id="daylight-edge" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0" stop-color="var(--daylight-silver)"/>
+          <stop offset=".48" stop-color="var(--daylight-white)"/>
+          <stop offset="1" stop-color="var(--daylight-blue)"/>
+        </linearGradient>
+      </defs>
+      <g class="daylight-plane daylight-plane-back">
+        <path d="M450 -100H1380V550H200C540 390 820 250 720 110C680 50 560 -20 450 -100Z" fill="url(#daylight-paper)"/>
+        <path d="M450 -100C560 -20 680 50 720 110C820 250 540 390 200 550" fill="none" stroke="#fff" stroke-opacity=".8"/>
+      </g>
+      <g class="daylight-plane daylight-plane-middle">
+        <path d="M950 -100H1430V560H520C690 350 1040 280 1070 130C1090 30 1010 -30 950 -100Z" fill="url(#daylight-fold)"/>
+        <path d="M950 -100C1010 -30 1090 30 1070 130C1040 280 690 350 520 560" fill="none" stroke="#fff" stroke-opacity=".9"/>
+      </g>
+      <g class="daylight-plane daylight-plane-front">
+        <path d="M1410 -40V580H740C900 420 850 340 990 230C1110 135 1290 145 1410 -40Z" fill="url(#daylight-edge)"/>
+        <path d="M740 580C900 420 850 340 990 230C1110 135 1290 145 1410 -40" fill="none" stroke="#fff" stroke-opacity=".8"/>
+      </g>
+    </svg>
+  </div>
+  <div id="app"></div>
+  <dialog id="detail-dialog" aria-labelledby="dialog-title"><div id="dialog-content"></div></dialog>
+  <div id="toast" role="status" aria-live="polite"></div>
+</body>
+</html>
