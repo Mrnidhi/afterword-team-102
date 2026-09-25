@@ -143,6 +143,6 @@ These results come from a three-charge fictional archive and hand-written synthe
 - **"Marked completed" is treated as "stopped".** Completing the storage action (a visit) therefore counts its $4.24 a day as stopped, as the spec defines `stopped_so_far`.
 - **Since-death total uses today's rate.** `since_death` multiplies the current still-charging rate by the days since the date of death. Stopping a charge lowers the total, which is why it is labelled approximate.
 - **Source links for uploaded documents.** Documents ingested on the local service show their quote in the breakdown, but have no link unless the static workspace also has that record.
-- **CI.** `.github/workflows/pages.yml` runs `pytest`, which includes the Python drain tests, the snapshot check and the evaluation. It does not yet run `node tests/drain.test.cjs`.
+- **Local checks.** Run `pytest` for the Python drain tests, snapshot check and evaluation; run `node tests/drain.test.cjs` separately for the frontend. No CI workflow runs these automatically.
 
 After changing the archive, the rules or `backend/drain.py`, run `python scripts/drain_snapshot.py` and `node scripts/version-assets.cjs`.
