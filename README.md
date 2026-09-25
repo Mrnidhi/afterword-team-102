@@ -2,7 +2,7 @@
 
 A local family-record workspace built against `afterword.finding/v1`, by Team 102.
 
-[Website](https://mrnidhi.github.io/afterword-team-102/) · [Deployment workflow](https://github.com/Mrnidhi/afterword-team-102/actions/workflows/pages.yml)
+[Website](https://mrnidhi.github.io/afterword-team-102/)
 
 A family workspace for organizing the practical work after a loss. The local application ingests individual records, calls the on-device extraction engine, stores exact source text and findings, and presents actions, evidence and memories. The public website remains a clearly separate fictional sample. It is an independent concept for HP ZGX, not an HP product or endorsement. No private credentials or real family records are included in the repository.
 
@@ -109,7 +109,7 @@ node scripts/version-assets.cjs
 node scripts/version-assets.cjs --check
 ```
 
-The deployment workflow also syntax-checks every frontend JavaScript file.
+Run frontend syntax checks locally when needed; there is no automated CI/CD workflow.
 
 ## Run the earlier outreach service
 
@@ -274,15 +274,18 @@ boundaries separate.
 
 ## Hosting on GitHub Pages
 
-GitHub Pages is the selected host. The workflow in `.github/workflows/pages.yml` validates the JavaScript and uploads only `dist/`, then deploys it to the `github-pages` environment. A push to `main` that changes the website or workflow triggers deployment; it can also be run manually from Actions. All asset URLs are relative, so the app works under the repository path `/afterword-team-102/`.
+The existing public sample is hosted on GitHub Pages. Repository CI/CD workflows
+have been removed, so pushes do not build, test or publish the website. Updating
+the hosted sample requires a separate publishing setup. Local development and
+manual tests remain available.
 
-The repository uses GitHub Actions as its Pages publishing source. The public
-static site needs no API key or paid hosting. The local service and its database
-are not uploaded as a Pages artifact. Official actions are pinned to verified
-release commit hashes. The website and repository are public; use fictional
-records only. CI validates both the Python service and the static frontend.
+`dist/` contains the static website; backend services, databases and private
+records are not part of the hosted sample. All asset URLs are relative to support
+`/afterword-team-102/`. The website and repository are public; use fictional
+records only.
 
-The `.openai/hosting.json` file records the earlier private design-preview deployment. It is retained as historical configuration, not the active GitHub deployment configuration. Updating this repository deploys through GitHub Pages, not the earlier host.
+The `.openai/hosting.json` file records the earlier private design-preview target.
+It is historical configuration and does not trigger deployment on a Git push.
 
 ## Design rationale and research
 
