@@ -11,15 +11,17 @@ Config (env vars, all optional):
   LLM_URL               default http://127.0.0.1:8000/v1
   EMBED_URL              default http://127.0.0.1:8003/v1
   ROUND_TRIP_THRESHOLD   default 0.85  (validated in phase 0 — see MULTILINGUAL-PLAN.md)
-  PROMPT_VERSION         default "1" — bump to invalidate the cache after a prompt change
+  PROMPT_VERSION         default "2" — bump to invalidate the cache after a prompt change
   DB_PATH                default ~/Documents/Afterword-Integration/runtime/translations.sqlite3
 """
 import hashlib
 import os
+import re
 import sqlite3
 import sys
 import time
 from contextlib import contextmanager
+from collections import Counter
 from pathlib import Path
 from urllib.parse import urlsplit
 
@@ -34,7 +36,10 @@ from translate import check, protect, restore  # noqa: E402
 LLM_URL = os.environ.get('LLM_URL', 'http://127.0.0.1:8000/v1')
 EMBED_URL = os.environ.get('EMBED_URL', 'http://127.0.0.1:8003/v1')
 THRESHOLD = float(os.environ.get('ROUND_TRIP_THRESHOLD', '0.85'))
-PROMPT_VERSION = os.environ.get('PROMPT_VERSION', '1')
+PROMPT_VERSION = os.environ.get('PROMPT_VERSION', '2')
+# Separate from the operator's prompt version: even a pinned old environment
+# must not replay translations accepted before the protected-details guard.
+TOKEN_GUARD_VERSION = '2'
 DB_PATH = Path(os.environ.get('DB_PATH', Path.home() / 'Documents/Afterword-Integration/runtime/translations.sqlite3'))
 MAX_CHARS = 12000
 REQUEST_TIMEOUT = 60.0
@@ -174,13 +179,43 @@ def translate_with_retry(system, masked, tokens):
     or invented. Returns (text, problems) — problems is empty when every
     token survived, from whichever attempt did best."""
     translated = chat(system, masked)
-    problems = check(translated, tokens)
+    problems = protected_problems(translated, tokens)
     if problems:
         retry = chat(system, masked)
-        retry_problems = check(retry, tokens)
+        retry_problems = protected_problems(retry, tokens)
         if len(retry_problems) < len(problems):
             return retry, retry_problems
     return translated, problems
+
+
+_TOKEN_MARKUP = re.compile(r'[⟦⟧]|\\u27e[67]|\[{1,2}\s*[Tt]\s*\d+\s*\]{1,2}', re.I)
+
+
+def protected_problems(text, tokens):
+    """Check exact known tokens and reject unknown or malformed marker remnants."""
+    if not isinstance(text, str) or not text.strip():
+        return ['empty translation']
+    problems = check(text, tokens)
+    remainder = text
+    for token in tokens:
+        remainder = remainder.replace(token.sentinel, '')
+    if _TOKEN_MARKUP.search(remainder):
+        problems.append('unknown or corrupted protected-detail marker')
+    return problems
+
+
+def restored_details_ok(text, tokens):
+    if not isinstance(text, str) or not text.strip() or _TOKEN_MARKUP.search(text):
+        return False
+    required = Counter(token.value for token in tokens)
+    observed = Counter(token.value for token in protect(text)[1])
+    return all(observed[value] >= count for value, count in required.items())
+
+
+def unsafe_translation():
+    # The existing frontend keeps the complete English text above its error
+    # state. Never label an English fallback or broken placeholders as translated.
+    raise HTTPException(503, 'Local translation did not preserve the protected details. Original text remains available.')
 
 
 # ---- endpoints ---------------------------------------------------------------
@@ -209,38 +244,48 @@ def translate(req: TranslateRequest):
         raise HTTPException(422, f'kind must be one of {sorted(KINDS)}')
 
     t0 = time.perf_counter()
+    if _TOKEN_MARKUP.search(req.text):
+        # Literal protocol markers in source text would collide with new masks.
+        unsafe_translation()
+    masked, tokens = protect(req.text)
     source_hash = hashlib.sha256(req.text.encode()).hexdigest()
     model_id = llm_model_id()
     language = LANGUAGES[req.target_lang]['name']
+    cache_version = PROMPT_VERSION + ':protected-' + TOKEN_GUARD_VERSION
 
     with db_conn() as db:
         row = db.execute(
             'SELECT * FROM translations WHERE lang=? AND kind=? AND source_hash=? '
             'AND prompt_version=? AND model_id=?',
-            (req.target_lang, req.kind, source_hash, PROMPT_VERSION, model_id)).fetchone()
-    if row:
+            (req.target_lang, req.kind, source_hash, cache_version, model_id)).fetchone()
+    if row and bool(row['protected_tokens_ok']) and restored_details_ok(row['text'], tokens):
         return TranslateResponse(
             text=row['text'], lang=req.target_lang, cached=True,
             round_trip_score=row['round_trip_score'], protected_tokens_ok=bool(row['protected_tokens_ok']),
             low_confidence=row['round_trip_score'] < THRESHOLD, ms=round((time.perf_counter() - t0) * 1000))
 
-    masked, tokens = protect(req.text)
     translated, problems = translate_with_retry(FORWARD_PROMPT.format(language=language), masked, tokens)
-    tokens_ok = not problems
+    if problems:
+        unsafe_translation()
 
     # The forward output already carries live sentinels, so it goes straight
     # into the back-translation call without re-masking.
     back = chat(BACK_PROMPT.format(language=language), translated)
+    if protected_problems(back, tokens):
+        unsafe_translation()
     score = cosine(req.text, restore(back, tokens))
 
     final_text = restore(translated, tokens)
+    if not restored_details_ok(final_text, tokens):
+        unsafe_translation()
+    tokens_ok = True
     ms = round((time.perf_counter() - t0) * 1000)
 
     with db_conn() as db:
         db.execute('''INSERT OR REPLACE INTO translations
             (lang, kind, source_hash, prompt_version, model_id, text, round_trip_score, protected_tokens_ok, ms)
             VALUES (?,?,?,?,?,?,?,?,?)''',
-            (req.target_lang, req.kind, source_hash, PROMPT_VERSION, model_id,
+            (req.target_lang, req.kind, source_hash, cache_version, model_id,
              final_text, score, tokens_ok, ms))
         db.commit()
 

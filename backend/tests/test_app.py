@@ -156,12 +156,97 @@ class AppTest(unittest.TestCase):
         # 2 forward attempts (the retry) + 1 back-translation call = 3 total.
         self.assertEqual(calls['n'], 3)
 
-    def test_token_still_missing_after_retry_is_flagged_not_silently_dropped(self):
-        self.use(FakeClient(chat_fn=lambda s, t: t.replace('⟦T1⟧', ''), embed_fn=identical_embed))
-        r = self.client.post('/translate', json={'text': 'Paid $400 in total.',
-                                                   'target_lang': 'hi', 'kind': 'summary'}).json()
-        self.assertFalse(r['protected_tokens_ok'])
-        self.assertNotIn('$400', r['text'])  # honest: never fabricated back in
+    def test_token_still_missing_after_retry_preserves_original_instead_of_publishing_loss(self):
+        fake = FakeClient(chat_fn=lambda s, t: t.replace('⟦T1⟧', ''), embed_fn=identical_embed)
+        self.use(fake)
+        response = self.client.post('/translate', json={'text': 'Paid $400 in total.',
+                                                       'target_lang': 'hi', 'kind': 'summary'})
+        self.assertEqual(response.status_code, 503)
+        self.assertIn('Original text remains available', response.json()['detail'])
+        self.assertNotIn('text', response.json())
+        self.assertEqual(len(fake.chat_calls), 2)  # No misleading back-translation score.
+        with app_module.db_conn() as db:
+            self.assertEqual(db.execute('SELECT COUNT(*) FROM translations').fetchone()[0], 0)
+
+    def test_unknown_tokens_with_no_protected_source_details_are_not_displayed(self):
+        fake = FakeClient(chat_fn=lambda s, t: 'Confirme el saldo ⟦T1⟧ y ⟦T2⟧.')
+        self.use(fake)
+        response = self.client.post('/translate', json={'text':'Please confirm the balance.',
+                                                       'target_lang':'es','kind':'summary'})
+        self.assertEqual(response.status_code, 503)
+        self.assertNotIn('⟦', response.text)
+        self.assertEqual(len(fake.chat_calls), 2)
+
+    def test_malformed_or_duplicated_masks_never_become_usable_translation(self):
+        corruptions = [lambda text: text + ' ⟦T1⟧',
+                       lambda text: text.replace('⟦T1⟧', '⟦ T1 ⟧'),
+                       lambda text: text.replace('⟦T1⟧', '[T1]'),
+                       lambda text: text + ' ⟦T99',
+                       lambda text: text + ' \\u27e6T99\\u27e7']
+        for corrupt in corruptions:
+            with self.subTest(corruption=corrupt):
+                self.use(FakeClient(chat_fn=lambda s, t: corrupt(t)))
+                response = self.client.post('/translate', json={'text':'Paid $400 in total.',
+                                                               'target_lang':'es','kind':'summary'})
+                self.assertEqual(response.status_code, 503)
+        with app_module.db_conn() as db:
+            self.assertEqual(db.execute('SELECT COUNT(*) FROM translations').fetchone()[0], 0)
+
+    def test_bad_back_translation_does_not_create_false_high_confidence(self):
+        def corrupt_back(system, text):
+            return text.replace('⟦T1⟧', '') if 'into English' in system else text
+        fake = FakeClient(chat_fn=corrupt_back, embed_fn=identical_embed)
+        self.use(fake)
+        response = self.client.post('/translate', json={'text':'Paid $400 in total.',
+                                                       'target_lang':'es','kind':'summary'})
+        self.assertEqual(response.status_code, 503)
+        with app_module.db_conn() as db:
+            self.assertEqual(db.execute('SELECT COUNT(*) FROM translations').fetchone()[0], 0)
+
+    def test_old_cache_version_is_not_replayed_and_original_entry_is_preserved(self):
+        source = 'Please confirm the balance.'
+        source_hash = app_module.hashlib.sha256(source.encode()).hexdigest()
+        with app_module.db_conn() as db:
+            db.execute('''INSERT INTO translations
+                (lang,kind,source_hash,prompt_version,model_id,text,round_trip_score,protected_tokens_ok,ms)
+                VALUES (?,?,?,?,?,?,?,?,?)''',
+                ('es','summary',source_hash,app_module.PROMPT_VERSION,'fake-model-1','Balance ⟦T1⟧',1.0,1,1))
+            db.commit()
+        fake = FakeClient(chat_fn=lambda s, t: t)
+        self.use(fake)
+        result = self.client.post('/translate',json={'text':source,'target_lang':'es','kind':'summary'}).json()
+        self.assertFalse(result['cached'])
+        self.assertNotIn('⟦',result['text'])
+        self.assertEqual(len(fake.chat_calls),2)
+        with app_module.db_conn() as db:
+            self.assertEqual(db.execute('SELECT COUNT(*) FROM translations').fetchone()[0],2)
+
+    def test_corrupted_current_cache_is_revalidated_before_reuse(self):
+        source = 'Paid $400 in total.'
+        source_hash = app_module.hashlib.sha256(source.encode()).hexdigest()
+        cache_version = app_module.PROMPT_VERSION + ':protected-' + app_module.TOKEN_GUARD_VERSION
+        for cached_text in ['Paid ⟦T1⟧ in total.','Paid in total.']:
+            with self.subTest(cached_text=cached_text):
+                with app_module.db_conn() as db:
+                    db.execute('''INSERT OR REPLACE INTO translations
+                        (lang,kind,source_hash,prompt_version,model_id,text,round_trip_score,protected_tokens_ok,ms)
+                        VALUES (?,?,?,?,?,?,?,?,?)''',
+                        ('es','summary',source_hash,cache_version,'fake-model-1',cached_text,1.0,1,1))
+                    db.commit()
+                fake = FakeClient(chat_fn=lambda s, t: t)
+                self.use(fake)
+                result = self.client.post('/translate',json={'text':source,'target_lang':'es','kind':'summary'}).json()
+                self.assertFalse(result['cached'])
+                self.assertEqual(result['text'],source)
+                self.assertEqual(len(fake.chat_calls),2)
+
+    def test_source_with_literal_protocol_marker_is_preserved_without_model_call(self):
+        fake = FakeClient()
+        self.use(fake)
+        response = self.client.post('/translate',json={'text':'A note saying ⟦T1⟧.',
+                                                      'target_lang':'es','kind':'summary'})
+        self.assertEqual(response.status_code,503)
+        self.assertEqual(fake.chat_calls,[])
 
     # -- round-trip confidence ------------------------------------------------------
 
