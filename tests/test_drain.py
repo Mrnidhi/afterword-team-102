@@ -90,6 +90,16 @@ def test_bucket_totals_always_sum_to_the_headline(done):
     assert sorted(l['id'] for l in everything) == sorted(l['id'] for b in result['buckets'].values() for l in b)
 
 
+def test_per_action_rates_add_up_to_the_headline_figures():
+    result = drain()
+    assert result['by_finding']['storage'] == {'daily': pytest.approx(129 / MONTHLY), 'possible_daily': 0}
+    assert result['by_finding']['subscriptions']['daily'] == 0
+    assert round(result['by_finding']['subscriptions']['possible_daily'], 2) == 1.82
+    assert math.fsum(v['daily'] for v in result['by_finding'].values()) == pytest.approx(result['daily'])
+    assert math.fsum(v['possible_daily'] for v in result['by_finding'].values()) == pytest.approx(result['possible_daily'])
+    assert drain(done=['storage'])['by_finding']['storage']['daily'] == 0
+
+
 def test_completing_a_task_moves_its_rate_into_stopped_so_far():
     result = drain(done=['storage'])
     assert result['daily'] == 0

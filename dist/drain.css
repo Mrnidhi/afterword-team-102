@@ -37,3 +37,4 @@
 .drain-excluded li{margin:6px 0}
 #drain-breakdown .drain-fine{margin-top:22px;font-size:.72rem;line-height:1.6}
 @media(max-width:740px){.drain-row{padding:12px}.drain-summary-figure strong{font-size:1.6rem}}
+.drain-caption{font-variant-numeric:tabular-nums}

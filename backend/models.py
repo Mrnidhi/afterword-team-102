@@ -129,6 +129,10 @@ class DrainBuckets(StrictModel):
     keep_for_now: list[ChargeLine]
     decide_later: list[ChargeLine]
 
+class FindingRate(StrictModel):
+    daily: float
+    possible_daily: float
+
 class DrainResponse(StrictModel):
     daily: float
     possible_daily: float
@@ -143,6 +147,7 @@ class DrainResponse(StrictModel):
     possible: list[ChargeLine]
     buckets: DrainBuckets
     excluded: list[ExcludedCharge]
+    by_finding: dict[str, FindingRate]
 
 class DateOfDeathRequest(StrictModel):
     date: Optional[str] = Field(default=None, max_length=10)
