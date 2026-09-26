@@ -55,7 +55,7 @@ const META={
 const live=()=>Boolean(window.AfterwordFindings?.active?.());
 const PRI={high:{label:'High priority',rank:0},medium:{label:'Medium priority',rank:1},low:{label:'Low priority',rank:2}};
 const meta=id=>META[id]||{priority:'low',theme:'teal',need:'Task',due:'',why:'',steps:[]};
-const open=()=>tasks.filter(t=>status(t)!=='done'&&META[t.id]).sort((a,b)=>PRI[meta(a.id).priority].rank-PRI[meta(b.id).priority].rank);
+const open=()=>tasks.filter(t=>(state.filter==='all'?status(t)!=='done':status(t)===state.filter)&&META[t.id]).sort((a,b)=>PRI[meta(a.id).priority].rank-PRI[meta(b.id).priority].rank);
 const money=n=>n==null?'Unknown':'$'+n.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
 const pcode=id=>'P'+(PRI[meta(id).priority].rank+1);
 const rankedCards=(list,attr)=>`<div class="rk-grid">${list.map((t,n)=>{const m=meta(t.id);return `<button type="button" class="rk-card" style="--i:${n}" ${attr}="${t.id}" aria-label="${escapeHTML(t.title)}, ${PRI[m.priority].label}. Open in action plan"><span class="rk-card-head"><strong>${escapeHTML(m.need)}</strong><small>1 action${m.amt!=null?' · '+money(m.amt):''}</small></span><span class="rk-item"><span class="rk-num">1.</span><span class="rk-pill p${pcode(t.id)[1]}">${pcode(t.id)}</span><span class="rk-text">${escapeHTML(t.title)} <small>· ${escapeHTML(m.who)}</small></span></span></button>`}).join('')}</div>`;
@@ -81,7 +81,7 @@ window.openTask=function(id){
 function decoratePlan(){
   if(live())return;
   const layout=document.querySelector('.plan-layout');
-  if(layout&&!document.querySelector('.rk-plan')){const list=open();layout.insertAdjacentHTML('beforebegin',`<section class="rk-plan rk-section"><div class="rk-title"><h3>Ranked by category</h3><span class="rk-count">${list.length} open</span></div>${rankedCards(list,'data-task')}</section>`)}
+  if(layout&&!document.querySelector('.rk-plan')){const list=open();const label=state.filter==='all'?'open':statusNames[state.filter].toLowerCase();layout.insertAdjacentHTML('beforebegin',`<section class="rk-plan rk-section"><div class="rk-title"><h3>Ranked by category</h3><span class="rk-count">${list.length} ${label}</span></div>${rankedCards(list,'data-task')}</section>`)}
   document.querySelectorAll('.plan-row').forEach(row=>{
     const id=row.querySelector('[data-task]')?.dataset.task;if(!id)return;
     row.dataset.rowId=id;
