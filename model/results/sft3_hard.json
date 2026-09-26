@@ -1,0 +1,2833 @@
+{
+ "report": {
+  "name": "sft3_hard",
+  "model": "sft3",
+  "shots": 0,
+  "split": "test",
+  "wall_seconds": 24.0,
+  "output_tokens_per_sec": 691.4,
+  "tasks": {
+   "estate_hard": {
+    "documents": 397,
+    "field_precision": 0.9803357314148681,
+    "field_recall": 0.9793962625778629,
+    "field_f1": 0.9798657718120806,
+    "critical_recall": 0.9717912552891397,
+    "schema_validity": 1.0,
+    "exact_match": 0.9118387909319899,
+    "grounding_rate": 0.9960668633235005,
+    "evidence_recall": 0.9747721454173067,
+    "per_field_f1": {
+     "act": 0.9935483870967742,
+     "amt": 1.0,
+     "cat": 0.9848866498740554,
+     "due": 1.0,
+     "inst": 0.9612903225806452,
+     "kind": 0.9888888888888889,
+     "rec": 1.0,
+     "ref": 0.9375
+    },
+    "per_category_f1": {
+     "bank": 0.9418604651162791,
+     "credit_card": 1.0,
+     "government": 0.8979591836734694,
+     "insurance": 0.9954128440366973,
+     "investment": 1.0,
+     "irrelevant": 0.9841269841269841,
+     "legal": 0.9710144927536232,
+     "loan": 0.9810426540284362,
+     "medical": 0.983957219251337,
+     "personal": 1.0,
+     "property": 1.0,
+     "retirement": 0.9662921348314607,
+     "subscription": 1.0,
+     "utility": 1.0
+    },
+    "mean_output_tokens": 41.740554156171285,
+    "median_latency_ms": 3953,
+    "errors": 0
+   }
+  }
+ },
+ "predictions": {
+  "hard-00000": {
+   "id": "hard-00000",
+   "raw": "{\"cat\":\"personal\"}",
+   "out_tok": 6,
+   "in_tok": 259,
+   "ms": 1059
+  },
+  "hard-00006": {
+   "id": "hard-00006",
+   "raw": "{\"cat\":\"personal\"}",
+   "out_tok": 6,
+   "in_tok": 383,
+   "ms": 1548
+  },
+  "hard-00003": {
+   "id": "hard-00003",
+   "raw": "{\"cat\":\"irrelevant\"}",
+   "out_tok": 7,
+   "in_tok": 554,
+   "ms": 1751
+  },
+  "hard-00014": {
+   "id": "hard-00014",
+   "raw": "{\"cat\":\"personal\"}",
+   "out_tok": 6,
+   "in_tok": 553,
+   "ms": 1743
+  },
+  "hard-00023": {
+   "id": "hard-00023",
+   "raw": "{\"cat\":\"irrelevant\"}",
+   "out_tok": 7,
+   "in_tok": 427,
+   "ms": 1845
+  },
+  "hard-00031": {
+   "id": "hard-00031",
+   "raw": "{\"cat\":\"personal\"}",
+   "out_tok": 6,
+   "in_tok": 281,
+   "ms": 1837
+  },
+  "hard-00028": {
+   "id": "hard-00028",
+   "raw": "{\"cat\":\"irrelevant\"}",
+   "out_tok": 7,
+   "in_tok": 267,
+   "ms": 1913
+  },
+  "hard-00040": {
+   "id": "hard-00040",
+   "raw": "{\"cat\":\"personal\"}",
+   "out_tok": 6,
+   "in_tok": 405,
+   "ms": 1907
+  },
+  "hard-00043": {
+   "id": "hard-00043",
+   "raw": "{\"cat\":\"irrelevant\"}",
+   "out_tok": 7,
+   "in_tok": 218,
+   "ms": 1954
+  },
+  "hard-00055": {
+   "id": "hard-00055",
+   "raw": "{\"cat\":\"personal\"}",
+   "out_tok": 6,
+   "in_tok": 429,
+   "ms": 1946
+  },
+  "hard-00047": {
+   "id": "hard-00047",
+   "raw": "{\"cat\":\"irrelevant\"}",
+   "out_tok": 7,
+   "in_tok": 235,
+   "ms": 1953
+  },
+  "hard-00048": {
+   "id": "hard-00048",
+   "raw": "{\"cat\":\"irrelevant\"}",
+   "out_tok": 7,
+   "in_tok": 354,
+   "ms": 1954
+  },
+  "hard-00042": {
+   "id": "hard-00042",
+   "raw": "{\"cat\":\"irrelevant\"}",
+   "out_tok": 7,
+   "in_tok": 231,
+   "ms": 1959
+  },
+  "hard-00049": {
+   "id": "hard-00049",
+   "raw": "{\"cat\":\"irrelevant\"}",
+   "out_tok": 7,
+   "in_tok": 567,
+   "ms": 2029
+  },
+  "hard-00052": {
+   "id": "hard-00052",
+   "raw": "{\"cat\":\"irrelevant\"}",
+   "out_tok": 7,
+   "in_tok": 216,
+   "ms": 2028
+  },
+  "hard-00053": {
+   "id": "hard-00053",
+   "raw": "{\"cat\":\"irrelevant\"}",
+   "out_tok": 7,
+   "in_tok": 242,
+   "ms": 2029
+  },
+  "hard-00062": {
+   "id": "hard-00062",
+   "raw": "{\"cat\":\"irrelevant\"}",
+   "out_tok": 7,
+   "in_tok": 601,
+   "ms": 2112
+  },
+  "hard-00069": {
+   "id": "hard-00069",
+   "raw": "{\"cat\":\"irrelevant\"}",
+   "out_tok": 7,
+   "in_tok": 380,
+   "ms": 745
+  },
+  "hard-00070": {
+   "id": "hard-00070",
+   "raw": "{\"cat\":\"personal\"}",
+   "out_tok": 6,
+   "in_tok": 234,
+   "ms": 674
+  },
+  "hard-00080": {
+   "id": "hard-00080",
+   "raw": "{\"cat\":\"personal\"}",
+   "out_tok": 6,
+   "in_tok": 272,
+   "ms": 645
+  },
+  "hard-00082": {
+   "id": "hard-00082",
+   "raw": "{\"cat\":\"irrelevant\"}",
+   "out_tok": 7,
+   "in_tok": 333,
+   "ms": 529
+  },
+  "hard-00030": {
+   "id": "hard-00030",
+   "raw": "{\"cat\":\"investment\",\"inst\":\"Blue Harbor Investments\",\"ref\":\"3533\",\"act\":\"transfer\",\"ev\":[1,3]}",
+   "out_tok": 29,
+   "in_tok": 278,
+   "ms": 3388
+  },
+  "hard-00004": {
+   "id": "hard-00004",
+   "raw": "{\"cat\":\"medical\",\"inst\":\"Piedmont Family Practice\",\"ref\":\"4450\",\"amt\":13166,\"kind\":\"due\",\"act\":\"verify_debt\",\"ev\":[1]}",
+   "out_tok": 43,
+   "in_tok": 245,
+   "ms": 4021
+  },
+  "hard-00005": {
+   "id": "hard-00005",
+   "raw": "{\"cat\":\"subscription\",\"inst\":\"Atlas Maps Pro\",\"ref\":\"4037\",\"amt\":7.99,\"kind\":\"charge\",\"rec\":\"monthly\",\"act\":\"cancel\",\"ev\":[1,3]}",
+   "out_tok": 44,
+   "in_tok": 266,
+   "ms": 4072
+  },
+  "hard-00026": {
+   "id": "hard-00026",
+   "raw": "{\"cat\":\"bank\",\"inst\":\"Halcyon National Bank\",\"ref\":\"6462\",\"amt\":77615,\"kind\":\"balance\",\"act\":\"claim\",\"ev\":[1,2]}",
+   "out_tok": 43,
+   "in_tok": 251,
+   "ms": 4100
+  },
+  "hard-00011": {
+   "id": "hard-00011",
+   "raw": "{\"cat\":\"insurance\",\"inst\":\"Old Dominion Life\",\"ref\":\"WL2985912\",\"amt\":5000,\"kind\":\"face_value\",\"act\":\"claim\",\"ev\":[2,3]}",
+   "out_tok": 45,
+   "in_tok": 281,
+   "ms": 4120
+  },
+  "hard-00079": {
+   "id": "hard-00079",
+   "raw": "{\"cat\":\"insurance\",\"inst\":\"Provident Assurance Co.\",\"amt\":5000,\"kind\":\"face_value\",\"act\":\"review\",\"ev\":[1]}",
+   "out_tok": 33,
+   "in_tok": 240,
+   "ms": 2201
+  },
+  "hard-00024": {
+   "id": "hard-00024",
+   "raw": "{\"cat\":\"investment\",\"inst\":\"Blue Harbor Investments\",\"ref\":\"1465\",\"amt\":1452738,\"kind\":\"balance\",\"act\":\"transfer\",\"ev\":[3,6,9]}",
+   "out_tok": 45,
+   "in_tok": 481,
+   "ms": 4251
+  },
+  "hard-00001": {
+   "id": "hard-00001",
+   "raw": "{\"cat\":\"loan\",\"inst\":\"Anchor Point Mortgage\",\"ref\":\"8119\",\"amt\":6040.09,\"kind\":\"due\",\"rec\":\"monthly\",\"due\":20,\"act\":\"notify\",\"ev\":[1]}",
+   "out_tok": 50,
+   "in_tok": 275,
+   "ms": 4346
+  },
+  "hard-00007": {
+   "id": "hard-00007",
+   "raw": "{\"cat\":\"investment\",\"inst\":\"Ashford Wealth Partners\",\"ref\":\"1780\",\"amt\":1479178,\"kind\":\"balance\",\"act\":\"transfer\",\"ev\":[1,5,6,9]}",
+   "out_tok": 48,
+   "in_tok": 387,
+   "ms": 4343
+  },
+  "hard-00051": {
+   "id": "hard-00051",
+   "raw": "{\"cat\":\"medical\",\"inst\":\"Mercy Sisters Hospital\",\"ref\":\"2572\",\"amt\":10644,\"kind\":\"due\",\"act\":\"verify_debt\",\"ev\":[1,3]}",
+   "out_tok": 44,
+   "in_tok": 276,
+   "ms": 4358
+  },
+  "hard-00032": {
+   "id": "hard-00032",
+   "raw": "{\"cat\":\"property\",\"inst\":\"Township Assessor's Office\",\"ref\":\"2573\",\"amt\":8866.14,\"kind\":\"due\",\"act\":\"review\",\"ev\":[1,3]}",
+   "out_tok": 46,
+   "in_tok": 284,
+   "ms": 4371
+  },
+  "hard-00037": {
+   "id": "hard-00037",
+   "raw": "{\"cat\":\"subscription\",\"inst\":\"Sprig Meal Plan\",\"ref\":\"8908\",\"amt\":1.99,\"kind\":\"charge\",\"rec\":\"annual\",\"act\":\"cancel\",\"ev\":[1,2]}",
+   "out_tok": 45,
+   "in_tok": 264,
+   "ms": 4369
+  },
+  "hard-00035": {
+   "id": "hard-00035",
+   "raw": "{\"cat\":\"bank\",\"inst\":\"First Meridian Trust Co.\",\"ref\":\"6659\",\"amt\":98693.12,\"kind\":\"balance\",\"act\":\"claim\",\"ev\":[1,2]}",
+   "out_tok": 46,
+   "in_tok": 277,
+   "ms": 4371
+  },
+  "hard-00044": {
+   "id": "hard-00044",
+   "raw": "{\"cat\":\"utility\",\"inst\":\"Regional Water Authority\",\"ref\":\"2618\",\"amt\":890.16,\"kind\":\"due\",\"act\":\"transfer\",\"ev\":[5,14,24]}",
+   "out_tok": 46,
+   "in_tok": 593,
+   "ms": 4469
+  },
+  "hard-00002": {
+   "id": "hard-00002",
+   "raw": "{\"cat\":\"property\",\"inst\":\"Cedar Point Self Storage\",\"ref\":\"3730\",\"amt\":10153.4,\"kind\":\"due\",\"due\":10,\"act\":\"review\",\"ev\":[1,2]}",
+   "out_tok": 50,
+   "in_tok": 247,
+   "ms": 4505
+  },
+  "hard-00065": {
+   "id": "hard-00065",
+   "raw": "{\"cat\":\"subscription\",\"inst\":\"Sprig Meal Plan\",\"ref\":\"9117\",\"amt\":24,\"kind\":\"charge\",\"rec\":\"monthly\",\"act\":\"cancel\",\"ev\":[2,5]}",
+   "out_tok": 43,
+   "in_tok": 296,
+   "ms": 3034
+  },
+  "hard-00013": {
+   "id": "hard-00013",
+   "raw": "{\"cat\":\"utility\",\"inst\":\"Northstar Energy Co-op\",\"ref\":\"3358\",\"amt\":889,\"kind\":\"due\",\"due\":45,\"act\":\"transfer\",\"ev\":[3,4,8,10]}",
+   "out_tok": 51,
+   "in_tok": 495,
+   "ms": 4579
+  },
+  "hard-00010": {
+   "id": "hard-00010",
+   "raw": "{\"cat\":\"government\",\"inst\":\"County Probate Registry\",\"ref\":\"TP-94584-3179\",\"amt\":7773,\"kind\":\"balance\",\"act\":\"claim\",\"ev\":[1,8,11]}",
+   "out_tok": 52,
+   "in_tok": 413,
+   "ms": 4679
+  },
+  "hard-00016": {
+   "id": "hard-00016",
+   "raw": "{\"cat\":\"government\",\"inst\":\"Statc Benefits Agency\",\"amt\":3101.19,\"kind\":\"benefit\",\"rec\":\"monthly\",\"due\":30,\"act\":\"notify\",\"ev\":[2,5,7,8]}",
+   "out_tok": 51,
+   "in_tok": 440,
+   "ms": 4675
+  },
+  "hard-00077": {
+   "id": "hard-00077",
+   "raw": "{\"cat\":\"bank\",\"inst\":\"Coastal Federal Bank\",\"ref\":\"4226\",\"act\":\"claim\",\"ev\":[1,6,10,15,17]}",
+   "out_tok": 40,
+   "in_tok": 473,
+   "ms": 2795
+  },
+  "hard-00021": {
+   "id": "hard-00021",
+   "raw": "{\"cat\":\"insurance\",\"inst\":\"Tri-County Mutual\",\"ref\":\"7774\",\"amt\":76184.47,\"kind\":\"face_value\",\"act\":\"claim\",\"ev\":[3,4,9,11]}",
+   "out_tok": 51,
+   "in_tok": 455,
+   "ms": 4770
+  },
+  "hard-00008": {
+   "id": "hard-00008",
+   "raw": "{\"cat\":\"government\",\"inst\":\"County Probate Registry\",\"ref\":\"1662\",\"amt\":325.91,\"kind\":\"benefit\",\"rec\":\"monthly\",\"act\":\"notify\",\"ev\":[3,4,7,10]}",
+   "out_tok": 53,
+   "in_tok": 439,
+   "ms": 4786
+  },
+  "hard-00046": {
+   "id": "hard-00046",
+   "raw": "{\"cat\":\"medical\",\"inst\":\"Piedmont Family Practice\",\"ref\":\"9273\",\"amt\":43270.1,\"kind\":\"due\",\"act\":\"verify_debt\",\"ev\":[3,4,9]}",
+   "out_tok": 49,
+   "in_tok": 371,
+   "ms": 4843
+  },
+  "hard-00090": {
+   "id": "hard-00090",
+   "raw": "{\"cat\":\"irrelevant\"}",
+   "out_tok": 7,
+   "in_tok": 249,
+   "ms": 758
+  },
+  "hard-00015": {
+   "id": "hard-00015",
+   "raw": "{\"cat\":\"medical\",\"inst\":\"Lakeshore Orthopedics\",\"ref\":\"4748\",\"amt\":13822.28,\"kind\":\"due\",\"due\":45,\"act\":\"verify_debt\",\"ev\":[1]}",
+   "out_tok": 53,
+   "in_tok": 248,
+   "ms": 4873
+  },
+  "hard-00057": {
+   "id": "hard-00057",
+   "raw": "{\"cat\":\"insurance\",\"inst\":\"Old Dominion Life\",\"ref\":\"WL4155817\",\"amt\":75000,\"kind\":\"face_value\",\"due\":730,\"act\":\"claim\",\"ev\":[1]}",
+   "out_tok": 50,
+   "in_tok": 251,
+   "ms": 4941
+  },
+  "hard-00045": {
+   "id": "hard-00045",
+   "raw": "{\"cat\":\"retirement\",\"inst\":\"Longshore Workers Welfare Trust\",\"ref\":\"1536\",\"amt\":2079.56,\"kind\":\"benefit\",\"rec\":\"monthly\",\"act\":\"stop_payment\",\"ev\":[1]}",
+   "out_tok": 50,
+   "in_tok": 247,
+   "ms": 4948
+  },
+  "hard-00064": {
+   "id": "hard-00064",
+   "raw": "{\"cat\":\"utility\",\"inst\":\"Regional Water Authority\",\"ref\":\"7568\",\"amt\":100.5,\"kind\":\"due\",\"due\":28,\"act\":\"transfer\",\"ev\":[1,3,7,10]}",
+   "out_tok": 51,
+   "in_tok": 421,
+   "ms": 4143
+  },
+  "hard-00036": {
+   "id": "hard-00036",
+   "raw": "{\"cat\":\"property\",\"inst\":\"Cedar Point Self Storage\",\"ref\":\"8819\",\"amt\":2425.22,\"kind\":\"due\",\"due\":28,\"act\":\"review\",\"ev\":[1,4,5,8]}",
+   "out_tok": 54,
+   "in_tok": 319,
+   "ms": 5170
+  },
+  "hard-00029": {
+   "id": "hard-00029",
+   "raw": "{\"cat\":\"insurance\",\"inst\":\"United Heritage Insurance\",\"ref\":\"84-947725\",\"amt\":5000,\"kind\":\"face_value\",\"act\":\"claim\",\"ev\":[2,5,6,14,17]}",
+   "out_tok": 54,
+   "in_tok": 470,
+   "ms": 5176
+  },
+  "hard-00059": {
+   "id": "hard-00059",
+   "raw": "{\"cat\":\"credit_card\",\"inst\":\"Apex Cardmember Services\",\"ref\":\"8449\",\"amt\":12525.6,\"kind\":\"due\",\"due\":28,\"act\":\"close\",\"ev\":[1,2]}",
+   "out_tok": 51,
+   "in_tok": 357,
+   "ms": 5157
+  },
+  "hard-00075": {
+   "id": "hard-00075",
+   "raw": "{\"cat\":\"loan\",\"inst\":\"Clearwater Auto Finance\",\"ref\":\"9626\",\"amt\":4898,\"kind\":\"due\",\"rec\":\"monthly\",\"act\":\"notify\",\"ev\":[3,7]}",
+   "out_tok": 45,
+   "in_tok": 482,
+   "ms": 3312
+  },
+  "hard-00058": {
+   "id": "hard-00058",
+   "raw": "{\"cat\":\"credit_card\",\"inst\":\"Apex Cardmember Services\",\"ref\":\"6638\",\"amt\":4071.27,\"kind\":\"due\",\"act\":\"close\",\"ev\":[1,12,13,17]}",
+   "out_tok": 53,
+   "in_tok": 588,
+   "ms": 5259
+  },
+  "hard-00041": {
+   "id": "hard-00041",
+   "raw": "{\"cat\":\"credit_card\",\"inst\":\"Vantage Card Services\",\"ref\":\"6557\",\"amt\":306.48,\"kind\":\"due\",\"act\":\"close\",\"ev\":[5,13,17,22,26]}",
+   "out_tok": 54,
+   "in_tok": 622,
+   "ms": 5271
+  },
+  "hard-00076": {
+   "id": "hard-00076",
+   "raw": "{\"cat\":\"legal\",\"inst\":\"Whitcombe, Serrano & Ng LLP\",\"ref\":\"2026-PR-5558\",\"act\":\"review\",\"ev\":[2,4,7]}",
+   "out_tok": 45,
+   "in_tok": 357,
+   "ms": 3314
+  },
+  "hard-00022": {
+   "id": "hard-00022",
+   "raw": "{\"cat\":\"property\",\"inst\":\"Cedar Point Self Storage\",\"ref\":\"3052\",\"amt\":6507.46,\"kind\":\"due\",\"due\":10,\"act\":\"review\",\"ev\":[1,3,4,8,9]}",
+   "out_tok": 56,
+   "in_tok": 486,
+   "ms": 5287
+  },
+  "hard-00074": {
+   "id": "hard-00074",
+   "raw": "{\"cat\":\"subscription\",\"inst\":\"Sprig Meal Plan\",\"ref\":\"8437\",\"amt\":1.99,\"kind\":\"charge\",\"rec\":\"annual\",\"act\":\"cancel\",\"ev\":[2,7]}",
+   "out_tok": 45,
+   "in_tok": 351,
+   "ms": 3317
+  },
+  "hard-00019": {
+   "id": "hard-00019",
+   "raw": "{\"cat\":\"property\",\"inst\":\"Harbourview HOA\",\"ref\":\"7612\",\"amt\":13843,\"kind\":\"due\",\"due\":60,\"act\":\"review\",\"ev\":[1,3,4,8,10,16]}",
+   "out_tok": 58,
+   "in_tok": 476,
+   "ms": 5339
+  },
+  "hard-00081": {
+   "id": "hard-00081",
+   "raw": "{\"cat\":\"credit_card\",\"inst\":\"Apex Cardmember Services\",\"ref\":\"3813\",\"act\":\"close\",\"ev\":[2,4,6,9,12,13,19]}",
+   "out_tok": 45,
+   "in_tok": 580,
+   "ms": 3330
+  },
+  "hard-00039": {
+   "id": "hard-00039",
+   "raw": "{\"cat\":\"insurance\",\"inst\":\"Provident Assurance Co.\",\"ref\":\"97-708446\",\"amt\":5000,\"kind\":\"face_value\",\"act\":\"claim\",\"ev\":[1,9,11,12,19]}",
+   "out_tok": 56,
+   "in_tok": 492,
+   "ms": 5460
+  },
+  "hard-00017": {
+   "id": "hard-00017",
+   "raw": "{\"cat\":\"loan\",\"inst\":\"Clearwater Auto Finance\",\"ref\":\"8479\",\"amt\":924,\"kind\":\"due\",\"rec\":\"monthly\",\"due\":20,\"act\":\"notify\",\"ev\":[2,7,8,9,10,16]}",
+   "out_tok": 59,
+   "in_tok": 509,
+   "ms": 5482
+  },
+  "hard-00085": {
+   "id": "hard-00085",
+   "raw": "{\"cat\":\"subscription\",\"inst\":\"Nocturne Audio\",\"ref\":\"8456\",\"act\":\"cancel\",\"ev\":[2,4]}",
+   "out_tok": 31,
+   "in_tok": 259,
+   "ms": 2354
+  },
+  "hard-00068": {
+   "id": "hard-00068",
+   "raw": "{\"cat\":\"utility\",\"inst\":\"Regional Water Authority\",\"ref\":\"5084\",\"amt\":505,\"kind\":\"due\",\"due\":28,\"act\":\"transfer\",\"ev\":[1,2,3,4,7]}",
+   "out_tok": 50,
+   "in_tok": 335,
+   "ms": 3782
+  },
+  "hard-00060": {
+   "id": "hard-00060",
+   "raw": "{\"cat\":\"credit_card\",\"inst\":\"Apex Cardmember Services\",\"ref\":\"1128\",\"amt\":6839.28,\"kind\":\"due\",\"due\":28,\"act\":\"close\",\"ev\":[1,4,5,8]}",
+   "out_tok": 55,
+   "in_tok": 343,
+   "ms": 5601
+  },
+  "hard-00107": {
+   "id": "hard-00107",
+   "raw": "{\"cat\":\"personal\"}",
+   "out_tok": 6,
+   "in_tok": 374,
+   "ms": 861
+  },
+  "hard-00034": {
+   "id": "hard-00034",
+   "raw": "{\"cat\":\"credit_card\",\"inst\":\"Apex Cardmember Services\",\"ref\":\"4064\",\"amt\":13138.84,\"kind\":\"due\",\"due\":45,\"act\":\"close\",\"ev\":[3,4,5,8,12]}",
+   "out_tok": 59,
+   "in_tok": 576,
+   "ms": 5693
+  },
+  "hard-00050": {
+   "id": "hard-00050",
+   "raw": "{\"cat\":\"property\",\"inst\":\"Cedar Point Self Storage\",\"ref\":\"5095\",\"amt\":13123.29,\"kind\":\"due\",\"due\":28,\"act\":\"review\",\"ev\":[1,2,4,5,8]}",
+   "out_tok": 57,
+   "in_tok": 345,
+   "ms": 5684
+  },
+  "hard-00056": {
+   "id": "hard-00056",
+   "raw": "{\"cat\":\"loan\",\"inst\":\"Clearwater Auto Finance\",\"ref\":\"3630\",\"amt\":1769.87,\"kind\":\"due\",\"rec\":\"monthly\",\"act\":\"notify\",\"ev\":[2,3,5,6,10,12]}",
+   "out_tok": 58,
+   "in_tok": 492,
+   "ms": 5791
+  },
+  "hard-00025": {
+   "id": "hard-00025",
+   "raw": "{\"cat\":\"loan\",\"inst\":\"Anchor Point Mortgage\",\"ref\":\"5257987\",\"amt\":833.34,\"kind\":\"due\",\"rec\":\"monthly\",\"due\":10,\"act\":\"notify\",\"ev\":[1,11,12,15]}",
+   "out_tok": 61,
+   "in_tok": 520,
+   "ms": 5813
+  },
+  "hard-00066": {
+   "id": "hard-00066",
+   "raw": "{\"cat\":\"insurance\",\"inst\":\"Kestrel Life & Legacy\",\"ref\":\"WL5925178\",\"amt\":150000,\"kind\":\"face_value\",\"act\":\"claim\",\"ev\":[1,2,3,4]}",
+   "out_tok": 54,
+   "in_tok": 260,
+   "ms": 4085
+  },
+  "hard-00020": {
+   "id": "hard-00020",
+   "raw": "{\"cat\":\"medical\",\"inst\":\"Lakeshore Orthopedics\",\"ref\":\"8154\",\"amt\":31765,\"kind\":\"due\",\"act\":\"verify_debt\",\"ev\":[1,7,14,18,21,27,31]}",
+   "out_tok": 62,
+   "in_tok": 613,
+   "ms": 5920
+  },
+  "hard-00012": {
+   "id": "hard-00012",
+   "raw": "{\"cat\":\"medical\",\"inst\":\"Mercy Sisters Hospital\",\"ref\":\"6172\",\"amt\":22689.61,\"kind\":\"due\",\"due\":21,\"act\":\"verify_debt\",\"ev\":[1,3,4,5,8,14,15]}",
+   "out_tok": 64,
+   "in_tok": 507,
+   "ms": 6019
+  },
+  "hard-00084": {
+   "id": "hard-00084",
+   "raw": "{\"cat\":\"bank\",\"inst\":\"Ironbridge Savings\",\"ref\":\"8334\",\"amt\":118396.32,\"kind\":\"balance\",\"act\":\"claim\",\"ev\":[1]}",
+   "out_tok": 43,
+   "in_tok": 267,
+   "ms": 3312
+  },
+  "hard-00116": {
+   "id": "hard-00116",
+   "raw": "{\"cat\":\"personal\"}",
+   "out_tok": 6,
+   "in_tok": 457,
+   "ms": 825
+  },
+  "hard-00067": {
+   "id": "hard-00067",
+   "raw": "{\"cat\":\"loan\",\"inst\":\"Clearwater Auto Finance\",\"ref\":\"1609\",\"amt\":2912.43,\"kind\":\"due\",\"rec\":\"monthly\",\"due\":60,\"act\":\"notify\",\"ev\":[1,5,6,9]}",
+   "out_tok": 57,
+   "in_tok": 372,
+   "ms": 4425
+  },
+  "hard-00054": {
+   "id": "hard-00054",
+   "raw": "{\"cat\":\"retirement\",\"inst\":\"Longshore Workers Welfare Trust\",\"ref\":\"1949\",\"amt\":1953.67,\"kind\":\"benefit\",\"rec\":\"monthly\",\"due\":90,\"act\":\"stop_payment\",\"ev\":[1,4,5,8]}",
+   "out_tok": 61,
+   "in_tok": 347,
+   "ms": 6136
+  },
+  "hard-00120": {
+   "id": "hard-00120",
+   "raw": "{\"cat\":\"irrelevant\"}",
+   "out_tok": 7,
+   "in_tok": 460,
+   "ms": 958
+  },
+  "hard-00063": {
+   "id": "hard-00063",
+   "raw": "{\"cat\":\"government\",\"inst\":\"Bureau of Vital Statistics – State Benefits Division\",\"ref\":\"PETR-2021-5129\",\"amt\":7354,\"kind\":\"balance\",\"act\":\"claim\",\"ev\":[1,7,8,12,17]}",
+   "out_tok": 62,
+   "in_tok": 536,
+   "ms": 6287
+  },
+  "hard-00038": {
+   "id": "hard-00038",
+   "raw": "{\"cat\":\"insurance\",\"inst\":\"Old Dominion Life\",\"ref\":\"36-141216\",\"amt\":15000,\"kind\":\"face_value\",\"due\":60,\"act\":\"claim\",\"ev\":[1,2,5,7,11,14,17]}",
+   "out_tok": 65,
+   "in_tok": 509,
+   "ms": 6405
+  },
+  "hard-00126": {
+   "id": "hard-00126",
+   "raw": "{\"cat\":\"irrelevant\"}",
+   "out_tok": 7,
+   "in_tok": 448,
+   "ms": 946
+  },
+  "hard-00130": {
+   "id": "hard-00130",
+   "raw": "{\"cat\":\"irrelevant\"}",
+   "out_tok": 7,
+   "in_tok": 258,
+   "ms": 866
+  },
+  "hard-00078": {
+   "id": "hard-00078",
+   "raw": "{\"cat\":\"loan\",\"inst\":\"Anchor Point Mortgage\",\"ref\":\"2594\",\"amt\":5139.16,\"kind\":\"due\",\"rec\":\"monthly\",\"due\":10,\"act\":\"notify\",\"ev\":[3,4,8,10]}",
+   "out_tok": 57,
+   "in_tok": 568,
+   "ms": 4520
+  },
+  "hard-00072": {
+   "id": "hard-00072",
+   "raw": "{\"cat\":\"insurance\",\"inst\":\"United Heritage Insurance\",\"ref\":\"39-392817\",\"amt\":150000,\"kind\":\"face_value\",\"due\":120,\"act\":\"claim\",\"ev\":[3,4,7,11]}",
+   "out_tok": 59,
+   "in_tok": 520,
+   "ms": 4700
+  },
+  "hard-00137": {
+   "id": "hard-00137",
+   "raw": "{\"cat\":\"irrelevant\"}",
+   "out_tok": 7,
+   "in_tok": 589,
+   "ms": 834
+  },
+  "hard-00139": {
+   "id": "hard-00139",
+   "raw": "{\"cat\":\"irrelevant\"}",
+   "out_tok": 7,
+   "in_tok": 255,
+   "ms": 809
+  },
+  "hard-00033": {
+   "id": "hard-00033",
+   "raw": "{\"cat\":\"retirement\",\"inst\":\"Longshore Workers Welfare Trust\",\"ref\":\"4586\",\"amt\":4453.53,\"kind\":\"benefit\",\"rec\":\"monthly\",\"due\":14,\"act\":\"stop_payment\",\"ev\":[1,3,9,10,11,13,16]}",
+   "out_tok": 71,
+   "in_tok": 595,
+   "ms": 6808
+  },
+  "hard-00009": {
+   "id": "hard-00009",
+   "raw": "{\"cat\":\"retirement\",\"inst\":\"Bricklayers & Allied Craftworkers Local 88 Annuity Plan\",\"ref\":\"1709\",\"amt\":1690.03,\"kind\":\"benefit\",\"rec\":\"monthly\",\"due\":45,\"act\":\"stop_payment\",\"ev\":[3,4,5,9,12]}",
+   "out_tok": 74,
+   "in_tok": 540,
+   "ms": 6898
+  },
+  "hard-00027": {
+   "id": "hard-00027",
+   "raw": "{\"cat\":\"government\",\"inst\":\"Office of the State Treasurer\",\"ref\":\"B-3298355\",\"amt\":238,\"kind\":\"benefit\",\"rec\":\"monthly\",\"due\":30,\"act\":\"notify\",\"ev\":[1,2,4,8,10,14,18,22]}",
+   "out_tok": 72,
+   "in_tok": 596,
+   "ms": 6878
+  },
+  "hard-00143": {
+   "id": "hard-00143",
+   "raw": "{\"cat\":\"irrelevant\"}",
+   "out_tok": 7,
+   "in_tok": 447,
+   "ms": 730
+  },
+  "hard-00018": {
+   "id": "hard-00018",
+   "raw": "{\"cat\":\"government\",\"inst\":\"Office of the State Treasurer\",\"ref\":\"12F-7842840\",\"amt\":389.79,\"kind\":\"benefit\",\"rec\":\"monthly\",\"due\":30,\"act\":\"notify\",\"ev\":[1,2,4,8,10,12,19]}",
+   "out_tok": 74,
+   "in_tok": 570,
+   "ms": 6981
+  },
+  "hard-00061": {
+   "id": "hard-00061",
+   "raw": "{\"cat\":\"loan\",\"inst\":\"Anchor Point Mortgage\",\"ref\":\"9356871373\",\"amt\":6341.01,\"kind\":\"due\",\"rec\":\"monthly\",\"due\":20,\"act\":\"notify\",\"ev\":[3,4,7,9,11,13,17]}",
+   "out_tok": 71,
+   "in_tok": 459,
+   "ms": 7025
+  },
+  "hard-00071": {
+   "id": "hard-00071",
+   "raw": "{\"cat\":\"loan\",\"inst\":\"Anchor Point Mortgage\",\"ref\":\"9351\",\"amt\":3491,\"kind\":\"due\",\"rec\":\"monthly\",\"due\":10,\"act\":\"notify\",\"ev\":[1,5,7,14,16,19,20,22]}",
+   "out_tok": 66,
+   "in_tok": 591,
+   "ms": 5221
+  },
+  "hard-00149": {
+   "id": "hard-00149",
+   "raw": "{\"cat\":\"personal\"}",
+   "out_tok": 6,
+   "in_tok": 257,
+   "ms": 650
+  },
+  "hard-00089": {
+   "id": "hard-00089",
+   "raw": "{\"cat\":\"subscription\",\"inst\":\"Bellwether Wine Club\",\"ref\":\"9996\",\"act\":\"cancel\",\"ev\":[1,8,9,13]}",
+   "out_tok": 36,
+   "in_tok": 404,
+   "ms": 3380
+  },
+  "hard-00152": {
+   "id": "hard-00152",
+   "raw": "{\"cat\":\"irrelevant\"}",
+   "out_tok": 7,
+   "in_tok": 467,
+   "ms": 711
+  },
+  "hard-00157": {
+   "id": "hard-00157",
+   "raw": "{\"cat\":\"personal\"}",
+   "out_tok": 6,
+   "in_tok": 425,
+   "ms": 603
+  },
+  "hard-00098": {
+   "id": "hard-00098",
+   "raw": "{\"cat\":\"credit_card\",\"inst\":\"Vantage Card Services\",\"ref\":\"6681\",\"amt\":3938,\"kind\":\"due\",\"act\":\"close\",\"ev\":[1]}",
+   "out_tok": 40,
+   "in_tok": 256,
+   "ms": 3642
+  },
+  "hard-00083": {
+   "id": "hard-00083",
+   "raw": "{\"cat\":\"retirement\",\"inst\":\"Bricklayers & Allied Craftworkers Local 88 Annuity Plan\",\"ref\":\"8768\",\"amt\":6490.01,\"kind\":\"benefit\",\"rec\":\"monthly\",\"due\":45,\"act\":\"stop_payment\",\"ev\":[1,3,8,10,18]}",
+   "out_tok": 75,
+   "in_tok": 532,
+   "ms": 5673
+  },
+  "hard-00086": {
+   "id": "hard-00086",
+   "raw": "{\"cat\":\"medical\",\"inst\":\"Piedmont Family Practice\",\"ref\":\"6438\",\"amt\":46817.51,\"kind\":\"due\",\"due\":45,\"act\":\"verify_debt\",\"ev\":[1,3,4,10,15]}",
+   "out_tok": 61,
+   "in_tok": 569,
+   "ms": 4872
+  },
+  "hard-00102": {
+   "id": "hard-00102",
+   "raw": "{\"cat\":\"credit_card\",\"inst\":\"BlueLine Card Center\",\"ref\":\"4876\",\"amt\":62,\"kind\":\"due\",\"act\":\"close\",\"ev\":[1,4,7]}",
+   "out_tok": 42,
+   "in_tok": 317,
+   "ms": 3704
+  },
+  "hard-00123": {
+   "id": "hard-00123",
+   "raw": "{\"cat\":\"bank\",\"inst\":\"Tri-County Mutual\",\"ref\":\"5962\",\"act\":\"claim\",\"ev\":[2,4,7,11]}",
+   "out_tok": 35,
+   "in_tok": 420,
+   "ms": 2982
+  },
+  "hard-00099": {
+   "id": "hard-00099",
+   "raw": "{\"cat\":\"legal\",\"inst\":\"Probate Division, Third Judicial Circuit\",\"ref\":\"2024-PR-9318\",\"due\":90,\"act\":\"review\",\"ev\":[1,3]}",
+   "out_tok": 45,
+   "in_tok": 303,
+   "ms": 3937
+  },
+  "hard-00141": {
+   "id": "hard-00141",
+   "raw": "{\"cat\":\"subscription\",\"inst\":\"Verso Reader\",\"ref\":\"6019\",\"act\":\"cancel\",\"ev\":[2,5]}",
+   "out_tok": 29,
+   "in_tok": 287,
+   "ms": 2211
+  },
+  "hard-00088": {
+   "id": "hard-00088",
+   "raw": "{\"cat\":\"medical\",\"inst\":\"Lakeshore Orthopedics\",\"ref\":\"3914\",\"amt\":26175.6,\"kind\":\"due\",\"due\":120,\"act\":\"verify_debt\",\"ev\":[1]}",
+   "out_tok": 53,
+   "in_tok": 266,
+   "ms": 4471
+  },
+  "hard-00096": {
+   "id": "hard-00096",
+   "raw": "{\"cat\":\"property\",\"inst\":\"Cedar Point Self Storage\",\"ref\":\"6177\",\"amt\":11942,\"kind\":\"due\",\"due\":28,\"act\":\"review\",\"ev\":[2,5]}",
+   "out_tok": 48,
+   "in_tok": 288,
+   "ms": 4160
+  },
+  "hard-00097": {
+   "id": "hard-00097",
+   "raw": "{\"cat\":\"bank\",\"inst\":\"Ironbridge Savings\",\"ref\":\"3517\",\"amt\":33372,\"kind\":\"balance\",\"act\":\"claim\",\"ev\":[3,4,8,10,12]}",
+   "out_tok": 49,
+   "in_tok": 441,
+   "ms": 4230
+  },
+  "hard-00091": {
+   "id": "hard-00091",
+   "raw": "{\"cat\":\"loan\",\"inst\":\"Clearwater Auto Finance\",\"ref\":\"7372\",\"amt\":3923.35,\"kind\":\"due\",\"rec\":\"monthly\",\"due\":20,\"act\":\"notify\",\"ev\":[1,2]}",
+   "out_tok": 53,
+   "in_tok": 265,
+   "ms": 4505
+  },
+  "hard-00106": {
+   "id": "hard-00106",
+   "raw": "{\"cat\":\"insurance\",\"inst\":\"Tri-County Mutual\",\"ref\":\"6111\",\"amt\":91224,\"kind\":\"face_value\",\"act\":\"claim\",\"ev\":[3,8,10]}",
+   "out_tok": 46,
+   "in_tok": 429,
+   "ms": 3915
+  },
+  "hard-00100": {
+   "id": "hard-00100",
+   "raw": "{\"cat\":\"loan\",\"inst\":\"Anchor Point Mortgage\",\"ref\":\"9440\",\"amt\":4979,\"kind\":\"due\",\"rec\":\"monthly\",\"act\":\"notify\",\"ev\":[2,3,4,7,9]}",
+   "out_tok": 50,
+   "in_tok": 398,
+   "ms": 4281
+  },
+  "hard-00095": {
+   "id": "hard-00095",
+   "raw": "{\"cat\":\"medical\",\"inst\":\"Mercy Sisters Hospital\",\"ref\":\"2791\",\"amt\":10354,\"kind\":\"due\",\"due\":45,\"act\":\"verify_debt\",\"ev\":[1,6,10]}",
+   "out_tok": 52,
+   "in_tok": 381,
+   "ms": 4441
+  },
+  "hard-00093": {
+   "id": "hard-00093",
+   "raw": "{\"cat\":\"investment\",\"inst\":\"Ashford Wealth Partners\",\"ref\":\"4924\",\"amt\":1492970.7,\"kind\":\"balance\",\"act\":\"transfer\",\"ev\":[3,4,7,9,11]}",
+   "out_tok": 53,
+   "in_tok": 512,
+   "ms": 4516
+  },
+  "hard-00094": {
+   "id": "hard-00094",
+   "raw": "{\"cat\":\"insurance\",\"inst\":\"Old Dominion Life\",\"ref\":\"55-143464\",\"amt\":75000,\"kind\":\"face_value\",\"due\":60,\"act\":\"claim\",\"ev\":[1,3,4]}",
+   "out_tok": 54,
+   "in_tok": 287,
+   "ms": 4606
+  },
+  "hard-00112": {
+   "id": "hard-00112",
+   "raw": "{\"cat\":\"subscription\",\"inst\":\"Bellwether Wine Club\",\"ref\":\"2522\",\"amt\":129,\"kind\":\"charge\",\"rec\":\"annual\",\"act\":\"cancel\",\"ev\":[1,4,8]}",
+   "out_tok": 47,
+   "in_tok": 330,
+   "ms": 3968
+  },
+  "hard-00092": {
+   "id": "hard-00092",
+   "raw": "{\"cat\":\"subscription\",\"inst\":\"Sprig Meal Plan\",\"ref\":\"8038\",\"amt\":1.99,\"kind\":\"charge\",\"rec\":\"annual\",\"act\":\"cancel\",\"ev\":[8,11,12,14,18]}",
+   "out_tok": 55,
+   "in_tok": 450,
+   "ms": 4683
+  },
+  "hard-00111": {
+   "id": "hard-00111",
+   "raw": "{\"cat\":\"government\",\"inst\":\"County Probate Registry\",\"ref\":\"7639\",\"amt\":9094.59,\"kind\":\"balance\",\"act\":\"claim\",\"ev\":[1,2,4,6]}",
+   "out_tok": 48,
+   "in_tok": 286,
+   "ms": 4070
+  },
+  "hard-00122": {
+   "id": "hard-00122",
+   "raw": "{\"cat\":\"investment\",\"inst\":\"Ashford Wealth Partners\",\"ref\":\"9559\",\"amt\":342720.93,\"kind\":\"balance\",\"act\":\"transfer\",\"ev\":[1]}",
+   "out_tok": 44,
+   "in_tok": 243,
+   "ms": 3646
+  },
+  "hard-00133": {
+   "id": "hard-00133",
+   "raw": "{\"cat\":\"property\",\"inst\":\"Cedar Point Self Storage\",\"ref\":\"8846\",\"amt\":14183,\"kind\":\"due\",\"act\":\"review\",\"ev\":[1]}",
+   "out_tok": 41,
+   "in_tok": 238,
+   "ms": 3354
+  },
+  "hard-00101": {
+   "id": "hard-00101",
+   "raw": "{\"cat\":\"utility\",\"inst\":\"Northstar Energy Co-op\",\"ref\":\"7614\",\"amt\":417.16,\"kind\":\"due\",\"act\":\"transfer\",\"ev\":[1,2,6,11,16,21]}",
+   "out_tok": 55,
+   "in_tok": 594,
+   "ms": 4756
+  },
+  "hard-00109": {
+   "id": "hard-00109",
+   "raw": "{\"cat\":\"utility\",\"inst\":\"Northstar Energy Co-op\",\"ref\":\"3086\",\"amt\":55,\"kind\":\"due\",\"due\":45,\"act\":\"transfer\",\"ev\":[1,3,4,8,12]}",
+   "out_tok": 52,
+   "in_tok": 511,
+   "ms": 4471
+  },
+  "hard-00105": {
+   "id": "hard-00105",
+   "raw": "{\"cat\":\"insurance\",\"inst\":\"Provident Assurance Co.\",\"ref\":\"90-609540\",\"amt\":15000,\"kind\":\"face_value\",\"act\":\"review\",\"ev\":[4,6,12,17]}",
+   "out_tok": 54,
+   "in_tok": 448,
+   "ms": 4667
+  },
+  "hard-00147": {
+   "id": "hard-00147",
+   "raw": "{\"cat\":\"credit_card\",\"inst\":\"Vantage Card Services\",\"ref\":\"1491\",\"act\":\"close\",\"ev\":[3,4,8,12]}",
+   "out_tok": 36,
+   "in_tok": 522,
+   "ms": 2840
+  },
+  "hard-00131": {
+   "id": "hard-00131",
+   "raw": "{\"cat\":\"legal\",\"inst\":\"Probate Division, Third Judicial Circuit\",\"ref\":\"2026-PR-3638\",\"act\":\"review\",\"ev\":[2,6,7,11]}",
+   "out_tok": 45,
+   "in_tok": 434,
+   "ms": 3704
+  },
+  "hard-00103": {
+   "id": "hard-00103",
+   "raw": "{\"cat\":\"insurance\",\"inst\":\"United Heritage Insurance\",\"ref\":\"24-574075\",\"amt\":5000,\"kind\":\"face_value\",\"due\":60,\"act\":\"claim\",\"ev\":[1,5,6,12]}",
+   "out_tok": 56,
+   "in_tok": 417,
+   "ms": 4817
+  },
+  "hard-00118": {
+   "id": "hard-00118",
+   "raw": "{\"cat\":\"property\",\"inst\":\"Harbourview HOA\",\"ref\":\"5913\",\"amt\":10834.42,\"kind\":\"due\",\"due\":28,\"act\":\"review\",\"ev\":[1]}",
+   "out_tok": 49,
+   "in_tok": 249,
+   "ms": 4101
+  },
+  "hard-00125": {
+   "id": "hard-00125",
+   "raw": "{\"cat\":\"utility\",\"inst\":\"Regional Water Authority\",\"ref\":\"5033\",\"amt\":107.03,\"kind\":\"due\",\"due\":45,\"act\":\"transfer\",\"ev\":[1,2]}",
+   "out_tok": 47,
+   "in_tok": 248,
+   "ms": 3914
+  },
+  "hard-00172": {
+   "id": "hard-00172",
+   "raw": "{\"cat\":\"irrelevant\"}",
+   "out_tok": 7,
+   "in_tok": 249,
+   "ms": 775
+  },
+  "hard-00108": {
+   "id": "hard-00108",
+   "raw": "{\"cat\":\"medical\",\"inst\":\"Piedmont Family Practice\",\"ref\":\"5951\",\"amt\":11518.52,\"kind\":\"due\",\"due\":45,\"act\":\"verify_debt\",\"ev\":[1,2,3]}",
+   "out_tok": 55,
+   "in_tok": 283,
+   "ms": 4683
+  },
+  "hard-00138": {
+   "id": "hard-00138",
+   "raw": "{\"cat\":\"utility\",\"inst\":\"Regional Water Authority\",\"ref\":\"3097\",\"amt\":692.33,\"kind\":\"due\",\"due\":7,\"act\":\"transfer\",\"ev\":[1]}",
+   "out_tok": 44,
+   "in_tok": 254,
+   "ms": 3566
+  },
+  "hard-00121": {
+   "id": "hard-00121",
+   "raw": "{\"cat\":\"bank\",\"inst\":\"Tri-County Mutual\",\"ref\":\"6329\",\"amt\":14522.17,\"kind\":\"balance\",\"act\":\"claim\",\"ev\":[1,8,10,14]}",
+   "out_tok": 51,
+   "in_tok": 506,
+   "ms": 4286
+  },
+  "hard-00119": {
+   "id": "hard-00119",
+   "raw": "{\"cat\":\"insurance\",\"inst\":\"Old Dominion Life\",\"ref\":\"WL8231447\",\"amt\":750000,\"kind\":\"face_value\",\"act\":\"review\",\"ev\":[1,5,8,15]}",
+   "out_tok": 52,
+   "in_tok": 389,
+   "ms": 4361
+  },
+  "hard-00124": {
+   "id": "hard-00124",
+   "raw": "{\"cat\":\"utility\",\"inst\":\"Municipal Light & Power\",\"ref\":\"2179\",\"amt\":802.35,\"kind\":\"due\",\"act\":\"transfer\",\"ev\":[1,4,6,8,11]}",
+   "out_tok": 52,
+   "in_tok": 442,
+   "ms": 4383
+  },
+  "hard-00117": {
+   "id": "hard-00117",
+   "raw": "{\"cat\":\"subscription\",\"inst\":\"Nocturne Audio\",\"ref\":\"7527\",\"amt\":1.99,\"kind\":\"charge\",\"rec\":\"monthly\",\"act\":\"cancel\",\"ev\":[1,7,9,10,12]}",
+   "out_tok": 54,
+   "in_tok": 468,
+   "ms": 4533
+  },
+  "hard-00178": {
+   "id": "hard-00178",
+   "raw": "{\"cat\":\"irrelevant\"}",
+   "out_tok": 7,
+   "in_tok": 440,
+   "ms": 787
+  },
+  "hard-00183": {
+   "id": "hard-00183",
+   "raw": "{\"cat\":\"irrelevant\"}",
+   "out_tok": 7,
+   "in_tok": 574,
+   "ms": 739
+  },
+  "hard-00129": {
+   "id": "hard-00129",
+   "raw": "{\"cat\":\"investment\",\"inst\":\"Ashford Wealth Partners\",\"ref\":\"9769\",\"amt\":966132.21,\"kind\":\"balance\",\"act\":\"transfer\",\"ev\":[1,5,6,10]}",
+   "out_tok": 51,
+   "in_tok": 452,
+   "ms": 4172
+  },
+  "hard-00135": {
+   "id": "hard-00135",
+   "raw": "{\"cat\":\"utility\",\"inst\":\"Northstar Energy Co-op\",\"ref\":\"2926\",\"amt\":311.58,\"kind\":\"due\",\"act\":\"transfer\",\"ev\":[1,3,7,11]}",
+   "out_tok": 49,
+   "in_tok": 525,
+   "ms": 3984
+  },
+  "hard-00127": {
+   "id": "hard-00127",
+   "raw": "{\"cat\":\"government\",\"inst\":\"Office of the State Treasurer\",\"ref\":\"4104\",\"amt\":4183.67,\"kind\":\"benefit\",\"rec\":\"monthly\",\"act\":\"notify\",\"ev\":[1,2,3]}",
+   "out_tok": 52,
+   "in_tok": 274,
+   "ms": 4326
+  },
+  "hard-00145": {
+   "id": "hard-00145",
+   "raw": "{\"cat\":\"utility\",\"inst\":\"Municipal Light & Power\",\"ref\":\"8471\",\"amt\":246,\"kind\":\"due\",\"act\":\"transfer\",\"ev\":[1,4,6]}",
+   "out_tok": 44,
+   "in_tok": 287,
+   "ms": 3450
+  },
+  "hard-00115": {
+   "id": "hard-00115",
+   "raw": "{\"cat\":\"insurance\",\"inst\":\"Kestrel Life & Legacy\",\"ref\":\"72-496754\",\"amt\":750000,\"kind\":\"face_value\",\"due\":60,\"act\":\"claim\",\"ev\":[1,2]}",
+   "out_tok": 56,
+   "in_tok": 261,
+   "ms": 4687
+  },
+  "hard-00114": {
+   "id": "hard-00114",
+   "raw": "{\"cat\":\"utility\",\"inst\":\"Municipal Light & Power\",\"ref\":\"1712\",\"amt\":442.8,\"kind\":\"due\",\"due\":28,\"act\":\"transfer\",\"ev\":[1,5,6,7,11]}",
+   "out_tok": 56,
+   "in_tok": 435,
+   "ms": 4689
+  },
+  "hard-00110": {
+   "id": "hard-00110",
+   "raw": "{\"cat\":\"loan\",\"inst\":\"Anchor Point Mortgage\",\"ref\":\"4042\",\"amt\":491,\"kind\":\"due\",\"rec\":\"monthly\",\"due\":20,\"act\":\"notify\",\"ev\":[2,14,15,16,17,22]}",
+   "out_tok": 61,
+   "in_tok": 452,
+   "ms": 5204
+  },
+  "hard-00140": {
+   "id": "hard-00140",
+   "raw": "{\"cat\":\"government\",\"inst\":\"State Treasurer\",\"ref\":\"1219\",\"amt\":3926.72,\"kind\":\"benefit\",\"rec\":\"monthly\",\"due\":30,\"act\":\"notify\",\"ev\":[1]}",
+   "out_tok": 50,
+   "in_tok": 267,
+   "ms": 4059
+  },
+  "hard-00187": {
+   "id": "hard-00187",
+   "raw": "{\"cat\":\"irrelevant\"}",
+   "out_tok": 7,
+   "in_tok": 286,
+   "ms": 736
+  },
+  "hard-00148": {
+   "id": "hard-00148",
+   "raw": "{\"cat\":\"property\",\"inst\":\"Township Assessor's Office\",\"ref\":\"2945\",\"amt\":4670.62,\"kind\":\"due\",\"act\":\"review\",\"ev\":[1]}",
+   "out_tok": 44,
+   "in_tok": 255,
+   "ms": 3502
+  },
+  "hard-00156": {
+   "id": "hard-00156",
+   "raw": "{\"cat\":\"investment\",\"inst\":\"Blue Harbor Investments\",\"ref\":\"8183\",\"act\":\"transfer\",\"ev\":[1,7,8,10,12,17]}",
+   "out_tok": 40,
+   "in_tok": 470,
+   "ms": 3208
+  },
+  "hard-00144": {
+   "id": "hard-00144",
+   "raw": "{\"cat\":\"medical\",\"inst\":\"Mercy Sistrs Hospital\",\"ref\":\"6984\",\"amt\":12443,\"kind\":\"due\",\"act\":\"verify_debt\",\"ev\":[1,7,10]}",
+   "out_tok": 49,
+   "in_tok": 423,
+   "ms": 3920
+  },
+  "hard-00104": {
+   "id": "hard-00104",
+   "raw": "{\"cat\":\"loan\",\"inst\":\"Clearwater Auto Finance\",\"ref\":\"7898009\",\"amt\":5405.99,\"kind\":\"due\",\"rec\":\"monthly\",\"due\":10,\"act\":\"notify\",\"ev\":[3,12,14,15,20]}",
+   "out_tok": 66,
+   "in_tok": 526,
+   "ms": 5714
+  },
+  "hard-00203": {
+   "id": "hard-00203",
+   "raw": "{\"cat\":\"irrelevant\"}",
+   "out_tok": 7,
+   "in_tok": 260,
+   "ms": 802
+  },
+  "hard-00128": {
+   "id": "hard-00128",
+   "raw": "{\"cat\":\"loan\",\"inst\":\"Fairline Lending Group\",\"ref\":\"5300\",\"amt\":1522.86,\"kind\":\"due\",\"rec\":\"monthly\",\"due\":60,\"act\":\"notify\",\"ev\":[1,5,6,7,11]}",
+   "out_tok": 61,
+   "in_tok": 416,
+   "ms": 5129
+  },
+  "hard-00142": {
+   "id": "hard-00142",
+   "raw": "{\"cat\":\"credit_card\",\"inst\":\"BlueLine Card Center\",\"ref\":\"8709\",\"amt\":9405.3,\"kind\":\"due\",\"due\":28,\"act\":\"close\",\"ev\":[3,10,12,17]}",
+   "out_tok": 56,
+   "in_tok": 587,
+   "ms": 4494
+  },
+  "hard-00151": {
+   "id": "hard-00151",
+   "raw": "{\"cat\":\"insurance\",\"inst\":\"Kestrel Life & Legacy\",\"ref\":\"WL5444651\",\"amt\":15000,\"kind\":\"face_value\",\"act\":\"review\",\"ev\":[1,2]}",
+   "out_tok": 49,
+   "in_tok": 260,
+   "ms": 3886
+  },
+  "hard-00158": {
+   "id": "hard-00158",
+   "raw": "{\"cat\":\"bank\",\"inst\":\"Tri-County Mutual\",\"ref\":\"4440\",\"amt\":69054.16,\"kind\":\"balance\",\"act\":\"claim\",\"ev\":[1,2]}",
+   "out_tok": 45,
+   "in_tok": 269,
+   "ms": 3563
+  },
+  "hard-00207": {
+   "id": "hard-00207",
+   "raw": "{\"cat\":\"irrelevant\"}",
+   "out_tok": 7,
+   "in_tok": 456,
+   "ms": 744
+  },
+  "hard-00154": {
+   "id": "hard-00154",
+   "raw": "{\"cat\":\"bank\",\"inst\":\"Tri-County Mutual\",\"ref\":\"9309\",\"amt\":112899,\"kind\":\"balance\",\"act\":\"claim\",\"ev\":[1,11,12,16]}",
+   "out_tok": 50,
+   "in_tok": 522,
+   "ms": 4002
+  },
+  "hard-00212": {
+   "id": "hard-00212",
+   "raw": "{\"cat\":\"irrelevant\"}",
+   "out_tok": 7,
+   "in_tok": 383,
+   "ms": 717
+  },
+  "hard-00136": {
+   "id": "hard-00136",
+   "raw": "{\"cat\":\"medical\",\"inst\":\"Lakeshore Orthopedics\",\"ref\":\"1527\",\"amt\":36744.05,\"kind\":\"due\",\"due\":120,\"act\":\"verify_debt\",\"ev\":[1,6,8,9,13]}",
+   "out_tok": 63,
+   "in_tok": 477,
+   "ms": 5138
+  },
+  "hard-00132": {
+   "id": "hard-00132",
+   "raw": "{\"cat\":\"medical\",\"inst\":\"Lakeshore Orthopedics\",\"ref\":\"8758\",\"amt\":8379.1,\"kind\":\"due\",\"due\":45,\"act\":\"verify_debt\",\"ev\":[3,4,5,8,15,20,23]}",
+   "out_tok": 66,
+   "in_tok": 549,
+   "ms": 5402
+  },
+  "hard-00134": {
+   "id": "hard-00134",
+   "raw": "{\"cat\":\"retirement\",\"inst\":\"Longshore Workers Welfare Trust\",\"ref\":\"09386701\",\"amt\":546.33,\"kind\":\"benefit\",\"rec\":\"monthly\",\"act\":\"stop_payment\",\"ev\":[3,11,13,14,15]}",
+   "out_tok": 65,
+   "in_tok": 597,
+   "ms": 5292
+  },
+  "hard-00113": {
+   "id": "hard-00113",
+   "raw": "{\"cat\":\"retirement\",\"inst\":\"Bricklayers & Allied Craftworkers Local 88 Annuity Plan\",\"ref\":\"3454\",\"amt\":6982,\"kind\":\"benefit\",\"rec\":\"monthly\",\"due\":14,\"act\":\"stop_payment\",\"ev\":[1,2,6,7,9,12]}",
+   "out_tok": 73,
+   "in_tok": 519,
+   "ms": 6143
+  },
+  "hard-00155": {
+   "id": "hard-00155",
+   "raw": "{\"cat\":\"insurance\",\"inst\":\"United Heritage Insurance\",\"ref\":\"WL3702516\",\"amt\":75000,\"kind\":\"face_value\",\"act\":\"review\",\"ev\":[8,11,15,22]}",
+   "out_tok": 53,
+   "in_tok": 503,
+   "ms": 4212
+  },
+  "hard-00153": {
+   "id": "hard-00153",
+   "raw": "{\"cat\":\"medical\",\"inst\":\"Mercy Sisters Hospital\",\"ref\":\"2411\",\"amt\":2589.63,\"kind\":\"due\",\"due\":120,\"act\":\"verify_debt\",\"ev\":[1,3,5]}",
+   "out_tok": 54,
+   "in_tok": 285,
+   "ms": 4304
+  },
+  "hard-00214": {
+   "id": "hard-00214",
+   "raw": "{\"cat\":\"irrelevant\"}",
+   "out_tok": 7,
+   "in_tok": 436,
+   "ms": 631
+  },
+  "hard-00216": {
+   "id": "hard-00216",
+   "raw": "{\"cat\":\"personal\"}",
+   "out_tok": 6,
+   "in_tok": 444,
+   "ms": 582
+  },
+  "hard-00161": {
+   "id": "hard-00161",
+   "raw": "{\"cat\":\"subscription\",\"inst\":\"Sprig Meal Plan\",\"ref\":\"9994\",\"amt\":39.99,\"kind\":\"charge\",\"rec\":\"monthly\",\"act\":\"cancel\",\"ev\":[1,3,7]}",
+   "out_tok": 48,
+   "in_tok": 380,
+   "ms": 3813
+  },
+  "hard-00180": {
+   "id": "hard-00180",
+   "raw": "{\"cat\":\"bank\",\"inst\":\"Coastal Federal Bank\",\"ref\":\"6320\",\"act\":\"claim\",\"ev\":[1]}",
+   "out_tok": 29,
+   "in_tok": 273,
+   "ms": 2584
+  },
+  "hard-00146": {
+   "id": "hard-00146",
+   "raw": "{\"cat\":\"utility\",\"inst\":\"Municipal Light & Power\",\"ref\":\"1386\",\"amt\":227.5,\"kind\":\"due\",\"due\":7,\"act\":\"transfer\",\"ev\":[1,6,7,9,15,17,18,21]}",
+   "out_tok": 64,
+   "in_tok": 608,
+   "ms": 5100
+  },
+  "hard-00166": {
+   "id": "hard-00166",
+   "raw": "{\"cat\":\"legal\",\"inst\":\"Probate Division, Third Judicial Circuit\",\"ref\":\"2118\",\"due\":35,\"act\":\"review\",\"ev\":[1,3]}",
+   "out_tok": 38,
+   "in_tok": 293,
+   "ms": 3251
+  },
+  "hard-00221": {
+   "id": "hard-00221",
+   "raw": "{\"cat\":\"personal\"}",
+   "out_tok": 6,
+   "in_tok": 223,
+   "ms": 645
+  },
+  "hard-00194": {
+   "id": "hard-00194",
+   "raw": "{\"cat\":\"bank\",\"inst\":\"Ironbridge Savings\",\"ref\":\"3526\",\"act\":\"claim\",\"ev\":[1]}",
+   "out_tok": 27,
+   "in_tok": 236,
+   "ms": 2344
+  },
+  "hard-00226": {
+   "id": "hard-00226",
+   "raw": "{\"cat\":\"irrelevant\"}",
+   "out_tok": 7,
+   "in_tok": 454,
+   "ms": 732
+  },
+  "hard-00165": {
+   "id": "hard-00165",
+   "raw": "{\"cat\":\"investment\",\"inst\":\"Ashford Wealth Partners\",\"ref\":\"4112\",\"amt\":431009.34,\"kind\":\"balance\",\"act\":\"transfer\",\"ev\":[1]}",
+   "out_tok": 44,
+   "in_tok": 286,
+   "ms": 3701
+  },
+  "hard-00164": {
+   "id": "hard-00164",
+   "raw": "{\"cat\":\"subscription\",\"inst\":\"Sprig Meal Plan\",\"ref\":\"8857\",\"amt\":11.5,\"kind\":\"charge\",\"rec\":\"quarterly\",\"act\":\"cancel\",\"ev\":[1]}",
+   "out_tok": 44,
+   "in_tok": 249,
+   "ms": 3704
+  },
+  "hard-00159": {
+   "id": "hard-00159",
+   "raw": "{\"cat\":\"government\",\"inst\":\"Bureau of Vital Statistics\",\"ref\":\"2024-FA-3161\",\"amt\":1659.74,\"kind\":\"balance\",\"act\":\"claim\",\"ev\":[6,16,21,32]}",
+   "out_tok": 59,
+   "in_tok": 631,
+   "ms": 4653
+  },
+  "hard-00228": {
+   "id": "hard-00228",
+   "raw": "{\"cat\":\"irrelevant\"}",
+   "out_tok": 7,
+   "in_tok": 231,
+   "ms": 739
+  },
+  "hard-00229": {
+   "id": "hard-00229",
+   "raw": "{\"cat\":\"irrelevant\"}",
+   "out_tok": 7,
+   "in_tok": 393,
+   "ms": 739
+  },
+  "hard-00168": {
+   "id": "hard-00168",
+   "raw": "{\"cat\":\"subscription\",\"inst\":\"Nocturne Audio\",\"ref\":\"7810\",\"amt\":39.99,\"kind\":\"charge\",\"rec\":\"annual\",\"act\":\"cancel\",\"ev\":[1]}",
+   "out_tok": 45,
+   "in_tok": 244,
+   "ms": 3785
+  },
+  "hard-00163": {
+   "id": "hard-00163",
+   "raw": "{\"cat\":\"investment\",\"inst\":\"Sentinel Asset Management\",\"ref\":\"6681\",\"amt\":766989,\"kind\":\"balance\",\"act\":\"transfer\",\"ev\":[1,11,12,17]}",
+   "out_tok": 50,
+   "in_tok": 566,
+   "ms": 4082
+  },
+  "hard-00185": {
+   "id": "hard-00185",
+   "raw": "{\"cat\":\"investment\",\"inst\":\"Blue Harbor Investments\",\"ref\":\"3499\",\"act\":\"transfer\",\"ev\":[1,3,7,10]}",
+   "out_tok": 34,
+   "in_tok": 457,
+   "ms": 2961
+  },
+  "hard-00234": {
+   "id": "hard-00234",
+   "raw": "{\"cat\":\"irrelevant\"}",
+   "out_tok": 7,
+   "in_tok": 556,
+   "ms": 745
+  },
+  "hard-00169": {
+   "id": "hard-00169",
+   "raw": "{\"cat\":\"government\",\"inst\":\"State Treasurer\",\"ref\":\"3965\",\"amt\":1789,\"kind\":\"benefit\",\"rec\":\"monthly\",\"due\":30,\"act\":\"notify\",\"ev\":[1]}",
+   "out_tok": 47,
+   "in_tok": 253,
+   "ms": 4075
+  },
+  "hard-00181": {
+   "id": "hard-00181",
+   "raw": "{\"cat\":\"investment\",\"inst\":\"Blue Harbor Investments\",\"ref\":\"6795\",\"amt\":30140,\"kind\":\"balance\",\"act\":\"transfer\",\"ev\":[2,6]}",
+   "out_tok": 41,
+   "in_tok": 315,
+   "ms": 3579
+  },
+  "hard-00160": {
+   "id": "hard-00160",
+   "raw": "{\"cat\":\"loan\",\"inst\":\"Fairline Lending Group\",\"ref\":\"4183\",\"amt\":5305.56,\"kind\":\"due\",\"rec\":\"monthly\",\"due\":10,\"act\":\"notify\",\"ev\":[1,3,4,5,6,11]}",
+   "out_tok": 63,
+   "in_tok": 455,
+   "ms": 5079
+  },
+  "hard-00162": {
+   "id": "hard-00162",
+   "raw": "{\"cat\":\"retirement\",\"inst\":\"Municipal Employees' Retirement System\",\"ref\":\"5242\",\"amt\":2837,\"kind\":\"benefit\",\"rec\":\"monthly\",\"due\":14,\"act\":\"stop_payment\",\"ev\":[2,9,13,22]}",
+   "out_tok": 62,
+   "in_tok": 603,
+   "ms": 5016
+  },
+  "hard-00173": {
+   "id": "hard-00173",
+   "raw": "{\"cat\":\"legal\",\"inst\":\"Probate Court Clerk\",\"ref\":\"2024-PR-5430\",\"due\":21,\"act\":\"review\",\"ev\":[1,6,7,14]}",
+   "out_tok": 47,
+   "in_tok": 522,
+   "ms": 4062
+  },
+  "hard-00150": {
+   "id": "hard-00150",
+   "raw": "{\"cat\":\"retirement\",\"inst\":\"Bricklayers & Allied Craftworkers Local 88 Annuity Plan\",\"ref\":\"12-99813\",\"amt\":2587.22,\"kind\":\"benefit\",\"rec\":\"monthly\",\"act\":\"stop_payment\",\"ev\":[1,7,11,16,18]}",
+   "out_tok": 75,
+   "in_tok": 590,
+   "ms": 5996
+  },
+  "hard-00240": {
+   "id": "hard-00240",
+   "raw": "{\"cat\":\"irrelevant\"}",
+   "out_tok": 7,
+   "in_tok": 231,
+   "ms": 776
+  },
+  "hard-00241": {
+   "id": "hard-00241",
+   "raw": "{\"cat\":\"irrelevant\"}",
+   "out_tok": 7,
+   "in_tok": 599,
+   "ms": 776
+  },
+  "hard-00170": {
+   "id": "hard-00170",
+   "raw": "{\"cat\":\"subscription\",\"inst\":\"Bellwether Wine Club\",\"ref\":\"2300\",\"amt\":24,\"kind\":\"charge\",\"rec\":\"quarterly\",\"act\":\"cancel\",\"ev\":[1,8,9,12]}",
+   "out_tok": 50,
+   "in_tok": 425,
+   "ms": 4276
+  },
+  "hard-00179": {
+   "id": "hard-00179",
+   "raw": "{\"cat\":\"bank\",\"inst\":\"Coastal Federal Bank\",\"ref\":\"2401\",\"amt\":46628.12,\"kind\":\"balance\",\"act\":\"claim\",\"ev\":[1]}",
+   "out_tok": 44,
+   "in_tok": 253,
+   "ms": 3820
+  },
+  "hard-00242": {
+   "id": "hard-00242",
+   "raw": "{\"cat\":\"irrelevant\"}",
+   "out_tok": 7,
+   "in_tok": 481,
+   "ms": 798
+  },
+  "hard-00189": {
+   "id": "hard-00189",
+   "raw": "{\"cat\":\"bank\",\"inst\":\"Ironbridge Savings\",\"ref\":\"5506\",\"amt\":81415.71,\"kind\":\"balance\",\"act\":\"claim\",\"ev\":[1]}",
+   "out_tok": 42,
+   "in_tok": 257,
+   "ms": 3669
+  },
+  "hard-00190": {
+   "id": "hard-00190",
+   "raw": "{\"cat\":\"subscription\",\"inst\":\"Atlas Maps Pro\",\"ref\":\"5003\",\"amt\":39.99,\"kind\":\"charge\",\"rec\":\"monthly\",\"act\":\"cancel\",\"ev\":[1]}",
+   "out_tok": 43,
+   "in_tok": 238,
+   "ms": 3719
+  },
+  "hard-00245": {
+   "id": "hard-00245",
+   "raw": "{\"cat\":\"irrelevant\"}",
+   "out_tok": 7,
+   "in_tok": 370,
+   "ms": 759
+  },
+  "hard-00193": {
+   "id": "hard-00193",
+   "raw": "{\"cat\":\"credit_card\",\"inst\":\"Vantage Card Services\",\"ref\":\"1298\",\"amt\":2884.41,\"kind\":\"due\",\"act\":\"close\",\"ev\":[1]}",
+   "out_tok": 43,
+   "in_tok": 245,
+   "ms": 3727
+  },
+  "hard-00192": {
+   "id": "hard-00192",
+   "raw": "{\"cat\":\"subscription\",\"inst\":\"Bellwether Wine Club\",\"ref\":\"9728\",\"amt\":11.5,\"kind\":\"charge\",\"rec\":\"annual\",\"act\":\"cancel\",\"ev\":[1]}",
+   "out_tok": 44,
+   "in_tok": 246,
+   "ms": 3795
+  },
+  "hard-00175": {
+   "id": "hard-00175",
+   "raw": "{\"cat\":\"utility\",\"inst\":\"Northstar Energy Co-op\",\"ref\":\"9315\",\"amt\":463,\"kind\":\"due\",\"due\":7,\"act\":\"transfer\",\"ev\":[1,5,6,7,10]}",
+   "out_tok": 52,
+   "in_tok": 388,
+   "ms": 4493
+  },
+  "hard-00248": {
+   "id": "hard-00248",
+   "raw": "{\"cat\":\"irrelevant\"}",
+   "out_tok": 7,
+   "in_tok": 218,
+   "ms": 745
+  },
+  "hard-00196": {
+   "id": "hard-00196",
+   "raw": "{\"cat\":\"credit_card\",\"inst\":\"Apex Cardmember Services\",\"ref\":\"1415\",\"amt\":6365,\"kind\":\"due\",\"act\":\"close\",\"ev\":[3,7]}",
+   "out_tok": 43,
+   "in_tok": 362,
+   "ms": 3734
+  },
+  "hard-00199": {
+   "id": "hard-00199",
+   "raw": "{\"cat\":\"subscription\",\"inst\":\"TrailKit\",\"ref\":\"1539\",\"amt\":7.99,\"kind\":\"charge\",\"rec\":\"quarterly\",\"act\":\"cancel\",\"ev\":[1]}",
+   "out_tok": 42,
+   "in_tok": 238,
+   "ms": 3663
+  },
+  "hard-00184": {
+   "id": "hard-00184",
+   "raw": "{\"cat\":\"bank\",\"inst\":\"First Meridian Trust Co.\",\"ref\":\"4189\",\"amt\":34711.15,\"kind\":\"balance\",\"act\":\"claim\",\"ev\":[3,4,8]}",
+   "out_tok": 48,
+   "in_tok": 374,
+   "ms": 4141
+  },
+  "hard-00191": {
+   "id": "hard-00191",
+   "raw": "{\"cat\":\"medical\",\"inst\":\"Mercy Sisters Hospital\",\"ref\":\"8606\",\"amt\":23950.44,\"kind\":\"due\",\"act\":\"verify_debt\",\"ev\":[1,2]}",
+   "out_tok": 47,
+   "in_tok": 257,
+   "ms": 4097
+  },
+  "hard-00253": {
+   "id": "hard-00253",
+   "raw": "{\"cat\":\"irrelevant\"}",
+   "out_tok": 7,
+   "in_tok": 388,
+   "ms": 821
+  },
+  "hard-00174": {
+   "id": "hard-00174",
+   "raw": "{\"cat\":\"investment\",\"inst\":\"Blue Harbor Investments\",\"ref\":\"7899\",\"amt\":857736.88,\"kind\":\"balance\",\"act\":\"transfer\",\"ev\":[1,8,9,11,12,16]}",
+   "out_tok": 56,
+   "in_tok": 509,
+   "ms": 4888
+  },
+  "hard-00200": {
+   "id": "hard-00200",
+   "raw": "{\"cat\":\"bank\",\"inst\":\"Halcyon National Bank\",\"ref\":\"1863\",\"amt\":98058.33,\"kind\":\"balance\",\"act\":\"claim\",\"ev\":[1]}",
+   "out_tok": 44,
+   "in_tok": 263,
+   "ms": 3863
+  },
+  "hard-00171": {
+   "id": "hard-00171",
+   "raw": "{\"cat\":\"credit_card\",\"inst\":\"BlueLine Card Center\",\"ref\":\"1758\",\"amt\":465.89,\"kind\":\"due\",\"due\":28,\"act\":\"close\",\"ev\":[1,11,13,14,16]}",
+   "out_tok": 59,
+   "in_tok": 530,
+   "ms": 5124
+  },
+  "hard-00198": {
+   "id": "hard-00198",
+   "raw": "{\"cat\":\"investment\",\"inst\":\"Blue Harbor Investments\",\"ref\":\"3669\",\"amt\":1495039.24,\"kind\":\"balance\",\"act\":\"transfer\",\"ev\":[2,6]}",
+   "out_tok": 46,
+   "in_tok": 295,
+   "ms": 4020
+  },
+  "hard-00256": {
+   "id": "hard-00256",
+   "raw": "{\"cat\":\"irrelevant\"}",
+   "out_tok": 7,
+   "in_tok": 437,
+   "ms": 835
+  },
+  "hard-00167": {
+   "id": "hard-00167",
+   "raw": "{\"cat\":\"government\",\"inst\":\"Bureau of Vital Statistics\",\"ref\":\"7631\",\"amt\":1403.79,\"kind\":\"benefit\",\"rec\":\"monthly\",\"due\":30,\"act\":\"notify\",\"ev\":[3,12,13,14,20]}",
+   "out_tok": 65,
+   "in_tok": 565,
+   "ms": 5554
+  },
+  "hard-00188": {
+   "id": "hard-00188",
+   "raw": "{\"cat\":\"insurance\",\"inst\":\"Tri-County Mutual\",\"ref\":\"9062\",\"amt\":46855.43,\"kind\":\"face_value\",\"act\":\"claim\",\"ev\":[3,6,14,18]}",
+   "out_tok": 52,
+   "in_tok": 454,
+   "ms": 4491
+  },
+  "hard-00258": {
+   "id": "hard-00258",
+   "raw": "{\"cat\":\"irrelevant\"}",
+   "out_tok": 7,
+   "in_tok": 513,
+   "ms": 826
+  },
+  "hard-00182": {
+   "id": "hard-00182",
+   "raw": "{\"cat\":\"utility\",\"inst\":\"Municipal Light & Power\",\"ref\":\"5063\",\"amt\":29.27,\"kind\":\"due\",\"due\":28,\"act\":\"transfer\",\"ev\":[1,6,8,10,13]}",
+   "out_tok": 57,
+   "in_tok": 511,
+   "ms": 4997
+  },
+  "hard-00208": {
+   "id": "hard-00208",
+   "raw": "{\"cat\":\"utility\",\"inst\":\"Northstar Energy Co-op\",\"ref\":\"8244\",\"amt\":295.16,\"kind\":\"due\",\"act\":\"transfer\",\"ev\":[2,5]}",
+   "out_tok": 44,
+   "in_tok": 295,
+   "ms": 3864
+  },
+  "hard-00202": {
+   "id": "hard-00202",
+   "raw": "{\"cat\":\"legal\",\"inst\":\"Probate Division, Third Judicial Circuit\",\"ref\":\"2024-PR-7114\",\"due\":90,\"act\":\"review\",\"ev\":[1,2,4,8]}",
+   "out_tok": 49,
+   "in_tok": 431,
+   "ms": 4298
+  },
+  "hard-00177": {
+   "id": "hard-00177",
+   "raw": "{\"cat\":\"utility\",\"inst\":\"Northstar Energy Co-op\",\"ref\":\"4413\",\"amt\":502.18,\"kind\":\"due\",\"due\":7,\"act\":\"transfer\",\"ev\":[3,4,5,6,11,14,16]}",
+   "out_tok": 61,
+   "in_tok": 529,
+   "ms": 5331
+  },
+  "hard-00264": {
+   "id": "hard-00264",
+   "raw": "{\"cat\":\"irrelevant\"}",
+   "out_tok": 7,
+   "in_tok": 258,
+   "ms": 820
+  },
+  "hard-00268": {
+   "id": "hard-00268",
+   "raw": "{\"cat\":\"personal\"}",
+   "out_tok": 6,
+   "in_tok": 460,
+   "ms": 680
+  },
+  "hard-00176": {
+   "id": "hard-00176",
+   "raw": "{\"cat\":\"government\",\"inst\":\"Bureau of Vital Statistics\",\"ref\":\"1743\",\"amt\":4937.94,\"kind\":\"benefit\",\"rec\":\"monthly\",\"due\":30,\"act\":\"notify\",\"ev\":[1,3,4,7,9,10]}",
+   "out_tok": 64,
+   "in_tok": 461,
+   "ms": 5573
+  },
+  "hard-00186": {
+   "id": "hard-00186",
+   "raw": "{\"cat\":\"insurance\",\"inst\":\"Kestrel Life & Legacy\",\"ref\":\"79-342241\",\"amt\":75000,\"kind\":\"face_value\",\"due\":120,\"act\":\"claim\",\"ev\":[1,3,4]}",
+   "out_tok": 58,
+   "in_tok": 305,
+   "ms": 5009
+  },
+  "hard-00224": {
+   "id": "hard-00224",
+   "raw": "{\"cat\":\"insurance\",\"inst\":\"Kestrel Life & Legacy\",\"amt\":75000,\"kind\":\"face_value\",\"act\":\"claim\",\"ev\":[1]}",
+   "out_tok": 36,
+   "in_tok": 234,
+   "ms": 3236
+  },
+  "hard-00269": {
+   "id": "hard-00269",
+   "raw": "{\"cat\":\"irrelevant\"}",
+   "out_tok": 7,
+   "in_tok": 251,
+   "ms": 772
+  },
+  "hard-00209": {
+   "id": "hard-00209",
+   "raw": "{\"cat\":\"government\",\"inst\":\"Office of the State Treasurer\",\"ref\":\"20221300\",\"amt\":744.66,\"kind\":\"balance\",\"act\":\"claim\",\"ev\":[3,7,8]}",
+   "out_tok": 50,
+   "in_tok": 429,
+   "ms": 4339
+  },
+  "hard-00273": {
+   "id": "hard-00273",
+   "raw": "{\"cat\":\"irrelevant\"}",
+   "out_tok": 7,
+   "in_tok": 218,
+   "ms": 742
+  },
+  "hard-00275": {
+   "id": "hard-00275",
+   "raw": "{\"cat\":\"irrelevant\"}",
+   "out_tok": 7,
+   "in_tok": 231,
+   "ms": 756
+  },
+  "hard-00218": {
+   "id": "hard-00218",
+   "raw": "{\"cat\":\"insurance\",\"inst\":\"Provident Assurance Co\",\"ref\":\"WL9182751\",\"amt\":5000,\"kind\":\"face_value\",\"act\":\"claim\",\"ev\":[1]}",
+   "out_tok": 44,
+   "in_tok": 256,
+   "ms": 3878
+  },
+  "hard-00205": {
+   "id": "hard-00205",
+   "raw": "{\"cat\":\"medical\",\"inst\":\"Lakeshore Orthopedics\",\"ref\":\"5125\",\"amt\":27270.41,\"kind\":\"due\",\"due\":120,\"act\":\"verify_debt\",\"ev\":[1]}",
+   "out_tok": 54,
+   "in_tok": 244,
+   "ms": 4715
+  },
+  "hard-00220": {
+   "id": "hard-00220",
+   "raw": "{\"cat\":\"subscription\",\"inst\":\"TrailKit\",\"ref\":\"6459\",\"amt\":11.5,\"kind\":\"charge\",\"rec\":\"quarterly\",\"act\":\"cancel\",\"ev\":[1,2]}",
+   "out_tok": 44,
+   "in_tok": 253,
+   "ms": 3840
+  },
+  "hard-00195": {
+   "id": "hard-00195",
+   "raw": "{\"cat\":\"credit_card\",\"inst\":\"BlueLine Card Center\",\"ref\":\"1458\",\"amt\":994.36,\"kind\":\"due\",\"due\":28,\"act\":\"close\",\"ev\":[5,9,11,13,15,21]}",
+   "out_tok": 61,
+   "in_tok": 478,
+   "ms": 5253
+  },
+  "hard-00281": {
+   "id": "hard-00281",
+   "raw": "{\"cat\":\"personal\"}",
+   "out_tok": 6,
+   "in_tok": 344,
+   "ms": 627
+  },
+  "hard-00201": {
+   "id": "hard-00201",
+   "raw": "{\"cat\":\"loan\",\"inst\":\"Anchor Point Mortgage\",\"ref\":\"9946\",\"amt\":2384.07,\"kind\":\"due\",\"rec\":\"monthly\",\"due\":60,\"act\":\"notify\",\"ev\":[1,2,4,5,10]}",
+   "out_tok": 59,
+   "in_tok": 349,
+   "ms": 5078
+  },
+  "hard-00210": {
+   "id": "hard-00210",
+   "raw": "{\"cat\":\"credit_card\",\"inst\":\"Vantage Card Services\",\"ref\":\"8434\",\"amt\":10241.21,\"kind\":\"due\",\"due\":45,\"act\":\"close\",\"ev\":[1,3,6,10]}",
+   "out_tok": 56,
+   "in_tok": 521,
+   "ms": 4806
+  },
+  "hard-00206": {
+   "id": "hard-00206",
+   "raw": "{\"cat\":\"loan\",\"inst\":\"Clearwater Auto Finance\",\"ref\":\"6154\",\"amt\":842.06,\"kind\":\"due\",\"rec\":\"monthly\",\"due\":20,\"act\":\"notify\",\"ev\":[1,3,4,8,11]}",
+   "out_tok": 59,
+   "in_tok": 509,
+   "ms": 5086
+  },
+  "hard-00282": {
+   "id": "hard-00282",
+   "raw": "{\"cat\":\"irrelevant\"}",
+   "out_tok": 7,
+   "in_tok": 225,
+   "ms": 705
+  },
+  "hard-00285": {
+   "id": "hard-00285",
+   "raw": "{\"cat\":\"irrelevant\"}",
+   "out_tok": 7,
+   "in_tok": 266,
+   "ms": 707
+  },
+  "hard-00222": {
+   "id": "hard-00222",
+   "raw": "{\"cat\":\"legal\",\"inst\":\"Office of the Public Administrator\",\"ref\":\"2025-PR-4201\",\"act\":\"review\",\"ev\":[1,3,5,8,9,15]}",
+   "out_tok": 47,
+   "in_tok": 467,
+   "ms": 4096
+  },
+  "hard-00231": {
+   "id": "hard-00231",
+   "raw": "{\"cat\":\"legal\",\"inst\":\"Office of the Public Administrator\",\"ref\":\"2026-PR-3369\",\"act\":\"review\",\"ev\":[1,9,11]}",
+   "out_tok": 41,
+   "in_tok": 507,
+   "ms": 3631
+  },
+  "hard-00197": {
+   "id": "hard-00197",
+   "raw": "{\"cat\":\"credit_card\",\"inst\":\"Apex Cardmember Services\",\"ref\":\"7915\",\"amt\":9541.66,\"kind\":\"due\",\"due\":28,\"act\":\"close\",\"ev\":[1,6,7,8,9,12,16]}",
+   "out_tok": 63,
+   "in_tok": 578,
+   "ms": 5435
+  },
+  "hard-00292": {
+   "id": "hard-00292",
+   "raw": "{\"cat\":\"personal\"}",
+   "out_tok": 6,
+   "in_tok": 350,
+   "ms": 642
+  },
+  "hard-00225": {
+   "id": "hard-00225",
+   "raw": "{\"cat\":\"medical\",\"inst\":\"Mercy Sisters Hospital\",\"ref\":\"5865\",\"amt\":5303.7,\"kind\":\"due\",\"act\":\"verify_debt\",\"ev\":[1,4,7]}",
+   "out_tok": 47,
+   "in_tok": 319,
+   "ms": 4119
+  },
+  "hard-00254": {
+   "id": "hard-00254",
+   "raw": "{\"cat\":\"government\",\"inst\":\"Office of the State Treasurer\",\"act\":\"claim\",\"ev\":[1,8,18]}",
+   "out_tok": 27,
+   "in_tok": 507,
+   "ms": 2475
+  },
+  "hard-00217": {
+   "id": "hard-00217",
+   "raw": "{\"cat\":\"government\",\"inst\":\"Bureau of Vital Statistics\",\"ref\":\"XX-7464\",\"amt\":4283,\"kind\":\"benefit\",\"rec\":\"monthly\",\"due\":30,\"act\":\"notify\",\"ev\":[1,2]}",
+   "out_tok": 54,
+   "in_tok": 254,
+   "ms": 4705
+  },
+  "hard-00213": {
+   "id": "hard-00213",
+   "raw": "{\"cat\":\"insurance\",\"inst\":\"Old Dominion Life\",\"ref\":\"WL8820270\",\"amt\":5000,\"kind\":\"face_value\",\"due\":60,\"act\":\"claim\",\"ev\":[8,9,12,13,20]}",
+   "out_tok": 59,
+   "in_tok": 485,
+   "ms": 5031
+  },
+  "hard-00211": {
+   "id": "hard-00211",
+   "raw": "{\"cat\":\"retirement\",\"inst\":\"Municipal Employees' Retirement System\",\"ref\":\"4970\",\"amt\":3606.2,\"kind\":\"benefit\",\"rec\":\"monthly\",\"due\":14,\"act\":\"stop_payment\",\"ev\":[3,4,10]}",
+   "out_tok": 61,
+   "in_tok": 456,
+   "ms": 5227
+  },
+  "hard-00243": {
+   "id": "hard-00243",
+   "raw": "{\"cat\":\"subscription\",\"inst\":\"TrailKit\",\"ref\":\"3912\",\"act\":\"cancel\",\"ev\":[1,5,6,7,8,10]}",
+   "out_tok": 37,
+   "in_tok": 388,
+   "ms": 3413
+  },
+  "hard-00204": {
+   "id": "hard-00204",
+   "raw": "{\"cat\":\"retirement\",\"inst\":\"Municipal Employees' Retirement System\",\"ref\":\"9541\",\"amt\":780.43,\"kind\":\"benefit\",\"rec\":\"monthly\",\"due\":14,\"act\":\"stop_payment\",\"ev\":[1,11,13,18]}",
+   "out_tok": 65,
+   "in_tok": 564,
+   "ms": 5650
+  },
+  "hard-00296": {
+   "id": "hard-00296",
+   "raw": "{\"cat\":\"personal\"}",
+   "out_tok": 6,
+   "in_tok": 424,
+   "ms": 693
+  },
+  "hard-00235": {
+   "id": "hard-00235",
+   "raw": "{\"cat\":\"credit_card\",\"inst\":\"BlueLine Card Center\",\"ref\":\"1953\",\"amt\":4038.6,\"kind\":\"due\",\"act\":\"close\",\"ev\":[1]}",
+   "out_tok": 42,
+   "in_tok": 257,
+   "ms": 3796
+  },
+  "hard-00233": {
+   "id": "hard-00233",
+   "raw": "{\"cat\":\"subscription\",\"inst\":\"Nocturne Audio\",\"ref\":\"8771\",\"amt\":1.99,\"kind\":\"charge\",\"rec\":\"quarterly\",\"act\":\"cancel\",\"ev\":[2,5]}",
+   "out_tok": 47,
+   "in_tok": 286,
+   "ms": 4194
+  },
+  "hard-00301": {
+   "id": "hard-00301",
+   "raw": "{\"cat\":\"personal\"}",
+   "out_tok": 6,
+   "in_tok": 452,
+   "ms": 747
+  },
+  "hard-00300": {
+   "id": "hard-00300",
+   "raw": "{\"cat\":\"irrelevant\"}",
+   "out_tok": 7,
+   "in_tok": 218,
+   "ms": 826
+  },
+  "hard-00215": {
+   "id": "hard-00215",
+   "raw": "{\"cat\":\"medical\",\"inst\":\"Mercy Sisters Hospital\",\"ref\":\"9023\",\"amt\":34431.21,\"kind\":\"due\",\"due\":45,\"act\":\"verify_debt\",\"ev\":[1,7,9,10,16]}",
+   "out_tok": 61,
+   "in_tok": 532,
+   "ms": 5273
+  },
+  "hard-00303": {
+   "id": "hard-00303",
+   "raw": "{\"cat\":\"personal\"}",
+   "out_tok": 6,
+   "in_tok": 543,
+   "ms": 727
+  },
+  "hard-00244": {
+   "id": "hard-00244",
+   "raw": "{\"cat\":\"utility\",\"inst\":\"Regional Water Authority\",\"ref\":\"2035\",\"amt\":119,\"kind\":\"due\",\"act\":\"transfer\",\"ev\":[1,3,5]}",
+   "out_tok": 41,
+   "in_tok": 275,
+   "ms": 3690
+  },
+  "hard-00302": {
+   "id": "hard-00302",
+   "raw": "{\"cat\":\"irrelevant\"}",
+   "out_tok": 7,
+   "in_tok": 360,
+   "ms": 834
+  },
+  "hard-00227": {
+   "id": "hard-00227",
+   "raw": "{\"cat\":\"utility\",\"inst\":\"MUNICIPAL LIGHT & POWER\",\"ref\":\"7152\",\"amt\":620,\"kind\":\"due\",\"due\":7,\"act\":\"transfer\",\"ev\":[1,12,14,17]}",
+   "out_tok": 55,
+   "in_tok": 537,
+   "ms": 4884
+  },
+  "hard-00219": {
+   "id": "hard-00219",
+   "raw": "{\"cat\":\"insurance\",\"inst\":\"Provident Assurance Co.\",\"ref\":\"67-423633\",\"amt\":750000,\"kind\":\"face_value\",\"due\":120,\"act\":\"claim\",\"ev\":[1,3,4,8,13]}",
+   "out_tok": 62,
+   "in_tok": 578,
+   "ms": 5475
+  },
+  "hard-00313": {
+   "id": "hard-00313",
+   "raw": "{\"cat\":\"personal\"}",
+   "out_tok": 6,
+   "in_tok": 388,
+   "ms": 703
+  },
+  "hard-00232": {
+   "id": "hard-00232",
+   "raw": "{\"cat\":\"utility\",\"inst\":\"Municipal Light & Power\",\"ref\":\"3855\",\"amt\":131.56,\"kind\":\"due\",\"act\":\"transfer\",\"ev\":[7,15,17,18,23]}",
+   "out_tok": 55,
+   "in_tok": 595,
+   "ms": 4898
+  },
+  "hard-00267": {
+   "id": "hard-00267",
+   "raw": "{\"cat\":\"investment\",\"inst\":\"Ashford Wealth Partners\",\"ref\":\"9791\",\"act\":\"transfer\",\"ev\":[3,7,10]}",
+   "out_tok": 33,
+   "in_tok": 466,
+   "ms": 3015
+  },
+  "hard-00257": {
+   "id": "hard-00257",
+   "raw": "{\"cat\":\"investment\",\"inst\":\"Sentinel Asset Management\",\"ref\":\"1146\",\"act\":\"transfer\",\"ev\":[3,6,8,11,14]}",
+   "out_tok": 38,
+   "in_tok": 483,
+   "ms": 3447
+  },
+  "hard-00318": {
+   "id": "hard-00318",
+   "raw": "{\"cat\":\"irrelevant\"}",
+   "out_tok": 7,
+   "in_tok": 246,
+   "ms": 763
+  },
+  "hard-00237": {
+   "id": "hard-00237",
+   "raw": "{\"cat\":\"utility\",\"inst\":\"Regional Water Authority\",\"ref\":\"1967\",\"amt\":394.96,\"kind\":\"due\",\"due\":45,\"act\":\"transfer\",\"ev\":[1,7,9,16]}",
+   "out_tok": 52,
+   "in_tok": 608,
+   "ms": 4672
+  },
+  "hard-00230": {
+   "id": "hard-00230",
+   "raw": "{\"cat\":\"credit_card\",\"inst\":\"BlueLine Card Center\",\"ref\":\"6064\",\"amt\":13187.72,\"kind\":\"due\",\"due\":20,\"act\":\"close\",\"ev\":[1,11,12,13,15]}",
+   "out_tok": 61,
+   "in_tok": 517,
+   "ms": 5400
+  },
+  "hard-00251": {
+   "id": "hard-00251",
+   "raw": "{\"cat\":\"utility\",\"inst\":\"Regional Water Authority\",\"ref\":\"7277\",\"amt\":597.86,\"kind\":\"due\",\"due\":28,\"act\":\"transfer\",\"ev\":[1]}",
+   "out_tok": 45,
+   "in_tok": 248,
+   "ms": 4044
+  },
+  "hard-00274": {
+   "id": "hard-00274",
+   "raw": "{\"cat\":\"investment\",\"inst\":\"Blue Harbor Investments\",\"ref\":\"8620\",\"act\":\"transfer\",\"ev\":[10,12,22]}",
+   "out_tok": 34,
+   "in_tok": 441,
+   "ms": 3067
+  },
+  "hard-00239": {
+   "id": "hard-00239",
+   "raw": "{\"cat\":\"property\",\"inst\":\"Harbourview HOA\",\"ref\":\"4893\",\"amt\":4835,\"kind\":\"due\",\"due\":28,\"act\":\"review\",\"ev\":[1,5,7,8,10,12]}",
+   "out_tok": 57,
+   "in_tok": 480,
+   "ms": 5054
+  },
+  "hard-00236": {
+   "id": "hard-00236",
+   "raw": "{\"cat\":\"medical\",\"inst\":\"Piedmont Family Practice\",\"ref\":\"6507\",\"amt\":44080,\"kind\":\"due\",\"due\":120,\"act\":\"verify_debt\",\"ev\":[2,4,7,8,13]}",
+   "out_tok": 58,
+   "in_tok": 490,
+   "ms": 5109
+  },
+  "hard-00252": {
+   "id": "hard-00252",
+   "raw": "{\"cat\":\"property\",\"inst\":\"Harbourview HOA\",\"ref\":\"7063\",\"amt\":7246.86,\"kind\":\"due\",\"due\":28,\"act\":\"review\",\"ev\":[1]}",
+   "out_tok": 48,
+   "in_tok": 253,
+   "ms": 4279
+  },
+  "hard-00265": {
+   "id": "hard-00265",
+   "raw": "{\"cat\":\"bank\",\"inst\":\"Ironbridge Savings\",\"ref\":\"4791\",\"amt\":102334.95,\"kind\":\"balance\",\"act\":\"claim\",\"ev\":[1]}",
+   "out_tok": 43,
+   "in_tok": 261,
+   "ms": 3772
+  },
+  "hard-00247": {
+   "id": "hard-00247",
+   "raw": "{\"cat\":\"investment\",\"inst\":\"Sentinel Asset Management\",\"ref\":\"6649\",\"amt\":1126290.86,\"kind\":\"balance\",\"act\":\"transfer\",\"ev\":[1,4,6,7,10]}",
+   "out_tok": 54,
+   "in_tok": 410,
+   "ms": 4723
+  },
+  "hard-00223": {
+   "id": "hard-00223",
+   "raw": "{\"cat\":\"loan\",\"inst\":\"Fairline Lending Group\",\"ref\":\"2604\",\"amt\":6096.97,\"kind\":\"due\",\"rec\":\"monthly\",\"due\":20,\"act\":\"notify\",\"ev\":[3,7,9,13,18,21,22,24]}",
+   "out_tok": 71,
+   "in_tok": 595,
+   "ms": 6133
+  },
+  "hard-00261": {
+   "id": "hard-00261",
+   "raw": "{\"cat\":\"property\",\"inst\":\"Harbourview HOA\",\"ref\":\"4203\",\"amt\":11267.78,\"kind\":\"due\",\"due\":60,\"act\":\"review\",\"ev\":[1]}",
+   "out_tok": 49,
+   "in_tok": 261,
+   "ms": 4261
+  },
+  "hard-00238": {
+   "id": "hard-00238",
+   "raw": "{\"cat\":\"medical\",\"inst\":\"Piedmont Family Practice\",\"ref\":\"4447\",\"amt\":34695.25,\"kind\":\"due\",\"due\":21,\"act\":\"verify_debt\",\"ev\":[1,7,8,9,12,15]}",
+   "out_tok": 63,
+   "in_tok": 489,
+   "ms": 5473
+  },
+  "hard-00260": {
+   "id": "hard-00260",
+   "raw": "{\"cat\":\"subscription\",\"inst\":\"Bellwether Wine Club\",\"ref\":\"9260\",\"amt\":129,\"kind\":\"charge\",\"rec\":\"quarterly\",\"act\":\"cancel\",\"ev\":[1,4,8,15]}",
+   "out_tok": 51,
+   "in_tok": 600,
+   "ms": 4368
+  },
+  "hard-00332": {
+   "id": "hard-00332",
+   "raw": "{\"cat\":\"irrelevant\"}",
+   "out_tok": 7,
+   "in_tok": 241,
+   "ms": 623
+  },
+  "hard-00333": {
+   "id": "hard-00333",
+   "raw": "{\"cat\":\"irrelevant\"}",
+   "out_tok": 7,
+   "in_tok": 381,
+   "ms": 622
+  },
+  "hard-00294": {
+   "id": "hard-00294",
+   "raw": "{\"cat\":\"insurance\",\"inst\":\"United Heritage Insurance\",\"amt\":15000,\"kind\":\"face_value\",\"act\":\"review\",\"ev\":[1]}",
+   "out_tok": 33,
+   "in_tok": 257,
+   "ms": 2824
+  },
+  "hard-00246": {
+   "id": "hard-00246",
+   "raw": "{\"cat\":\"insurance\",\"inst\":\"Provident Assurance Co.\",\"ref\":\"WL4893814\",\"amt\":150000,\"kind\":\"face_value\",\"due\":120,\"act\":\"claim\",\"ev\":[4,15,17,21]}",
+   "out_tok": 61,
+   "in_tok": 582,
+   "ms": 5208
+  },
+  "hard-00249": {
+   "id": "hard-00249",
+   "raw": "{\"cat\":\"retirement\",\"inst\":\"Longshore Workers Welfare Trust\",\"ref\":\"7937\",\"amt\":2117.19,\"kind\":\"benefit\",\"rec\":\"monthly\",\"act\":\"stop_payment\",\"ev\":[1,10,11,18]}",
+   "out_tok": 59,
+   "in_tok": 452,
+   "ms": 5027
+  },
+  "hard-00337": {
+   "id": "hard-00337",
+   "raw": "{\"cat\":\"irrelevant\"}",
+   "out_tok": 7,
+   "in_tok": 255,
+   "ms": 683
+  },
+  "hard-00262": {
+   "id": "hard-00262",
+   "raw": "{\"cat\":\"loan\",\"inst\":\"Fairline Lending Group\",\"ref\":\"9104\",\"amt\":6203.39,\"kind\":\"due\",\"rec\":\"monthly\",\"due\":10,\"act\":\"notify\",\"ev\":[1,2]}",
+   "out_tok": 54,
+   "in_tok": 257,
+   "ms": 4663
+  },
+  "hard-00271": {
+   "id": "hard-00271",
+   "raw": "{\"cat\":\"subscription\",\"inst\":\"TrailKit\",\"ref\":\"3193\",\"amt\":7.99,\"kind\":\"charge\",\"rec\":\"monthly\",\"act\":\"cancel\",\"ev\":[3,4,5,7,11]}",
+   "out_tok": 50,
+   "in_tok": 388,
+   "ms": 4261
+  },
+  "hard-00278": {
+   "id": "hard-00278",
+   "raw": "{\"cat\":\"credit_card\",\"inst\":\"Vantage Card Services\",\"ref\":\"9851\",\"amt\":7469.58,\"kind\":\"due\",\"act\":\"close\",\"ev\":[1,9,13]}",
+   "out_tok": 48,
+   "in_tok": 387,
+   "ms": 4056
+  },
+  "hard-00317": {
+   "id": "hard-00317",
+   "raw": "{\"cat\":\"subscription\",\"inst\":\"TrailKit\",\"ref\":\"3214\",\"act\":\"cancel\",\"ev\":[1]}",
+   "out_tok": 26,
+   "in_tok": 232,
+   "ms": 2163
+  },
+  "hard-00266": {
+   "id": "hard-00266",
+   "raw": "{\"cat\":\"loan\",\"inst\":\"Clearwater Auto Finance\",\"ref\":\"2245\",\"amt\":3991,\"kind\":\"due\",\"rec\":\"monthly\",\"act\":\"notify\",\"ev\":[3,6,9,10,15,18]}",
+   "out_tok": 56,
+   "in_tok": 498,
+   "ms": 4826
+  },
+  "hard-00250": {
+   "id": "hard-00250",
+   "raw": "{\"cat\":\"retirement\",\"inst\":\"Municipal Employees' Retirement System\",\"ref\":\"2870\",\"amt\":6068.77,\"kind\":\"benefit\",\"rec\":\"monthly\",\"due\":45,\"act\":\"stop_payment\",\"ev\":[1,6,9,13]}",
+   "out_tok": 64,
+   "in_tok": 467,
+   "ms": 5536
+  },
+  "hard-00289": {
+   "id": "hard-00289",
+   "raw": "{\"cat\":\"bank\",\"inst\":\"Ironbridge Savings\",\"ref\":\"8152\",\"amt\":117068.43,\"kind\":\"balance\",\"act\":\"claim\",\"ev\":[1]}",
+   "out_tok": 43,
+   "in_tok": 266,
+   "ms": 3732
+  },
+  "hard-00287": {
+   "id": "hard-00287",
+   "raw": "{\"cat\":\"bank\",\"inst\":\"Ironbridge Savings\",\"ref\":\"4196\",\"amt\":5556.25,\"kind\":\"balance\",\"act\":\"claim\",\"ev\":[3,8,10]}",
+   "out_tok": 46,
+   "in_tok": 475,
+   "ms": 3953
+  },
+  "hard-00280": {
+   "id": "hard-00280",
+   "raw": "{\"cat\":\"insurance\",\"inst\":\"Kestrel Life & Legacy\",\"ref\":\"81-861550\",\"amt\":75000,\"kind\":\"face_value\",\"act\":\"review\",\"ev\":[2,5]}",
+   "out_tok": 50,
+   "in_tok": 310,
+   "ms": 4265
+  },
+  "hard-00343": {
+   "id": "hard-00343",
+   "raw": "{\"cat\":\"irrelevant\"}",
+   "out_tok": 7,
+   "in_tok": 547,
+   "ms": 787
+  },
+  "hard-00312": {
+   "id": "hard-00312",
+   "raw": "{\"cat\":\"bank\",\"inst\":\"First Meridian Trust Co.\",\"ref\":\"3019\",\"act\":\"claim\",\"ev\":[1,9,15]}",
+   "out_tok": 34,
+   "in_tok": 427,
+   "ms": 2917
+  },
+  "hard-00297": {
+   "id": "hard-00297",
+   "raw": "{\"cat\":\"legal\",\"inst\":\"Probate Division, Third Judicial Circuit\",\"ref\":\"2026-PR-6285\",\"act\":\"review\",\"ev\":[3,5,10]}",
+   "out_tok": 43,
+   "in_tok": 471,
+   "ms": 3689
+  },
+  "hard-00311": {
+   "id": "hard-00311",
+   "raw": "{\"cat\":\"insurance\",\"inst\":\"United Heritage Insurance\",\"amt\":300000,\"kind\":\"face_value\",\"act\":\"review\",\"ev\":[1,4]}",
+   "out_tok": 36,
+   "in_tok": 252,
+   "ms": 3049
+  },
+  "hard-00263": {
+   "id": "hard-00263",
+   "raw": "{\"cat\":\"insurance\",\"inst\":\"Kestrel Life & Legacy\",\"ref\":\"58-685338\",\"amt\":300000,\"kind\":\"face_value\",\"due\":730,\"act\":\"claim\",\"ev\":[1,3,4,8,9]}",
+   "out_tok": 63,
+   "in_tok": 558,
+   "ms": 5387
+  },
+  "hard-00276": {
+   "id": "hard-00276",
+   "raw": "{\"cat\":\"retirement\",\"inst\":\"Municipal Employees' Retirement System\",\"ref\":\"47\",\"amt\":3558,\"kind\":\"benefit\",\"rec\":\"monthly\",\"act\":\"stop_payment\",\"ev\":[1,6,8,9,13]}",
+   "out_tok": 56,
+   "in_tok": 488,
+   "ms": 4717
+  },
+  "hard-00283": {
+   "id": "hard-00283",
+   "raw": "{\"cat\":\"loan\",\"inst\":\"Anchor Point Mortgage\",\"ref\":\"5637\",\"amt\":2584.75,\"kind\":\"due\",\"rec\":\"monthly\",\"act\":\"notify\",\"ev\":[3,4,9,11]}",
+   "out_tok": 52,
+   "in_tok": 520,
+   "ms": 4377
+  },
+  "hard-00255": {
+   "id": "hard-00255",
+   "raw": "{\"cat\":\"loan\",\"inst\":\"Anchor Point Mortgage\",\"ref\":\"539187\",\"amt\":5733.71,\"kind\":\"due\",\"rec\":\"monthly\",\"due\":60,\"act\":\"notify\",\"ev\":[1,4,7,8,10,15,17,23]}",
+   "out_tok": 70,
+   "in_tok": 592,
+   "ms": 5967
+  },
+  "hard-00284": {
+   "id": "hard-00284",
+   "raw": "{\"cat\":\"government\",\"inst\":\"County Probate Registry\",\"ref\":\"2909\",\"amt\":2422.37,\"kind\":\"benefit\",\"rec\":\"monthly\",\"due\":30,\"act\":\"notify\",\"ev\":[1]}",
+   "out_tok": 52,
+   "in_tok": 253,
+   "ms": 4378
+  },
+  "hard-00259": {
+   "id": "hard-00259",
+   "raw": "{\"cat\":\"investment\",\"inst\":\"Blue Harbor Investments\",\"ref\":\"5293\",\"amt\":1334503.65,\"kind\":\"balance\",\"act\":\"transfer\",\"ev\":[3,8,10,15,18,21,23,31,34]}",
+   "out_tok": 67,
+   "in_tok": 608,
+   "ms": 5706
+  },
+  "hard-00277": {
+   "id": "hard-00277",
+   "raw": "{\"cat\":\"loan\",\"inst\":\"Fairline Lending Group\",\"ref\":\"1733\",\"amt\":4308.49,\"kind\":\"due\",\"rec\":\"monthly\",\"due\":10,\"act\":\"notify\",\"ev\":[1,2,3,4]}",
+   "out_tok": 58,
+   "in_tok": 297,
+   "ms": 4880
+  },
+  "hard-00299": {
+   "id": "hard-00299",
+   "raw": "{\"cat\":\"utility\",\"inst\":\"Regional Water Authority\",\"ref\":\"1736\",\"amt\":764,\"kind\":\"due\",\"act\":\"transfer\",\"ev\":[1,4,6,8,11]}",
+   "out_tok": 46,
+   "in_tok": 402,
+   "ms": 3975
+  },
+  "hard-00298": {
+   "id": "hard-00298",
+   "raw": "{\"cat\":\"bank\",\"inst\":\"First Meridian Trust Co.\",\"ref\":\"2563\",\"amt\":58696.08,\"kind\":\"balance\",\"act\":\"claim\",\"ev\":[1,2]}",
+   "out_tok": 46,
+   "in_tok": 245,
+   "ms": 3977
+  },
+  "hard-00306": {
+   "id": "hard-00306",
+   "raw": "{\"cat\":\"legal\",\"inst\":\"Whitcombe, Serrano & Ng LLP\",\"ref\":\"2025-PR-3153\",\"act\":\"review\",\"ev\":[1,2]}",
+   "out_tok": 43,
+   "in_tok": 289,
+   "ms": 3706
+  },
+  "hard-00272": {
+   "id": "hard-00272",
+   "raw": "{\"cat\":\"retirement\",\"inst\":\"Longshore Workers Welfare Trust\",\"ref\":\"8312\",\"amt\":6650.76,\"kind\":\"benefit\",\"rec\":\"monthly\",\"due\":90,\"act\":\"stop_payment\",\"ev\":[3,8,9,13]}",
+   "out_tok": 62,
+   "in_tok": 558,
+   "ms": 5269
+  },
+  "hard-00270": {
+   "id": "hard-00270",
+   "raw": "{\"cat\":\"bank\",\"inst\":\"Coastal Federal Bank\",\"ref\":\"3702\",\"amt\":115316.05,\"kind\":\"balance\",\"act\":\"claim\",\"ev\":[1,5,9,11,13,18,23,28]}",
+   "out_tok": 64,
+   "in_tok": 605,
+   "ms": 5439
+  },
+  "hard-00354": {
+   "id": "hard-00354",
+   "raw": "{\"cat\":\"irrelevant\"}",
+   "out_tok": 7,
+   "in_tok": 436,
+   "ms": 739
+  },
+  "hard-00293": {
+   "id": "hard-00293",
+   "raw": "{\"cat\":\"investment\",\"inst\":\"Ashford Wealth Partners\",\"ref\":\"9026\",\"amt\":979617.29,\"kind\":\"balance\",\"act\":\"transfer\",\"ev\":[3,6,7,8,10]}",
+   "out_tok": 53,
+   "in_tok": 433,
+   "ms": 4568
+  },
+  "hard-00330": {
+   "id": "hard-00330",
+   "raw": "{\"cat\":\"insurance\",\"inst\":\"Tri-County Mutual Estate Services\",\"ref\":\"4762\",\"act\":\"claim\",\"ev\":[1]}",
+   "out_tok": 30,
+   "in_tok": 247,
+   "ms": 2593
+  },
+  "hard-00291": {
+   "id": "hard-00291",
+   "raw": "{\"cat\":\"medical\",\"inst\":\"Lakeshore Orthopedics Patient Accounts\",\"ref\":\"5195\",\"amt\":11959.19,\"kind\":\"due\",\"due\":21,\"act\":\"verify_debt\",\"ev\":[1,2]}",
+   "out_tok": 57,
+   "in_tok": 269,
+   "ms": 4853
+  },
+  "hard-00360": {
+   "id": "hard-00360",
+   "raw": "{\"cat\":\"irrelevant\"}",
+   "out_tok": 7,
+   "in_tok": 600,
+   "ms": 790
+  },
+  "hard-00286": {
+   "id": "hard-00286",
+   "raw": "{\"cat\":\"retirement\",\"inst\":\"Bricklayers & Allied Craftworkers Local 88\",\"ref\":\"95318\",\"amt\":2594.3,\"kind\":\"benefit\",\"rec\":\"monthly\",\"due\":45,\"act\":\"stop_payment\",\"ev\":[1]}",
+   "out_tok": 61,
+   "in_tok": 263,
+   "ms": 5169
+  },
+  "hard-00334": {
+   "id": "hard-00334",
+   "raw": "{\"cat\":\"bank\",\"inst\":\"Coastal Federal Bank\",\"ref\":\"8225\",\"act\":\"claim\",\"ev\":[1]}",
+   "out_tok": 29,
+   "in_tok": 228,
+   "ms": 2485
+  },
+  "hard-00368": {
+   "id": "hard-00368",
+   "raw": "{\"cat\":\"personal\"}",
+   "out_tok": 6,
+   "in_tok": 433,
+   "ms": 647
+  },
+  "hard-00290": {
+   "id": "hard-00290",
+   "raw": "{\"cat\":\"loan\",\"inst\":\"Fairline Lending Group\",\"ref\":\"6724\",\"amt\":6243.08,\"kind\":\"due\",\"rec\":\"monthly\",\"due\":10,\"act\":\"notify\",\"ev\":[1,6,9,15]}",
+   "out_tok": 59,
+   "in_tok": 453,
+   "ms": 4998
+  },
+  "hard-00367": {
+   "id": "hard-00367",
+   "raw": "{\"cat\":\"irrelevant\"}",
+   "out_tok": 7,
+   "in_tok": 397,
+   "ms": 777
+  },
+  "hard-00323": {
+   "id": "hard-00323",
+   "raw": "{\"cat\":\"subscription\",\"inst\":\"Nocturne Audio\",\"ref\":\"6280\",\"act\":\"cancel\",\"ev\":[1,2,8,12,22]}",
+   "out_tok": 39,
+   "in_tok": 506,
+   "ms": 3294
+  },
+  "hard-00279": {
+   "id": "hard-00279",
+   "raw": "{\"cat\":\"medical\",\"inst\":\"Piedmont Family Practice – Patient Accounts Office\",\"ref\":\"6135\",\"amt\":29263.44,\"kind\":\"due\",\"due\":45,\"act\":\"verify_debt\",\"ev\":[2,5,6,8,9,11]}",
+   "out_tok": 66,
+   "in_tok": 452,
+   "ms": 5613
+  },
+  "hard-00335": {
+   "id": "hard-00335",
+   "raw": "{\"cat\":\"investment\",\"inst\":\"Ashford Wealth Partners\",\"ref\":\"2618\",\"act\":\"transfer\",\"ev\":[1,3]}",
+   "out_tok": 30,
+   "in_tok": 259,
+   "ms": 2632
+  },
+  "hard-00315": {
+   "id": "hard-00315",
+   "raw": "{\"cat\":\"bank\",\"inst\":\"Tri-County Mutual\",\"ref\":\"1003\",\"amt\":87202.81,\"kind\":\"balance\",\"act\":\"claim\",\"ev\":[4,6,10]}",
+   "out_tok": 48,
+   "in_tok": 590,
+   "ms": 4054
+  },
+  "hard-00374": {
+   "id": "hard-00374",
+   "raw": "{\"cat\":\"personal\"}",
+   "out_tok": 6,
+   "in_tok": 248,
+   "ms": 643
+  },
+  "hard-00376": {
+   "id": "hard-00376",
+   "raw": "{\"cat\":\"irrelevant\"}",
+   "out_tok": 7,
+   "in_tok": 583,
+   "ms": 710
+  },
+  "hard-00304": {
+   "id": "hard-00304",
+   "raw": "{\"cat\":\"property\",\"inst\":\"Township Assessor's Office\",\"ref\":\"8380\",\"amt\":1275.7,\"kind\":\"due\",\"due\":60,\"act\":\"review\",\"ev\":[3,5,6,10,12]}",
+   "out_tok": 58,
+   "in_tok": 463,
+   "ms": 4921
+  },
+  "hard-00379": {
+   "id": "hard-00379",
+   "raw": "{\"cat\":\"personal\"}",
+   "out_tok": 6,
+   "in_tok": 262,
+   "ms": 640
+  },
+  "hard-00378": {
+   "id": "hard-00378",
+   "raw": "{\"cat\":\"irrelevant\"}",
+   "out_tok": 7,
+   "in_tok": 266,
+   "ms": 708
+  },
+  "hard-00307": {
+   "id": "hard-00307",
+   "raw": "{\"cat\":\"property\",\"inst\":\"Township Assessor's Office\",\"ref\":\"2495\",\"amt\":9296.09,\"kind\":\"due\",\"due\":10,\"act\":\"review\",\"ev\":[1,4,5,9,12]}",
+   "out_tok": 58,
+   "in_tok": 452,
+   "ms": 4863
+  },
+  "hard-00383": {
+   "id": "hard-00383",
+   "raw": "{\"cat\":\"personal\"}",
+   "out_tok": 6,
+   "in_tok": 430,
+   "ms": 561
+  },
+  "hard-00380": {
+   "id": "hard-00380",
+   "raw": "{\"cat\":\"irrelevant\"}",
+   "out_tok": 7,
+   "in_tok": 223,
+   "ms": 693
+  },
+  "hard-00322": {
+   "id": "hard-00322",
+   "raw": "{\"cat\":\"subscription\",\"inst\":\"Bellwether Wine Club\",\"ref\":\"9172\",\"amt\":3.49,\"kind\":\"charge\",\"rec\":\"annual\",\"act\":\"cancel\",\"ev\":[1,11,16]}",
+   "out_tok": 50,
+   "in_tok": 488,
+   "ms": 4073
+  },
+  "hard-00320": {
+   "id": "hard-00320",
+   "raw": "{\"cat\":\"credit_card\",\"inst\":\"Apex Cardmember Services\",\"ref\":\"8335\",\"amt\":7081.57,\"kind\":\"due\",\"act\":\"close\",\"ev\":[1,5,6,7,10]}",
+   "out_tok": 53,
+   "in_tok": 444,
+   "ms": 4376
+  },
+  "hard-00295": {
+   "id": "hard-00295",
+   "raw": "{\"cat\":\"retirement\",\"inst\":\"Municipal Employees' Retirement System\",\"ref\":\"3151\",\"amt\":1959.99,\"kind\":\"benefit\",\"rec\":\"monthly\",\"due\":14,\"act\":\"stop_payment\",\"ev\":[3,4,5,10,12]}",
+   "out_tok": 67,
+   "in_tok": 547,
+   "ms": 5650
+  },
+  "hard-00309": {
+   "id": "hard-00309",
+   "raw": "{\"cat\":\"insurance\",\"inst\":\"United Heritage Insurance\",\"ref\":\"63-672852\",\"amt\":15000,\"kind\":\"face_value\",\"due\":60,\"act\":\"claim\",\"ev\":[1,6,8,12,17]}",
+   "out_tok": 60,
+   "in_tok": 524,
+   "ms": 5069
+  },
+  "hard-00325": {
+   "id": "hard-00325",
+   "raw": "{\"cat\":\"bank\",\"inst\":\"Ironbridge Savings\",\"ref\":\"7283\",\"amt\":33437.51,\"kind\":\"balance\",\"act\":\"claim\",\"ev\":[2,14,22]}",
+   "out_tok": 48,
+   "in_tok": 453,
+   "ms": 3983
+  },
+  "hard-00319": {
+   "id": "hard-00319",
+   "raw": "{\"cat\":\"investment\",\"inst\":\"Blue Harbor Investments\",\"ref\":\"4574\",\"amt\":1093989.72,\"kind\":\"balance\",\"act\":\"transfer\",\"ev\":[2,5,7,14,18]}",
+   "out_tok": 54,
+   "in_tok": 594,
+   "ms": 4499
+  },
+  "hard-00321": {
+   "id": "hard-00321",
+   "raw": "{\"cat\":\"medical\",\"inst\":\"Lakeshore Orthopedics\",\"ref\":\"8749\",\"amt\":31650.23,\"kind\":\"due\",\"act\":\"verify_debt\",\"ev\":[1,7,11]}",
+   "out_tok": 53,
+   "in_tok": 428,
+   "ms": 4413
+  },
+  "hard-00329": {
+   "id": "hard-00329",
+   "raw": "{\"cat\":\"credit_card\",\"inst\":\"Apex Cardmember Services\",\"ref\":\"9210\",\"amt\":10317.64,\"kind\":\"due\",\"act\":\"close\",\"ev\":[3,6]}",
+   "out_tok": 47,
+   "in_tok": 308,
+   "ms": 3899
+  },
+  "hard-00331": {
+   "id": "hard-00331",
+   "raw": "{\"cat\":\"legal\",\"inst\":\"Office of the Public Administrator\",\"ref\":\"2026-PR-6648\",\"act\":\"review\",\"ev\":[1,4,6,11,13]}",
+   "out_tok": 46,
+   "in_tok": 417,
+   "ms": 3859
+  },
+  "hard-00310": {
+   "id": "hard-00310",
+   "raw": "{\"cat\":\"medical\",\"inst\":\"Lakeshore Orthopedics\",\"ref\":\"6165\",\"amt\":47320.92,\"kind\":\"due\",\"due\":45,\"act\":\"verify_debt\",\"ev\":[2,4,6,7,8,14]}",
+   "out_tok": 64,
+   "in_tok": 493,
+   "ms": 5335
+  },
+  "hard-00388": {
+   "id": "hard-00388",
+   "raw": "{\"cat\":\"irrelevant\"}",
+   "out_tok": 7,
+   "in_tok": 388,
+   "ms": 705
+  },
+  "hard-00308": {
+   "id": "hard-00308",
+   "raw": "{\"cat\":\"government\",\"inst\":\"Bureau of Vital Statistics\",\"ref\":\"VST-2203-8352\",\"amt\":3868.39,\"kind\":\"benefit\",\"rec\":\"monthly\",\"act\":\"claim\",\"ev\":[3,13,14,17]}",
+   "out_tok": 65,
+   "in_tok": 526,
+   "ms": 5445
+  },
+  "hard-00316": {
+   "id": "hard-00316",
+   "raw": "{\"cat\":\"property\",\"inst\":\"Harbourview HOA\",\"ref\":\"1775\",\"amt\":2647.45,\"kind\":\"due\",\"due\":10,\"act\":\"review\",\"ev\":[1,6,8,14,20,23]}",
+   "out_tok": 61,
+   "in_tok": 557,
+   "ms": 5027
+  },
+  "hard-00327": {
+   "id": "hard-00327",
+   "raw": "{\"cat\":\"medical\",\"inst\":\"Lakeshore Orthopedics\",\"ref\":\"8100\",\"amt\":29425,\"kind\":\"due\",\"due\":45,\"act\":\"verify_debt\",\"ev\":[1,2]}",
+   "out_tok": 52,
+   "in_tok": 274,
+   "ms": 4263
+  },
+  "hard-00396": {
+   "id": "hard-00396",
+   "raw": "{\"cat\":\"irrelevant\"}",
+   "out_tok": 7,
+   "in_tok": 229,
+   "ms": 576
+  },
+  "hard-00324": {
+   "id": "hard-00324",
+   "raw": "{\"cat\":\"insurance\",\"inst\":\"Kestrel Life & Legacy\",\"ref\":\"64-663498\",\"amt\":300000,\"kind\":\"face_value\",\"due\":60,\"act\":\"claim\",\"ev\":[1,2,3]}",
+   "out_tok": 58,
+   "in_tok": 281,
+   "ms": 4637
+  },
+  "hard-00328": {
+   "id": "hard-00328",
+   "raw": "{\"cat\":\"loan\",\"inst\":\"Anchor Point Mortgage\",\"ref\":\"4519\",\"amt\":655,\"kind\":\"due\",\"rec\":\"monthly\",\"due\":10,\"act\":\"notify\",\"ev\":[2,6,7,13,16]}",
+   "out_tok": 56,
+   "in_tok": 568,
+   "ms": 4461
+  },
+  "hard-00314": {
+   "id": "hard-00314",
+   "raw": "{\"cat\":\"property\",\"inst\":\"Harbourview HOA\",\"ref\":\"2859\",\"amt\":4572.49,\"kind\":\"due\",\"due\":10,\"act\":\"review\",\"ev\":[1,3,4,7,8,11,12,14,15]}",
+   "out_tok": 68,
+   "in_tok": 579,
+   "ms": 5436
+  },
+  "hard-00344": {
+   "id": "hard-00344",
+   "raw": "{\"cat\":\"subscription\",\"inst\":\"TrailKit\",\"ref\":\"3006\",\"amt\":24,\"kind\":\"charge\",\"rec\":\"quarterly\",\"act\":\"cancel\",\"ev\":[2,3,6]}",
+   "out_tok": 44,
+   "in_tok": 343,
+   "ms": 3548
+  },
+  "hard-00340": {
+   "id": "hard-00340",
+   "raw": "{\"cat\":\"bank\",\"inst\":\"Ironbridge Savings Estate Services\",\"ref\":\"1596\",\"amt\":82848.83,\"kind\":\"balance\",\"act\":\"claim\",\"ev\":[1,2]}",
+   "out_tok": 46,
+   "in_tok": 248,
+   "ms": 3702
+  },
+  "hard-00326": {
+   "id": "hard-00326",
+   "raw": "{\"cat\":\"medical\",\"inst\":\"Piedmont Family Practice\",\"ref\":\"4418\",\"amt\":44053.23,\"kind\":\"due\",\"due\":120,\"act\":\"verify_debt\",\"ev\":[2,6,7,8,15]}",
+   "out_tok": 61,
+   "in_tok": 417,
+   "ms": 4752
+  },
+  "hard-00336": {
+   "id": "hard-00336",
+   "raw": "{\"cat\":\"subscription\",\"inst\":\"Atlas Maps Pro\",\"ref\":\"8084\",\"amt\":1.99,\"kind\":\"charge\",\"rec\":\"quarterly\",\"act\":\"cancel\",\"ev\":[1,10,13,16]}",
+   "out_tok": 52,
+   "in_tok": 525,
+   "ms": 4060
+  },
+  "hard-00305": {
+   "id": "hard-00305",
+   "raw": "{\"cat\":\"retirement\",\"inst\":\"Bricklayers & Allied Craftworkers Local 88 Annuity Plan\",\"ref\":\"5444\",\"amt\":2484.65,\"kind\":\"benefit\",\"rec\":\"monthly\",\"due\":90,\"act\":\"stop_payment\",\"ev\":[1,2,4,5,6,10]}",
+   "out_tok": 76,
+   "in_tok": 462,
+   "ms": 6070
+  },
+  "hard-00370": {
+   "id": "hard-00370",
+   "raw": "{\"cat\":\"legal\",\"inst\":\"Whitcombe, Serrano & Ng LLP\",\"act\":\"review\",\"ev\":[2,22]}",
+   "out_tok": 30,
+   "in_tok": 569,
+   "ms": 2292
+  },
+  "hard-00338": {
+   "id": "hard-00338",
+   "raw": "{\"cat\":\"legal\",\"inst\":\"Whitcombe, Serrano & Ng LLP\",\"ref\":\"2025-PR-9154\",\"due\":90,\"act\":\"review\",\"ev\":[1,2,3,7]}",
+   "out_tok": 52,
+   "in_tok": 348,
+   "ms": 3995
+  },
+  "hard-00345": {
+   "id": "hard-00345",
+   "raw": "{\"cat\":\"utility\",\"inst\":\"Municipal Light & Power\",\"ref\":\"1644\",\"amt\":440.26,\"kind\":\"due\",\"due\":45,\"act\":\"transfer\",\"ev\":[1]}",
+   "out_tok": 48,
+   "in_tok": 255,
+   "ms": 3739
+  },
+  "hard-00352": {
+   "id": "hard-00352",
+   "raw": "{\"cat\":\"property\",\"inst\":\"Harbourview HOA\",\"ref\":\"2558\",\"amt\":13798.25,\"kind\":\"due\",\"act\":\"review\",\"ev\":[1]}",
+   "out_tok": 44,
+   "in_tok": 239,
+   "ms": 3278
+  },
+  "hard-00381": {
+   "id": "hard-00381",
+   "raw": "{\"cat\":\"credit_card\",\"inst\":\"BlueLine Card Center\",\"ref\":\"3865\",\"act\":\"close\",\"ev\":[1]}",
+   "out_tok": 29,
+   "in_tok": 247,
+   "ms": 1920
+  },
+  "hard-00355": {
+   "id": "hard-00355",
+   "raw": "{\"cat\":\"subscription\",\"inst\":\"Sprig Meal Plan\",\"ref\":\"2586\",\"amt\":3.49,\"kind\":\"charge\",\"rec\":\"monthly\",\"act\":\"cancel\",\"ev\":[1,3,4]}",
+   "out_tok": 47,
+   "in_tok": 265,
+   "ms": 3357
+  },
+  "hard-00356": {
+   "id": "hard-00356",
+   "raw": "{\"cat\":\"investment\",\"inst\":\"Blue Harbor Investments\",\"ref\":\"7621\",\"amt\":390121,\"kind\":\"balance\",\"act\":\"transfer\",\"ev\":[1,7,8,12]}",
+   "out_tok": 47,
+   "in_tok": 474,
+   "ms": 3330
+  },
+  "hard-00339": {
+   "id": "hard-00339",
+   "raw": "{\"cat\":\"loan\",\"inst\":\"Fairline Lending Group\",\"ref\":\"4196\",\"amt\":2064,\"kind\":\"due\",\"rec\":\"monthly\",\"due\":10,\"act\":\"notify\",\"ev\":[2,3,13,14,18]}",
+   "out_tok": 60,
+   "in_tok": 504,
+   "ms": 4369
+  },
+  "hard-00341": {
+   "id": "hard-00341",
+   "raw": "{\"cat\":\"subscription\",\"inst\":\"Sprig Meal Plan\",\"ref\":\"6248\",\"amt\":1.99,\"kind\":\"charge\",\"rec\":\"monthly\",\"act\":\"cancel\",\"ev\":[4,11,14,21,22,28]}",
+   "out_tok": 58,
+   "in_tok": 595,
+   "ms": 4210
+  },
+  "hard-00350": {
+   "id": "hard-00350",
+   "raw": "{\"cat\":\"bank\",\"inst\":\"Ironbridge Savings\",\"ref\":\"4116\",\"amt\":113353.87,\"kind\":\"balance\",\"act\":\"claim\",\"ev\":[1,7,10,11,14]}",
+   "out_tok": 54,
+   "in_tok": 485,
+   "ms": 3866
+  },
+  "hard-00346": {
+   "id": "hard-00346",
+   "raw": "{\"cat\":\"credit_card\",\"inst\":\"BlueLine Card Center\",\"ref\":\"4341\",\"amt\":5191.96,\"kind\":\"due\",\"act\":\"close\",\"ev\":[3,4,8,15,17,24]}",
+   "out_tok": 56,
+   "in_tok": 548,
+   "ms": 3986
+  },
+  "hard-00349": {
+   "id": "hard-00349",
+   "raw": "{\"cat\":\"insurance\",\"inst\":\"Kestrel Life & Legacy\",\"ref\":\"82-853535\",\"amt\":300000,\"kind\":\"face_value\",\"due\":120,\"act\":\"claim\",\"ev\":[1]}",
+   "out_tok": 55,
+   "in_tok": 268,
+   "ms": 3919
+  },
+  "hard-00342": {
+   "id": "hard-00342",
+   "raw": "{\"cat\":\"retirement\",\"inst\":\"Municipal Employees' Retirement System\",\"ref\":\"2158\",\"amt\":3834.19,\"kind\":\"benefit\",\"rec\":\"monthly\",\"due\":45,\"act\":\"stop_payment\",\"ev\":[1,3]}",
+   "out_tok": 59,
+   "in_tok": 308,
+   "ms": 4259
+  },
+  "hard-00369": {
+   "id": "hard-00369",
+   "raw": "{\"cat\":\"subscription\",\"inst\":\"Bramble Box\",\"ref\":\"3956\",\"amt\":24,\"kind\":\"charge\",\"rec\":\"annual\",\"act\":\"cancel\",\"ev\":[1,6,10]}",
+   "out_tok": 46,
+   "in_tok": 399,
+   "ms": 3064
+  },
+  "hard-00357": {
+   "id": "hard-00357",
+   "raw": "{\"cat\":\"insurance\",\"inst\":\"Kestrel Life & Legacy\",\"ref\":\"98-936206\",\"amt\":5000,\"kind\":\"face_value\",\"act\":\"review\",\"ev\":[4,5,9]}",
+   "out_tok": 51,
+   "in_tok": 364,
+   "ms": 3509
+  },
+  "hard-00359": {
+   "id": "hard-00359",
+   "raw": "{\"cat\":\"utility\",\"inst\":\"Regional Water Authority\",\"ref\":\"1687\",\"amt\":808.68,\"kind\":\"due\",\"due\":7,\"act\":\"transfer\",\"ev\":[3,4,5,6]}",
+   "out_tok": 50,
+   "in_tok": 256,
+   "ms": 3430
+  },
+  "hard-00353": {
+   "id": "hard-00353",
+   "raw": "{\"cat\":\"insurance\",\"inst\":\"United Heritage Insurance\",\"ref\":\"15-700544\",\"amt\":300000,\"kind\":\"face_value\",\"due\":60,\"act\":\"claim\",\"ev\":[1,2,3]}",
+   "out_tok": 55,
+   "in_tok": 279,
+   "ms": 3786
+  },
+  "hard-00363": {
+   "id": "hard-00363",
+   "raw": "{\"cat\":\"retirement\",\"inst\":\"Municipal Employees' Retirement System\",\"ref\":\"9385\",\"amt\":4373,\"kind\":\"benefit\",\"rec\":\"monthly\",\"act\":\"stop_payment\",\"ev\":[1]}",
+   "out_tok": 49,
+   "in_tok": 277,
+   "ms": 3327
+  },
+  "hard-00371": {
+   "id": "hard-00371",
+   "raw": "{\"cat\":\"subscription\",\"inst\":\"Bramble Box\",\"ref\":\"8263\",\"amt\":39.99,\"kind\":\"charge\",\"rec\":\"quarterly\",\"act\":\"cancel\",\"ev\":[1]}",
+   "out_tok": 45,
+   "in_tok": 250,
+   "ms": 2945
+  },
+  "hard-00347": {
+   "id": "hard-00347",
+   "raw": "{\"cat\":\"insurance\",\"inst\":\"United Heritage Insurance\",\"ref\":\"31-694988\",\"amt\":300000,\"kind\":\"face_value\",\"act\":\"review\",\"ev\":[3,5,11,14,19,27]}",
+   "out_tok": 60,
+   "in_tok": 612,
+   "ms": 4166
+  },
+  "hard-00362": {
+   "id": "hard-00362",
+   "raw": "{\"cat\":\"insurance\",\"inst\":\"Old Dominion Life\",\"ref\":\"78-845195\",\"amt\":15000,\"kind\":\"face_value\",\"due\":730,\"act\":\"claim\",\"ev\":[1]}",
+   "out_tok": 51,
+   "in_tok": 265,
+   "ms": 3414
+  },
+  "hard-00348": {
+   "id": "hard-00348",
+   "raw": "{\"cat\":\"utility\",\"inst\":\"Northstar Energy Co-op\",\"ref\":\"8216\",\"amt\":443.94,\"kind\":\"due\",\"due\":7,\"act\":\"transfer\",\"ev\":[1,7,9,10,12,13,14]}",
+   "out_tok": 62,
+   "in_tok": 595,
+   "ms": 4250
+  },
+  "hard-00377": {
+   "id": "hard-00377",
+   "raw": "{\"cat\":\"government\",\"inst\":\"County Probate Registry\",\"ref\":\"8465\",\"amt\":8165.29,\"kind\":\"balance\",\"act\":\"claim\",\"ev\":[3,7]}",
+   "out_tok": 44,
+   "in_tok": 433,
+   "ms": 2704
+  },
+  "hard-00372": {
+   "id": "hard-00372",
+   "raw": "{\"cat\":\"utility\",\"inst\":\"Regional Water Authority\",\"ref\":\"2668\",\"amt\":565.4,\"kind\":\"due\",\"act\":\"transfer\",\"ev\":[1,6,8,10,15,17]}",
+   "out_tok": 52,
+   "in_tok": 489,
+   "ms": 3240
+  },
+  "hard-00361": {
+   "id": "hard-00361",
+   "raw": "{\"cat\":\"medical\",\"inst\":\"Piedmont Family Practice\",\"ref\":\"3178\",\"amt\":10279.11,\"kind\":\"due\",\"act\":\"verify_debt\",\"ev\":[1,5,12,21,26]}",
+   "out_tok": 57,
+   "in_tok": 537,
+   "ms": 3696
+  },
+  "hard-00351": {
+   "id": "hard-00351",
+   "raw": "{\"cat\":\"retirement\",\"inst\":\"Bricklayers & Allied Craftworkers Local 88\",\"ref\":\"1520\",\"amt\":5365.94,\"kind\":\"benefit\",\"rec\":\"monthly\",\"due\":90,\"act\":\"stop_payment\",\"ev\":[1,2]}",
+   "out_tok": 63,
+   "in_tok": 306,
+   "ms": 4134
+  },
+  "hard-00365": {
+   "id": "hard-00365",
+   "raw": "{\"cat\":\"legal\",\"inst\":\"Probate Division, Third Judicial Circuit\",\"ref\":\"2025-PR-8347\",\"due\":90,\"act\":\"review\",\"ev\":[2,7,8,14,15,17]}",
+   "out_tok": 56,
+   "in_tok": 483,
+   "ms": 3572
+  },
+  "hard-00366": {
+   "id": "hard-00366",
+   "raw": "{\"cat\":\"insurance\",\"inst\":\"Provident Assurance Co.\",\"ref\":\"13-766918\",\"amt\":150000,\"kind\":\"face_value\",\"due\":120,\"act\":\"claim\",\"ev\":[2,3,7]}",
+   "out_tok": 57,
+   "in_tok": 355,
+   "ms": 3613
+  },
+  "hard-00393": {
+   "id": "hard-00393",
+   "raw": "{\"cat\":\"utility\",\"inst\":\"Municipal Light & Power\",\"ref\":\"6247\",\"amt\":480,\"kind\":\"due\",\"act\":\"transfer\",\"ev\":[1]}",
+   "out_tok": 40,
+   "in_tok": 256,
+   "ms": 2191
+  },
+  "hard-00358": {
+   "id": "hard-00358",
+   "raw": "{\"cat\":\"medical\",\"inst\":\"LAKESHORE ORTHOPEDICS\",\"ref\":\"1335\",\"amt\":21780,\"kind\":\"due\",\"due\":21,\"act\":\"verify_debt\",\"ev\":[2,8,10,11,16]}",
+   "out_tok": 63,
+   "in_tok": 519,
+   "ms": 3979
+  },
+  "hard-00394": {
+   "id": "hard-00394",
+   "raw": "{\"cat\":\"property\",\"inst\":\"Cedar Point Self Storage\",\"ref\":\"5864\",\"amt\":9633.74,\"kind\":\"due\",\"act\":\"review\",\"ev\":[1]}",
+   "out_tok": 43,
+   "in_tok": 242,
+   "ms": 2274
+  },
+  "hard-00382": {
+   "id": "hard-00382",
+   "raw": "{\"cat\":\"utility\",\"inst\":\"Municipal Light & Power\",\"ref\":\"3617\",\"amt\":641.98,\"kind\":\"due\",\"act\":\"transfer\",\"ev\":[1,4,7,8,11]}",
+   "out_tok": 52,
+   "in_tok": 399,
+   "ms": 2923
+  },
+  "hard-00373": {
+   "id": "hard-00373",
+   "raw": "{\"cat\":\"utility\",\"inst\":\"Northstar Energy Co-op\",\"ref\":\"7767\",\"amt\":727.92,\"kind\":\"due\",\"due\":7,\"act\":\"transfer\",\"ev\":[1,4,6,8,9,15]}",
+   "out_tok": 57,
+   "in_tok": 472,
+   "ms": 3340
+  },
+  "hard-00391": {
+   "id": "hard-00391",
+   "raw": "{\"cat\":\"legal\",\"inst\":\"Whitcombe, Serrano & Ng LLP\",\"ref\":\"2026-PR-7773\",\"act\":\"review\",\"ev\":[1,2,3]}",
+   "out_tok": 45,
+   "in_tok": 301,
+   "ms": 2403
+  },
+  "hard-00390": {
+   "id": "hard-00390",
+   "raw": "{\"cat\":\"legal\",\"inst\":\"Probate Division, Third Judicial Circuit\",\"ref\":\"2026-PR-5554\",\"act\":\"review\",\"ev\":[4,8,17,21]}",
+   "out_tok": 46,
+   "in_tok": 602,
+   "ms": 2453
+  },
+  "hard-00386": {
+   "id": "hard-00386",
+   "raw": "{\"cat\":\"subscription\",\"inst\":\"Sprig Meal Plan\",\"ref\":\"9196\",\"amt\":39.99,\"kind\":\"charge\",\"rec\":\"quarterly\",\"act\":\"cancel\",\"ev\":[2,3,6]}",
+   "out_tok": 49,
+   "in_tok": 343,
+   "ms": 2648
+  },
+  "hard-00399": {
+   "id": "hard-00399",
+   "raw": "{\"cat\":\"investment\",\"inst\":\"Blue Harbor Investments\",\"ref\":\"9512\",\"amt\":1486.33,\"kind\":\"balance\",\"act\":\"transfer\",\"ev\":[1,3]}",
+   "out_tok": 43,
+   "in_tok": 296,
+   "ms": 2195
+  },
+  "hard-00384": {
+   "id": "hard-00384",
+   "raw": "{\"cat\":\"subscription\",\"inst\":\"Bellwether Wine Club\",\"ref\":\"2269\",\"amt\":1.99,\"kind\":\"charge\",\"rec\":\"annual\",\"act\":\"cancel\",\"ev\":[4,10,13,19]}",
+   "out_tok": 53,
+   "in_tok": 488,
+   "ms": 2925
+  },
+  "hard-00385": {
+   "id": "hard-00385",
+   "raw": "{\"cat\":\"loan\",\"inst\":\"Clearwater Auto Finance\",\"ref\":\"5730\",\"amt\":893.04,\"kind\":\"due\",\"rec\":\"monthly\",\"due\":10,\"act\":\"notify\",\"ev\":[1,2]}",
+   "out_tok": 52,
+   "in_tok": 260,
+   "ms": 2858
+  },
+  "hard-00395": {
+   "id": "hard-00395",
+   "raw": "{\"cat\":\"property\",\"inst\":\"Township Assessor's Office\",\"ref\":\"5808\",\"amt\":46.17,\"kind\":\"due\",\"act\":\"review\",\"ev\":[1,4,6]}",
+   "out_tok": 46,
+   "in_tok": 307,
+   "ms": 2388
+  },
+  "hard-00364": {
+   "id": "hard-00364",
+   "raw": "{\"cat\":\"retirement\",\"inst\":\"Bricklayers & Allied Craftworkers Local 88 Annuity Plan\",\"ref\":\"9346\",\"amt\":6460.45,\"kind\":\"benefit\",\"rec\":\"monthly\",\"due\":90,\"act\":\"stop_payment\",\"ev\":[1,2,3]}",
+   "out_tok": 69,
+   "in_tok": 304,
+   "ms": 4147
+  },
+  "hard-00397": {
+   "id": "hard-00397",
+   "raw": "{\"cat\":\"insurance\",\"inst\":\"Tri-County Mutual\",\"ref\":\"6063\",\"amt\":11237,\"kind\":\"balance\",\"act\":\"claim\",\"ev\":[3,9,16,17]}",
+   "out_tok": 48,
+   "in_tok": 442,
+   "ms": 2387
+  },
+  "hard-00389": {
+   "id": "hard-00389",
+   "raw": "{\"cat\":\"government\",\"inst\":\"County Probate Registry\",\"ref\":\"3222\",\"amt\":1166.48,\"kind\":\"benefit\",\"rec\":\"monthly\",\"act\":\"notify\",\"ev\":[3,7,10]}",
+   "out_tok": 52,
+   "in_tok": 453,
+   "ms": 2684
+  },
+  "hard-00392": {
+   "id": "hard-00392",
+   "raw": "{\"cat\":\"property\",\"inst\":\"Cedar Point Self Storage\",\"ref\":\"5733\",\"amt\":13197,\"kind\":\"due\",\"due\":10,\"act\":\"review\",\"ev\":[1,9,10,11,15]}",
+   "out_tok": 57,
+   "in_tok": 511,
+   "ms": 2858
+  },
+  "hard-00387": {
+   "id": "hard-00387",
+   "raw": "{\"cat\":\"retirement\",\"inst\":\"Longshore Workers Welfare Trust\",\"ref\":\"4049\",\"amt\":5211.22,\"kind\":\"benefit\",\"rec\":\"monthly\",\"due\":14,\"act\":\"stop_payment\",\"ev\":[2,6,8,11]}",
+   "out_tok": 62,
+   "in_tok": 402,
+   "ms": 3097
+  },
+  "hard-00398": {
+   "id": "hard-00398",
+   "raw": "{\"cat\":\"insurance\",\"inst\":\"Old Dominion Life\",\"ref\":\"93-871470\",\"amt\":150000,\"kind\":\"face_value\",\"due\":730,\"act\":\"claim\",\"ev\":[1,6,8,9,15]}",
+   "out_tok": 61,
+   "in_tok": 475,
+   "ms": 2875
+  },
+  "hard-00375": {
+   "id": "hard-00375",
+   "raw": "{\"cat\":\"government\",\"inst\":\"Bureau of Vital Statistics\",\"ref\":\"BVS-0078239415\",\"amt\":1840.04,\"kind\":\"benefit\",\"rec\":\"monthly\",\"due\":30,\"act\":\"notify\",\"ev\":[1,6,8,10,15,19,20,21,23,27]}",
+   "out_tok": 87,
+   "in_tok": 605,
+   "ms": 4504
+  }
+ }
+}

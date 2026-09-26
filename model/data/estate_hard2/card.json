@@ -1,0 +1,43 @@
+{
+  "profile": "hard2",
+  "file": "test.jsonl",
+  "generated": 420,
+  "accepted": 405,
+  "accept_rate": 0.964,
+  "by_category": {
+    "bank": 20,
+    "credit_card": 31,
+    "government": 30,
+    "insurance": 26,
+    "investment": 24,
+    "irrelevant": 56,
+    "legal": 17,
+    "loan": 32,
+    "medical": 22,
+    "personal": 24,
+    "property": 18,
+    "retirement": 35,
+    "subscription": 40,
+    "utility": 30
+  },
+  "by_channel": {
+    "letter": 140,
+    "email": 166,
+    "sms": 99
+  },
+  "with_printed_date": 82,
+  "second_notices_same_account": 42,
+  "docs_with_a_field_omitted": 45,
+  "disjoint_from": [
+    "gen_estate.py (train v1)",
+    "gen_estate_hard.py (hard v1)",
+    "the other v3 profile"
+  ],
+  "disjoint_in": [
+    "institution names",
+    "person names",
+    "sender descriptions",
+    "document forms",
+    "random seeds"
+  ]
+}

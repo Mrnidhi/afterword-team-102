@@ -6,6 +6,36 @@ A local family-record workspace built against `afterword.finding/v1`, by Team 10
 
 A family workspace for organizing the practical work after a loss. The local application ingests individual records, calls the on-device extraction engine, stores exact source text and findings, and presents actions, evidence and memories. The public website remains a clearly separate fictional sample. It is an independent concept for HP ZGX, not an HP product or endorsement. No private credentials or real family records are included in the repository.
 
+## Quick start
+
+```sh
+bash setup.sh --run     # creates .venv, installs dependencies, runs tests, starts the app
+```
+
+Then open `http://127.0.0.1:4190`. Python 3.10+; no GPU needed — without a model server the app
+starts in preview mode with the sample workspace. To switch the on-device AI on, serve the
+fine-tuned model (below) and set `AFTERWORD_EXTRACT_URL=http://127.0.0.1:8091/v1`.
+
+## The on-device model
+
+Afterword reads a family's letters, emails and scanned bills with a **fine-tuned Qwen3-4B**
+(`sft3`, LoRA + BF16) that runs entirely on the HP ZGX Nano. Nothing is sent anywhere: the model
+listens on loopback only, and the app reports a `sent_to_cloud` counter that stays at zero.
+
+| | Base Qwen3-4B | Qwen3-32B teacher | **sft3 (ours)** |
+| --- | --- | --- | --- |
+| Field F1 (estate, held out) | 0.747 | 0.814 | **0.998** |
+| Exact match | 0.200 | 0.311 | **0.981** |
+| Output tokens/sec | 824.8 | 108.8 | **753.7** |
+
+The fine-tuned 4B beats the 32B that taught it, at **6.9× the throughput** — the case for edge AI
+in one table. On held-out generalisation sets it scores 0.980 and 0.982 field F1.
+
+- **[model/METRICS.md](model/METRICS.md)** — every benchmark, and why each metric was chosen
+- **[model/SETUP.md](model/SETUP.md)** — training and serving the model, hardware notes
+- **[model/DEPLOY.md](model/DEPLOY.md)** — deploying the whole app to the Nano
+- **[model/results/](model/results/)** — raw evaluation reports with per-document predictions
+
 ## Local extraction application
 
 See [integration requirements](docs/FINDING-INTEGRATION-SPEC.md) and

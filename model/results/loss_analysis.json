@@ -1,0 +1,24 @@
+{
+  "n_per_set": 120,
+  "adapter": "out/sft2_adapter",
+  "sets": {
+    "TRAINED ON": {
+      "loss_all": 0.001620464314525326,
+      "loss_value": 0.00040658008235547354,
+      "loss_structure": 0.0036315372785949173,
+      "value_share": 0.6235967926689576
+    },
+    "NEVER SEEN (same gen)": {
+      "loss_all": 0.006660487108772566,
+      "loss_value": 0.004718748901249908,
+      "loss_structure": 0.009950780648505762,
+      "value_share": 0.6288749187079992
+    },
+    "NEVER SEEN (hard)": {
+      "loss_all": 0.05808715225990829,
+      "loss_value": 0.057810815771056144,
+      "loss_structure": 0.058512940378324406,
+      "value_share": 0.6064281382656155
+    }
+  }
+}

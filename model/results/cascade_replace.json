@@ -1,0 +1,137 @@
+{
+ "alpha": 0.05,
+ "model": "sft3",
+ "thresholds": {
+  "cat": {
+   "threshold": 0.9811695504982424,
+   "cal_values": 264,
+   "cal_errors": 0
+  },
+  "inst": {
+   "threshold": 0.8510026810020803,
+   "cal_values": 187,
+   "cal_errors": 0
+  },
+  "ref": {
+   "threshold": 0.924113850596049,
+   "cal_values": 187,
+   "cal_errors": 0
+  },
+  "amt": {
+   "threshold": 0.9914269598990247,
+   "cal_values": 178,
+   "cal_errors": 0
+  },
+  "kind": {
+   "threshold": 0.9933422616032489,
+   "cal_values": 178,
+   "cal_errors": 0
+  },
+  "rec": {
+   "threshold": 0.9240306840920443,
+   "cal_values": 58,
+   "cal_errors": 0
+  },
+  "due": {
+   "threshold": 0.999880007199712,
+   "cal_values": 101,
+   "cal_errors": 1
+  },
+  "act": {
+   "threshold": 0.9465608697941534,
+   "cal_values": 187,
+   "cal_errors": 0
+  }
+ },
+ "sets": {
+  "estate test": {
+   "4B only (L1)": {
+    "field_f1": 0.9971,
+    "critical_recall": 1.0,
+    "exact_match": 0.9815,
+    "grounding_rate": 1.0
+   },
+   "32B only": {
+    "field_f1": 0.815,
+    "critical_recall": 0.9748,
+    "exact_match": 0.3037,
+    "grounding_rate": 0.8311
+   },
+   "cascade L0+L1+L2": {
+    "field_f1": 0.9956,
+    "critical_recall": 0.9979,
+    "exact_match": 0.9741,
+    "grounding_rate": 1.0
+   },
+   "routing": {
+    "documents": 270,
+    "skipped_by_L0": 71,
+    "sent_to_4B": 199,
+    "escalated_docs": 5,
+    "escalated_fields": 5,
+    "escalation_rate_docs": 0.0251,
+    "action_provisional_docs": 2,
+    "gate_accepted_fields": 1300,
+    "error_rate_among_accepted": 0.0031,
+    "policy": "replace"
+   },
+   "tokens_per_doc": {
+    "32B only": 385.7,
+    "4B only": 363.4,
+    "cascade (4B + 32B on escalations)": 286.6,
+    "32B tokens in cascade": 7.4
+   },
+   "gpu_joules_per_doc_estimate": {
+    "32B only": 24.64,
+    "4B only": 5.8,
+    "cascade": 4.73,
+    "note": "measured per-document averages from results/energy.jsonl, combined by routing counts"
+   }
+  },
+  "hard v2 (fresh)": {
+   "4B only (L1)": {
+    "field_f1": 0.9834,
+    "critical_recall": 0.9853,
+    "exact_match": 0.9358,
+    "grounding_rate": 0.9981
+   },
+   "32B only": {
+    "field_f1": 0.7831,
+    "critical_recall": 0.9733,
+    "exact_match": 0.2173,
+    "grounding_rate": 0.8484
+   },
+   "cascade L0+L1+L2": {
+    "field_f1": 0.9841,
+    "critical_recall": 0.988,
+    "exact_match": 0.9383,
+    "grounding_rate": 0.9981
+   },
+   "routing": {
+    "documents": 405,
+    "skipped_by_L0": 73,
+    "sent_to_4B": 332,
+    "escalated_docs": 39,
+    "escalated_fields": 43,
+    "escalation_rate_docs": 0.1175,
+    "action_provisional_docs": 8,
+    "gate_accepted_fields": 2074,
+    "error_rate_among_accepted": 0.0077,
+    "policy": "replace"
+   },
+   "tokens_per_doc": {
+    "32B only": 482.5,
+    "4B only": 457.8,
+    "cascade (4B + 32B on escalations)": 432.1,
+    "32B tokens in cascade": 49.9
+   },
+   "gpu_joules_per_doc_estimate": {
+    "32B only": 33.67,
+    "4B only": 3.81,
+    "cascade": 6.37,
+    "note": "measured per-document averages from results/energy.jsonl, combined by routing counts"
+   }
+  }
+ },
+ "policy": "replace"
+}

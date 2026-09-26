@@ -1,0 +1,950 @@
+{
+ "report": {
+  "name": "bench_sft2_c8",
+  "model": "sft2",
+  "shots": 0,
+  "split": "test",
+  "wall_seconds": 24.4,
+  "output_tokens_per_sec": 190.9,
+  "tasks": {
+   "estate": {
+    "documents": 128,
+    "field_precision": 0.9983974358974359,
+    "field_recall": 1.0,
+    "field_f1": 0.9991980753809142,
+    "critical_recall": 1.0,
+    "schema_validity": 1.0,
+    "exact_match": 0.9921875,
+    "grounding_rate": 1.0,
+    "evidence_recall": 0.9924242424242423,
+    "per_field_f1": {
+     "act": 1.0,
+     "amt": 1.0,
+     "cat": 1.0,
+     "due": 0.9885057471264368,
+     "inst": 1.0,
+     "kind": 1.0,
+     "rec": 1.0,
+     "ref": 1.0
+    },
+    "per_category_f1": {
+     "bank": 1.0,
+     "credit_card": 1.0,
+     "government": 1.0,
+     "insurance": 0.9943502824858756,
+     "investment": 1.0,
+     "irrelevant": 1.0,
+     "legal": 1.0,
+     "loan": 1.0,
+     "medical": 1.0,
+     "personal": 1.0,
+     "property": 1.0,
+     "retirement": 1.0,
+     "subscription": 1.0,
+     "utility": 1.0
+    },
+    "mean_output_tokens": 36.4140625,
+    "median_latency_ms": 1830,
+    "errors": 0
+   }
+  }
+ },
+ "predictions": {
+  "estate-00025": {
+   "id": "estate-00025",
+   "raw": "{\"cat\":\"personal\"}",
+   "out_tok": 6,
+   "in_tok": 347,
+   "ms": 282
+  },
+  "estate-00019": {
+   "id": "estate-00019",
+   "raw": "{\"cat\":\"irrelevant\"}",
+   "out_tok": 7,
+   "in_tok": 315,
+   "ms": 322
+  },
+  "estate-00020": {
+   "id": "estate-00020",
+   "raw": "{\"cat\":\"irrelevant\"}",
+   "out_tok": 7,
+   "in_tok": 216,
+   "ms": 323
+  },
+  "estate-00015": {
+   "id": "estate-00015",
+   "raw": "{\"cat\":\"irrelevant\"}",
+   "out_tok": 7,
+   "in_tok": 303,
+   "ms": 327
+  },
+  "estate-00087": {
+   "id": "estate-00087",
+   "raw": "{\"cat\":\"personal\"}",
+   "out_tok": 6,
+   "in_tok": 385,
+   "ms": 305
+  },
+  "estate-00055": {
+   "id": "estate-00055",
+   "raw": "{\"cat\":\"irrelevant\"}",
+   "out_tok": 7,
+   "in_tok": 317,
+   "ms": 347
+  },
+  "estate-00078": {
+   "id": "estate-00078",
+   "raw": "{\"cat\":\"irrelevant\"}",
+   "out_tok": 7,
+   "in_tok": 332,
+   "ms": 344
+  },
+  "estate-00034": {
+   "id": "estate-00034",
+   "raw": "{\"cat\":\"subscription\",\"inst\":\"Readly Box\",\"ref\":\"8878\",\"amt\":49.99,\"kind\":\"charge\",\"rec\":\"monthly\",\"act\":\"cancel\",\"ev\":[1]}",
+   "out_tok": 43,
+   "in_tok": 260,
+   "ms": 1691
+  },
+  "estate-00095": {
+   "id": "estate-00095",
+   "raw": "{\"cat\":\"personal\"}",
+   "out_tok": 6,
+   "in_tok": 324,
+   "ms": 303
+  },
+  "estate-00005": {
+   "id": "estate-00005",
+   "raw": "{\"cat\":\"insurance\",\"inst\":\"Crescent Life & Annuity\",\"ref\":\"LP-614511\",\"amt\":25000,\"kind\":\"face_value\",\"act\":\"review\",\"ev\":[1,3,5]}",
+   "out_tok": 53,
+   "in_tok": 356,
+   "ms": 2037
+  },
+  "estate-00046": {
+   "id": "estate-00046",
+   "raw": "{\"cat\":\"insurance\",\"inst\":\"Silverline Life Assurance\",\"ref\":\"LP-986901\",\"amt\":25000,\"kind\":\"face_value\",\"due\":365,\"act\":\"claim\",\"ev\":[1,2,3,4,7]}",
+   "out_tok": 59,
+   "in_tok": 367,
+   "ms": 2303
+  },
+  "estate-00092": {
+   "id": "estate-00092",
+   "raw": "{\"cat\":\"investment\",\"inst\":\"Meridian Brokerage\",\"ref\":\"5210\",\"amt\":287689.95,\"kind\":\"balance\",\"act\":\"transfer\",\"ev\":[1]}",
+   "out_tok": 44,
+   "in_tok": 257,
+   "ms": 1750
+  },
+  "estate-00068": {
+   "id": "estate-00068",
+   "raw": "{\"cat\":\"credit_card\",\"inst\":\"Silverline Card Services\",\"ref\":\"1709\",\"amt\":3324.17,\"kind\":\"due\",\"due\":30,\"act\":\"close\",\"ev\":[1,4,6]}",
+   "out_tok": 52,
+   "in_tok": 355,
+   "ms": 2060
+  },
+  "estate-00091": {
+   "id": "estate-00091",
+   "raw": "{\"cat\":\"bank\",\"inst\":\"Beacon Community Bank\",\"ref\":\"6008\",\"amt\":11862.36,\"kind\":\"balance\",\"act\":\"claim\",\"ev\":[1,5,9]}",
+   "out_tok": 47,
+   "in_tok": 385,
+   "ms": 1870
+  },
+  "estate-00108": {
+   "id": "estate-00108",
+   "raw": "{\"cat\":\"personal\"}",
+   "out_tok": 6,
+   "in_tok": 243,
+   "ms": 309
+  },
+  "estate-00021": {
+   "id": "estate-00021",
+   "raw": "{\"cat\":\"retirement\",\"inst\":\"Beacon Retirement System\",\"ref\":\"4750\",\"amt\":4907.31,\"kind\":\"benefit\",\"rec\":\"monthly\",\"due\":60,\"act\":\"stop_payment\",\"ev\":[1,2,6,7,8,9,13]}",
+   "out_tok": 67,
+   "in_tok": 364,
+   "ms": 2615
+  },
+  "estate-00094": {
+   "id": "estate-00094",
+   "raw": "{\"cat\":\"retirement\",\"inst\":\"Juniper Retirement System\",\"ref\":\"5334\",\"amt\":1847.67,\"kind\":\"benefit\",\"rec\":\"monthly\",\"due\":60,\"act\":\"stop_payment\",\"ev\":[1]}",
+   "out_tok": 54,
+   "in_tok": 254,
+   "ms": 2141
+  },
+  "estate-00125": {
+   "id": "estate-00125",
+   "raw": "{\"cat\":\"irrelevant\"}",
+   "out_tok": 7,
+   "in_tok": 353,
+   "ms": 345
+  },
+  "estate-00126": {
+   "id": "estate-00126",
+   "raw": "{\"cat\":\"personal\"}",
+   "out_tok": 6,
+   "in_tok": 333,
+   "ms": 307
+  },
+  "estate-00128": {
+   "id": "estate-00128",
+   "raw": "{\"cat\":\"irrelevant\"}",
+   "out_tok": 7,
+   "in_tok": 324,
+   "ms": 345
+  },
+  "estate-00103": {
+   "id": "estate-00103",
+   "raw": "{\"cat\":\"credit_card\",\"inst\":\"Meridian Card Services\",\"ref\":\"8178\",\"amt\":1231.56,\"kind\":\"due\",\"due\":30,\"act\":\"close\",\"ev\":[1]}",
+   "out_tok": 48,
+   "in_tok": 261,
+   "ms": 1916
+  },
+  "estate-00122": {
+   "id": "estate-00122",
+   "raw": "{\"cat\":\"insurance\",\"inst\":\"Meridian Mutual Life\",\"ref\":\"LP-649492\",\"amt\":100000,\"kind\":\"face_value\",\"act\":\"review\",\"ev\":[1]}",
+   "out_tok": 46,
+   "in_tok": 255,
+   "ms": 1836
+  },
+  "estate-00099": {
+   "id": "estate-00099",
+   "raw": "{\"cat\":\"credit_card\",\"inst\":\"Oakridge Card Services\",\"ref\":\"5457\",\"amt\":7956.04,\"kind\":\"due\",\"due\":25,\"act\":\"close\",\"ev\":[3,4,5,8,9,12]}",
+   "out_tok": 59,
+   "in_tok": 405,
+   "ms": 2339
+  },
+  "estate-00112": {
+   "id": "estate-00112",
+   "raw": "{\"cat\":\"bank\",\"inst\":\"Bayview Credit Union\",\"ref\":\"4297\",\"amt\":59106.66,\"kind\":\"balance\",\"act\":\"claim\",\"ev\":[6,7,9,11]}",
+   "out_tok": 50,
+   "in_tok": 350,
+   "ms": 1993
+  },
+  "estate-00138": {
+   "id": "estate-00138",
+   "raw": "{\"cat\":\"bank\",\"inst\":\"Meridian Savings Bank\",\"ref\":\"9977\",\"amt\":379.92,\"kind\":\"balance\",\"act\":\"claim\",\"ev\":[1]}",
+   "out_tok": 41,
+   "in_tok": 255,
+   "ms": 1645
+  },
+  "estate-00146": {
+   "id": "estate-00146",
+   "raw": "{\"cat\":\"utility\",\"inst\":\"Silverline Water District\",\"ref\":\"2031\",\"amt\":148.16,\"kind\":\"due\",\"due\":14,\"act\":\"transfer\",\"ev\":[1,4,5,6,9]}",
+   "out_tok": 54,
+   "in_tok": 345,
+   "ms": 2140
+  },
+  "estate-00135": {
+   "id": "estate-00135",
+   "raw": "{\"cat\":\"retirement\",\"inst\":\"Beacon Pension Fund\",\"ref\":\"5170\",\"amt\":4970.77,\"kind\":\"benefit\",\"rec\":\"monthly\",\"due\":60,\"act\":\"stop_payment\",\"ev\":[1,3,5]}",
+   "out_tok": 58,
+   "in_tok": 354,
+   "ms": 2295
+  },
+  "estate-00130": {
+   "id": "estate-00130",
+   "raw": "{\"cat\":\"retirement\",\"inst\":\"Crescent Retirement System\",\"ref\":\"7892\",\"amt\":1038.67,\"kind\":\"benefit\",\"rec\":\"monthly\",\"due\":30,\"act\":\"stop_payment\",\"ev\":[1,3,4,5]}",
+   "out_tok": 61,
+   "in_tok": 356,
+   "ms": 2409
+  },
+  "estate-00147": {
+   "id": "estate-00147",
+   "raw": "{\"cat\":\"medical\",\"inst\":\"Silverline Health Clinic\",\"ref\":\"3883\",\"amt\":18887.28,\"kind\":\"due\",\"due\":30,\"act\":\"verify_debt\",\"ev\":[1]}",
+   "out_tok": 50,
+   "in_tok": 252,
+   "ms": 1990
+  },
+  "estate-00148": {
+   "id": "estate-00148",
+   "raw": "{\"cat\":\"insurance\",\"inst\":\"Meridian Mutual Life\",\"ref\":\"POL-597088\",\"amt\":50000,\"kind\":\"face_value\",\"act\":\"claim\",\"ev\":[1]}",
+   "out_tok": 45,
+   "in_tok": 272,
+   "ms": 1802
+  },
+  "estate-00168": {
+   "id": "estate-00168",
+   "raw": "{\"cat\":\"investment\",\"inst\":\"Lumen Investments\",\"ref\":\"8283\",\"amt\":158364.24,\"kind\":\"balance\",\"act\":\"transfer\",\"ev\":[1]}",
+   "out_tok": 43,
+   "in_tok": 266,
+   "ms": 1722
+  },
+  "estate-00160": {
+   "id": "estate-00160",
+   "raw": "{\"cat\":\"insurance\",\"inst\":\"Silverline Life Assurance\",\"ref\":\"POL-559239\",\"amt\":100000,\"kind\":\"face_value\",\"act\":\"claim\",\"ev\":[6,10]}",
+   "out_tok": 49,
+   "in_tok": 351,
+   "ms": 1954
+  },
+  "estate-00166": {
+   "id": "estate-00166",
+   "raw": "{\"cat\":\"loan\",\"inst\":\"Summit Home Loans\",\"ref\":\"9320\",\"amt\":776.98,\"kind\":\"due\",\"rec\":\"monthly\",\"due\":15,\"act\":\"notify\",\"ev\":[1,6,7,8,11]}",
+   "out_tok": 59,
+   "in_tok": 409,
+   "ms": 2333
+  },
+  "estate-00177": {
+   "id": "estate-00177",
+   "raw": "{\"cat\":\"credit_card\",\"inst\":\"Lumen Card Services\",\"ref\":\"1867\",\"amt\":7330.42,\"kind\":\"due\",\"act\":\"close\",\"ev\":[1]}",
+   "out_tok": 43,
+   "in_tok": 268,
+   "ms": 1716
+  },
+  "estate-00171": {
+   "id": "estate-00171",
+   "raw": "{\"cat\":\"utility\",\"inst\":\"Northgate Water District\",\"ref\":\"5198\",\"amt\":86,\"kind\":\"due\",\"due\":21,\"act\":\"transfer\",\"ev\":[1,5,6,8]}",
+   "out_tok": 48,
+   "in_tok": 368,
+   "ms": 1907
+  },
+  "estate-00173": {
+   "id": "estate-00173",
+   "raw": "{\"cat\":\"credit_card\",\"inst\":\"Northgate Card Services\",\"ref\":\"2745\",\"amt\":2933.67,\"kind\":\"due\",\"due\":21,\"act\":\"close\",\"ev\":[3,5]}",
+   "out_tok": 50,
+   "in_tok": 346,
+   "ms": 1990
+  },
+  "estate-00193": {
+   "id": "estate-00193",
+   "raw": "{\"cat\":\"bank\",\"inst\":\"Silverline Credit Union\",\"ref\":\"5529\",\"amt\":7165.63,\"kind\":\"balance\",\"act\":\"claim\",\"ev\":[1]}",
+   "out_tok": 42,
+   "in_tok": 257,
+   "ms": 1683
+  },
+  "estate-00202": {
+   "id": "estate-00202",
+   "raw": "{\"cat\":\"bank\",\"inst\":\"Harbor Savings Bank\",\"ref\":\"3348\",\"amt\":10143.88,\"kind\":\"balance\",\"act\":\"claim\",\"ev\":[1]}",
+   "out_tok": 43,
+   "in_tok": 246,
+   "ms": 1713
+  },
+  "estate-00198": {
+   "id": "estate-00198",
+   "raw": "{\"cat\":\"bank\",\"inst\":\"Bayview Credit Union\",\"ref\":\"8978\",\"amt\":61404.38,\"kind\":\"balance\",\"act\":\"claim\",\"ev\":[1,5,7,9]}",
+   "out_tok": 49,
+   "in_tok": 371,
+   "ms": 1949
+  },
+  "estate-00197": {
+   "id": "estate-00197",
+   "raw": "{\"cat\":\"government\",\"inst\":\"Department of Revenue\",\"ref\":\"7360\",\"amt\":1968,\"kind\":\"benefit\",\"rec\":\"monthly\",\"due\":30,\"act\":\"notify\",\"ev\":[2,3,6,7,11]}",
+   "out_tok": 57,
+   "in_tok": 363,
+   "ms": 2255
+  },
+  "estate-00244": {
+   "id": "estate-00244",
+   "raw": "{\"cat\":\"personal\"}",
+   "out_tok": 6,
+   "in_tok": 360,
+   "ms": 305
+  },
+  "estate-00246": {
+   "id": "estate-00246",
+   "raw": "{\"cat\":\"irrelevant\"}",
+   "out_tok": 7,
+   "in_tok": 221,
+   "ms": 343
+  },
+  "estate-00209": {
+   "id": "estate-00209",
+   "raw": "{\"cat\":\"subscription\",\"inst\":\"NewsFold Plus\",\"ref\":\"3102\",\"amt\":19.99,\"kind\":\"charge\",\"rec\":\"annual\",\"act\":\"cancel\",\"ev\":[3,6]}",
+   "out_tok": 45,
+   "in_tok": 330,
+   "ms": 1804
+  },
+  "estate-00250": {
+   "id": "estate-00250",
+   "raw": "{\"cat\":\"irrelevant\"}",
+   "out_tok": 7,
+   "in_tok": 244,
+   "ms": 347
+  },
+  "estate-00207": {
+   "id": "estate-00207",
+   "raw": "{\"cat\":\"utility\",\"inst\":\"Lumen Electric\",\"ref\":\"5519\",\"amt\":91.02,\"kind\":\"due\",\"due\":14,\"act\":\"transfer\",\"ev\":[3,7,8,9,10,12]}",
+   "out_tok": 56,
+   "in_tok": 369,
+   "ms": 2220
+  },
+  "estate-00260": {
+   "id": "estate-00260",
+   "raw": "{\"cat\":\"irrelevant\"}",
+   "out_tok": 7,
+   "in_tok": 333,
+   "ms": 347
+  },
+  "estate-00261": {
+   "id": "estate-00261",
+   "raw": "{\"cat\":\"irrelevant\"}",
+   "out_tok": 7,
+   "in_tok": 294,
+   "ms": 345
+  },
+  "estate-00219": {
+   "id": "estate-00219",
+   "raw": "{\"cat\":\"medical\",\"inst\":\"Silverline Medical Center\",\"ref\":\"2711\",\"amt\":8020.27,\"kind\":\"due\",\"due\":30,\"act\":\"verify_debt\",\"ev\":[1]}",
+   "out_tok": 49,
+   "in_tok": 263,
+   "ms": 1954
+  },
+  "estate-00262": {
+   "id": "estate-00262",
+   "raw": "{\"cat\":\"personal\"}",
+   "out_tok": 6,
+   "in_tok": 330,
+   "ms": 321
+  },
+  "estate-00216": {
+   "id": "estate-00216",
+   "raw": "{\"cat\":\"retirement\",\"inst\":\"Redwood Pension Fund\",\"ref\":\"8096\",\"amt\":1909.13,\"kind\":\"benefit\",\"rec\":\"monthly\",\"due\":60,\"act\":\"stop_payment\",\"ev\":[1,2]}",
+   "out_tok": 56,
+   "in_tok": 318,
+   "ms": 2229
+  },
+  "estate-00281": {
+   "id": "estate-00281",
+   "raw": "{\"cat\":\"personal\"}",
+   "out_tok": 6,
+   "in_tok": 376,
+   "ms": 312
+  },
+  "estate-00225": {
+   "id": "estate-00225",
+   "raw": "{\"cat\":\"credit_card\",\"inst\":\"Evergreen Card Services\",\"ref\":\"2356\",\"amt\":7943.81,\"kind\":\"due\",\"act\":\"close\",\"ev\":[3,6,8,11]}",
+   "out_tok": 50,
+   "in_tok": 386,
+   "ms": 2000
+  },
+  "estate-00232": {
+   "id": "estate-00232",
+   "raw": "{\"cat\":\"retirement\",\"inst\":\"Harbor Pension Fund\",\"ref\":\"3119\",\"amt\":1177.98,\"kind\":\"benefit\",\"rec\":\"monthly\",\"due\":60,\"act\":\"stop_payment\",\"ev\":[1,3,5]}",
+   "out_tok": 58,
+   "in_tok": 364,
+   "ms": 2301
+  },
+  "estate-00271": {
+   "id": "estate-00271",
+   "raw": "{\"cat\":\"bank\",\"inst\":\"Evergreen Credit Union\",\"ref\":\"1885\",\"amt\":12475,\"kind\":\"balance\",\"act\":\"claim\",\"ev\":[1]}",
+   "out_tok": 40,
+   "in_tok": 256,
+   "ms": 1608
+  },
+  "estate-00273": {
+   "id": "estate-00273",
+   "raw": "{\"cat\":\"medical\",\"inst\":\"Oakridge Health Clinic\",\"ref\":\"6432\",\"amt\":422,\"kind\":\"due\",\"due\":60,\"act\":\"verify_debt\",\"ev\":[1]}",
+   "out_tok": 45,
+   "in_tok": 256,
+   "ms": 1797
+  },
+  "estate-00279": {
+   "id": "estate-00279",
+   "raw": "{\"cat\":\"utility\",\"inst\":\"Redwood Electric\",\"ref\":\"8507\",\"amt\":68.61,\"kind\":\"due\",\"due\":21,\"act\":\"transfer\",\"ev\":[1]}",
+   "out_tok": 44,
+   "in_tok": 254,
+   "ms": 1753
+  },
+  "estate-00283": {
+   "id": "estate-00283",
+   "raw": "{\"cat\":\"bank\",\"inst\":\"Redwood Credit Union\",\"ref\":\"2738\",\"amt\":79262.52,\"kind\":\"balance\",\"act\":\"claim\",\"ev\":[2]}",
+   "out_tok": 43,
+   "in_tok": 333,
+   "ms": 1704
+  },
+  "estate-00292": {
+   "id": "estate-00292",
+   "raw": "{\"cat\":\"credit_card\",\"inst\":\"Summit Card Services\",\"ref\":\"9168\",\"amt\":2975.28,\"kind\":\"due\",\"act\":\"close\",\"ev\":[1]}",
+   "out_tok": 43,
+   "in_tok": 260,
+   "ms": 1711
+  },
+  "estate-00286": {
+   "id": "estate-00286",
+   "raw": "{\"cat\":\"bank\",\"inst\":\"Evergreen Savings Bank\",\"ref\":\"1200\",\"amt\":57932.12,\"kind\":\"balance\",\"act\":\"claim\",\"ev\":[1,4,8]}",
+   "out_tok": 47,
+   "in_tok": 352,
+   "ms": 1871
+  },
+  "estate-00298": {
+   "id": "estate-00298",
+   "raw": "{\"cat\":\"legal\",\"inst\":\"Superior Court of Denton Hills County\",\"ref\":\"7701\",\"due\":60,\"act\":\"review\",\"ev\":[1,3,4,7,10]}",
+   "out_tok": 46,
+   "in_tok": 351,
+   "ms": 1827
+  },
+  "estate-00303": {
+   "id": "estate-00303",
+   "raw": "{\"cat\":\"credit_card\",\"inst\":\"Summit Card Services\",\"ref\":\"5296\",\"amt\":1133.75,\"kind\":\"due\",\"due\":30,\"act\":\"close\",\"ev\":[1,2,4]}",
+   "out_tok": 52,
+   "in_tok": 348,
+   "ms": 2061
+  },
+  "estate-00308": {
+   "id": "estate-00308",
+   "raw": "{\"cat\":\"insurance\",\"inst\":\"Lumen Mutual Life\",\"ref\":\"P-247978\",\"amt\":500000,\"kind\":\"face_value\",\"act\":\"review\",\"ev\":[3,5]}",
+   "out_tok": 48,
+   "in_tok": 361,
+   "ms": 1905
+  },
+  "estate-00359": {
+   "id": "estate-00359",
+   "raw": "{\"cat\":\"legal\",\"inst\":\"Superior Court of Denton Hills County\",\"ref\":\"8791\",\"due\":45,\"act\":\"review\",\"ev\":[1,2]}",
+   "out_tok": 39,
+   "in_tok": 339,
+   "ms": 1565
+  },
+  "estate-00352": {
+   "id": "estate-00352",
+   "raw": "{\"cat\":\"bank\",\"inst\":\"Redwood Community Bank\",\"ref\":\"7921\",\"amt\":76386.6,\"kind\":\"balance\",\"act\":\"claim\",\"ev\":[1,3,6]}",
+   "out_tok": 46,
+   "in_tok": 338,
+   "ms": 1833
+  },
+  "estate-00348": {
+   "id": "estate-00348",
+   "raw": "{\"cat\":\"property\",\"inst\":\"Lumen SecureSpace Storage\",\"ref\":\"3521\",\"amt\":4100.54,\"kind\":\"due\",\"due\":45,\"act\":\"review\",\"ev\":[2,3,7,8]}",
+   "out_tok": 54,
+   "in_tok": 388,
+   "ms": 2144
+  },
+  "estate-00385": {
+   "id": "estate-00385",
+   "raw": "{\"cat\":\"irrelevant\"}",
+   "out_tok": 7,
+   "in_tok": 347,
+   "ms": 344
+  },
+  "estate-00326": {
+   "id": "estate-00326",
+   "raw": "{\"cat\":\"insurance\",\"inst\":\"Juniper Life & Annuity\",\"ref\":\"P-116101\",\"amt\":25000,\"kind\":\"face_value\",\"due\":10,\"act\":\"review\",\"ev\":[1,6,7,10]}",
+   "out_tok": 60,
+   "in_tok": 402,
+   "ms": 2376
+  },
+  "estate-00355": {
+   "id": "estate-00355",
+   "raw": "{\"cat\":\"loan\",\"inst\":\"Harbor Lending\",\"ref\":\"8184\",\"amt\":893,\"kind\":\"due\",\"rec\":\"monthly\",\"due\":15,\"act\":\"notify\",\"ev\":[1,2,4]}",
+   "out_tok": 51,
+   "in_tok": 356,
+   "ms": 2032
+  },
+  "estate-00390": {
+   "id": "estate-00390",
+   "raw": "{\"cat\":\"irrelevant\"}",
+   "out_tok": 7,
+   "in_tok": 349,
+   "ms": 346
+  },
+  "estate-00391": {
+   "id": "estate-00391",
+   "raw": "{\"cat\":\"irrelevant\"}",
+   "out_tok": 7,
+   "in_tok": 339,
+   "ms": 347
+  },
+  "estate-00362": {
+   "id": "estate-00362",
+   "raw": "{\"cat\":\"subscription\",\"inst\":\"Pawprint Pet Club\",\"ref\":\"5331\",\"amt\":99,\"kind\":\"charge\",\"rec\":\"monthly\",\"act\":\"cancel\",\"ev\":[1,5,6,7,9]}",
+   "out_tok": 50,
+   "in_tok": 376,
+   "ms": 1989
+  },
+  "estate-00397": {
+   "id": "estate-00397",
+   "raw": "{\"cat\":\"irrelevant\"}",
+   "out_tok": 7,
+   "in_tok": 354,
+   "ms": 343
+  },
+  "estate-00409": {
+   "id": "estate-00409",
+   "raw": "{\"cat\":\"irrelevant\"}",
+   "out_tok": 7,
+   "in_tok": 250,
+   "ms": 346
+  },
+  "estate-00388": {
+   "id": "estate-00388",
+   "raw": "{\"cat\":\"investment\",\"inst\":\"Evergreen Securities\",\"ref\":\"4657\",\"amt\":4924.6,\"kind\":\"balance\",\"act\":\"transfer\",\"ev\":[1]}",
+   "out_tok": 40,
+   "in_tok": 249,
+   "ms": 1612
+  },
+  "estate-00376": {
+   "id": "estate-00376",
+   "raw": "{\"cat\":\"insurance\",\"inst\":\"Juniper Life Assurance\",\"ref\":\"LP-143829\",\"amt\":25000,\"kind\":\"face_value\",\"due\":90,\"act\":\"claim\",\"ev\":[1,3]}",
+   "out_tok": 52,
+   "in_tok": 342,
+   "ms": 2069
+  },
+  "estate-00379": {
+   "id": "estate-00379",
+   "raw": "{\"cat\":\"utility\",\"inst\":\"Oakridge Electric\",\"ref\":\"4307\",\"amt\":161.31,\"kind\":\"due\",\"due\":30,\"act\":\"transfer\",\"ev\":[1,3,6,7,8,9,12]}",
+   "out_tok": 58,
+   "in_tok": 382,
+   "ms": 2304
+  },
+  "estate-00401": {
+   "id": "estate-00401",
+   "raw": "{\"cat\":\"utility\",\"inst\":\"Cascade Water District\",\"ref\":\"8565\",\"amt\":75.32,\"kind\":\"due\",\"due\":14,\"act\":\"transfer\",\"ev\":[1,2,3,4]}",
+   "out_tok": 50,
+   "in_tok": 356,
+   "ms": 1989
+  },
+  "estate-00438": {
+   "id": "estate-00438",
+   "raw": "{\"cat\":\"legal\",\"inst\":\"Superior Court of Denton Hills County\",\"ref\":\"1514\",\"act\":\"review\",\"ev\":[1,2,10,14]}",
+   "out_tok": 40,
+   "in_tok": 434,
+   "ms": 1613
+  },
+  "estate-00432": {
+   "id": "estate-00432",
+   "raw": "{\"cat\":\"insurance\",\"inst\":\"Evergreen Life Assurance\",\"ref\":\"P-815611\",\"amt\":250000,\"kind\":\"face_value\",\"act\":\"review\",\"ev\":[1,7,8]}",
+   "out_tok": 50,
+   "in_tok": 401,
+   "ms": 1998
+  },
+  "estate-00408": {
+   "id": "estate-00408",
+   "raw": "{\"cat\":\"insurance\",\"inst\":\"Redwood Life & Annuity\",\"ref\":\"POL-866183\",\"amt\":100000,\"kind\":\"face_value\",\"act\":\"review\",\"ev\":[1,3,7]}",
+   "out_tok": 53,
+   "in_tok": 385,
+   "ms": 2113
+  },
+  "estate-00475": {
+   "id": "estate-00475",
+   "raw": "{\"cat\":\"irrelevant\"}",
+   "out_tok": 7,
+   "in_tok": 244,
+   "ms": 344
+  },
+  "estate-00433": {
+   "id": "estate-00433",
+   "raw": "{\"cat\":\"utility\",\"inst\":\"Lumen Gas & Power\",\"ref\":\"8546\",\"amt\":279.97,\"kind\":\"due\",\"due\":14,\"act\":\"transfer\",\"ev\":[1,5,6,7,10]}",
+   "out_tok": 56,
+   "in_tok": 377,
+   "ms": 2226
+  },
+  "estate-00488": {
+   "id": "estate-00488",
+   "raw": "{\"cat\":\"personal\"}",
+   "out_tok": 6,
+   "in_tok": 331,
+   "ms": 306
+  },
+  "estate-00505": {
+   "id": "estate-00505",
+   "raw": "{\"cat\":\"irrelevant\"}",
+   "out_tok": 7,
+   "in_tok": 322,
+   "ms": 351
+  },
+  "estate-00444": {
+   "id": "estate-00444",
+   "raw": "{\"cat\":\"loan\",\"inst\":\"Summit Auto Finance\",\"ref\":\"9572\",\"amt\":2170,\"kind\":\"due\",\"rec\":\"monthly\",\"due\":15,\"act\":\"notify\",\"ev\":[1,5,8]}",
+   "out_tok": 52,
+   "in_tok": 377,
+   "ms": 2074
+  },
+  "estate-00451": {
+   "id": "estate-00451",
+   "raw": "{\"cat\":\"bank\",\"inst\":\"Northgate Community Bank\",\"ref\":\"6932\",\"amt\":12716.96,\"kind\":\"balance\",\"act\":\"claim\",\"ev\":[2,4,6,10]}",
+   "out_tok": 50,
+   "in_tok": 357,
+   "ms": 2002
+  },
+  "estate-00466": {
+   "id": "estate-00466",
+   "raw": "{\"cat\":\"investment\",\"inst\":\"Cascade Securities\",\"ref\":\"6495\",\"amt\":561814.64,\"kind\":\"balance\",\"act\":\"transfer\",\"ev\":[1,2,3,4,9]}",
+   "out_tok": 50,
+   "in_tok": 336,
+   "ms": 1994
+  },
+  "estate-00543": {
+   "id": "estate-00543",
+   "raw": "{\"cat\":\"irrelevant\"}",
+   "out_tok": 7,
+   "in_tok": 225,
+   "ms": 342
+  },
+  "estate-00493": {
+   "id": "estate-00493",
+   "raw": "{\"cat\":\"subscription\",\"inst\":\"SoundLoft Music\",\"ref\":\"4833\",\"amt\":29.99,\"kind\":\"charge\",\"rec\":\"monthly\",\"act\":\"cancel\",\"ev\":[4,6,8]}",
+   "out_tok": 48,
+   "in_tok": 352,
+   "ms": 1910
+  },
+  "estate-00476": {
+   "id": "estate-00476",
+   "raw": "{\"cat\":\"retirement\",\"inst\":\"Granite Pension Fund\",\"ref\":\"2596\",\"amt\":4787.3,\"kind\":\"benefit\",\"rec\":\"monthly\",\"due\":30,\"act\":\"stop_payment\",\"ev\":[2]}",
+   "out_tok": 53,
+   "in_tok": 328,
+   "ms": 2099
+  },
+  "estate-00525": {
+   "id": "estate-00525",
+   "raw": "{\"cat\":\"subscription\",\"inst\":\"PuzzleNest\",\"ref\":\"2054\",\"amt\":99,\"kind\":\"charge\",\"rec\":\"annual\",\"act\":\"cancel\",\"ev\":[1,5,9]}",
+   "out_tok": 45,
+   "in_tok": 394,
+   "ms": 1799
+  },
+  "estate-00526": {
+   "id": "estate-00526",
+   "raw": "{\"cat\":\"investment\",\"inst\":\"Silverline Brokerage\",\"ref\":\"6618\",\"amt\":617535.79,\"kind\":\"balance\",\"act\":\"transfer\",\"ev\":[1,3]}",
+   "out_tok": 46,
+   "in_tok": 343,
+   "ms": 1837
+  },
+  "estate-00571": {
+   "id": "estate-00571",
+   "raw": "{\"cat\":\"irrelevant\"}",
+   "out_tok": 7,
+   "in_tok": 341,
+   "ms": 351
+  },
+  "estate-00532": {
+   "id": "estate-00532",
+   "raw": "{\"cat\":\"medical\",\"inst\":\"Pinecrest Health Clinic\",\"ref\":\"6617\",\"amt\":14923.7,\"kind\":\"due\",\"due\":60,\"act\":\"verify_debt\",\"ev\":[1,2,3,6]}",
+   "out_tok": 56,
+   "in_tok": 344,
+   "ms": 2221
+  },
+  "estate-00533": {
+   "id": "estate-00533",
+   "raw": "{\"cat\":\"subscription\",\"inst\":\"FitPulse Premium\",\"ref\":\"3530\",\"amt\":4.99,\"kind\":\"charge\",\"rec\":\"annual\",\"act\":\"cancel\",\"ev\":[1]}",
+   "out_tok": 43,
+   "in_tok": 240,
+   "ms": 1725
+  },
+  "estate-00604": {
+   "id": "estate-00604",
+   "raw": "{\"cat\":\"irrelevant\"}",
+   "out_tok": 7,
+   "in_tok": 323,
+   "ms": 344
+  },
+  "estate-00608": {
+   "id": "estate-00608",
+   "raw": "{\"cat\":\"irrelevant\"}",
+   "out_tok": 7,
+   "in_tok": 224,
+   "ms": 344
+  },
+  "estate-00542": {
+   "id": "estate-00542",
+   "raw": "{\"cat\":\"credit_card\",\"inst\":\"Silverline Card Services\",\"ref\":\"6204\",\"amt\":4990.57,\"kind\":\"due\",\"due\":25,\"act\":\"close\",\"ev\":[1,5,6,9]}",
+   "out_tok": 54,
+   "in_tok": 387,
+   "ms": 2146
+  },
+  "estate-00614": {
+   "id": "estate-00614",
+   "raw": "{\"cat\":\"personal\"}",
+   "out_tok": 6,
+   "in_tok": 342,
+   "ms": 312
+  },
+  "estate-00559": {
+   "id": "estate-00559",
+   "raw": "{\"cat\":\"subscription\",\"inst\":\"PuzzleNest\",\"ref\":\"3110\",\"amt\":2.99,\"kind\":\"charge\",\"rec\":\"annual\",\"act\":\"cancel\",\"ev\":[1,3,5]}",
+   "out_tok": 47,
+   "in_tok": 348,
+   "ms": 1886
+  },
+  "estate-00562": {
+   "id": "estate-00562",
+   "raw": "{\"cat\":\"bank\",\"inst\":\"Meridian Credit Union\",\"ref\":\"8562\",\"amt\":48910.26,\"kind\":\"balance\",\"act\":\"claim\",\"ev\":[1,3,4,9]}",
+   "out_tok": 49,
+   "in_tok": 373,
+   "ms": 1964
+  },
+  "estate-00595": {
+   "id": "estate-00595",
+   "raw": "{\"cat\":\"legal\",\"inst\":\"Superior Court of Calloway County\",\"ref\":\"1828\",\"due\":30,\"act\":\"review\",\"ev\":[2,3,8,9,13]}",
+   "out_tok": 46,
+   "in_tok": 380,
+   "ms": 1843
+  },
+  "estate-00573": {
+   "id": "estate-00573",
+   "raw": "{\"cat\":\"loan\",\"inst\":\"Lumen Home Loans\",\"ref\":\"8902\",\"amt\":3880.12,\"kind\":\"due\",\"rec\":\"monthly\",\"due\":30,\"act\":\"notify\",\"ev\":[1,4,5,9]}",
+   "out_tok": 57,
+   "in_tok": 384,
+   "ms": 2266
+  },
+  "estate-00574": {
+   "id": "estate-00574",
+   "raw": "{\"cat\":\"insurance\",\"inst\":\"Bayview Mutual Life\",\"ref\":\"LP-202665\",\"amt\":250000,\"kind\":\"face_value\",\"due\":90,\"act\":\"claim\",\"ev\":[4,5,7,8]}",
+   "out_tok": 57,
+   "in_tok": 372,
+   "ms": 2266
+  },
+  "estate-00648": {
+   "id": "estate-00648",
+   "raw": "{\"cat\":\"irrelevant\"}",
+   "out_tok": 7,
+   "in_tok": 228,
+   "ms": 346
+  },
+  "estate-00651": {
+   "id": "estate-00651",
+   "raw": "{\"cat\":\"irrelevant\"}",
+   "out_tok": 7,
+   "in_tok": 339,
+   "ms": 344
+  },
+  "estate-00615": {
+   "id": "estate-00615",
+   "raw": "{\"cat\":\"bank\",\"inst\":\"Beacon Credit Union\",\"ref\":\"8220\",\"amt\":10476,\"kind\":\"balance\",\"act\":\"claim\",\"ev\":[1,4,6,10]}",
+   "out_tok": 47,
+   "in_tok": 387,
+   "ms": 1879
+  },
+  "estate-00622": {
+   "id": "estate-00622",
+   "raw": "{\"cat\":\"insurance\",\"inst\":\"Cascade Life Assurance\",\"ref\":\"LP-160753\",\"amt\":10000,\"kind\":\"face_value\",\"act\":\"claim\",\"ev\":[1,2,3]}",
+   "out_tok": 48,
+   "in_tok": 331,
+   "ms": 1916
+  },
+  "estate-00654": {
+   "id": "estate-00654",
+   "raw": "{\"cat\":\"personal\"}",
+   "out_tok": 6,
+   "in_tok": 348,
+   "ms": 305
+  },
+  "estate-00633": {
+   "id": "estate-00633",
+   "raw": "{\"cat\":\"retirement\",\"inst\":\"Silverline Retirement System\",\"ref\":\"3680\",\"amt\":2081.42,\"kind\":\"benefit\",\"rec\":\"monthly\",\"due\":60,\"act\":\"stop_payment\",\"ev\":[1]}",
+   "out_tok": 54,
+   "in_tok": 277,
+   "ms": 2145
+  },
+  "estate-00643": {
+   "id": "estate-00643",
+   "raw": "{\"cat\":\"government\",\"inst\":\"County Tax Collector\",\"ref\":\"9712\",\"amt\":2303.25,\"kind\":\"balance\",\"act\":\"claim\",\"ev\":[1,5,6,9]}",
+   "out_tok": 47,
+   "in_tok": 362,
+   "ms": 1880
+  },
+  "estate-00678": {
+   "id": "estate-00678",
+   "raw": "{\"cat\":\"personal\"}",
+   "out_tok": 6,
+   "in_tok": 259,
+   "ms": 303
+  },
+  "estate-00679": {
+   "id": "estate-00679",
+   "raw": "{\"cat\":\"irrelevant\"}",
+   "out_tok": 7,
+   "in_tok": 364,
+   "ms": 345
+  },
+  "estate-00647": {
+   "id": "estate-00647",
+   "raw": "{\"cat\":\"insurance\",\"inst\":\"Summit Mutual Life\",\"ref\":\"LP-939137\",\"amt\":10000,\"kind\":\"face_value\",\"due\":90,\"act\":\"claim\",\"ev\":[1,6,7,9]}",
+   "out_tok": 56,
+   "in_tok": 353,
+   "ms": 2222
+  },
+  "estate-00649": {
+   "id": "estate-00649",
+   "raw": "{\"cat\":\"government\",\"inst\":\"State Benefits Agency\",\"ref\":\"4692\",\"amt\":2968.73,\"kind\":\"balance\",\"act\":\"claim\",\"ev\":[1,3,5]}",
+   "out_tok": 45,
+   "in_tok": 356,
+   "ms": 1801
+  },
+  "estate-00652": {
+   "id": "estate-00652",
+   "raw": "{\"cat\":\"bank\",\"inst\":\"Juniper Credit Union\",\"ref\":\"5764\",\"amt\":19397.66,\"kind\":\"balance\",\"act\":\"claim\",\"ev\":[2]}",
+   "out_tok": 43,
+   "in_tok": 337,
+   "ms": 1726
+  },
+  "estate-00724": {
+   "id": "estate-00724",
+   "raw": "{\"cat\":\"irrelevant\"}",
+   "out_tok": 7,
+   "in_tok": 229,
+   "ms": 345
+  },
+  "estate-00653": {
+   "id": "estate-00653",
+   "raw": "{\"cat\":\"medical\",\"inst\":\"Cascade Radiology Group\",\"ref\":\"3640\",\"amt\":10125.77,\"kind\":\"due\",\"due\":90,\"act\":\"verify_debt\",\"ev\":[1,3,4,6,8,11]}",
+   "out_tok": 61,
+   "in_tok": 387,
+   "ms": 2417
+  },
+  "estate-00667": {
+   "id": "estate-00667",
+   "raw": "{\"cat\":\"medical\",\"inst\":\"Pinecrest Radiology Group\",\"ref\":\"8154\",\"amt\":17892.86,\"kind\":\"due\",\"due\":30,\"act\":\"verify_debt\",\"ev\":[1,3,4]}",
+   "out_tok": 56,
+   "in_tok": 329,
+   "ms": 2224
+  },
+  "estate-00674": {
+   "id": "estate-00674",
+   "raw": "{\"cat\":\"subscription\",\"inst\":\"SoundLoft Music\",\"ref\":\"2106\",\"amt\":19.99,\"kind\":\"charge\",\"rec\":\"monthly\",\"act\":\"cancel\",\"ev\":[4,5,6,8,9]}",
+   "out_tok": 52,
+   "in_tok": 331,
+   "ms": 2067
+  },
+  "estate-00734": {
+   "id": "estate-00734",
+   "raw": "{\"cat\":\"irrelevant\"}",
+   "out_tok": 7,
+   "in_tok": 321,
+   "ms": 343
+  },
+  "estate-00661": {
+   "id": "estate-00661",
+   "raw": "{\"cat\":\"medical\",\"inst\":\"Redwood Radiology Group\",\"ref\":\"7343\",\"amt\":1589.37,\"kind\":\"due\",\"due\":60,\"act\":\"verify_debt\",\"ev\":[1,4,5,6,8,9,12]}",
+   "out_tok": 63,
+   "in_tok": 440,
+   "ms": 2490
+  },
+  "estate-00739": {
+   "id": "estate-00739",
+   "raw": "{\"cat\":\"personal\"}",
+   "out_tok": 6,
+   "in_tok": 245,
+   "ms": 303
+  },
+  "estate-00721": {
+   "id": "estate-00721",
+   "raw": "{\"cat\":\"subscription\",\"inst\":\"PuzzleNest\",\"ref\":\"7934\",\"amt\":29.99,\"kind\":\"charge\",\"rec\":\"monthly\",\"act\":\"cancel\",\"ev\":[2]}",
+   "out_tok": 44,
+   "in_tok": 343,
+   "ms": 1754
+  },
+  "estate-00702": {
+   "id": "estate-00702",
+   "raw": "{\"cat\":\"credit_card\",\"inst\":\"Granite Card Services\",\"ref\":\"3219\",\"amt\":1897.9,\"kind\":\"due\",\"act\":\"close\",\"ev\":[1,3,7]}",
+   "out_tok": 46,
+   "in_tok": 330,
+   "ms": 1830
+  },
+  "estate-00698": {
+   "id": "estate-00698",
+   "raw": "{\"cat\":\"credit_card\",\"inst\":\"Redwood Card Services\",\"ref\":\"4705\",\"amt\":8309,\"kind\":\"due\",\"due\":30,\"act\":\"close\",\"ev\":[1,4,7,8,11]}",
+   "out_tok": 54,
+   "in_tok": 392,
+   "ms": 2130
+  },
+  "estate-00731": {
+   "id": "estate-00731",
+   "raw": "{\"cat\":\"insurance\",\"inst\":\"Redwood Life & Annuity\",\"ref\":\"POL-702780\",\"amt\":100000,\"kind\":\"face_value\",\"act\":\"claim\",\"ev\":[1,3,6]}",
+   "out_tok": 53,
+   "in_tok": 346,
+   "ms": 2071
+  },
+  "estate-00753": {
+   "id": "estate-00753",
+   "raw": "{\"cat\":\"legal\",\"inst\":\"Superior Court of Denton Hills County\",\"ref\":\"3865\",\"due\":30,\"act\":\"review\",\"ev\":[1]}",
+   "out_tok": 37,
+   "in_tok": 240,
+   "ms": 1500
+  }
+ }
+}

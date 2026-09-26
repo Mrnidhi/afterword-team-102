@@ -1,0 +1,114 @@
+
+base32b_0shot  [estate]
+                         field_f1  critical_recall      exact_match   grounding_rate  schema_validity
+  strict                    0.814            0.973            0.311            0.825            0.996
+  +clean                    0.814            0.973            0.311            0.825            0.996
+  +clean,ref4               0.820            0.990            0.315            0.825            0.996
+  per-field F1 strict -> +clean,ref4: act 0.27->0.27, amt 1.00->1.00, cat 0.82->0.82, due 0.95->0.95, inst 0.99->0.99, kind 0.76->0.76, rec 0.91->0.91, ref 0.95->0.99
+
+base32b_cal  [estate]
+                         field_f1  critical_recall      exact_match   grounding_rate  schema_validity
+  strict                    0.822            0.974            0.295            0.803            0.985
+  +clean                    0.823            0.974            0.303            0.806            0.985
+  +clean,ref4               0.829            0.991            0.307            0.806            0.985
+  per-field F1 strict -> +clean,ref4: act 0.26->0.26, amt 1.00->1.00, cat 0.82->0.82, due 0.94->0.96, inst 0.98->0.98, kind 0.83->0.83, rec 0.96->0.96, ref 0.95->0.99
+
+base32b_energy_test  [estate]
+                         field_f1  critical_recall      exact_match   grounding_rate  schema_validity
+  strict                    0.815            0.975            0.304            0.830            0.993
+  +clean                    0.815            0.975            0.304            0.831            0.993
+  +clean,ref4               0.821            0.992            0.307            0.831            0.993
+  per-field F1 strict -> +clean,ref4: act 0.27->0.27, amt 1.00->1.00, cat 0.83->0.83, due 0.96->0.97, inst 0.99->0.99, kind 0.75->0.75, rec 0.90->0.90, ref 0.95->0.99
+
+base32b_hard2  [estate_hard2]
+                         field_f1  critical_recall      exact_match   grounding_rate  schema_validity
+  strict                    0.780            0.973            0.207            0.836            0.988
+  +clean                    0.783            0.973            0.217            0.848            0.988
+  +clean,ref4               0.786            0.983            0.217            0.848            0.988
+  per-field F1 strict -> +clean,ref4: act 0.27->0.27, amt 0.99->0.99, cat 0.81->0.81, due 0.91->0.96, inst 0.97->0.97, kind 0.58->0.58, rec 0.89->0.90, ref 0.96->0.98
+
+base4b_0shot  [estate]
+                         field_f1  critical_recall      exact_match   grounding_rate  schema_validity
+  strict                    0.747            0.954            0.200            0.736            0.815
+  +clean                    0.768            0.954            0.237            0.811            0.930
+  +clean,ref4               0.780            0.987            0.237            0.811            0.930
+  per-field F1 strict -> +clean,ref4: act 0.19->0.19, amt 0.98->1.00, cat 0.83->0.83, due 0.72->0.93, inst 0.97->0.97, kind 0.78->0.80, rec 0.47->0.48, ref 0.91->0.99
+
+bench_sft2_c1  [estate]
+                         field_f1  critical_recall      exact_match   grounding_rate  schema_validity
+  strict                    0.999            1.000            0.992            1.000            1.000
+  +clean                    0.999            1.000            0.992            1.000            1.000
+  +clean,ref4               0.999            1.000            0.992            1.000            1.000
+  per-field F1 strict -> +clean,ref4: act 1.00->1.00, amt 1.00->1.00, cat 1.00->1.00, due 0.99->0.99, inst 1.00->1.00, kind 1.00->1.00, rec 1.00->1.00, ref 1.00->1.00
+
+bench_sft2_c32  [estate]
+                         field_f1  critical_recall      exact_match   grounding_rate  schema_validity
+  strict                    0.999            1.000            0.992            1.000            1.000
+  +clean                    0.999            1.000            0.992            1.000            1.000
+  +clean,ref4               0.999            1.000            0.992            1.000            1.000
+  per-field F1 strict -> +clean,ref4: act 1.00->1.00, amt 1.00->1.00, cat 1.00->1.00, due 0.99->0.99, inst 1.00->1.00, kind 1.00->1.00, rec 1.00->1.00, ref 1.00->1.00
+
+bench_sft2_c64  [estate]
+                         field_f1  critical_recall      exact_match   grounding_rate  schema_validity
+  strict                    0.999            1.000            0.992            1.000            1.000
+  +clean                    0.999            1.000            0.992            1.000            1.000
+  +clean,ref4               0.999            1.000            0.992            1.000            1.000
+  per-field F1 strict -> +clean,ref4: act 1.00->1.00, amt 1.00->1.00, cat 1.00->1.00, due 0.99->0.99, inst 1.00->1.00, kind 1.00->1.00, rec 1.00->1.00, ref 1.00->1.00
+
+bench_sft2_c8  [estate]
+                         field_f1  critical_recall      exact_match   grounding_rate  schema_validity
+  strict                    0.999            1.000            0.992            1.000            1.000
+  +clean                    0.999            1.000            0.992            1.000            1.000
+  +clean,ref4               0.999            1.000            0.992            1.000            1.000
+  per-field F1 strict -> +clean,ref4: act 1.00->1.00, amt 1.00->1.00, cat 1.00->1.00, due 0.99->0.99, inst 1.00->1.00, kind 1.00->1.00, rec 1.00->1.00, ref 1.00->1.00
+
+sft2_0shot  [estate]
+                         field_f1  critical_recall      exact_match   grounding_rate  schema_validity
+  strict                    0.997            0.998            0.978            1.000            1.000
+  +clean                    0.997            0.998            0.978            1.000            1.000
+  +clean,ref4               0.998            1.000            0.981            1.000            1.000
+  per-field F1 strict -> +clean,ref4: act 1.00->1.00, amt 1.00->1.00, cat 1.00->1.00, due 0.98->0.98, inst 1.00->1.00, kind 0.99->0.99, rec 1.00->1.00, ref 0.99->1.00
+
+sft2_hard  [estate_hard]
+                         field_f1  critical_recall      exact_match   grounding_rate  schema_validity
+  strict                    0.948            0.927            0.783            0.984            1.000
+  +clean                    0.951            0.927            0.793            0.991            1.000
+  +clean,ref4               0.965            0.968            0.854            0.991            1.000
+  per-field F1 strict -> +clean,ref4: act 0.98->0.98, amt 0.98->0.99, cat 0.95->0.95, due 0.99->0.99, inst 0.94->0.94, kind 0.98->0.99, rec 0.96->0.97, ref 0.85->0.95
+
+sft2_hard2  [estate_hard2]
+                         field_f1  critical_recall      exact_match   grounding_rate  schema_validity
+  strict                    0.964            0.968            0.830            0.981            1.000
+  +clean                    0.967            0.968            0.842            0.993            1.000
+  +clean,ref4               0.970            0.975            0.849            0.993            1.000
+  per-field F1 strict -> +clean,ref4: act 0.96->0.96, amt 0.98->0.99, cat 0.97->0.97, due 0.94->0.97, inst 0.97->0.97, kind 0.98->0.98, rec 0.91->0.91, ref 0.95->0.97
+
+sft3_0shot  [estate]
+                         field_f1  critical_recall      exact_match   grounding_rate  schema_validity
+  strict                    0.998            1.000            0.981            1.000            1.000
+  +clean                    0.998            1.000            0.981            1.000            1.000
+  +clean,ref4               0.998            1.000            0.981            1.000            1.000
+  per-field F1 strict -> +clean,ref4: act 1.00->1.00, amt 1.00->1.00, cat 1.00->1.00, due 0.98->0.98, inst 1.00->1.00, kind 1.00->1.00, rec 1.00->1.00, ref 1.00->1.00
+
+sft3_hard  [estate_hard]
+                         field_f1  critical_recall      exact_match   grounding_rate  schema_validity
+  strict                    0.980            0.972            0.912            0.996            1.000
+  +clean                    0.980            0.972            0.912            0.996            1.000
+  +clean,ref4               0.988            0.996            0.947            0.996            1.000
+  per-field F1 strict -> +clean,ref4: act 0.99->0.99, amt 1.00->1.00, cat 0.98->0.98, due 1.00->1.00, inst 0.96->0.96, kind 0.99->0.99, rec 1.00->1.00, ref 0.94->0.99
+
+sft3_hard2  [estate_hard2]
+                         field_f1  critical_recall      exact_match   grounding_rate  schema_validity
+  strict                    0.982            0.985            0.933            0.996            1.000
+  +clean                    0.982            0.985            0.933            0.997            1.000
+  +clean,ref4               0.984            0.989            0.938            0.997            1.000
+  per-field F1 strict -> +clean,ref4: act 0.98->0.98, amt 1.00->1.00, cat 0.99->0.99, due 0.99->1.00, inst 0.97->0.97, kind 0.99->0.99, rec 1.00->1.00, ref 0.96->0.97
+
+sft_0shot  [estate]
+                         field_f1  critical_recall      exact_match   grounding_rate  schema_validity
+  strict                    0.998            0.998            0.989            1.000            1.000
+  +clean                    0.998            0.998            0.989            1.000            1.000
+  +clean,ref4               0.999            1.000            0.993            1.000            1.000
+  per-field F1 strict -> +clean,ref4: act 0.99->0.99, amt 1.00->1.00, cat 1.00->1.00, due 1.00->1.00, inst 1.00->1.00, kind 1.00->1.00, rec 1.00->1.00, ref 0.99->1.00
+
+saved results/rescore.json

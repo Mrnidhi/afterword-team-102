@@ -1,0 +1,35 @@
+{
+  "purpose": "Held-out generalisation test. Different name pools, senders, document forms, heavier OCR noise, and 25% of documents deliberately omit a usual field.",
+  "generated": 400,
+  "accepted": 397,
+  "accept_rate": 0.993,
+  "by_category": {
+    "bank": 31,
+    "credit_card": 23,
+    "government": 21,
+    "insurance": 34,
+    "investment": 23,
+    "irrelevant": 63,
+    "legal": 16,
+    "loan": 27,
+    "medical": 28,
+    "personal": 24,
+    "property": 21,
+    "retirement": 23,
+    "subscription": 33,
+    "utility": 30
+  },
+  "by_channel": {
+    "email": 152,
+    "sms": 106,
+    "letter": 139
+  },
+  "docs_with_a_field_omitted": 44,
+  "shares_nothing_with_training": [
+    "institution names",
+    "person names",
+    "prompt wording",
+    "document forms",
+    "random seeds"
+  ]
+}

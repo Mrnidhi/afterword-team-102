@@ -1,0 +1,68 @@
+{
+  "built": "2026-09-24 23:18:24",
+  "sources": {
+    "cord": {
+      "dataset": "naver-clova-ix/cord-v2",
+      "license": "CC-BY-4.0"
+    },
+    "invoice": {
+      "dataset": "katanaml-org/invoices-donut-data-v1",
+      "license": "MIT",
+      "origin": "Kozłowski & Weichbroth (2021), Samples of electronic invoices, Mendeley Data, doi:10.17632/tnj49gpmtz.2"
+    },
+    "excluded": {
+      "mychen76/invoices-and-receipts_ocr_v1": "no licence declared"
+    }
+  },
+  "ocr": {
+    "engine": "RapidOCR (Apache-2.0), ONNX Runtime on CPU",
+    "pages": 1501,
+    "workers": 18,
+    "wall_seconds": 273.1,
+    "pages_per_second": 5.5,
+    "mean_seconds_per_page": 3.17
+  },
+  "decisions": [
+    "invoice line items dropped: header + summary only, to keep outputs short",
+    "CORD kept in full native gt_parse format"
+  ],
+  "tasks": {
+    "invoice": {
+      "docs": {
+        "test": 26,
+        "train": 425,
+        "val": 50
+      },
+      "input_tokens": {
+        "mean": 501,
+        "p95": 723,
+        "max": 821
+      },
+      "target_tokens": {
+        "mean": 179,
+        "p95": 194,
+        "max": 199
+      },
+      "answerable_values": "3785/4893 (77.4%)"
+    },
+    "cord": {
+      "docs": {
+        "test": 99,
+        "train": 797,
+        "val": 100
+      },
+      "input_tokens": {
+        "mean": 107,
+        "p95": 219,
+        "max": 547
+      },
+      "target_tokens": {
+        "mean": 119,
+        "p95": 243,
+        "max": 573
+      },
+      "answerable_values": "12412/13416 (92.5%)"
+    }
+  },
+  "pruning": "Targets reduced to values present in our OCR text. Originals kept as *.raw.jsonl. Reason: 23% of invoice ground-truth values are absent from the OCR, and training on them taught the model to answer {}."
+}

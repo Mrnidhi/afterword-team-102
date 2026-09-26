@@ -1,0 +1,50 @@
+{
+  "generated": 1800,
+  "accepted": 1759,
+  "rejected": 41,
+  "accept_rate": 0.977,
+  "reject_reasons": {
+    "amt": 16,
+    "inst": 21,
+    "due": 1,
+    "ref": 3
+  },
+  "splits": {
+    "train": 1225,
+    "cal": 264,
+    "test": 270
+  },
+  "by_category": {
+    "bank": 164,
+    "credit_card": 116,
+    "government": 67,
+    "insurance": 143,
+    "investment": 80,
+    "irrelevant": 345,
+    "legal": 60,
+    "loan": 84,
+    "medical": 97,
+    "personal": 169,
+    "property": 44,
+    "retirement": 128,
+    "subscription": 146,
+    "utility": 116
+  },
+  "by_channel": {
+    "sms": 441,
+    "email": 829,
+    "letter": 489
+  },
+  "input_tokens": {
+    "mean": 132,
+    "p95": 199,
+    "max": 264
+  },
+  "target_tokens": {
+    "mean": 36,
+    "p95": 59,
+    "max": 67
+  },
+  "teacher": "Qwen/Qwen3-32B via HP Z Runtime (vLLM) on hp24",
+  "method": "facts sampled by code (labels correct by construction); 32B writes prose; code verifies every fact is present; OCR-style noise on non-fact lines of 60% of letters"
+}

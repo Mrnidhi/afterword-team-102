@@ -1,0 +1,2889 @@
+{
+ "report": {
+  "name": "base32b_hard2",
+  "model": "teacher32b",
+  "shots": 0,
+  "split": "test",
+  "wall_seconds": 218.2,
+  "output_tokens_per_sec": 116.4,
+  "tasks": {
+   "estate_hard2": {
+    "documents": 405,
+    "field_precision": 0.7758775877587759,
+    "field_recall": 0.7839927239654388,
+    "field_f1": 0.7799140465957929,
+    "critical_recall": 0.9732977303070761,
+    "schema_validity": 0.9876543209876543,
+    "exact_match": 0.2074074074074074,
+    "grounding_rate": 0.8359303391384051,
+    "evidence_recall": 0.5960695970695971,
+    "per_field_f1": {
+     "act": 0.27300613496932513,
+     "amt": 0.9929328621908127,
+     "cat": 0.8123456790123457,
+     "due": 0.9126213592233009,
+     "inst": 0.9660493827160493,
+     "kind": 0.575438596491228,
+     "rec": 0.8928571428571428,
+     "ref": 0.9563862928348908
+    },
+    "per_category_f1": {
+     "bank": 0.8148148148148148,
+     "credit_card": 0.7127659574468084,
+     "government": 0.764423076923077,
+     "insurance": 0.9451219512195123,
+     "investment": 0.7970479704797047,
+     "irrelevant": 0.0916030534351145,
+     "legal": 0.7375886524822695,
+     "loan": 0.8744939271255061,
+     "medical": 0.7656765676567657,
+     "personal": 1.0,
+     "property": 0.5892116182572614,
+     "retirement": 0.7198515769944343,
+     "subscription": 0.9299610894941633,
+     "utility": 0.8039702233250621
+    },
+    "mean_output_tokens": 62.735802469135805,
+    "median_latency_ms": 36213,
+    "errors": 0
+   }
+  }
+ },
+ "predictions": {
+  "hard2-00001": {
+   "id": "hard2-00001",
+   "raw": "{\"cat\": \"personal\"}",
+   "out_tok": 7,
+   "in_tok": 426,
+   "ms": 11358
+  },
+  "hard2-00003": {
+   "id": "hard2-00003",
+   "raw": "{\"cat\": \"legal\"}",
+   "out_tok": 7,
+   "in_tok": 565,
+   "ms": 11357
+  },
+  "hard2-00012": {
+   "id": "hard2-00012",
+   "raw": "{\"cat\": \"personal\"}",
+   "out_tok": 7,
+   "in_tok": 530,
+   "ms": 13535
+  },
+  "hard2-00015": {
+   "id": "hard2-00015",
+   "raw": "{\"cat\": \"personal\"}",
+   "out_tok": 7,
+   "in_tok": 408,
+   "ms": 13532
+  },
+  "hard2-00024": {
+   "id": "hard2-00024",
+   "raw": "{\"cat\": \"personal\"}",
+   "out_tok": 7,
+   "in_tok": 461,
+   "ms": 14274
+  },
+  "hard2-00031": {
+   "id": "hard2-00031",
+   "raw": "{\"cat\": \"personal\"}",
+   "out_tok": 7,
+   "in_tok": 342,
+   "ms": 14596
+  },
+  "hard2-00047": {
+   "id": "hard2-00047",
+   "raw": "{\"cat\": \"personal\"}",
+   "out_tok": 7,
+   "in_tok": 514,
+   "ms": 15494
+  },
+  "hard2-00036": {
+   "id": "hard2-00036",
+   "raw": "```json\n{\n  \"cat\": \"personal\"\n}\n```",
+   "out_tok": 14,
+   "in_tok": 598,
+   "ms": 17465
+  },
+  "hard2-00069": {
+   "id": "hard2-00069",
+   "raw": "{\"cat\":\"personal\"}",
+   "out_tok": 6,
+   "in_tok": 411,
+   "ms": 3202
+  },
+  "hard2-00070": {
+   "id": "hard2-00070",
+   "raw": "{\"cat\": \"irrelevant\"}",
+   "out_tok": 8,
+   "in_tok": 519,
+   "ms": 4174
+  },
+  "hard2-00073": {
+   "id": "hard2-00073",
+   "raw": "{\"cat\":\"irrelevant\"}",
+   "out_tok": 7,
+   "in_tok": 318,
+   "ms": 3515
+  },
+  "hard2-00072": {
+   "id": "hard2-00072",
+   "raw": "{\"cat\": \"personal\"}",
+   "out_tok": 7,
+   "in_tok": 563,
+   "ms": 3518
+  },
+  "hard2-00007": {
+   "id": "hard2-00007",
+   "raw": "{\"cat\":\"government\",\"amt\":11212.65,\"kind\":\"balance\",\"act\":\"claim\",\"ev\":[1]}",
+   "out_tok": 29,
+   "in_tok": 275,
+   "ms": 22311
+  },
+  "hard2-00000": {
+   "id": "hard2-00000",
+   "raw": "```json\n{\"cat\":\"community\", \"inst\":\"City of Westmere – Community Services\", \"act\":\"notify\", \"ev\":[3,4,7,8]}\n```",
+   "out_tok": 37,
+   "in_tok": 439,
+   "ms": 24428
+  },
+  "hard2-00051": {
+   "id": "hard2-00051",
+   "raw": "{\"cat\": \"legal\", \"ref\": \"24E5492\", \"act\": \"notify\", \"ev\": [1]}",
+   "out_tok": 31,
+   "in_tok": 321,
+   "ms": 24706
+  },
+  "hard2-00063": {
+   "id": "hard2-00063",
+   "raw": "{\"cat\":\"credit_card\", \"inst\":\"Meridian Gold Card\", \"ref\":\"9493\", \"act\":\"notify\", \"ev\":[1]}",
+   "out_tok": 33,
+   "in_tok": 256,
+   "ms": 26213
+  },
+  "hard2-00080": {
+   "id": "hard2-00080",
+   "raw": "{\"cat\": \"personal\"}",
+   "out_tok": 7,
+   "in_tok": 225,
+   "ms": 3267
+  },
+  "hard2-00045": {
+   "id": "hard2-00045",
+   "raw": "```json\n{\n  \"cat\": \"bank\",\n  \"inst\": \"Silver Creek Savings Bank\",\n  \"ref\": \"9641\",\n  \"act\": \"notify\",\n  \"ev\": [1, 4, 5]\n}\n```",
+   "out_tok": 54,
+   "in_tok": 403,
+   "ms": 32320
+  },
+  "hard2-00048": {
+   "id": "hard2-00048",
+   "raw": "```json\n{\n  \"cat\": \"subscription\",\n  \"inst\": \"Loom Learning\",\n  \"ref\": \"1084\",\n  \"kind\": \"due\",\n  \"act\": \"cancel\",\n  \"ev\": [1]\n}\n```",
+   "out_tok": 54,
+   "in_tok": 246,
+   "ms": 32646
+  },
+  "hard2-00030": {
+   "id": "hard2-00030",
+   "raw": "{\"cat\": \"subscription\", \"inst\": \"Loom Learning\", \"ref\": \"1851\", \"amt\": 4.99, \"kind\": \"charge\", \"rec\": \"quarterly\", \"act\": \"cancel\", \"ev\": [1]}",
+   "out_tok": 58,
+   "in_tok": 271,
+   "ms": 33461
+  },
+  "hard2-00004": {
+   "id": "hard2-00004",
+   "raw": "```json\n{\n  \"cat\": \"investment\",\n  \"inst\": \"Tidewater Brokerage\",\n  \"ref\": \"1770\",\n  \"amt\": 1553592.92,\n  \"kind\": \"balance\",\n  \"act\": \"notify\"\n}\n```",
+   "out_tok": 65,
+   "in_tok": 427,
+   "ms": 34916
+  },
+  "hard2-00064": {
+   "id": "hard2-00064",
+   "raw": "```json\n{\n  \"cat\": \"property\",\n  \"inst\": \"Dovetail Bay Regional Planning Office\",\n  \"act\": \"notify\",\n  \"ev\": [6, 7, 8, 9, 10, 14]\n}\n```",
+   "out_tok": 58,
+   "in_tok": 624,
+   "ms": 23891
+  },
+  "hard2-00028": {
+   "id": "hard2-00028",
+   "raw": "{\n  \"cat\": \"insurance\",\n  \"inst\": \"Lighthouse Life Assurance\",\n  \"ref\": \"PL484941\",\n  \"amt\": 25000,\n  \"kind\": \"face_value\",\n  \"act\": \"claim\",\n  \"ev\": [1, 3]\n}",
+   "out_tok": 69,
+   "in_tok": 550,
+   "ms": 37134
+  },
+  "hard2-00032": {
+   "id": "hard2-00032",
+   "raw": "{\n  \"cat\": \"utility\",\n  \"inst\": \"Willow Lane Homeowners Association\",\n  \"amt\": 3866.29,\n  \"kind\": \"due\",\n  \"due\": 365,\n  \"act\": \"notify\",\n  \"ev\": [2, 4]\n}",
+   "out_tok": 68,
+   "in_tok": 385,
+   "ms": 37133
+  },
+  "hard2-00017": {
+   "id": "hard2-00017",
+   "raw": "```json\n{\n  \"cat\": \"bank\",\n  \"inst\": \"Fjord National Bank\",\n  \"ref\": \"1049\",\n  \"amt\": 22138.95,\n  \"kind\": \"balance\",\n  \"act\": \"close\",\n  \"ev\": [1]\n}\n```",
+   "out_tok": 70,
+   "in_tok": 286,
+   "ms": 37148
+  },
+  "hard2-00027": {
+   "id": "hard2-00027",
+   "raw": "```json\n{\n  \"cat\": \"bank\",\n  \"inst\": \"Crestline Wealth Management\",\n  \"ref\": \"3768\",\n  \"amt\": 1510637.49,\n  \"kind\": \"balance\",\n  \"act\": \"review\",\n  \"ev\": [3]\n}\n```",
+   "out_tok": 72,
+   "in_tok": 429,
+   "ms": 38580
+  },
+  "hard2-00010": {
+   "id": "hard2-00010",
+   "raw": "{\n  \"cat\": \"credit_card\",\n  \"inst\": \"Meridian Gold Card\",\n  \"ref\": \"4616\",\n  \"amt\": 9379.11,\n  \"kind\": \"balance\",\n  \"due\": 45,\n  \"act\": \"notify\",\n  \"ev\": [11, 12]\n}",
+   "out_tok": 78,
+   "in_tok": 589,
+   "ms": 40063
+  },
+  "hard2-00041": {
+   "id": "hard2-00041",
+   "raw": "{\n  \"cat\": \"loan\",\n  \"inst\": \"Parallel Credit Co.\",\n  \"ref\": \"4592\",\n  \"amt\": 5034.22,\n  \"kind\": \"balance\",\n  \"due\": 25,\n  \"act\": \"notify\",\n  \"ev\": [3, 4]\n}",
+   "out_tok": 74,
+   "in_tok": 502,
+   "ms": 40035
+  },
+  "hard2-00013": {
+   "id": "hard2-00013",
+   "raw": "```json\n{\n  \"cat\": \"subscription\",\n  \"inst\": \"Petal & Pot Plant Box\",\n  \"ref\": \"6502\",\n  \"amt\": 0.99,\n  \"kind\": \"due\",\n  \"rec\": \"annual\",\n  \"act\": \"cancel\",\n  \"ev\": [3, 5]\n}\n```",
+   "out_tok": 77,
+   "in_tok": 399,
+   "ms": 40062
+  },
+  "hard2-00022": {
+   "id": "hard2-00022",
+   "raw": "```json\n{\n  \"cat\": \"investment\",\n  \"inst\": \"Arbor Point Securities\",\n  \"ref\": \"8790\",\n  \"amt\": 138905.62,\n  \"kind\": \"balance\",\n  \"act\": \"notify\",\n  \"ev\": [3, 4, 6]\n}\n```",
+   "out_tok": 76,
+   "in_tok": 472,
+   "ms": 40055
+  },
+  "hard2-00052": {
+   "id": "hard2-00052",
+   "raw": "```json\n{\n  \"cat\": \"loan\",\n  \"inst\": \"Bluebell Consumer Loans\",\n  \"ref\": \"2232\",\n  \"amt\": 5534.04,\n  \"kind\": \"due\",\n  \"act\": \"verify_debt\",\n  \"ev\": [1, 2]\n}\n```",
+   "out_tok": 73,
+   "in_tok": 292,
+   "ms": 40031
+  },
+  "hard2-00038": {
+   "id": "hard2-00038",
+   "raw": "```json\n{\n  \"cat\": \"investment\",\n  \"inst\": \"Tidewater Brokerage\",\n  \"ref\": \"8722\",\n  \"amt\": 1285640.47,\n  \"kind\": \"balance\",\n  \"act\": \"transfer\",\n  \"ev\": [2, 4]\n}\n```",
+   "out_tok": 75,
+   "in_tok": 477,
+   "ms": 40361
+  },
+  "hard2-00056": {
+   "id": "hard2-00056",
+   "raw": "```json\n{\n  \"cat\": \"investment\",\n  \"inst\": \"Arbor Point Securities\",\n  \"ref\": \"5563\",\n  \"amt\": 1063553.01,\n  \"kind\": \"balance\",\n  \"act\": \"verify_debt\",\n  \"ev\": [1]\n}\n```",
+   "out_tok": 73,
+   "in_tok": 302,
+   "ms": 40349
+  },
+  "hard2-00046": {
+   "id": "hard2-00046",
+   "raw": "```json\n{\n  \"cat\": \"utility\",\n  \"inst\": \"Summit Fiber Internet\",\n  \"ref\": \"9496\",\n  \"amt\": 592.01,\n  \"kind\": \"balance\",\n  \"due\": 30,\n  \"act\": \"notify\",\n  \"ev\": [4]\n}\n```",
+   "out_tok": 75,
+   "in_tok": 376,
+   "ms": 41452
+  },
+  "hard2-00060": {
+   "id": "hard2-00060",
+   "raw": "{\n  \"cat\": \"loan\",\n  \"inst\": \"Prairie Auto Lending\",\n  \"ref\": \"2720\",\n  \"amt\": 380.5,\n  \"kind\": \"due\",\n  \"rec\": \"monthly\",\n  \"act\": \"verify_debt\",\n  \"ev\": [4]\n}",
+   "out_tok": 73,
+   "in_tok": 350,
+   "ms": 41443
+  },
+  "hard2-00021": {
+   "id": "hard2-00021",
+   "raw": "{\n  \"cat\": \"medical\",\n  \"inst\": \"Northfield Dialysis Center\",\n  \"ref\": \"7147\",\n  \"amt\": 40483,\n  \"kind\": \"balance\",\n  \"due\": 90,\n  \"act\": \"notify\",\n  \"ev\": [1, 2, 3, 4]\n}",
+   "out_tok": 80,
+   "in_tok": 395,
+   "ms": 42451
+  },
+  "hard2-00035": {
+   "id": "hard2-00035",
+   "raw": "{\n  \"cat\": \"medical\",\n  \"inst\": \"Westbrook Regional Hospital\",\n  \"ref\": \"8059\",\n  \"amt\": 13300.21,\n  \"kind\": \"due\",\n  \"due\": 60,\n  \"act\": \"verify_debt\",\n  \"ev\": [3, 4]\n}",
+   "out_tok": 78,
+   "in_tok": 550,
+   "ms": 42442
+  },
+  "hard2-00019": {
+   "id": "hard2-00019",
+   "raw": "{\n  \"cat\": \"loan\",\n  \"inst\": \"Bluebell Consumer Loans\",\n  \"ref\": \"3863\",\n  \"amt\": 6251.91,\n  \"kind\": \"due\",\n  \"due\": 15,\n  \"act\": \"verify_debt\",\n  \"ev\": [1, 4, 5]\n}",
+   "out_tok": 80,
+   "in_tok": 409,
+   "ms": 42455
+  },
+  "hard2-00034": {
+   "id": "hard2-00034",
+   "raw": "{\n  \"cat\": \"subscription\",\n  \"inst\": \"Loom Learning\",\n  \"ref\": \"7109\",\n  \"amt\": 19.00,\n  \"kind\": \"due\",\n  \"rec\": \"quarterly\",\n  \"act\": \"cancel\",\n  \"ev\": [1, 4, 7, 14]\n}",
+   "out_tok": 79,
+   "in_tok": 503,
+   "ms": 43095
+  },
+  "hard2-00026": {
+   "id": "hard2-00026",
+   "raw": "{\n  \"cat\": \"medical\",\n  \"inst\": \"Evergrove Dental Group\",\n  \"ref\": \"3415\",\n  \"amt\": 22761.71,\n  \"kind\": \"due\",\n  \"due\": 60,\n  \"act\": \"notify\",\n  \"ev\": [1, 3, 4]\n}",
+   "out_tok": 80,
+   "in_tok": 578,
+   "ms": 43102
+  },
+  "hard2-00043": {
+   "id": "hard2-00043",
+   "raw": "```json\n{\n  \"cat\": \"utility\",\n  \"inst\": \"Tri-State Power Cooperative\",\n  \"ref\": \"1434\",\n  \"amt\": 455.71,\n  \"kind\": \"due\",\n  \"due\": 21,\n  \"act\": \"notify\",\n  \"ev\": [1, 2]\n}\n```",
+   "out_tok": 78,
+   "in_tok": 303,
+   "ms": 43090
+  },
+  "hard2-00068": {
+   "id": "hard2-00068",
+   "raw": "```json\n{\n  \"cat\": \"subscription\",\n  \"inst\": \"Loom Learning\",\n  \"ref\": \"3045\",\n  \"amt\": 19,\n  \"kind\": \"charge\",\n  \"rec\": \"annual\",\n  \"act\": \"cancel\",\n  \"ev\": [1, 2]\n}\n```",
+   "out_tok": 72,
+   "in_tok": 263,
+   "ms": 29583
+  },
+  "hard2-00014": {
+   "id": "hard2-00014",
+   "raw": "{\n  \"cat\": \"credit_card\",\n  \"inst\": \"Parallel Credit Co.\",\n  \"ref\": \"1084\",\n  \"amt\": 6864.77,\n  \"kind\": \"balance\",\n  \"due\": 14,\n  \"act\": \"notify\",\n  \"ev\": [1, 2, 3, 4]\n}",
+   "out_tok": 81,
+   "in_tok": 378,
+   "ms": 43117
+  },
+  "hard2-00011": {
+   "id": "hard2-00011",
+   "raw": "```json\n{\n  \"cat\": \"credit_card\",\n  \"inst\": \"Meridian Gold Card\",\n  \"ref\": \"4616\",\n  \"amt\": 9379.11,\n  \"kind\": \"balance\",\n  \"due\": 45,\n  \"act\": \"notify\",\n  \"ev\": [1, 4, 5]\n}\n```",
+   "out_tok": 83,
+   "in_tok": 405,
+   "ms": 44004
+  },
+  "hard2-00025": {
+   "id": "hard2-00025",
+   "raw": "{\n  \"cat\": \"government\",\n  \"inst\": \"U.S. DEPARTMENT OF VETERANS AFFAIRS\",\n  \"ref\": \"AQT-2023-10-02\",\n  \"amt\": 168,\n  \"kind\": \"balance\",\n  \"act\": \"claim\",\n  \"ev\": [9, 10]\n}",
+   "out_tok": 81,
+   "in_tok": 537,
+   "ms": 43992
+  },
+  "hard2-00018": {
+   "id": "hard2-00018",
+   "raw": "```json\n{\n  \"cat\": \"investment\",\n  \"inst\": \"Crestline Wealth Management\",\n  \"ref\": \"7127\",\n  \"amt\": 903470.39,\n  \"kind\": \"balance\",\n  \"act\": \"close\",\n  \"ev\": [1, 2, 3, 4, 5]\n}\n```",
+   "out_tok": 83,
+   "in_tok": 318,
+   "ms": 45102
+  },
+  "hard2-00057": {
+   "id": "hard2-00057",
+   "raw": "{\n  \"cat\": \"utility\",\n  \"inst\": \"Tri-State Power Cooperative\",\n  \"ref\": \"4852\",\n  \"amt\": 1127.21,\n  \"kind\": \"balance\",\n  \"due\": 21,\n  \"act\": \"notify\",\n  \"ev\": [1, 3, 4]\n}",
+   "out_tok": 78,
+   "in_tok": 574,
+   "ms": 45070
+  },
+  "hard2-00008": {
+   "id": "hard2-00008",
+   "raw": "```json\n{\n  \"cat\": \"loan\",\n  \"inst\": \"Parallel Credit Co.\",\n  \"ref\": \"2418\",\n  \"amt\": 15505.92,\n  \"kind\": \"due\",\n  \"due\": 30,\n  \"act\": \"verify_debt\",\n  \"ev\": [2, 3, 5]\n}\n```",
+   "out_tok": 84,
+   "in_tok": 302,
+   "ms": 45112
+  },
+  "hard2-00009": {
+   "id": "hard2-00009",
+   "raw": "{\n  \"cat\": \"loan\",\n  \"inst\": \"Bluebell Consumer Loans\",\n  \"ref\": \"9530\",\n  \"amt\": 5689.85,\n  \"kind\": \"balance\",\n  \"rec\": \"monthly\",\n  \"due\": 30,\n  \"act\": \"verify_debt\",\n  \"ev\": [4, 5]\n}",
+   "out_tok": 84,
+   "in_tok": 404,
+   "ms": 45114
+  },
+  "hard2-00020": {
+   "id": "hard2-00020",
+   "raw": "{\n  \"cat\": \"subscription\",\n  \"inst\": \"Inkwell Monthly\",\n  \"ref\": \"1287\",\n  \"amt\": 99.0,\n  \"kind\": \"charge\",\n  \"rec\": \"quarterly\",\n  \"due\": 30,\n  \"act\": \"cancel\",\n  \"ev\": [1, 3, 4]\n}",
+   "out_tok": 83,
+   "in_tok": 383,
+   "ms": 45103
+  },
+  "hard2-00016": {
+   "id": "hard2-00016",
+   "raw": "{\n  \"cat\": \"loan\",\n  \"inst\": \"Bluebell Consumer Loans\",\n  \"ref\": \"2220\",\n  \"amt\": 6822.36,\n  \"kind\": \"due\",\n  \"rec\": \"monthly\",\n  \"due\": 45,\n  \"act\": \"stop_payment\",\n  \"ev\": [3, 5]\n}",
+   "out_tok": 83,
+   "in_tok": 359,
+   "ms": 45108
+  },
+  "hard2-00058": {
+   "id": "hard2-00058",
+   "raw": "{\n  \"cat\": \"insurance\",\n  \"inst\": \"Continental Legacy Insurance\",\n  \"ref\": \"536-79411\",\n  \"amt\": 10000,\n  \"kind\": \"face_value\",\n  \"act\": \"claim\",\n  \"ev\": [1, 9, 10, 11]\n}",
+   "out_tok": 79,
+   "in_tok": 604,
+   "ms": 46158
+  },
+  "hard2-00089": {
+   "id": "hard2-00089",
+   "raw": "{\"cat\": \"personal\"}",
+   "out_tok": 7,
+   "in_tok": 389,
+   "ms": 9698
+  },
+  "hard2-00039": {
+   "id": "hard2-00039",
+   "raw": "{\n  \"cat\": \"utility\",\n  \"inst\": \"Harborside Marina\",\n  \"ref\": \"4733\",\n  \"amt\": 5687.81,\n  \"kind\": \"due\",\n  \"due\": 45,\n  \"act\": \"notify\",\n  \"ev\": [1, 2, 3, 4]\n}",
+   "out_tok": 82,
+   "in_tok": 366,
+   "ms": 46827
+  },
+  "hard2-00094": {
+   "id": "hard2-00094",
+   "raw": "{\"cat\": \"personal\"}",
+   "out_tok": 7,
+   "in_tok": 427,
+   "ms": 8405
+  },
+  "hard2-00095": {
+   "id": "hard2-00095",
+   "raw": "{\"cat\": \"personal\"}",
+   "out_tok": 7,
+   "in_tok": 265,
+   "ms": 8404
+  },
+  "hard2-00071": {
+   "id": "hard2-00071",
+   "raw": "{\n  \"cat\": \"medical\",\n  \"inst\": \"Evergrove Dental Group\",\n  \"ref\": \"5521\",\n  \"amt\": 16351,\n  \"kind\": \"balance\",\n  \"due\": 30,\n  \"act\": \"notify\",\n  \"ev\": [3, 5]\n}",
+   "out_tok": 74,
+   "in_tok": 396,
+   "ms": 33444
+  },
+  "hard2-00049": {
+   "id": "hard2-00049",
+   "raw": "```json\n{\n  \"cat\": \"retirement\",\n  \"inst\": \"Electrical Workers Pension Trust Fund 47\",\n  \"ref\": \"1256\",\n  \"amt\": 3009,\n  \"kind\": \"balance\",\n  \"rec\": \"monthly\",\n  \"act\": \"verify_debt\",\n  \"ev\": [3, 4]\n}\n```",
+   "out_tok": 83,
+   "in_tok": 379,
+   "ms": 48938
+  },
+  "hard2-00061": {
+   "id": "hard2-00061",
+   "raw": "```json\n{\n  \"cat\": \"utility\",\n  \"inst\": \"Harborside Marina\",\n  \"ref\": \"42781\",\n  \"amt\": 1368.77,\n  \"kind\": \"balance\",\n  \"due\": 365,\n  \"act\": \"notify\",\n  \"ev\": [1, 2]\n}\n```",
+   "out_tok": 82,
+   "in_tok": 281,
+   "ms": 48930
+  },
+  "hard2-00050": {
+   "id": "hard2-00050",
+   "raw": "```json\n{\n  \"cat\": \"utility\",\n  \"inst\": \"Tri-State Power Cooperative\",\n  \"ref\": \"4124\",\n  \"amt\": 717.33,\n  \"kind\": \"due\",\n  \"due\": 10,\n  \"act\": \"notify\",\n  \"ev\": [1, 2, 3, 4]\n}\n```",
+   "out_tok": 84,
+   "in_tok": 364,
+   "ms": 49397
+  },
+  "hard2-00055": {
+   "id": "hard2-00055",
+   "raw": "{\n  \"cat\": \"investment\",\n  \"inst\": \"Arbor Point Securities\",\n  \"ref\": \"5563\",\n  \"amt\": 1063553.01,\n  \"kind\": \"balance\",\n  \"act\": \"claim\",\n  \"due\": 30,\n  \"ev\": [11, 14, 15]\n}",
+   "out_tok": 84,
+   "in_tok": 622,
+   "ms": 50140
+  },
+  "hard2-00029": {
+   "id": "hard2-00029",
+   "raw": "{\n  \"cat\": \"property\",\n  \"inst\": \"Willow Lane Homeowners Association\",\n  \"ref\": \"Unit 9771\",\n  \"amt\": 14401.71,\n  \"kind\": \"balance\",\n  \"rec\": \"annual\",\n  \"due\": 365,\n  \"act\": \"notify\",\n  \"ev\": [2, 4]\n}",
+   "out_tok": 88,
+   "in_tok": 378,
+   "ms": 50627
+  },
+  "hard2-00065": {
+   "id": "hard2-00065",
+   "raw": "{\n  \"cat\": \"loan\",\n  \"inst\": \"Prairie Auto Lending\",\n  \"ref\": \"7919\",\n  \"amt\": 3691.4,\n  \"kind\": \"due\",\n  \"rec\": \"monthly\",\n  \"due\": 45,\n  \"act\": \"notify\",\n  \"ev\": [1, 4]\n}",
+   "out_tok": 83,
+   "in_tok": 378,
+   "ms": 39295
+  },
+  "hard2-00042": {
+   "id": "hard2-00042",
+   "raw": "{\n  \"cat\": \"bank\",\n  \"inst\": \"Crestline Wealth Management\",\n  \"ref\": \"2992\",\n  \"amt\": 1266053.39,\n  \"kind\": \"balance\",\n  \"due\": 25,\n  \"act\": \"notify\",\n  \"ev\": [8, 9, 10, 11]\n}",
+   "out_tok": 87,
+   "in_tok": 611,
+   "ms": 50618
+  },
+  "hard2-00053": {
+   "id": "hard2-00053",
+   "raw": "{\n  \"cat\": \"loan\",\n  \"inst\": \"Prairie Auto Lending\",\n  \"ref\": \"7260\",\n  \"amt\": 3841.86,\n  \"kind\": \"due\",\n  \"rec\": \"monthly\",\n  \"due\": 15,\n  \"act\": \"verify_debt\",\n  \"ev\": [2, 4]\n}",
+   "out_tok": 86,
+   "in_tok": 376,
+   "ms": 50609
+  },
+  "hard2-00106": {
+   "id": "hard2-00106",
+   "raw": "{\"cat\": \"personal\"}",
+   "out_tok": 7,
+   "in_tok": 259,
+   "ms": 7530
+  },
+  "hard2-00059": {
+   "id": "hard2-00059",
+   "raw": "```json\n{\n  \"cat\": \"insurance\",\n  \"inst\": \"Lighthouse Life Assurance\",\n  \"ref\": \"156-48062\",\n  \"amt\": 250000,\n  \"kind\": \"face_value\",\n  \"due\": 365,\n  \"act\": \"claim\",\n  \"ev\": [2, 3]\n}\n```",
+   "out_tok": 85,
+   "in_tok": 323,
+   "ms": 50609
+  },
+  "hard2-00105": {
+   "id": "hard2-00105",
+   "raw": "{\"cat\": \"personal\"}",
+   "out_tok": 7,
+   "in_tok": 375,
+   "ms": 7533
+  },
+  "hard2-00006": {
+   "id": "hard2-00006",
+   "raw": "```json\n{\n  \"cat\": \"government\",\n  \"inst\": \"Veterans Benefits Regional Office\",\n  \"ref\": \"C3434644\",\n  \"amt\": 4900.38,\n  \"kind\": \"balance\",\n  \"rec\": \"monthly\",\n  \"due\": 30,\n  \"act\": \"notify\",\n  \"ev\": [4, 5]\n}\n```",
+   "out_tok": 91,
+   "in_tok": 386,
+   "ms": 50653
+  },
+  "hard2-00002": {
+   "id": "hard2-00002",
+   "raw": "```json\n{\n  \"cat\": \"retirement\",\n  \"inst\": \"County Employees' Annuity Plan\",\n  \"ref\": \"7131435\",\n  \"amt\": 6144.54,\n  \"kind\": \"due\",\n  \"rec\": \"monthly\",\n  \"due\": 30,\n  \"act\": \"notify\",\n  \"ev\": [1, 2]\n}\n```",
+   "out_tok": 93,
+   "in_tok": 287,
+   "ms": 51302
+  },
+  "hard2-00005": {
+   "id": "hard2-00005",
+   "raw": "{\n  \"cat\": \"government\",\n  \"inst\": \"Veterans Benefits Regional Office\",\n  \"ref\": \"C3434644\",\n  \"amt\": 4900.38,\n  \"kind\": \"balance\",\n  \"rec\": \"monthly\",\n  \"due\": 30,\n  \"act\": \"notify\",\n  \"ev\": [6, 15, 16]\n}",
+   "out_tok": 92,
+   "in_tok": 614,
+   "ms": 51301
+  },
+  "hard2-00062": {
+   "id": "hard2-00062",
+   "raw": "```json\n{\n  \"cat\": \"utility\",\n  \"inst\": \"Harborside Marina\",\n  \"ref\": \"8532\",\n  \"amt\": 1368.77,\n  \"kind\": \"due\",\n  \"due\": 365,\n  \"act\": \"notify\",\n  \"ev\": [8, 10, 11]\n}\n```",
+   "out_tok": 86,
+   "in_tok": 595,
+   "ms": 51254
+  },
+  "hard2-00067": {
+   "id": "hard2-00067",
+   "raw": "```json\n{\n  \"cat\": \"loan\",\n  \"inst\": \"Bluebell Consumer Loans\",\n  \"ref\": \"6158\",\n  \"amt\": 4380.16,\n  \"kind\": \"due\",\n  \"rec\": \"monthly\",\n  \"due\": 30,\n  \"act\": \"stop_payment\",\n  \"ev\": [1]\n}\n```",
+   "out_tok": 84,
+   "in_tok": 281,
+   "ms": 40098
+  },
+  "hard2-00040": {
+   "id": "hard2-00040",
+   "raw": "```json\n{\n  \"cat\": \"retirement\",\n  \"inst\": \"Electrical Workers Pension Trust Fund 47\",\n  \"ref\": \"6913\",\n  \"amt\": 552.53,\n  \"kind\": \"balance\",\n  \"rec\": \"monthly\",\n  \"due\": 10,\n  \"act\": \"verify_debt\",\n  \"ev\": [4]\n}\n```",
+   "out_tok": 90,
+   "in_tok": 387,
+   "ms": 53608
+  },
+  "hard2-00044": {
+   "id": "hard2-00044",
+   "raw": "{\n  \"cat\": \"government\",\n  \"inst\": \"Municipal Tax Collector – Veterans Affairs Division\",\n  \"ref\": \"1410\",\n  \"amt\": 3121.08,\n  \"kind\": \"balance\",\n  \"rec\": \"monthly\",\n  \"act\": \"verify_debt\",\n  \"ev\": [9, 10, 14, 15]\n}",
+   "out_tok": 90,
+   "in_tok": 560,
+   "ms": 54342
+  },
+  "hard2-00112": {
+   "id": "hard2-00112",
+   "raw": "```json\n{\"cat\":\"personal\"}\n```",
+   "out_tok": 10,
+   "in_tok": 585,
+   "ms": 9832
+  },
+  "hard2-00023": {
+   "id": "hard2-00023",
+   "raw": "```json\n{\n  \"cat\": \"retirement\",\n  \"inst\": \"County Employees' Annuity Plan\",\n  \"ref\": \"6188\",\n  \"amt\": 6547.69,\n  \"kind\": \"charge\",\n  \"rec\": \"monthly\",\n  \"due\": 10,\n  \"act\": \"notify\",\n  \"ev\": [1, 3, 4, 5]\n}\n```",
+   "out_tok": 96,
+   "in_tok": 398,
+   "ms": 55867
+  },
+  "hard2-00127": {
+   "id": "hard2-00127",
+   "raw": "{\"cat\": \"personal\"}",
+   "out_tok": 7,
+   "in_tok": 340,
+   "ms": 6909
+  },
+  "hard2-00129": {
+   "id": "hard2-00129",
+   "raw": "{\"cat\": \"personal\"}",
+   "out_tok": 7,
+   "in_tok": 330,
+   "ms": 6171
+  },
+  "hard2-00054": {
+   "id": "hard2-00054",
+   "raw": "```json\n{\n  \"cat\": \"retirement\",\n  \"inst\": \"Maritime Officers Retirement Fund\",\n  \"ref\": \"7442\",\n  \"amt\": 7966.53,\n  \"kind\": \"balance\",\n  \"rec\": \"monthly\",\n  \"due\": 30,\n  \"act\": \"notify\",\n  \"ev\": [1, 3, 4, 5]\n}\n```",
+   "out_tok": 94,
+   "in_tok": 485,
+   "ms": 56313
+  },
+  "hard2-00077": {
+   "id": "hard2-00077",
+   "raw": "{\n  \"cat\": \"subscription\",\n  \"inst\": \"Inkwell Monthly\",\n  \"ref\": \"5345\",\n  \"amt\": 59.99,\n  \"kind\": \"charge\",\n  \"rec\": \"monthly\",\n  \"act\": \"cancel\",\n  \"ev\": [1, 4]\n}",
+   "out_tok": 72,
+   "in_tok": 330,
+   "ms": 35670
+  },
+  "hard2-00033": {
+   "id": "hard2-00033",
+   "raw": "{\n  \"cat\": \"retirement\",\n  \"inst\": \"Electrical Workers Pension Trust Fund 47\",\n  \"ref\": \"7817\",\n  \"amt\": 7413.21,\n  \"kind\": \"balance\",\n  \"rec\": \"monthly\",\n  \"due\": 30,\n  \"act\": \"claim\",\n  \"ev\": [3, 12, 13, 14]\n}",
+   "out_tok": 97,
+   "in_tok": 617,
+   "ms": 56658
+  },
+  "hard2-00141": {
+   "id": "hard2-00141",
+   "raw": "{\"cat\": \"personal\"}",
+   "out_tok": 7,
+   "in_tok": 587,
+   "ms": 6511
+  },
+  "hard2-00037": {
+   "id": "hard2-00037",
+   "raw": "```json\n{\n  \"cat\": \"retirement\",\n  \"inst\": \"County Employees' Annuity Plan\",\n  \"ref\": \"3979\",\n  \"amt\": 4326.59,\n  \"kind\": \"balance\",\n  \"rec\": \"monthly\",\n  \"due\": 30,\n  \"act\": \"notify\",\n  \"ev\": [8, 9, 10, 11]\n}\n```",
+   "out_tok": 98,
+   "in_tok": 595,
+   "ms": 57785
+  },
+  "hard2-00133": {
+   "id": "hard2-00133",
+   "raw": "```json\n{\"cat\":\"personal\"}\n```",
+   "out_tok": 10,
+   "in_tok": 447,
+   "ms": 8031
+  },
+  "hard2-00078": {
+   "id": "hard2-00078",
+   "raw": "```json\n{\n  \"cat\": \"subscription\",\n  \"inst\": \"Inkwell Monthly\",\n  \"ref\": \"5345\",\n  \"amt\": 59.99,\n  \"kind\": \"charge\",\n  \"rec\": \"monthly\",\n  \"act\": \"cancel\",\n  \"ev\": [4]\n}\n```",
+   "out_tok": 73,
+   "in_tok": 371,
+   "ms": 36704
+  },
+  "hard2-00140": {
+   "id": "hard2-00140",
+   "raw": "```json\n{\"cat\":\"personal\"}\n```",
+   "out_tok": 10,
+   "in_tok": 382,
+   "ms": 7715
+  },
+  "hard2-00144": {
+   "id": "hard2-00144",
+   "raw": "{\"cat\": \"personal\"}",
+   "out_tok": 7,
+   "in_tok": 387,
+   "ms": 4640
+  },
+  "hard2-00074": {
+   "id": "hard2-00074",
+   "raw": "{\n  \"cat\": \"insurance\",\n  \"inst\": \"Continental Legacy Insurance\",\n  \"ref\": \"668-58945\",\n  \"amt\": 500000,\n  \"kind\": \"face_value\",\n  \"due\": 16,\n  \"act\": \"claim\",\n  \"ev\": [12, 16]\n}",
+   "out_tok": 82,
+   "in_tok": 609,
+   "ms": 40225
+  },
+  "hard2-00147": {
+   "id": "hard2-00147",
+   "raw": "{\"cat\": \"personal\"}",
+   "out_tok": 7,
+   "in_tok": 454,
+   "ms": 5095
+  },
+  "hard2-00152": {
+   "id": "hard2-00152",
+   "raw": "{\"cat\": \"personal\"}",
+   "out_tok": 7,
+   "in_tok": 267,
+   "ms": 4685
+  },
+  "hard2-00081": {
+   "id": "hard2-00081",
+   "raw": "```json\n{\n  \"cat\": \"utility\",\n  \"inst\": \"Summit Fiber Internet\",\n  \"ref\": \"8169\",\n  \"amt\": 356.72,\n  \"kind\": \"balance\",\n  \"act\": \"notify\"\n}\n```",
+   "out_tok": 60,
+   "in_tok": 310,
+   "ms": 36892
+  },
+  "hard2-00075": {
+   "id": "hard2-00075",
+   "raw": "```json\n{\n  \"cat\": \"loan\",\n  \"inst\": \"Keel & Anchor Mortgage Co.\",\n  \"ref\": \"2971\",\n  \"amt\": 2856.48,\n  \"kind\": \"monthly\",\n  \"rec\": \"monthly\",\n  \"act\": \"close\",\n  \"ev\": [8, 9, 10, 11, 12]\n}\n```",
+   "out_tok": 92,
+   "in_tok": 564,
+   "ms": 44767
+  },
+  "hard2-00161": {
+   "id": "hard2-00161",
+   "raw": "{\"cat\": \"personal\"}",
+   "out_tok": 7,
+   "in_tok": 259,
+   "ms": 3280
+  },
+  "hard2-00082": {
+   "id": "hard2-00082",
+   "raw": "```json\n{\n  \"cat\": \"utility\",\n  \"inst\": \"Summit Fiber Internet\",\n  \"ref\": \"6544\",\n  \"amt\": 845,\n  \"kind\": \"due\",\n  \"act\": \"notify\",\n  \"ev\": [2]\n}\n```",
+   "out_tok": 64,
+   "in_tok": 255,
+   "ms": 39594
+  },
+  "hard2-00134": {
+   "id": "hard2-00134",
+   "raw": "{\"cat\": \"personal\", \"kind\": \"balance\", \"amt\": 3875, \"act\": \"review\", \"ev\": [5]}",
+   "out_tok": 34,
+   "in_tok": 330,
+   "ms": 18025
+  },
+  "hard2-00162": {
+   "id": "hard2-00162",
+   "raw": "{\"cat\": \"personal\"}",
+   "out_tok": 7,
+   "in_tok": 567,
+   "ms": 6307
+  },
+  "hard2-00079": {
+   "id": "hard2-00079",
+   "raw": "```json\n{\n  \"cat\": \"retirement\",\n  \"inst\": \"Electrical Workers Pension Trust Fund 47\",\n  \"ref\": \"8676\",\n  \"amt\": 7164.93,\n  \"kind\": \"balance\",\n  \"rec\": \"monthly\",\n  \"due\": 60,\n  \"act\": \"notify\",\n  \"ev\": [4, 5]\n}\n```",
+   "out_tok": 92,
+   "in_tok": 392,
+   "ms": 45371
+  },
+  "hard2-00083": {
+   "id": "hard2-00083",
+   "raw": "```json\n{\n  \"cat\": \"subscription\",\n  \"inst\": \"Harbor Coffee Club\",\n  \"ref\": \"1785\",\n  \"amt\": 9.99,\n  \"kind\": \"charge\",\n  \"rec\": \"monthly\",\n  \"act\": \"cancel\"\n}\n```",
+   "out_tok": 65,
+   "in_tok": 367,
+   "ms": 37931
+  },
+  "hard2-00163": {
+   "id": "hard2-00163",
+   "raw": "{\"cat\": \"personal\"}",
+   "out_tok": 7,
+   "in_tok": 273,
+   "ms": 6655
+  },
+  "hard2-00092": {
+   "id": "hard2-00092",
+   "raw": "```json\n{\n  \"cat\": \"bank\",\n  \"inst\": \"Silver Creek Savings Bank\",\n  \"ref\": \"4127\",\n  \"amt\": 9126.26,\n  \"kind\": \"balance\",\n  \"act\": \"notify\"\n}\n```",
+   "out_tok": 61,
+   "in_tok": 350,
+   "ms": 33355
+  },
+  "hard2-00142": {
+   "id": "hard2-00142",
+   "raw": "{\"cat\":\"insurance\",\"inst\":\"Lighthouse Life Assurance\",\"ref\":\"LHA-723X-00\",\"amt\":10000,\"kind\":\"face_value\",\"act\":\"claim\",\"ev\":[1]}",
+   "out_tok": 47,
+   "in_tok": 297,
+   "ms": 20440
+  },
+  "hard2-00114": {
+   "id": "hard2-00114",
+   "raw": "```json\n{\n  \"cat\": \"investment\",\n  \"inst\": \"Tidewater Brokerage\",\n  \"ref\": \"8107\",\n  \"act\": \"notify\",\n  \"ev\": [5, 8, 9, 10]\n}\n```",
+   "out_tok": 59,
+   "in_tok": 633,
+   "ms": 29769
+  },
+  "hard2-00086": {
+   "id": "hard2-00086",
+   "raw": "{\n  \"cat\": \"government\",\n  \"inst\": \"Veterans Benefits Regional Office\",\n  \"ref\": \"7921\",\n  \"amt\": 3277.8,\n  \"kind\": \"balance\",\n  \"rec\": \"monthly\",\n  \"act\": \"verify_debt\",\n  \"ev\": [4]\n}",
+   "out_tok": 73,
+   "in_tok": 365,
+   "ms": 39971
+  },
+  "hard2-00148": {
+   "id": "hard2-00148",
+   "raw": "```json\n{\n  \"cat\": \"legal\",\n  \"inst\": \"Okafor Lindell Estate Law\",\n  \"ref\": \"25E9705\",\n  \"act\": \"review\"\n}\n```",
+   "out_tok": 47,
+   "in_tok": 389,
+   "ms": 19947
+  },
+  "hard2-00088": {
+   "id": "hard2-00088",
+   "raw": "```json\n{\n  \"cat\": \"bank\",\n  \"inst\": \"Commonwealth Depositors Union\",\n  \"ref\": \"3600\",\n  \"amt\": 114665.39,\n  \"kind\": \"balance\",\n  \"act\": \"notify\",\n  \"ev\": [3]\n}\n```",
+   "out_tok": 71,
+   "in_tok": 346,
+   "ms": 39888
+  },
+  "hard2-00130": {
+   "id": "hard2-00130",
+   "raw": "```json\n{\n  \"cat\": \"bank\",\n  \"inst\": \"Fjord National Bank\",\n  \"ref\": \"9133\",\n  \"act\": \"verify_debt\",\n  \"ev\": [1, 3, 4]\n}\n```",
+   "out_tok": 57,
+   "in_tok": 535,
+   "ms": 26395
+  },
+  "hard2-00109": {
+   "id": "hard2-00109",
+   "raw": "```json\n{\n  \"cat\": \"subscription\",\n  \"inst\": \"Harbor Coffee Club\",\n  \"ref\": \"4459\",\n  \"amt\": 9.99,\n  \"kind\": \"charge\",\n  \"rec\": \"quarterly\",\n  \"act\": \"cancel\"\n}\n```",
+   "out_tok": 66,
+   "in_tok": 328,
+   "ms": 33363
+  },
+  "hard2-00100": {
+   "id": "hard2-00100",
+   "raw": "```json\n{\n  \"cat\": \"utility\",\n  \"inst\": \"StowAway Storage\",\n  \"ref\": \"5241\",\n  \"amt\": 944.5,\n  \"kind\": \"due\",\n  \"act\": \"notify\",\n  \"ev\": [2, 4]\n}\n```",
+   "out_tok": 69,
+   "in_tok": 413,
+   "ms": 35885
+  },
+  "hard2-00165": {
+   "id": "hard2-00165",
+   "raw": "```json\n{\"cat\":\"personal\"}\n```",
+   "out_tok": 10,
+   "in_tok": 426,
+   "ms": 9767
+  },
+  "hard2-00166": {
+   "id": "hard2-00166",
+   "raw": "{\"cat\": \"personal\"}",
+   "out_tok": 7,
+   "in_tok": 265,
+   "ms": 8696
+  },
+  "hard2-00098": {
+   "id": "hard2-00098",
+   "raw": "```json\n{\n  \"cat\": \"bank\",\n  \"inst\": \"Silver Creek Savings Bank\",\n  \"ref\": \"6383\",\n  \"amt\": 44529.08,\n  \"kind\": \"balance\",\n  \"act\": \"notify\",\n  \"ev\": [3]\n}\n```",
+   "out_tok": 69,
+   "in_tok": 506,
+   "ms": 36984
+  },
+  "hard2-00099": {
+   "id": "hard2-00099",
+   "raw": "```json\n{\n  \"cat\": \"government\",\n  \"inst\": \"Municipal Tax Collector\",\n  \"ref\": \"7822\",\n  \"amt\": 322.63,\n  \"kind\": \"balance\",\n  \"act\": \"notify\",\n  \"ev\": [3, 4]\n}\n```",
+   "out_tok": 71,
+   "in_tok": 493,
+   "ms": 37548
+  },
+  "hard2-00097": {
+   "id": "hard2-00097",
+   "raw": "```json\n{\n  \"cat\": \"utility\",\n  \"inst\": \"Clearbrook Water District\",\n  \"ref\": \"5029\",\n  \"amt\": 809.00,\n  \"kind\": \"due\",\n  \"act\": \"notify\",\n  \"ev\": [1, 3, 4]\n}\n```",
+   "out_tok": 73,
+   "in_tok": 287,
+   "ms": 38974
+  },
+  "hard2-00143": {
+   "id": "hard2-00143",
+   "raw": "```json\n{\n  \"cat\": \"bank\",\n  \"inst\": \"Commonwealth Depositors Union\",\n  \"ref\": \"8003\",\n  \"act\": \"close\",\n  \"ev\": [1, 2, 3, 4]\n}\n```",
+   "out_tok": 58,
+   "in_tok": 309,
+   "ms": 25726
+  },
+  "hard2-00091": {
+   "id": "hard2-00091",
+   "raw": "{\n  \"cat\": \"medical\",\n  \"inst\": \"Westbrook Regional Hospital\",\n  \"ref\": \"3962\",\n  \"amt\": 19641.55,\n  \"kind\": \"balance\",\n  \"due\": 30,\n  \"act\": \"notify\",\n  \"ev\": [4, 6]\n}",
+   "out_tok": 76,
+   "in_tok": 461,
+   "ms": 41351
+  },
+  "hard2-00137": {
+   "id": "hard2-00137",
+   "raw": "```json\n{\n  \"cat\": \"government\",\n  \"inst\": \"Register of Wills\",\n  \"ref\": \"PR-2026-2675\",\n  \"act\": \"notify\",\n  \"ev\": [1, 3, 4]\n}\n```",
+   "out_tok": 61,
+   "in_tok": 376,
+   "ms": 29298
+  },
+  "hard2-00090": {
+   "id": "hard2-00090",
+   "raw": "```json\n{\n  \"cat\": \"loan\",\n  \"inst\": \"Keel & Anchor Mortgage Co.\",\n  \"ref\": \"8830\",\n  \"amt\": 3659.13,\n  \"kind\": \"due\",\n  \"rec\": \"monthly\",\n  \"act\": \"stop_payment\",\n  \"ev\": [4]\n}\n```",
+   "out_tok": 78,
+   "in_tok": 417,
+   "ms": 43772
+  },
+  "hard2-00085": {
+   "id": "hard2-00085",
+   "raw": "```json\n{\n  \"cat\": \"retirement\",\n  \"inst\": \"County Employees' Annuity Plan\",\n  \"ref\": \"8932\",\n  \"amt\": 6607,\n  \"kind\": \"balance\",\n  \"rec\": \"monthly\",\n  \"due\": 10,\n  \"act\": \"notify\",\n  \"ev\": [1, 2]\n}\n```",
+   "out_tok": 87,
+   "in_tok": 277,
+   "ms": 48105
+  },
+  "hard2-00126": {
+   "id": "hard2-00126",
+   "raw": "```json\n{\n  \"cat\": \"legal\",\n  \"inst\": \"Okafor Lindell Estate Law\",\n  \"ref\": \"25E1255\",\n  \"due\": 14,\n  \"act\": \"notify\",\n  \"ev\": [1, 3, 4]\n}\n```",
+   "out_tok": 68,
+   "in_tok": 569,
+   "ms": 32614
+  },
+  "hard2-00108": {
+   "id": "hard2-00108",
+   "raw": "{\n  \"cat\": \"subscription\",\n  \"inst\": \"Inkwell Monthly\",\n  \"ref\": \"1868\",\n  \"amt\": 4.99,\n  \"kind\": \"charge\",\n  \"rec\": \"annual\",\n  \"act\": \"cancel\",\n  \"ev\": [9, 10, 11]\n}",
+   "out_tok": 76,
+   "in_tok": 558,
+   "ms": 38791
+  },
+  "hard2-00093": {
+   "id": "hard2-00093",
+   "raw": "{\n  \"cat\": \"utility\",\n  \"inst\": \"Clearbrook Water District\",\n  \"ref\": \"5655\",\n  \"amt\": 1128.03,\n  \"kind\": \"due\",\n  \"due\": 21,\n  \"act\": \"notify\",\n  \"ev\": [12, 13, 14]\n}",
+   "out_tok": 81,
+   "in_tok": 630,
+   "ms": 42708
+  },
+  "hard2-00136": {
+   "id": "hard2-00136",
+   "raw": "```json\n{\n  \"cat\": \"legal\",\n  \"inst\": \"Register of Wills\",\n  \"ref\": \"PR-2025-9190\",\n  \"due\": 30,\n  \"act\": \"notify\",\n  \"ev\": [11, 12]\n}\n```",
+   "out_tok": 68,
+   "in_tok": 544,
+   "ms": 32122
+  },
+  "hard2-00107": {
+   "id": "hard2-00107",
+   "raw": "```json\n{\n  \"cat\": \"subscription\",\n  \"inst\": \"Inkwell Monthly\",\n  \"ref\": \"1868\",\n  \"amt\": 4.99,\n  \"kind\": \"charge\",\n  \"rec\": \"annual\",\n  \"act\": \"cancel\",\n  \"ev\": [1, 3, 4]\n}\n```",
+   "out_tok": 78,
+   "in_tok": 468,
+   "ms": 40200
+  },
+  "hard2-00131": {
+   "id": "hard2-00131",
+   "raw": "{\n  \"cat\": \"bank\",\n  \"inst\": \"Fjord National Bank\",\n  \"ref\": \"9133\",\n  \"act\": \"close\",\n  \"ev\": [1, 2, 8, 9, 10, 12, 13, 14]\n}",
+   "out_tok": 70,
+   "in_tok": 599,
+   "ms": 33658
+  },
+  "hard2-00084": {
+   "id": "hard2-00084",
+   "raw": "```json\n{\n  \"cat\": \"utility\",\n  \"inst\": \"Tri-State Power Cooperative\",\n  \"ref\": \"7874\",\n  \"amt\": 156.28,\n  \"kind\": \"due\",\n  \"due\": 21,\n  \"act\": \"notify\",\n  \"ev\": [9, 11, 12, 20, 21]\n}\n```",
+   "out_tok": 91,
+   "in_tok": 616,
+   "ms": 51628
+  },
+  "hard2-00110": {
+   "id": "hard2-00110",
+   "raw": "{\n  \"cat\": \"utility\",\n  \"inst\": \"Harborside Marina\",\n  \"ref\": \"5486\",\n  \"amt\": 3876.66,\n  \"kind\": \"due\",\n  \"due\": 14,\n  \"act\": \"notify\",\n  \"ev\": [10, 11]\n}",
+   "out_tok": 78,
+   "in_tok": 591,
+   "ms": 40299
+  },
+  "hard2-00118": {
+   "id": "hard2-00118",
+   "raw": "{\n  \"cat\": \"bank\",\n  \"inst\": \"Fjord National Bank\",\n  \"ref\": \"8726\",\n  \"amt\": 30620.95,\n  \"kind\": \"balance\",\n  \"act\": \"transfer\",\n  \"ev\": [2, 5, 9, 11]\n}",
+   "out_tok": 76,
+   "in_tok": 479,
+   "ms": 38110
+  },
+  "hard2-00125": {
+   "id": "hard2-00125",
+   "raw": "```json\n{\n  \"cat\": \"retirement\",\n  \"inst\": \"Electrical Workers Pension Trust Fund 47\",\n  \"ref\": \"9296\",\n  \"amt\": 7256,\n  \"kind\": \"balance\",\n  \"act\": \"return\",\n  \"ev\": [2, 4]\n}\n```",
+   "out_tok": 74,
+   "in_tok": 381,
+   "ms": 35821
+  },
+  "hard2-00120": {
+   "id": "hard2-00120",
+   "raw": "```json\n{\n  \"cat\": \"utility\",\n  \"inst\": \"Tri-State Power Cooperative\",\n  \"ref\": \"9242\",\n  \"amt\": 1193,\n  \"kind\": \"due\",\n  \"due\": 21,\n  \"act\": \"notify\",\n  \"ev\": [1, 2]\n}\n```",
+   "out_tok": 76,
+   "in_tok": 285,
+   "ms": 37940
+  },
+  "hard2-00103": {
+   "id": "hard2-00103",
+   "raw": "```json\n{\n  \"cat\": \"loan\",\n  \"inst\": \"Prairie Auto Lending\",\n  \"ref\": \"1958\",\n  \"amt\": 2992.00,\n  \"kind\": \"due\",\n  \"rec\": \"monthly\",\n  \"act\": \"stop_payment\",\n  \"ev\": [1, 2]\n}\n```",
+   "out_tok": 81,
+   "in_tok": 320,
+   "ms": 42329
+  },
+  "hard2-00115": {
+   "id": "hard2-00115",
+   "raw": "```json\n{\n  \"cat\": \"utility\",\n  \"inst\": \"Summit Fiber Internet\",\n  \"ref\": \"5308\",\n  \"amt\": 338.64,\n  \"kind\": \"balance\",\n  \"due\": 21,\n  \"act\": \"notify\",\n  \"ev\": [4, 6]\n}\n```",
+   "out_tok": 78,
+   "in_tok": 396,
+   "ms": 39682
+  },
+  "hard2-00146": {
+   "id": "hard2-00146",
+   "raw": "```json\n{\n  \"cat\": \"subscription\",\n  \"inst\": \"Inkwell Monthly\",\n  \"ref\": \"1679\",\n  \"rec\": \"monthly\",\n  \"act\": \"cancel\",\n  \"ev\": [1, 2, 3, 4]\n}\n```",
+   "out_tok": 64,
+   "in_tok": 349,
+   "ms": 28917
+  },
+  "hard2-00087": {
+   "id": "hard2-00087",
+   "raw": "```json\n{\n  \"cat\": \"loan\",\n  \"inst\": \"Bluebell Consumer Loans\",\n  \"ref\": \"9684\",\n  \"amt\": 5096.85,\n  \"kind\": \"due\",\n  \"rec\": \"monthly\",\n  \"due\": 7,\n  \"act\": \"verify_debt\",\n  \"ev\": [4, 5]\n}\n```",
+   "out_tok": 87,
+   "in_tok": 434,
+   "ms": 50534
+  },
+  "hard2-00128": {
+   "id": "hard2-00128",
+   "raw": "```json\n{\n  \"cat\": \"bank\",\n  \"inst\": \"Silver Creek Savings Bank\",\n  \"ref\": \"8911\",\n  \"amt\": 101790.9,\n  \"kind\": \"balance\",\n  \"act\": \"notify\",\n  \"ev\": [9, 10]\n}\n```",
+   "out_tok": 73,
+   "in_tok": 507,
+   "ms": 36344
+  },
+  "hard2-00116": {
+   "id": "hard2-00116",
+   "raw": "{\n  \"cat\": \"utility\",\n  \"inst\": \"Summit Fiber Internet\",\n  \"ref\": \"5308\",\n  \"amt\": 338.64,\n  \"kind\": \"due\",\n  \"due\": 21,\n  \"act\": \"notify\",\n  \"ev\": [1, 3, 4, 5]\n}",
+   "out_tok": 80,
+   "in_tok": 516,
+   "ms": 41440
+  },
+  "hard2-00104": {
+   "id": "hard2-00104",
+   "raw": "```json\n{\n  \"cat\": \"government\",\n  \"inst\": \"Municipal Tax Collector\",\n  \"ref\": \"C6235442\",\n  \"amt\": 14310.55,\n  \"kind\": \"balance\",\n  \"act\": \"notify\",\n  \"ev\": [2, 3, 4, 6]\n}\n```",
+   "out_tok": 83,
+   "in_tok": 328,
+   "ms": 44527
+  },
+  "hard2-00123": {
+   "id": "hard2-00123",
+   "raw": "{\n  \"cat\": \"medical\",\n  \"inst\": \"Westbrook Regional Hospital\",\n  \"ref\": \"1917\",\n  \"amt\": 55635.76,\n  \"kind\": \"due\",\n  \"due\": 60,\n  \"act\": \"notify\",\n  \"ev\": [10, 11]\n}",
+   "out_tok": 78,
+   "in_tok": 590,
+   "ms": 39173
+  },
+  "hard2-00122": {
+   "id": "hard2-00122",
+   "raw": "```json\n{\n  \"cat\": \"credit_card\",\n  \"inst\": \"Meridian Gold Card\",\n  \"ref\": \"6887\",\n  \"amt\": 7491,\n  \"kind\": \"balance\",\n  \"due\": 25,\n  \"act\": \"verify_debt\",\n  \"ev\": [2, 4]\n}\n```",
+   "out_tok": 79,
+   "in_tok": 426,
+   "ms": 39750
+  },
+  "hard2-00117": {
+   "id": "hard2-00117",
+   "raw": "```json\n{\n  \"cat\": \"medical\",\n  \"inst\": \"Northfield Dialysis Center\",\n  \"ref\": \"8760\",\n  \"amt\": 40018,\n  \"kind\": \"balance\",\n  \"due\": 1096,\n  \"act\": \"notify\",\n  \"ev\": [1, 3, 4]\n}\n```",
+   "out_tok": 83,
+   "in_tok": 505,
+   "ms": 43556
+  },
+  "hard2-00119": {
+   "id": "hard2-00119",
+   "raw": "```json\n{\n  \"cat\": \"government\",\n  \"inst\": \"County Employees' Annuity Plan\",\n  \"ref\": \"5829\",\n  \"amt\": 7202,\n  \"kind\": \"balance\",\n  \"due\": 10,\n  \"act\": \"verify_debt\",\n  \"ev\": [1, 2]\n}\n```",
+   "out_tok": 81,
+   "in_tok": 309,
+   "ms": 41822
+  },
+  "hard2-00188": {
+   "id": "hard2-00188",
+   "raw": "{\"cat\": \"personal\"}",
+   "out_tok": 7,
+   "in_tok": 339,
+   "ms": 7747
+  },
+  "hard2-00111": {
+   "id": "hard2-00111",
+   "raw": "```json\n{\n  \"cat\": \"insurance\",\n  \"inst\": \"Birchwood Mutual\",\n  \"ref\": \"780-65892\",\n  \"amt\": 50000,\n  \"kind\": \"face_value\",\n  \"due\": 90,\n  \"act\": \"claim\",\n  \"ev\": [1, 2]\n}\n```",
+   "out_tok": 84,
+   "in_tok": 263,
+   "ms": 44220
+  },
+  "hard2-00191": {
+   "id": "hard2-00191",
+   "raw": "{\"cat\": \"personal\"}",
+   "out_tok": 7,
+   "in_tok": 241,
+   "ms": 7916
+  },
+  "hard2-00194": {
+   "id": "hard2-00194",
+   "raw": "{\"cat\":\"irrelevant\"}",
+   "out_tok": 7,
+   "in_tok": 353,
+   "ms": 6508
+  },
+  "hard2-00096": {
+   "id": "hard2-00096",
+   "raw": "{\n  \"cat\": \"government\",\n  \"inst\": \"Municipal Tax Collector\",\n  \"ref\": \"C2070014\",\n  \"amt\": 7246.00,\n  \"kind\": \"due\",\n  \"due\": 14,\n  \"act\": \"notify\",\n  \"ev\": [10, 11, 13, 18]\n}",
+   "out_tok": 90,
+   "in_tok": 612,
+   "ms": 49763
+  },
+  "hard2-00101": {
+   "id": "hard2-00101",
+   "raw": "{\n  \"cat\": \"utility\",\n  \"inst\": \"Clearbrook Water District\",\n  \"ref\": \"5309\",\n  \"amt\": 128.51,\n  \"kind\": \"due\",\n  \"due\": 10,\n  \"act\": \"notify\",\n  \"ev\": [10, 11, 12, 20, 21]\n}",
+   "out_tok": 88,
+   "in_tok": 616,
+   "ms": 47369
+  },
+  "hard2-00197": {
+   "id": "hard2-00197",
+   "raw": "{\"cat\": \"personal\"}",
+   "out_tok": 7,
+   "in_tok": 355,
+   "ms": 6487
+  },
+  "hard2-00149": {
+   "id": "hard2-00149",
+   "raw": "```json\n{\n  \"cat\": \"utility\",\n  \"inst\": \"Harborside Marina\",\n  \"ref\": \"Unit 6214\",\n  \"amt\": 13148.00,\n  \"kind\": \"balance\",\n  \"act\": \"notify\",\n  \"ev\": [4]\n}\n```",
+   "out_tok": 72,
+   "in_tok": 369,
+   "ms": 34886
+  },
+  "hard2-00199": {
+   "id": "hard2-00199",
+   "raw": "{\"cat\": \"personal\"}",
+   "out_tok": 7,
+   "in_tok": 242,
+   "ms": 6445
+  },
+  "hard2-00202": {
+   "id": "hard2-00202",
+   "raw": "{\"cat\": \"personal\"}",
+   "out_tok": 7,
+   "in_tok": 421,
+   "ms": 6443
+  },
+  "hard2-00189": {
+   "id": "hard2-00189",
+   "raw": "```json\n{\"cat\":\"legal\"}\n```",
+   "out_tok": 10,
+   "in_tok": 458,
+   "ms": 9654
+  },
+  "hard2-00102": {
+   "id": "hard2-00102",
+   "raw": "{\n  \"cat\": \"government\",\n  \"inst\": \"Municipal Tax Collector\",\n  \"ref\": \"0004330\",\n  \"amt\": 2408.0,\n  \"kind\": \"due\",\n  \"rec\": \"monthly\",\n  \"due\": 28,\n  \"act\": \"notify\",\n  \"ev\": [12, 13, 14]\n}",
+   "out_tok": 91,
+   "in_tok": 618,
+   "ms": 49744
+  },
+  "hard2-00151": {
+   "id": "hard2-00151",
+   "raw": "{\n  \"cat\": \"subscription\",\n  \"inst\": \"Petal & Pot Plant Box\",\n  \"ref\": \"8323\",\n  \"amt\": 9.99,\n  \"kind\": \"charge\",\n  \"rec\": \"monthly\",\n  \"act\": \"cancel\",\n  \"ev\": [1, 3]\n}",
+   "out_tok": 73,
+   "in_tok": 579,
+   "ms": 35936
+  },
+  "hard2-00206": {
+   "id": "hard2-00206",
+   "raw": "{\"cat\": \"personal\"}",
+   "out_tok": 7,
+   "in_tok": 345,
+   "ms": 6061
+  },
+  "hard2-00207": {
+   "id": "hard2-00207",
+   "raw": "{\"cat\": \"personal\"}",
+   "out_tok": 7,
+   "in_tok": 512,
+   "ms": 6479
+  },
+  "hard2-00209": {
+   "id": "hard2-00209",
+   "raw": "{\"cat\": \"personal\"}",
+   "out_tok": 7,
+   "in_tok": 476,
+   "ms": 6310
+  },
+  "hard2-00158": {
+   "id": "hard2-00158",
+   "raw": "```json\n{\n  \"cat\": \"subscription\",\n  \"inst\": \"Harbor Coffee Club\",\n  \"ref\": \"7828\",\n  \"amt\": 99,\n  \"kind\": \"due\",\n  \"rec\": \"quarterly\",\n  \"act\": \"cancel\",\n  \"ev\": [1]\n}\n```",
+   "out_tok": 71,
+   "in_tok": 279,
+   "ms": 35520
+  },
+  "hard2-00132": {
+   "id": "hard2-00132",
+   "raw": "```json\n{\n  \"cat\": \"retirement\",\n  \"inst\": \"County Employees' Annuity Plan\",\n  \"ref\": \"5406\",\n  \"amt\": 7618.48,\n  \"kind\": \"balance\",\n  \"rec\": \"monthly\",\n  \"act\": \"verify_debt\",\n  \"ev\": [11, 12]\n}\n```",
+   "out_tok": 86,
+   "in_tok": 559,
+   "ms": 45219
+  },
+  "hard2-00217": {
+   "id": "hard2-00217",
+   "raw": "{\"cat\": \"personal\"}",
+   "out_tok": 7,
+   "in_tok": 355,
+   "ms": 6495
+  },
+  "hard2-00139": {
+   "id": "hard2-00139",
+   "raw": "```json\n{\n  \"cat\": \"loan\",\n  \"inst\": \"Bluebell Consumer Loans\",\n  \"ref\": \"9715\",\n  \"amt\": 2639.6,\n  \"kind\": \"due\",\n  \"rec\": \"monthly\",\n  \"due\": 15,\n  \"act\": \"stop_payment\",\n  \"ev\": [4, 8]\n}\n```",
+   "out_tok": 86,
+   "in_tok": 388,
+   "ms": 45033
+  },
+  "hard2-00154": {
+   "id": "hard2-00154",
+   "raw": "```json\n{\n  \"cat\": \"insurance\",\n  \"inst\": \"Continental Legacy Insurance\",\n  \"ref\": \"399-64009\",\n  \"amt\": 50000,\n  \"kind\": \"face_value\",\n  \"act\": \"claim\",\n  \"ev\": [1, 3, 4]\n}\n```",
+   "out_tok": 78,
+   "in_tok": 420,
+   "ms": 39450
+  },
+  "hard2-00135": {
+   "id": "hard2-00135",
+   "raw": "```json\n{\n  \"cat\": \"loan\",\n  \"inst\": \"Keel & Anchor Mortgage Co\",\n  \"ref\": \"6795\",\n  \"amt\": 6516.48,\n  \"kind\": \"due\",\n  \"rec\": \"monthly\",\n  \"due\": 15,\n  \"act\": \"verify_debt\",\n  \"ev\": [5, 6]\n}\n```",
+   "out_tok": 90,
+   "in_tok": 375,
+   "ms": 47134
+  },
+  "hard2-00156": {
+   "id": "hard2-00156",
+   "raw": "```json\n{\n  \"cat\": \"subscription\",\n  \"inst\": \"Loom Learning\",\n  \"ref\": \"3726\",\n  \"amt\": 19.00,\n  \"kind\": \"charge\",\n  \"rec\": \"monthly\",\n  \"act\": \"cancel\",\n  \"ev\": [2, 5, 6]\n}\n```",
+   "out_tok": 78,
+   "in_tok": 460,
+   "ms": 39103
+  },
+  "hard2-00145": {
+   "id": "hard2-00145",
+   "raw": "{\n  \"cat\": \"retirement\",\n  \"inst\": \"Maritime Officers Retirement Fund\",\n  \"ref\": \"2341\",\n  \"amt\": 2234.0,\n  \"kind\": \"balance\",\n  \"rec\": \"monthly\",\n  \"due\": 30,\n  \"act\": \"verify_debt\",\n  \"ev\": [3, 4, 5]\n}",
+   "out_tok": 88,
+   "in_tok": 386,
+   "ms": 44111
+  },
+  "hard2-00232": {
+   "id": "hard2-00232",
+   "raw": "{\"cat\": \"personal\"}",
+   "out_tok": 7,
+   "in_tok": 321,
+   "ms": 4058
+  },
+  "hard2-00219": {
+   "id": "hard2-00219",
+   "raw": "```json\n{\n  \"cat\": \"personal\"\n}\n```",
+   "out_tok": 14,
+   "in_tok": 602,
+   "ms": 9150
+  },
+  "hard2-00231": {
+   "id": "hard2-00231",
+   "raw": "{\"cat\": \"personal\"}",
+   "out_tok": 7,
+   "in_tok": 400,
+   "ms": 4060
+  },
+  "hard2-00160": {
+   "id": "hard2-00160",
+   "raw": "{\n  \"cat\": \"subscription\",\n  \"inst\": \"Petal & Pot Plant Box\",\n  \"ref\": \"3341\",\n  \"amt\": 59.99,\n  \"kind\": \"due\",\n  \"rec\": \"quarterly\",\n  \"act\": \"cancel\",\n  \"ev\": [12, 13, 14]\n}",
+   "out_tok": 81,
+   "in_tok": 532,
+   "ms": 39740
+  },
+  "hard2-00155": {
+   "id": "hard2-00155",
+   "raw": "```json\n{\n  \"cat\": \"retirement\",\n  \"inst\": \"Electrical Workers Pension Trust Fund 47\",\n  \"ref\": \"5149\",\n  \"amt\": 3736.03,\n  \"kind\": \"balance\",\n  \"due\": 60,\n  \"act\": \"notify\",\n  \"ev\": [3, 4, 5]\n}\n```",
+   "out_tok": 88,
+   "in_tok": 410,
+   "ms": 43520
+  },
+  "hard2-00157": {
+   "id": "hard2-00157",
+   "raw": "{\n  \"cat\": \"government\",\n  \"inst\": \"Veterans Benefits Regional Office\",\n  \"ref\": \"C5664390\",\n  \"amt\": 3831.00,\n  \"kind\": \"balance\",\n  \"rec\": \"annual\",\n  \"due\": 365,\n  \"act\": \"notify\",\n  \"ev\": [2, 3, 4]\n}",
+   "out_tok": 91,
+   "in_tok": 302,
+   "ms": 44703
+  },
+  "hard2-00150": {
+   "id": "hard2-00150",
+   "raw": "```json\n{\n  \"cat\": \"retirement\",\n  \"inst\": \"COUNTY EMPLOYEES' ANNUITY PLAN\",\n  \"ref\": \"4139\",\n  \"amt\": 966.64,\n  \"kind\": \"balance\",\n  \"rec\": \"monthly\",\n  \"due\": 30,\n  \"act\": \"claim\",\n  \"ev\": [6, 8, 9]\n}\n```",
+   "out_tok": 96,
+   "in_tok": 607,
+   "ms": 47368
+  },
+  "hard2-00159": {
+   "id": "hard2-00159",
+   "raw": "```json\n{\n  \"cat\": \"subscription\",\n  \"inst\": \"Petal & Pot Plant Box\",\n  \"ref\": \"3341\",\n  \"amt\": 59.99,\n  \"kind\": \"due\",\n  \"rec\": \"quarterly\",\n  \"due\": 41,\n  \"act\": \"cancel\",\n  \"ev\": [10, 12, 13, 15, 16, 18]\n}\n```",
+   "out_tok": 105,
+   "in_tok": 624,
+   "ms": 49550
+  },
+  "hard2-00186": {
+   "id": "hard2-00186",
+   "raw": "```json\n{\n  \"cat\": \"credit_card\",\n  \"inst\": \"Meridian Gold Card\",\n  \"ref\": \"4581\",\n  \"act\": \"close\",\n  \"due\": 30\n}\n```",
+   "out_tok": 50,
+   "in_tok": 426,
+   "ms": 28943
+  },
+  "hard2-00174": {
+   "id": "hard2-00174",
+   "raw": "```json\n{\n  \"cat\": \"subscription\",\n  \"inst\": \"Stargazer Streaming\",\n  \"ref\": \"6000\",\n  \"rec\": \"monthly\",\n  \"act\": \"cancel\",\n  \"ev\": [1, 3, 4]\n}\n```",
+   "out_tok": 61,
+   "in_tok": 456,
+   "ms": 34592
+  },
+  "hard2-00185": {
+   "id": "hard2-00185",
+   "raw": "```json\n{\n  \"cat\": \"credit_card\",\n  \"inst\": \"Meridian Gold Card\",\n  \"ref\": \"4581\",\n  \"act\": \"close\",\n  \"ev\": [5, 6]\n}\n```",
+   "out_tok": 52,
+   "in_tok": 356,
+   "ms": 30593
+  },
+  "hard2-00196": {
+   "id": "hard2-00196",
+   "raw": "```json\n{\n  \"cat\": \"bank\",\n  \"inst\": \"Fjord National Bank\",\n  \"ref\": \"2542\",\n  \"act\": \"verify_debt\",\n  \"ev\": [1]\n}\n```",
+   "out_tok": 51,
+   "in_tok": 267,
+   "ms": 26554
+  },
+  "hard2-00193": {
+   "id": "hard2-00193",
+   "raw": "{\"cat\": \"legal\", \"inst\": \"Okafor Lindell Estate Law\", \"ref\": \"PR-2025-4660\", \"act\": \"notify\", \"ev\": [1, 2, 3]}",
+   "out_tok": 53,
+   "in_tok": 356,
+   "ms": 28428
+  },
+  "hard2-00164": {
+   "id": "hard2-00164",
+   "raw": "```json\n{\n  \"cat\": \"government\",\n  \"inst\": \"Municipal Tax Collector\",\n  \"ref\": \"4213\",\n  \"amt\": 5490.00,\n  \"kind\": \"due\",\n  \"rec\": \"monthly\",\n  \"due\": 30,\n  \"act\": \"review\",\n  \"ev\": [3, 5]\n}\n```",
+   "out_tok": 87,
+   "in_tok": 373,
+   "ms": 45757
+  },
+  "hard2-00172": {
+   "id": "hard2-00172",
+   "raw": "```json\n{\n  \"cat\": \"subscription\",\n  \"inst\": \"Stargazer Streaming\",\n  \"ref\": \"4161\",\n  \"amt\": 99.00,\n  \"kind\": \"due\",\n  \"rec\": \"quarterly\",\n  \"act\": \"cancel\"\n}\n```",
+   "out_tok": 67,
+   "in_tok": 302,
+   "ms": 37784
+  },
+  "hard2-00175": {
+   "id": "hard2-00175",
+   "raw": "{\n  \"cat\": \"utility\",\n  \"inst\": \"Tri-State Power Cooperative\",\n  \"ref\": \"7059\",\n  \"amt\": 760,\n  \"kind\": \"due\",\n  \"due\": 10,\n  \"act\": \"notify\",\n  \"ev\": [12]\n}",
+   "out_tok": 69,
+   "in_tok": 529,
+   "ms": 36632
+  },
+  "hard2-00195": {
+   "id": "hard2-00195",
+   "raw": "```json\n{\n  \"cat\": \"bank\",\n  \"inst\": \"Crestline Wealth Management\",\n  \"ref\": \"6751\",\n  \"act\": \"verify_debt\",\n  \"ev\": [1, 2, 3, 4]\n}\n```",
+   "out_tok": 60,
+   "in_tok": 513,
+   "ms": 30090
+  },
+  "hard2-00168": {
+   "id": "hard2-00168",
+   "raw": "```json\n{\n  \"cat\": \"insurance\",\n  \"inst\": \"Continental Legacy Insurance\",\n  \"ref\": \"776-67028\",\n  \"amt\": 10000.00,\n  \"kind\": \"face_value\",\n  \"act\": \"claim\",\n  \"ev\": [2, 3, 5]\n}\n```",
+   "out_tok": 81,
+   "in_tok": 462,
+   "ms": 45332
+  },
+  "hard2-00192": {
+   "id": "hard2-00192",
+   "raw": "```json\n{\n  \"cat\": \"property\",\n  \"inst\": \"Willow Lane Homeowners Association\",\n  \"amt\": 8086.81,\n  \"kind\": \"balance\",\n  \"act\": \"notify\",\n  \"ev\": [3, 4]\n}\n```",
+   "out_tok": 63,
+   "in_tok": 492,
+   "ms": 32352
+  },
+  "hard2-00182": {
+   "id": "hard2-00182",
+   "raw": "```json\n{\n  \"cat\": \"legal\",\n  \"inst\": \"Probate & Family Court Registry\",\n  \"ref\": \"24E1497\",\n  \"due\": 60,\n  \"act\": \"review\",\n  \"ev\": [1, 4, 5]\n}\n```",
+   "out_tok": 67,
+   "in_tok": 405,
+   "ms": 38080
+  },
+  "hard2-00179": {
+   "id": "hard2-00179",
+   "raw": "```json\n{\n  \"cat\": \"investment\",\n  \"inst\": \"Arbor Point Securities\",\n  \"ref\": \"9628\",\n  \"amt\": 941008.8,\n  \"kind\": \"balance\",\n  \"act\": \"notify\",\n  \"ev\": [3, 6]\n}\n```",
+   "out_tok": 72,
+   "in_tok": 499,
+   "ms": 38084
+  },
+  "hard2-00167": {
+   "id": "hard2-00167",
+   "raw": "```json\n{\n  \"cat\": \"government\",\n  \"inst\": \"Veterans Benefits Regional Office\",\n  \"ref\": \"9681\",\n  \"amt\": 4532.00,\n  \"kind\": \"benefit\",\n  \"rec\": \"monthly\",\n  \"act\": \"verify_debt\",\n  \"ev\": [3, 4]\n}\n```",
+   "out_tok": 82,
+   "in_tok": 348,
+   "ms": 45997
+  },
+  "hard2-00180": {
+   "id": "hard2-00180",
+   "raw": "{\n  \"cat\": \"investment\",\n  \"inst\": \"Arbor Point Securities\",\n  \"ref\": \"9628\",\n  \"amt\": 941008.8,\n  \"kind\": \"balance\",\n  \"act\": \"review\",\n  \"ev\": [2, 12]\n}",
+   "out_tok": 69,
+   "in_tok": 627,
+   "ms": 38885
+  },
+  "hard2-00213": {
+   "id": "hard2-00213",
+   "raw": "```json\n{\n  \"cat\": \"legal\",\n  \"inst\": \"Register of Wills\",\n  \"ref\": \"24E6702\",\n  \"act\": \"notify\",\n  \"ev\": [1, 3, 4]\n}\n```",
+   "out_tok": 57,
+   "in_tok": 339,
+   "ms": 26925
+  },
+  "hard2-00229": {
+   "id": "hard2-00229",
+   "raw": "```json\n{\"cat\":\"legal\",\"inst\":\"Probate & Family Court Registry\",\"ref\":\"PR-2024-6251\",\"act\":\"review\",\"ev\":[1,2,4,8,14]}\n```",
+   "out_tok": 50,
+   "in_tok": 536,
+   "ms": 22479
+  },
+  "hard2-00171": {
+   "id": "hard2-00171",
+   "raw": "{\n  \"cat\": \"utility\",\n  \"inst\": \"Tri-State Power Cooperative\",\n  \"ref\": \"4334\",\n  \"amt\": 600.00,\n  \"kind\": \"due\",\n  \"due\": 30,\n  \"act\": \"notify\",\n  \"ev\": [1, 2, 4, 5]\n}",
+   "out_tok": 80,
+   "in_tok": 344,
+   "ms": 44703
+  },
+  "hard2-00173": {
+   "id": "hard2-00173",
+   "raw": "{\n  \"cat\": \"utility\",\n  \"inst\": \"StowAway Storage\",\n  \"ref\": \"1263\",\n  \"amt\": 15329.77,\n  \"kind\": \"due\",\n  \"due\": 45,\n  \"act\": \"notify\",\n  \"ev\": [4, 5, 16]\n}",
+   "out_tok": 80,
+   "in_tok": 603,
+   "ms": 43717
+  },
+  "hard2-00183": {
+   "id": "hard2-00183",
+   "raw": "{\n  \"cat\": \"subscription\",\n  \"inst\": \"Stargazer Streaming\",\n  \"ref\": \"8286\",\n  \"amt\": 4.99,\n  \"kind\": \"charge\",\n  \"rec\": \"quarterly\",\n  \"act\": \"cancel\",\n  \"ev\": [1, 4]\n}",
+   "out_tok": 72,
+   "in_tok": 359,
+   "ms": 40043
+  },
+  "hard2-00250": {
+   "id": "hard2-00250",
+   "raw": "{\"cat\": \"personal\"}",
+   "out_tok": 7,
+   "in_tok": 573,
+   "ms": 8384
+  },
+  "hard2-00242": {
+   "id": "hard2-00242",
+   "raw": "{\"cat\":\"subscription\",\"inst\":\"Stargazer Streaming\",\"ref\":\"6997\",\"kind\":\"due\",\"act\":\"review\",\"ev\":[1]}",
+   "out_tok": 32,
+   "in_tok": 258,
+   "ms": 16529
+  },
+  "hard2-00169": {
+   "id": "hard2-00169",
+   "raw": "```json\n{\n  \"cat\": \"retirement\",\n  \"inst\": \"Electrical Workers Pension Trust Fund 47\",\n  \"ref\": \"8404\",\n  \"amt\": 7203.23,\n  \"kind\": \"due\",\n  \"rec\": \"monthly\",\n  \"due\": 60,\n  \"act\": \"notify\",\n  \"ev\": [1]\n}\n```",
+   "out_tok": 89,
+   "in_tok": 306,
+   "ms": 49962
+  },
+  "hard2-00205": {
+   "id": "hard2-00205",
+   "raw": "```json\n{\n  \"cat\": \"insurance\",\n  \"inst\": \"Lighthouse Life Assurance\",\n  \"ref\": \"892-28169\",\n  \"amt\": 50000,\n  \"kind\": \"face_value\",\n  \"act\": \"claim\",\n  \"ev\": [4]\n}\n```",
+   "out_tok": 72,
+   "in_tok": 402,
+   "ms": 35868
+  },
+  "hard2-00203": {
+   "id": "hard2-00203",
+   "raw": "```json\n{\n  \"cat\": \"credit_card\",\n  \"inst\": \"Meridian Gold Card\",\n  \"ref\": \"9632\",\n  \"amt\": 1348.00,\n  \"kind\": \"balance\",\n  \"act\": \"verify_debt\",\n  \"ev\": [3, 4]\n}\n```",
+   "out_tok": 74,
+   "in_tok": 374,
+   "ms": 37177
+  },
+  "hard2-00181": {
+   "id": "hard2-00181",
+   "raw": "```json\n{\n  \"cat\": \"retirement\",\n  \"inst\": \"Maritime Officers Retirement Fund\",\n  \"ref\": \"8153\",\n  \"amt\": 7401.74,\n  \"kind\": \"balance\",\n  \"act\": \"return\",\n  \"due\": 60,\n  \"ev\": [2, 3]\n}\n```",
+   "out_tok": 81,
+   "in_tok": 382,
+   "ms": 45128
+  },
+  "hard2-00212": {
+   "id": "hard2-00212",
+   "raw": "```json\n{\n  \"cat\": \"legal\",\n  \"inst\": \"Probate & Family Court Registry\",\n  \"ref\": \"25E4401\",\n  \"due\": 14,\n  \"act\": \"notify\",\n  \"ev\": [1, 2, 3, 4]\n}\n```",
+   "out_tok": 70,
+   "in_tok": 418,
+   "ms": 33825
+  },
+  "hard2-00190": {
+   "id": "hard2-00190",
+   "raw": "{\n  \"cat\": \"utility\",\n  \"inst\": \"StowAway Storage\",\n  \"ref\": \"8383\",\n  \"amt\": 17917.91,\n  \"kind\": \"balance\",\n  \"due\": 30,\n  \"act\": \"notify\",\n  \"ev\": [11, 12]\n}",
+   "out_tok": 78,
+   "in_tok": 594,
+   "ms": 41385
+  },
+  "hard2-00184": {
+   "id": "hard2-00184",
+   "raw": "{\n  \"cat\": \"loan\",\n  \"inst\": \"Bluebell Consumer Loans\",\n  \"ref\": \"7699\",\n  \"amt\": 4245,\n  \"kind\": \"due\",\n  \"rec\": \"monthly\",\n  \"due\": 30,\n  \"act\": \"stop_payment\",\n  \"ev\": [1, 4]\n}",
+   "out_tok": 80,
+   "in_tok": 389,
+   "ms": 43612
+  },
+  "hard2-00187": {
+   "id": "hard2-00187",
+   "raw": "```json\n{\n  \"cat\": \"medical\",\n  \"inst\": \"Evergrove Dental Group\",\n  \"ref\": \"2773\",\n  \"amt\": 28897.43,\n  \"kind\": \"balance\",\n  \"due\": 60,\n  \"act\": \"notify\",\n  \"ev\": [3, 4]\n}\n```",
+   "out_tok": 81,
+   "in_tok": 367,
+   "ms": 43505
+  },
+  "hard2-00176": {
+   "id": "hard2-00176",
+   "raw": "{\n  \"cat\": \"utility\",\n  \"inst\": \"Summit Fiber Internet\",\n  \"ref\": \"8842\",\n  \"amt\": 145.00,\n  \"kind\": \"due\",\n  \"due\": 10,\n  \"act\": \"stop_payment\",\n  \"ev\": [10, 12, 13, 24, 25]\n}",
+   "out_tok": 89,
+   "in_tok": 617,
+   "ms": 46417
+  },
+  "hard2-00208": {
+   "id": "hard2-00208",
+   "raw": "{\n  \"cat\": \"subscription\",\n  \"inst\": \"Stargazer Streaming\",\n  \"ref\": \"1735\",\n  \"amt\": 0.99,\n  \"kind\": \"charge\",\n  \"rec\": \"quarterly\",\n  \"act\": \"cancel\",\n  \"ev\": [1, 3, 4]\n}",
+   "out_tok": 75,
+   "in_tok": 417,
+   "ms": 36542
+  },
+  "hard2-00177": {
+   "id": "hard2-00177",
+   "raw": "```json\n{\n  \"cat\": \"government\",\n  \"inst\": \"Veterans Benefits Regional Office\",\n  \"ref\": \"C4811505\",\n  \"amt\": 2658.28,\n  \"kind\": \"balance\",\n  \"rec\": \"monthly\",\n  \"due\": 30,\n  \"act\": \"notify\",\n  \"ev\": [3, 4]\n}\n```",
+   "out_tok": 91,
+   "in_tok": 457,
+   "ms": 48313
+  },
+  "hard2-00198": {
+   "id": "hard2-00198",
+   "raw": "```json\n{\n  \"cat\": \"credit_card\",\n  \"inst\": \"Parallel Credit Co.\",\n  \"ref\": \"1198\",\n  \"amt\": 5384.00,\n  \"kind\": \"due\",\n  \"due\": 14,\n  \"act\": \"verify_debt\",\n  \"ev\": [2, 4]\n}\n```",
+   "out_tok": 81,
+   "in_tok": 335,
+   "ms": 41047
+  },
+  "hard2-00201": {
+   "id": "hard2-00201",
+   "raw": "```json\n{\n  \"cat\": \"government\",\n  \"inst\": \"State Unclaimed Property Division\",\n  \"ref\": \"8506\",\n  \"amt\": 732.0,\n  \"kind\": \"due\",\n  \"due\": 30,\n  \"act\": \"claim\",\n  \"ev\": [10, 12]\n}\n```",
+   "out_tok": 80,
+   "in_tok": 534,
+   "ms": 40562
+  },
+  "hard2-00230": {
+   "id": "hard2-00230",
+   "raw": "{\n  \"cat\": \"utility\",\n  \"inst\": \"Clearbrook Water District\",\n  \"ref\": \"2166\",\n  \"amt\": 689.44,\n  \"kind\": \"due\",\n  \"act\": \"notify\",\n  \"ev\": [1, 2]\n}",
+   "out_tok": 66,
+   "in_tok": 277,
+   "ms": 30066
+  },
+  "hard2-00178": {
+   "id": "hard2-00178",
+   "raw": "```json\n{\n  \"cat\": \"loan\",\n  \"inst\": \"Keel & Anchor Mortgage Co.\",\n  \"ref\": \"7978\",\n  \"amt\": 5421.44,\n  \"kind\": \"due\",\n  \"rec\": \"monthly\",\n  \"due\": 7,\n  \"act\": \"notify\",\n  \"ev\": [3, 4]\n}\n```",
+   "out_tok": 87,
+   "in_tok": 367,
+   "ms": 48566
+  },
+  "hard2-00170": {
+   "id": "hard2-00170",
+   "raw": "{\n  \"cat\": \"retirement\",\n  \"inst\": \"Electrical Workers Pension Trust Fund 47\",\n  \"ref\": \"8404\",\n  \"amt\": 7203.23,\n  \"kind\": \"balance\",\n  \"rec\": \"monthly\",\n  \"due\": 60,\n  \"act\": \"notify\",\n  \"ev\": [9, 11, 13, 14]\n}",
+   "out_tok": 97,
+   "in_tok": 567,
+   "ms": 53835
+  },
+  "hard2-00272": {
+   "id": "hard2-00272",
+   "raw": "{\"cat\": \"personal\"}",
+   "out_tok": 7,
+   "in_tok": 314,
+   "ms": 5013
+  },
+  "hard2-00226": {
+   "id": "hard2-00226",
+   "raw": "{\n  \"cat\": \"credit_card\",\n  \"inst\": \"Meridian Gold Card\",\n  \"ref\": \"4633\",\n  \"amt\": 14196.14,\n  \"kind\": \"balance\",\n  \"act\": \"verify_debt\",\n  \"ev\": [12, 27]\n}",
+   "out_tok": 73,
+   "in_tok": 629,
+   "ms": 34899
+  },
+  "hard2-00214": {
+   "id": "hard2-00214",
+   "raw": "{\n  \"cat\": \"government\",\n  \"inst\": \"State Unclaimed Property Division\",\n  \"ref\": \"7888\",\n  \"amt\": 3817.54,\n  \"kind\": \"balance\",\n  \"due\": 30,\n  \"act\": \"claim\",\n  \"ev\": [7, 8, 9]\n}",
+   "out_tok": 79,
+   "in_tok": 545,
+   "ms": 38415
+  },
+  "hard2-00276": {
+   "id": "hard2-00276",
+   "raw": "{\"cat\": \"personal\"}",
+   "out_tok": 7,
+   "in_tok": 294,
+   "ms": 4789
+  },
+  "hard2-00271": {
+   "id": "hard2-00271",
+   "raw": "```json\n{\"cat\":\"personal\"}\n```",
+   "out_tok": 10,
+   "in_tok": 653,
+   "ms": 6218
+  },
+  "hard2-00210": {
+   "id": "hard2-00210",
+   "raw": "```json\n{\n  \"cat\": \"utility\",\n  \"inst\": \"Harborside Marina\",\n  \"ref\": \"4517\",\n  \"amt\": 5498.00,\n  \"kind\": \"due\",\n  \"due\": 45,\n  \"act\": \"notify\",\n  \"ev\": [11, 12]\n}\n```",
+   "out_tok": 82,
+   "in_tok": 602,
+   "ms": 40046
+  },
+  "hard2-00227": {
+   "id": "hard2-00227",
+   "raw": "```json\n{\n  \"cat\": \"credit_card\",\n  \"inst\": \"Meridian Gold Card\",\n  \"ref\": \"4633\",\n  \"amt\": 14196.14,\n  \"kind\": \"balance\",\n  \"act\": \"notify\",\n  \"ev\": [1, 4, 6]\n}\n```",
+   "out_tok": 76,
+   "in_tok": 372,
+   "ms": 34925
+  },
+  "hard2-00204": {
+   "id": "hard2-00204",
+   "raw": "```json\n{\n  \"cat\": \"retirement\",\n  \"inst\": \"County Employees' Annuity Plan\",\n  \"ref\": \"6398\",\n  \"amt\": 1549.42,\n  \"kind\": \"balance\",\n  \"rec\": \"monthly\",\n  \"due\": 60,\n  \"act\": \"claim\",\n  \"ev\": [4]\n}\n```",
+   "out_tok": 87,
+   "in_tok": 389,
+   "ms": 43275
+  },
+  "hard2-00216": {
+   "id": "hard2-00216",
+   "raw": "```json\n{\n  \"cat\": \"medical\",\n  \"inst\": \"Evergrove Dental Group\",\n  \"ref\": \"2679\",\n  \"amt\": 35702.00,\n  \"kind\": \"balance\",\n  \"due\": 60,\n  \"act\": \"notify\",\n  \"ev\": [3, 4]\n}\n```",
+   "out_tok": 81,
+   "in_tok": 389,
+   "ms": 39219
+  },
+  "hard2-00228": {
+   "id": "hard2-00228",
+   "raw": "{\n  \"cat\": \"medical\",\n  \"inst\": \"Westbrook Regional Hospital\",\n  \"ref\": \"2689\",\n  \"amt\": 2132,\n  \"kind\": \"balance\",\n  \"due\": 60,\n  \"act\": \"notify\",\n  \"ev\": [1, 2, 4]\n}",
+   "out_tok": 75,
+   "in_tok": 366,
+   "ms": 34520
+  },
+  "hard2-00225": {
+   "id": "hard2-00225",
+   "raw": "{\n  \"cat\": \"investment\",\n  \"inst\": \"Tidewater Brokerage\",\n  \"ref\": \"9615\",\n  \"amt\": 1491875.76,\n  \"kind\": \"balance\",\n  \"act\": \"verify_debt\",\n  \"ev\": [3, 9, 10]\n}",
+   "out_tok": 77,
+   "in_tok": 573,
+   "ms": 36436
+  },
+  "hard2-00278": {
+   "id": "hard2-00278",
+   "raw": "{\"cat\": \"personal\"}",
+   "out_tok": 7,
+   "in_tok": 351,
+   "ms": 4096
+  },
+  "hard2-00218": {
+   "id": "hard2-00218",
+   "raw": "```json\n{\n  \"cat\": \"credit_card\",\n  \"inst\": \"TrueNorth Card Services\",\n  \"ref\": \"3589\",\n  \"amt\": 13805.00,\n  \"kind\": \"balance\",\n  \"due\": 45,\n  \"act\": \"notify\",\n  \"ev\": [1, 2]\n}\n```",
+   "out_tok": 81,
+   "in_tok": 286,
+   "ms": 38657
+  },
+  "hard2-00223": {
+   "id": "hard2-00223",
+   "raw": "```json\n{\n  \"cat\": \"medical\",\n  \"inst\": \"Northfield Dialysis Center\",\n  \"ref\": \"1214\",\n  \"amt\": 12656.04,\n  \"kind\": \"balance\",\n  \"due\": 60,\n  \"act\": \"verify_debt\",\n  \"ev\": [1]\n}\n```",
+   "out_tok": 80,
+   "in_tok": 284,
+   "ms": 37885
+  },
+  "hard2-00215": {
+   "id": "hard2-00215",
+   "raw": "{\n  \"cat\": \"property\",\n  \"inst\": \"Willow Lane Homeowners Association\",\n  \"ref\": \"Unit 9754\",\n  \"amt\": 15687.52,\n  \"kind\": \"due\",\n  \"due\": 30,\n  \"act\": \"notify\",\n  \"ev\": [1, 3, 4]\n}",
+   "out_tok": 83,
+   "in_tok": 363,
+   "ms": 40266
+  },
+  "hard2-00238": {
+   "id": "hard2-00238",
+   "raw": "{\n  \"cat\": \"credit_card\",\n  \"inst\": \"Parallel Credit Co.\",\n  \"ref\": \"5160\",\n  \"amt\": 2981.53,\n  \"kind\": \"balance\",\n  \"act\": \"verify_debt\",\n  \"ev\": [5]\n}",
+   "out_tok": 66,
+   "in_tok": 384,
+   "ms": 30684
+  },
+  "hard2-00234": {
+   "id": "hard2-00234",
+   "raw": "{\n  \"cat\": \"subscription\",\n  \"inst\": \"Loom Learning\",\n  \"ref\": \"6026\",\n  \"amt\": 4.99,\n  \"kind\": \"charge\",\n  \"rec\": \"monthly\",\n  \"act\": \"cancel\",\n  \"ev\": [1, 3, 4]\n}",
+   "out_tok": 73,
+   "in_tok": 430,
+   "ms": 33865
+  },
+  "hard2-00211": {
+   "id": "hard2-00211",
+   "raw": "```json\n{\n  \"cat\": \"loan\",\n  \"inst\": \"Prairie Auto Lending\",\n  \"ref\": \"2774\",\n  \"amt\": 351.08,\n  \"kind\": \"due\",\n  \"rec\": \"monthly\",\n  \"due\": 30,\n  \"act\": \"notify\",\n  \"ev\": [4, 5]\n}\n```",
+   "out_tok": 87,
+   "in_tok": 415,
+   "ms": 42978
+  },
+  "hard2-00220": {
+   "id": "hard2-00220",
+   "raw": "{\n  \"cat\": \"insurance\",\n  \"inst\": \"Lighthouse Life Assurance\",\n  \"ref\": \"219-97971\",\n  \"amt\": 50000,\n  \"kind\": \"face_value\",\n  \"due\": 90,\n  \"act\": \"claim\",\n  \"ev\": [11, 14, 15]\n}",
+   "out_tok": 85,
+   "in_tok": 616,
+   "ms": 41624
+  },
+  "hard2-00200": {
+   "id": "hard2-00200",
+   "raw": "```json\n{\n  \"cat\": \"government\",\n  \"inst\": \"Veterans Benefits Regional Office\",\n  \"ref\": \"C3430920\",\n  \"amt\": 2365.33,\n  \"kind\": \"balance\",\n  \"rec\": \"monthly\",\n  \"due\": 30,\n  \"act\": \"notify\",\n  \"ev\": [1, 3, 5]\n}\n```",
+   "out_tok": 94,
+   "in_tok": 423,
+   "ms": 48069
+  },
+  "hard2-00221": {
+   "id": "hard2-00221",
+   "raw": "```json\n{\n  \"cat\": \"government\",\n  \"inst\": \"Municipal Tax Collector\",\n  \"ref\": \"C9182358\",\n  \"amt\": 3667.84,\n  \"kind\": \"balance\",\n  \"due\": 745,\n  \"act\": \"notify\",\n  \"ev\": [3, 4]\n}\n```",
+   "out_tok": 85,
+   "in_tok": 532,
+   "ms": 41624
+  },
+  "hard2-00288": {
+   "id": "hard2-00288",
+   "raw": "{\"cat\": \"personal\"}",
+   "out_tok": 7,
+   "in_tok": 227,
+   "ms": 5165
+  },
+  "hard2-00287": {
+   "id": "hard2-00287",
+   "raw": "{\"cat\": \"irrelevant\"}",
+   "out_tok": 8,
+   "in_tok": 230,
+   "ms": 5495
+  },
+  "hard2-00289": {
+   "id": "hard2-00289",
+   "raw": "{\"cat\": \"irrelevant\"}",
+   "out_tok": 8,
+   "in_tok": 354,
+   "ms": 5893
+  },
+  "hard2-00295": {
+   "id": "hard2-00295",
+   "raw": "{\"cat\": \"personal\"}",
+   "out_tok": 7,
+   "in_tok": 383,
+   "ms": 5559
+  },
+  "hard2-00240": {
+   "id": "hard2-00240",
+   "raw": "```json\n{\n  \"cat\": \"government\",\n  \"inst\": \"State Unclaimed Property Division\",\n  \"ref\": \"7814\",\n  \"amt\": 9429.18,\n  \"kind\": \"balance\",\n  \"act\": \"claim\",\n  \"ev\": [8, 9]\n}\n```",
+   "out_tok": 72,
+   "in_tok": 485,
+   "ms": 34387
+  },
+  "hard2-00222": {
+   "id": "hard2-00222",
+   "raw": "{\n  \"cat\": \"retirement\",\n  \"inst\": \"Maritime Officers Retirement Fund\",\n  \"ref\": \"6871\",\n  \"amt\": 887.31,\n  \"kind\": \"balance\",\n  \"rec\": \"monthly\",\n  \"due\": 60,\n  \"act\": \"claim\",\n  \"ev\": [2, 12, 13, 14]\n}",
+   "out_tok": 92,
+   "in_tok": 587,
+   "ms": 45686
+  },
+  "hard2-00235": {
+   "id": "hard2-00235",
+   "raw": "{\n  \"cat\": \"credit_card\",\n  \"inst\": \"TrueNorth Card Services\",\n  \"ref\": \"2818\",\n  \"amt\": 6189.62,\n  \"kind\": \"due\",\n  \"due\": 45,\n  \"act\": \"verify_debt\",\n  \"ev\": [8, 9, 10]\n}",
+   "out_tok": 82,
+   "in_tok": 610,
+   "ms": 39138
+  },
+  "hard2-00264": {
+   "id": "hard2-00264",
+   "raw": "```json\n{\"cat\":\"personal\",\"act\":\"stop_payment\",\"ev\":[1,2,3,4,5,6,7,8]}\n```",
+   "out_tok": 33,
+   "in_tok": 582,
+   "ms": 18983
+  },
+  "hard2-00239": {
+   "id": "hard2-00239",
+   "raw": "```json\n{\n  \"cat\": \"medical\",\n  \"inst\": \"Westbrook Regional Hospital\",\n  \"ref\": \"2868\",\n  \"amt\": 23494.47,\n  \"kind\": \"balance\",\n  \"due\": 90,\n  \"act\": \"notify\",\n  \"ev\": [2, 4]\n}\n```",
+   "out_tok": 80,
+   "in_tok": 320,
+   "ms": 38033
+  },
+  "hard2-00237": {
+   "id": "hard2-00237",
+   "raw": "```json\n{\n  \"cat\": \"credit_card\",\n  \"inst\": \"TrueNorth Card Services\",\n  \"ref\": \"2470\",\n  \"amt\": 5922.16,\n  \"kind\": \"balance\",\n  \"due\": 45,\n  \"act\": \"verify_debt\",\n  \"ev\": [3, 4]\n}\n```",
+   "out_tok": 82,
+   "in_tok": 389,
+   "ms": 38769
+  },
+  "hard2-00267": {
+   "id": "hard2-00267",
+   "raw": "```json\n{\"cat\":\"personal\", \"kind\":\"balance\", \"amt\":2150, \"act\":\"notify\", \"ev\":[3]}\n```",
+   "out_tok": 33,
+   "in_tok": 269,
+   "ms": 19647
+  },
+  "hard2-00233": {
+   "id": "hard2-00233",
+   "raw": "```json\n{\n  \"cat\": \"loan\",\n  \"inst\": \"Prairie Auto Lending\",\n  \"ref\": \"6663\",\n  \"amt\": 1544.95,\n  \"kind\": \"due\",\n  \"rec\": \"monthly\",\n  \"due\": 45,\n  \"act\": \"notify\",\n  \"ev\": [2, 3, 6]\n}\n```",
+   "out_tok": 91,
+   "in_tok": 365,
+   "ms": 42632
+  },
+  "hard2-00245": {
+   "id": "hard2-00245",
+   "raw": "```json\n{\n  \"cat\": \"investment\",\n  \"inst\": \"Arbor Point Securities\",\n  \"ref\": \"5952\",\n  \"amt\": 645353.31,\n  \"kind\": \"balance\",\n  \"ev\": [4]\n}\n```",
+   "out_tok": 63,
+   "in_tok": 379,
+   "ms": 31783
+  },
+  "hard2-00243": {
+   "id": "hard2-00243",
+   "raw": "```json\n{\n  \"cat\": \"credit_card\",\n  \"inst\": \"Meridian\",\n  \"ref\": \"1658\",\n  \"amt\": 12987,\n  \"kind\": \"due\",\n  \"act\": \"verify_debt\",\n  \"ev\": [1, 2]\n}\n```",
+   "out_tok": 70,
+   "in_tok": 256,
+   "ms": 36630
+  },
+  "hard2-00236": {
+   "id": "hard2-00236",
+   "raw": "```json\n{\n  \"cat\": \"loan\",\n  \"inst\": \"Prairie Auto Lending\",\n  \"ref\": \"2341\",\n  \"amt\": 215.00,\n  \"kind\": \"due\",\n  \"rec\": \"monthly\",\n  \"due\": 45,\n  \"act\": \"verify_debt\",\n  \"ev\": [1, 2]\n}\n```",
+   "out_tok": 89,
+   "in_tok": 276,
+   "ms": 41623
+  },
+  "hard2-00241": {
+   "id": "hard2-00241",
+   "raw": "```json\n{\n  \"cat\": \"utility\",\n  \"inst\": \"Clearbrook Water District\",\n  \"ref\": \"8510\",\n  \"amt\": 169.78,\n  \"kind\": \"balance\",\n  \"due\": 10,\n  \"act\": \"notify\",\n  \"ev\": [7, 8, 9]\n}\n```",
+   "out_tok": 81,
+   "in_tok": 528,
+   "ms": 40880
+  },
+  "hard2-00316": {
+   "id": "hard2-00316",
+   "raw": "{\"cat\": \"personal\"}",
+   "out_tok": 7,
+   "in_tok": 566,
+   "ms": 3854
+  },
+  "hard2-00244": {
+   "id": "hard2-00244",
+   "raw": "```json\n{\n  \"cat\": \"credit_card\",\n  \"inst\": \"Meridian Gold Card\",\n  \"ref\": \"1658\",\n  \"amt\": 12987,\n  \"kind\": \"balance\",\n  \"act\": \"verify_debt\",\n  \"ev\": [1, 5, 6]\n}\n```",
+   "out_tok": 75,
+   "in_tok": 432,
+   "ms": 36713
+  },
+  "hard2-00284": {
+   "id": "hard2-00284",
+   "raw": "{\"cat\": \"legal\", \"inst\": \"Probate & Family Court Registry\", \"ref\": \"25E2050\", \"act\": \"review\", \"ev\": [1]}",
+   "out_tok": 42,
+   "in_tok": 252,
+   "ms": 20480
+  },
+  "hard2-00311": {
+   "id": "hard2-00311",
+   "raw": "{\"cat\":\"bank\",\"inst\":\"Crestline Wealth Management\",\"ref\":\"7666\",\"act\":\"close\"}",
+   "out_tok": 25,
+   "in_tok": 311,
+   "ms": 10474
+  },
+  "hard2-00248": {
+   "id": "hard2-00248",
+   "raw": "```json\n{\n  \"cat\": \"utility\",\n  \"inst\": \"Summit Fiber Internet\",\n  \"ref\": \"5187\",\n  \"amt\": 704.69,\n  \"kind\": \"due\",\n  \"due\": 21,\n  \"act\": \"stop_payment\",\n  \"ev\": [1, 3, 4]\n}\n```",
+   "out_tok": 82,
+   "in_tok": 373,
+   "ms": 39198
+  },
+  "hard2-00265": {
+   "id": "hard2-00265",
+   "raw": "```json\n{\n  \"cat\": \"bank\",\n  \"inst\": \"Savings Bank of the North\",\n  \"ref\": \"6455\",\n  \"act\": \"notify\",\n  \"ev\": [1, 2, 3, 5, 6, 7]\n}\n```",
+   "out_tok": 65,
+   "in_tok": 369,
+   "ms": 30985
+  },
+  "hard2-00327": {
+   "id": "hard2-00327",
+   "raw": "{\"cat\": \"personal\"}",
+   "out_tok": 7,
+   "in_tok": 533,
+   "ms": 3315
+  },
+  "hard2-00249": {
+   "id": "hard2-00249",
+   "raw": "{\n  \"cat\": \"medical\",\n  \"inst\": \"Evergrove Dental Group\",\n  \"ref\": \"6940\",\n  \"amt\": 39528,\n  \"kind\": \"balance\",\n  \"due\": 60,\n  \"act\": \"notify\",\n  \"ev\": [1, 3, 4, 5]\n}",
+   "out_tok": 80,
+   "in_tok": 405,
+   "ms": 39514
+  },
+  "hard2-00260": {
+   "id": "hard2-00260",
+   "raw": "```json\n{\n  \"cat\": \"medical\",\n  \"inst\": \"Evergrove Dental Group\",\n  \"ref\": \"2828\",\n  \"amt\": 38577.04,\n  \"kind\": \"balance\",\n  \"act\": \"verify_debt\",\n  \"ev\": [3]\n}\n```",
+   "out_tok": 72,
+   "in_tok": 345,
+   "ms": 34464
+  },
+  "hard2-00302": {
+   "id": "hard2-00302",
+   "raw": "```json\n{\n  \"cat\": \"legal\",\n  \"act\": \"notify\",\n  \"due\": 30,\n  \"ev\": [1, 2, 4, 5]\n}\n```",
+   "out_tok": 45,
+   "in_tok": 327,
+   "ms": 20134
+  },
+  "hard2-00246": {
+   "id": "hard2-00246",
+   "raw": "```json\n{\n  \"cat\": \"loan\",\n  \"inst\": \"Prairie Auto Lending\",\n  \"ref\": \"8008\",\n  \"amt\": 451.79,\n  \"kind\": \"due\",\n  \"rec\": \"monthly\",\n  \"due\": 7,\n  \"act\": \"stop_payment\",\n  \"ev\": [1, 2, 3]\n}\n```",
+   "out_tok": 90,
+   "in_tok": 311,
+   "ms": 42313
+  },
+  "hard2-00252": {
+   "id": "hard2-00252",
+   "raw": "```json\n{\n  \"cat\": \"utility\",\n  \"inst\": \"Harborside Marina\",\n  \"ref\": \"2487\",\n  \"amt\": 4476,\n  \"kind\": \"balance\",\n  \"due\": 14,\n  \"act\": \"notify\",\n  \"ev\": [7, 8]\n}\n```",
+   "out_tok": 77,
+   "in_tok": 481,
+   "ms": 38860
+  },
+  "hard2-00247": {
+   "id": "hard2-00247",
+   "raw": "{\n  \"cat\": \"loan\",\n  \"inst\": \"Prairie Auto Lending\",\n  \"ref\": \"8008\",\n  \"amt\": 451.79,\n  \"kind\": \"due\",\n  \"rec\": \"monthly\",\n  \"due\": 7,\n  \"act\": \"verify_debt\",\n  \"ev\": [8, 11, 13]\n}",
+   "out_tok": 89,
+   "in_tok": 597,
+   "ms": 43957
+  },
+  "hard2-00253": {
+   "id": "hard2-00253",
+   "raw": "```json\n{\n  \"cat\": \"bank\",\n  \"inst\": \"Commonwealth Depositors Union\",\n  \"ref\": \"7444\",\n  \"amt\": 11939.55,\n  \"kind\": \"balance\",\n  \"act\": \"close\",\n  \"ev\": [1, 2, 3, 4]\n}\n```",
+   "out_tok": 79,
+   "in_tok": 348,
+   "ms": 39517
+  },
+  "hard2-00266": {
+   "id": "hard2-00266",
+   "raw": "{\n  \"cat\": \"bank\",\n  \"inst\": \"Silver Creek Savings Bank\",\n  \"ref\": \"8332\",\n  \"amt\": 86632.19,\n  \"kind\": \"balance\",\n  \"act\": \"transfer\",\n  \"ev\": [7, 8]\n}",
+   "out_tok": 68,
+   "in_tok": 540,
+   "ms": 34000
+  },
+  "hard2-00268": {
+   "id": "hard2-00268",
+   "raw": "{\n  \"cat\": \"utility\",\n  \"inst\": \"Clearbrook Water District\",\n  \"ref\": \"3152\",\n  \"amt\": 649,\n  \"kind\": \"balance\",\n  \"due\": 10,\n  \"act\": \"notify\",\n  \"ev\": [4]\n}",
+   "out_tok": 68,
+   "in_tok": 410,
+   "ms": 33995
+  },
+  "hard2-00262": {
+   "id": "hard2-00262",
+   "raw": "```json\n{\n  \"cat\": \"medical\",\n  \"inst\": \"Evergrove Dental Group\",\n  \"ref\": \"1718\",\n  \"amt\": 21601.96,\n  \"kind\": \"balance\",\n  \"due\": 90,\n  \"act\": \"notify\",\n  \"ev\": [4]\n}\n```",
+   "out_tok": 78,
+   "in_tok": 425,
+   "ms": 37558
+  },
+  "hard2-00257": {
+   "id": "hard2-00257",
+   "raw": "{\n  \"cat\": \"government\",\n  \"inst\": \"Department of Veterans Affairs\",\n  \"ref\": \"8490\",\n  \"amt\": 6589.46,\n  \"kind\": \"balance\",\n  \"rec\": \"annual\",\n  \"act\": \"notify\",\n  \"ev\": [12, 14, 15]\n}",
+   "out_tok": 80,
+   "in_tok": 601,
+   "ms": 39119
+  },
+  "hard2-00251": {
+   "id": "hard2-00251",
+   "raw": "```json\n{\n  \"cat\": \"loan\",\n  \"inst\": \"Bluebell Consumer Loans\",\n  \"ref\": \"3118\",\n  \"amt\": 5992.00,\n  \"kind\": \"due\",\n  \"rec\": \"monthly\",\n  \"act\": \"verify_debt\",\n  \"ev\": [1, 2, 3]\n}\n```",
+   "out_tok": 83,
+   "in_tok": 288,
+   "ms": 43460
+  },
+  "hard2-00330": {
+   "id": "hard2-00330",
+   "raw": "{\"cat\": \"personal\"}",
+   "out_tok": 7,
+   "in_tok": 601,
+   "ms": 5070
+  },
+  "hard2-00270": {
+   "id": "hard2-00270",
+   "raw": "```json\n{\n  \"cat\": \"credit_card\",\n  \"inst\": \"Meridian Gold Card\",\n  \"ref\": \"1056\",\n  \"amt\": 13957.96,\n  \"kind\": \"balance\",\n  \"act\": \"stop_payment\",\n  \"ev\": [1]\n}\n```",
+   "out_tok": 71,
+   "in_tok": 262,
+   "ms": 34355
+  },
+  "hard2-00254": {
+   "id": "hard2-00254",
+   "raw": "```json\n{\n  \"cat\": \"retirement\",\n  \"inst\": \"Electrical Workers Pension Trust Fund 47\",\n  \"ref\": \"7590\",\n  \"amt\": 5701.00,\n  \"kind\": \"balance\",\n  \"rec\": \"monthly\",\n  \"act\": \"stop_payment\",\n  \"ev\": [1, 2]\n}\n```",
+   "out_tok": 85,
+   "in_tok": 280,
+   "ms": 41658
+  },
+  "hard2-00285": {
+   "id": "hard2-00285",
+   "raw": "```json\n{\n  \"cat\": \"subscription\",\n  \"inst\": \"Harbor Coffee Club\",\n  \"ref\": \"9928\",\n  \"amt\": 0,\n  \"kind\": \"charge\",\n  \"rec\": \"monthly\",\n  \"act\": \"cancel\"\n}\n```",
+   "out_tok": 62,
+   "in_tok": 255,
+   "ms": 29268
+  },
+  "hard2-00261": {
+   "id": "hard2-00261",
+   "raw": "```json\n{\n  \"cat\": \"loan\",\n  \"inst\": \"Bluebell Consumer Loans\",\n  \"ref\": \"5388\",\n  \"amt\": 5858.94,\n  \"kind\": \"due\",\n  \"rec\": \"monthly\",\n  \"due\": 15,\n  \"act\": \"verify_debt\",\n  \"ev\": [1]\n}\n```",
+   "out_tok": 85,
+   "in_tok": 271,
+   "ms": 41563
+  },
+  "hard2-00337": {
+   "id": "hard2-00337",
+   "raw": "{\"cat\": \"personal\"}",
+   "out_tok": 7,
+   "in_tok": 239,
+   "ms": 4488
+  },
+  "hard2-00339": {
+   "id": "hard2-00339",
+   "raw": "{\"cat\": \"personal\"}",
+   "out_tok": 7,
+   "in_tok": 390,
+   "ms": 4493
+  },
+  "hard2-00259": {
+   "id": "hard2-00259",
+   "raw": "```json\n{\n  \"cat\": \"retirement\",\n  \"inst\": \"Maritime Officers Retirement Fund\",\n  \"ref\": \"9205\",\n  \"amt\": 5347.27,\n  \"kind\": \"balance\",\n  \"rec\": \"monthly\",\n  \"due\": 60,\n  \"act\": \"notify\",\n  \"ev\": [4, 5]\n}\n```",
+   "out_tok": 88,
+   "in_tok": 561,
+   "ms": 43280
+  },
+  "hard2-00342": {
+   "id": "hard2-00342",
+   "raw": "{\"cat\": \"personal\"}",
+   "out_tok": 7,
+   "in_tok": 354,
+   "ms": 4324
+  },
+  "hard2-00263": {
+   "id": "hard2-00263",
+   "raw": "```json\n{\n  \"cat\": \"retirement\",\n  \"inst\": \"Electrical Workers Pension Trust Fund 47\",\n  \"ref\": \"8343\",\n  \"amt\": 6952.37,\n  \"kind\": \"balance\",\n  \"due\": 10,\n  \"act\": \"verify_debt\",\n  \"ev\": [2, 3]\n}\n```",
+   "out_tok": 87,
+   "in_tok": 512,
+   "ms": 41522
+  },
+  "hard2-00274": {
+   "id": "hard2-00274",
+   "raw": "{\n  \"cat\": \"investment\",\n  \"inst\": \"Tidewater Brokerage\",\n  \"ref\": \"7845\",\n  \"amt\": 944646.85,\n  \"kind\": \"balance\",\n  \"act\": \"verify_debt\",\n  \"ev\": [8, 9, 10]\n}",
+   "out_tok": 76,
+   "in_tok": 576,
+   "ms": 36671
+  },
+  "hard2-00258": {
+   "id": "hard2-00258",
+   "raw": "```json\n{\n  \"cat\": \"retirement\",\n  \"inst\": \"Maritime Officers Retirement Fund\",\n  \"ref\": \"9205\",\n  \"amt\": 5347.27,\n  \"kind\": \"balance\",\n  \"rec\": \"monthly\",\n  \"due\": 60,\n  \"act\": \"verify_debt\",\n  \"ev\": [3, 4]\n}\n```",
+   "out_tok": 90,
+   "in_tok": 380,
+   "ms": 44191
+  },
+  "hard2-00338": {
+   "id": "hard2-00338",
+   "raw": "```json\n{\"cat\":\"personal\"}\n```",
+   "out_tok": 10,
+   "in_tok": 345,
+   "ms": 5730
+  },
+  "hard2-00292": {
+   "id": "hard2-00292",
+   "raw": "```json\n{\n  \"cat\": \"utility\",\n  \"inst\": \"Tri-State Power Cooperative\",\n  \"ref\": \"5253\",\n  \"amt\": 15,\n  \"kind\": \"balance\",\n  \"act\": \"verify_debt\",\n  \"ev\": [4]\n}\n```",
+   "out_tok": 65,
+   "in_tok": 373,
+   "ms": 31169
+  },
+  "hard2-00277": {
+   "id": "hard2-00277",
+   "raw": "{\n  \"cat\": \"bank\",\n  \"inst\": \"Crestline Wealth Management\",\n  \"ref\": \"1941\",\n  \"amt\": 1666567.59,\n  \"kind\": \"balance\",\n  \"act\": \"notify\",\n  \"ev\": [7, 8, 9, 10]\n}",
+   "out_tok": 78,
+   "in_tok": 587,
+   "ms": 38227
+  },
+  "hard2-00281": {
+   "id": "hard2-00281",
+   "raw": "```json\n{\n  \"cat\": \"insurance\",\n  \"inst\": \"Lighthouse Life Assurance\",\n  \"ref\": \"PL232188\",\n  \"amt\": 50000,\n  \"kind\": \"face_value\",\n  \"act\": \"claim\",\n  \"ev\": [1, 3, 4]\n}\n```",
+   "out_tok": 76,
+   "in_tok": 480,
+   "ms": 36812
+  },
+  "hard2-00273": {
+   "id": "hard2-00273",
+   "raw": "```json\n{\n  \"cat\": \"credit_card\",\n  \"inst\": \"Parallel Credit Co.\",\n  \"ref\": \"1345\",\n  \"amt\": 9533.92,\n  \"kind\": \"balance\",\n  \"due\": 730,\n  \"act\": \"stop_payment\",\n  \"ev\": [2, 4]\n}\n```",
+   "out_tok": 81,
+   "in_tok": 304,
+   "ms": 39775
+  },
+  "hard2-00275": {
+   "id": "hard2-00275",
+   "raw": "```json\n{\n  \"cat\": \"investment\",\n  \"inst\": \"Tidewater Brokerage\",\n  \"ref\": \"7845\",\n  \"amt\": 944646.85,\n  \"kind\": \"balance\",\n  \"act\": \"notify\",\n  \"ev\": [1, 2, 3, 4]\n}\n```",
+   "out_tok": 80,
+   "in_tok": 424,
+   "ms": 39292
+  },
+  "hard2-00343": {
+   "id": "hard2-00343",
+   "raw": "```json\n{\"cat\": \"personal\"}\n```",
+   "out_tok": 11,
+   "in_tok": 354,
+   "ms": 6963
+  },
+  "hard2-00290": {
+   "id": "hard2-00290",
+   "raw": "{\n  \"cat\": \"investment\",\n  \"inst\": \"Crestline Wealth Management\",\n  \"ref\": \"9833\",\n  \"amt\": 756868.07,\n  \"kind\": \"balance\",\n  \"act\": \"transfer\",\n  \"ev\": [9, 10]\n}",
+   "out_tok": 71,
+   "in_tok": 547,
+   "ms": 34354
+  },
+  "hard2-00282": {
+   "id": "hard2-00282",
+   "raw": "```json\n{\n  \"cat\": \"subscription\",\n  \"inst\": \"Harbor Coffee Club\",\n  \"ref\": \"1883\",\n  \"amt\": 19.0,\n  \"kind\": \"charge\",\n  \"rec\": \"quarterly\",\n  \"act\": \"cancel\",\n  \"ev\": [1, 3, 4]\n}\n```",
+   "out_tok": 79,
+   "in_tok": 329,
+   "ms": 38716
+  },
+  "hard2-00256": {
+   "id": "hard2-00256",
+   "raw": "```json\n{\n  \"cat\": \"government\",\n  \"inst\": \"Veterans Benefits Regional Office\",\n  \"ref\": \"19848490\",\n  \"amt\": 6589.46,\n  \"kind\": \"balance\",\n  \"rec\": \"annual\",\n  \"due\": 58,\n  \"act\": \"verify_debt\",\n  \"ev\": [11, 12, 13]\n}\n```",
+   "out_tok": 99,
+   "in_tok": 603,
+   "ms": 49528
+  },
+  "hard2-00279": {
+   "id": "hard2-00279",
+   "raw": "```json\n{\n  \"cat\": \"retirement\",\n  \"inst\": \"County Employees' Annuity Plan\",\n  \"ref\": \"6765\",\n  \"amt\": 6388.32,\n  \"kind\": \"balance\",\n  \"rec\": \"monthly\",\n  \"act\": \"verify_debt\",\n  \"ev\": [4]\n}\n```",
+   "out_tok": 81,
+   "in_tok": 380,
+   "ms": 39876
+  },
+  "hard2-00269": {
+   "id": "hard2-00269",
+   "raw": "```json\n{\n  \"cat\": \"utility\",\n  \"inst\": \"StowAway Storage\",\n  \"ref\": \"7007\",\n  \"amt\": 4446.92,\n  \"kind\": \"balance\",\n  \"due\": 45,\n  \"act\": \"notify\",\n  \"ev\": [1, 2, 3, 4, 5]\n}\n```",
+   "out_tok": 88,
+   "in_tok": 310,
+   "ms": 43919
+  },
+  "hard2-00286": {
+   "id": "hard2-00286",
+   "raw": "```json\n{\n  \"cat\": \"utility\",\n  \"inst\": \"Clearbrook Water District\",\n  \"ref\": \"7874\",\n  \"amt\": 215.00,\n  \"kind\": \"due\",\n  \"due\": 21,\n  \"act\": \"notify\",\n  \"ev\": [4, 5]\n}\n```",
+   "out_tok": 78,
+   "in_tok": 371,
+   "ms": 38050
+  },
+  "hard2-00357": {
+   "id": "hard2-00357",
+   "raw": "{\"cat\": \"personal\"}",
+   "out_tok": 7,
+   "in_tok": 485,
+   "ms": 5347
+  },
+  "hard2-00294": {
+   "id": "hard2-00294",
+   "raw": "```json\n{\n  \"cat\": \"medical\",\n  \"inst\": \"Evergrove Dental Group\",\n  \"ref\": \"2453\",\n  \"amt\": 51388,\n  \"kind\": \"balance\",\n  \"due\": 60,\n  \"act\": \"notify\",\n  \"ev\": [4]\n}\n```",
+   "out_tok": 75,
+   "in_tok": 387,
+   "ms": 37085
+  },
+  "hard2-00354": {
+   "id": "hard2-00354",
+   "raw": "```json\n{\"cat\":\"personal\"}\n```",
+   "out_tok": 10,
+   "in_tok": 580,
+   "ms": 7075
+  },
+  "hard2-00293": {
+   "id": "hard2-00293",
+   "raw": "```json\n{\n  \"cat\": \"retirement\",\n  \"inst\": \"Maritime Officers Retirement Fund\",\n  \"ref\": \"4040\",\n  \"amt\": 3478.08,\n  \"kind\": \"balance\",\n  \"rec\": \"monthly\",\n  \"act\": \"notify\",\n  \"ev\": [4]\n}\n```",
+   "out_tok": 77,
+   "in_tok": 374,
+   "ms": 38678
+  },
+  "hard2-00309": {
+   "id": "hard2-00309",
+   "raw": "{\n  \"cat\": \"retirement\",\n  \"inst\": \"Maritime Officers Retirement Fund\",\n  \"ref\": \"7715\",\n  \"amt\": 5660,\n  \"kind\": \"balance\",\n  \"act\": \"notify\",\n  \"ev\": [11, 12]\n}",
+   "out_tok": 68,
+   "in_tok": 598,
+   "ms": 33119
+  },
+  "hard2-00300": {
+   "id": "hard2-00300",
+   "raw": "```json\n{\n  \"cat\": \"government\",\n  \"inst\": \"State Unclaimed Property Division\",\n  \"ref\": \"C1335660\",\n  \"amt\": 6586,\n  \"kind\": \"balance\",\n  \"act\": \"notify\",\n  \"ev\": [3, 4, 5]\n}\n```",
+   "out_tok": 76,
+   "in_tok": 384,
+   "ms": 37599
+  },
+  "hard2-00306": {
+   "id": "hard2-00306",
+   "raw": "{\n  \"cat\": \"subscription\",\n  \"inst\": \"Petal & Pot Plant Box\",\n  \"ref\": \"1544\",\n  \"kind\": \"charge\",\n  \"rec\": \"monthly\",\n  \"act\": \"cancel\",\n  \"ev\": [2, 6, 7, 9, 16]\n}",
+   "out_tok": 73,
+   "in_tok": 485,
+   "ms": 35919
+  },
+  "hard2-00319": {
+   "id": "hard2-00319",
+   "raw": "```json\n{\n  \"cat\": \"subscription\",\n  \"inst\": \"Harbor Coffee Club\",\n  \"ref\": \"5559\",\n  \"act\": \"cancel\",\n  \"ev\": [1, 2, 3, 4]\n}\n```",
+   "out_tok": 57,
+   "in_tok": 337,
+   "ms": 28655
+  },
+  "hard2-00303": {
+   "id": "hard2-00303",
+   "raw": "{\n  \"cat\": \"utility\",\n  \"inst\": \"Tri-State Power Cooperative\",\n  \"ref\": \"9354\",\n  \"amt\": 225.77,\n  \"kind\": \"due\",\n  \"due\": 21,\n  \"act\": \"notify\",\n  \"ev\": [7, 8]\n}",
+   "out_tok": 74,
+   "in_tok": 629,
+   "ms": 36470
+  },
+  "hard2-00298": {
+   "id": "hard2-00298",
+   "raw": "```json\n{\n  \"cat\": \"insurance\",\n  \"inst\": \"Birchwood Mutual\",\n  \"ref\": \"PL463066\",\n  \"amt\": 100000,\n  \"kind\": \"face_value\",\n  \"act\": \"claim\",\n  \"ev\": [9, 14, 16]\n}\n```",
+   "out_tok": 80,
+   "in_tok": 531,
+   "ms": 40093
+  },
+  "hard2-00305": {
+   "id": "hard2-00305",
+   "raw": "```json\n{\n  \"cat\": \"medical\",\n  \"inst\": \"Westbrook Regional Hospital\",\n  \"ref\": \"6888\",\n  \"amt\": 21411.54,\n  \"kind\": \"due\",\n  \"due\": 60,\n  \"act\": \"notify\",\n  \"ev\": [4]\n}\n```",
+   "out_tok": 77,
+   "in_tok": 458,
+   "ms": 38135
+  },
+  "hard2-00304": {
+   "id": "hard2-00304",
+   "raw": "```json\n{\n  \"cat\": \"medical\",\n  \"inst\": \"Westbrook Regional Hospital\",\n  \"ref\": \"6888\",\n  \"amt\": 21411.54,\n  \"kind\": \"balance\",\n  \"due\": 60,\n  \"act\": \"notify\",\n  \"ev\": [1]\n}\n```",
+   "out_tok": 77,
+   "in_tok": 306,
+   "ms": 38137
+  },
+  "hard2-00369": {
+   "id": "hard2-00369",
+   "raw": "{\"cat\": \"personal\"}",
+   "out_tok": 7,
+   "in_tok": 553,
+   "ms": 5435
+  },
+  "hard2-00280": {
+   "id": "hard2-00280",
+   "raw": "```json\n{\n  \"cat\": \"retirement\",\n  \"inst\": \"Electrical Workers Pension Trust Fund 47\",\n  \"ref\": \"2705\",\n  \"amt\": 950.19,\n  \"kind\": \"balance\",\n  \"rec\": \"monthly\",\n  \"due\": 30,\n  \"act\": \"notify\",\n  \"ev\": [1, 3, 4]\n}\n```",
+   "out_tok": 94,
+   "in_tok": 396,
+   "ms": 47369
+  },
+  "hard2-00299": {
+   "id": "hard2-00299",
+   "raw": "{\n  \"cat\": \"government\",\n  \"inst\": \"State Unclaimed Property Division, Texas Veterans and Tax Office\",\n  \"ref\": \"C1335660\",\n  \"amt\": 6586.00,\n  \"kind\": \"balance\",\n  \"rec\": \"none\",\n  \"act\": \"notify\",\n  \"ev\": [3, 4]\n}",
+   "out_tok": 85,
+   "in_tok": 508,
+   "ms": 42961
+  },
+  "hard2-00301": {
+   "id": "hard2-00301",
+   "raw": "```json\n{\n  \"cat\": \"credit_card\",\n  \"inst\": \"Meridian Gold Card\",\n  \"ref\": \"7427\",\n  \"amt\": 12590.77,\n  \"kind\": \"balance\",\n  \"due\": 14,\n  \"act\": \"notify\",\n  \"ev\": [1, 3, 4]\n}\n```",
+   "out_tok": 84,
+   "in_tok": 419,
+   "ms": 41736
+  },
+  "hard2-00324": {
+   "id": "hard2-00324",
+   "raw": "{\n  \"cat\": \"bank\",\n  \"inst\": \"Fjord National Bank\",\n  \"ref\": \"1722\",\n  \"amt\": 56446.72,\n  \"kind\": \"balance\",\n  \"act\": \"notify\"\n}",
+   "out_tok": 59,
+   "in_tok": 380,
+   "ms": 30196
+  },
+  "hard2-00297": {
+   "id": "hard2-00297",
+   "raw": "```json\n{\n  \"cat\": \"retirement\",\n  \"inst\": \"Maritime Officers Retirement Fund\",\n  \"ref\": \"9611\",\n  \"amt\": 3811.47,\n  \"kind\": \"balance\",\n  \"rec\": \"monthly\",\n  \"due\": 60,\n  \"act\": \"notify\",\n  \"ev\": [3, 4]\n}\n```",
+   "out_tok": 88,
+   "in_tok": 380,
+   "ms": 44492
+  },
+  "hard2-00313": {
+   "id": "hard2-00313",
+   "raw": "```json\n{\n  \"cat\": \"insurance\",\n  \"inst\": \"Lighthouse Life Assurance\",\n  \"ref\": \"PL248806\",\n  \"amt\": 10000,\n  \"kind\": \"face_value\",\n  \"act\": \"verify_debt\",\n  \"ev\": [1, 2]\n}\n```",
+   "out_tok": 75,
+   "in_tok": 259,
+   "ms": 36833
+  },
+  "hard2-00321": {
+   "id": "hard2-00321",
+   "raw": "```json\n{\n  \"cat\": \"credit_card\",\n  \"inst\": \"TrueNorth Card Services\",\n  \"ref\": \"9660\",\n  \"act\": \"verify_debt\",\n  \"ev\": [1, 3, 4, 5, 9, 11]\n}\n```",
+   "out_tok": 67,
+   "in_tok": 426,
+   "ms": 33738
+  },
+  "hard2-00296": {
+   "id": "hard2-00296",
+   "raw": "```json\n{\n  \"cat\": \"retirement\",\n  \"inst\": \"Maritime Officers Retirement Fund\",\n  \"ref\": \"9611\",\n  \"amt\": 3811.47,\n  \"kind\": \"balance\",\n  \"rec\": \"monthly\",\n  \"due\": 60,\n  \"act\": \"verify_debt\",\n  \"ev\": [4, 5]\n}\n```",
+   "out_tok": 90,
+   "in_tok": 440,
+   "ms": 45432
+  },
+  "hard2-00378": {
+   "id": "hard2-00378",
+   "raw": "{\"cat\": \"personal\"}",
+   "out_tok": 7,
+   "in_tok": 269,
+   "ms": 4697
+  },
+  "hard2-00291": {
+   "id": "hard2-00291",
+   "raw": "{\n  \"cat\": \"loan\",\n  \"inst\": \"Prairie Auto Lending\",\n  \"ref\": \"5452\",\n  \"amt\": 2087.33,\n  \"kind\": \"due\",\n  \"rec\": \"monthly\",\n  \"due\": 7,\n  \"act\": \"verify_debt\",\n  \"ev\": [1, 2, 3, 4]\n}",
+   "out_tok": 91,
+   "in_tok": 354,
+   "ms": 45836
+  },
+  "hard2-00307": {
+   "id": "hard2-00307",
+   "raw": "```json\n{\n  \"cat\": \"utility\",\n  \"inst\": \"Willow Lane Homeowners Association\",\n  \"ref\": \"Unit 9904\",\n  \"amt\": 10845.19,\n  \"kind\": \"balance\",\n  \"due\": 30,\n  \"act\": \"notify\",\n  \"ev\": [2, 4]\n}\n```",
+   "out_tok": 84,
+   "in_tok": 420,
+   "ms": 41644
+  },
+  "hard2-00312": {
+   "id": "hard2-00312",
+   "raw": "```json\n{\n  \"cat\": \"subscription\",\n  \"inst\": \"Stargazer Streaming\",\n  \"ref\": \"6432\",\n  \"amt\": 59.99,\n  \"kind\": \"charge\",\n  \"rec\": \"monthly\",\n  \"due\": 30,\n  \"act\": \"cancel\",\n  \"ev\": [1]\n}\n```",
+   "out_tok": 81,
+   "in_tok": 264,
+   "ms": 39631
+  },
+  "hard2-00315": {
+   "id": "hard2-00315",
+   "raw": "{\n  \"cat\": \"credit_card\",\n  \"inst\": \"Meridian Gold Card\",\n  \"ref\": \"5375\",\n  \"amt\": 10659,\n  \"kind\": \"balance\",\n  \"due\": 14,\n  \"act\": \"notify\",\n  \"ev\": [1, 3, 4]\n}",
+   "out_tok": 77,
+   "in_tok": 357,
+   "ms": 38060
+  },
+  "hard2-00323": {
+   "id": "hard2-00323",
+   "raw": "```json\n{\n  \"cat\": \"credit_card\",\n  \"inst\": \"TrueNorth Card Services\",\n  \"ref\": \"5745\",\n  \"amt\": 1475.80,\n  \"kind\": \"due\",\n  \"act\": \"verify_debt\",\n  \"ev\": [1]\n}\n```",
+   "out_tok": 71,
+   "in_tok": 268,
+   "ms": 35374
+  },
+  "hard2-00310": {
+   "id": "hard2-00310",
+   "raw": "{\n  \"cat\": \"loan\",\n  \"inst\": \"Bluebell Consumer Loans\",\n  \"ref\": \"4692\",\n  \"amt\": 2585.93,\n  \"kind\": \"due\",\n  \"rec\": \"monthly\",\n  \"due\": 30,\n  \"act\": \"verify_debt\",\n  \"ev\": [1, 2, 3, 4]\n}",
+   "out_tok": 90,
+   "in_tok": 365,
+   "ms": 43681
+  },
+  "hard2-00314": {
+   "id": "hard2-00314",
+   "raw": "```json\n{\n  \"cat\": \"insurance\",\n  \"inst\": \"Birchwood Mutual\",\n  \"ref\": \"PL256777\",\n  \"amt\": 250000,\n  \"kind\": \"face_value\",\n  \"due\": 30,\n  \"act\": \"claim\",\n  \"ev\": [1, 2]\n}\n```",
+   "out_tok": 83,
+   "in_tok": 287,
+   "ms": 40367
+  },
+  "hard2-00308": {
+   "id": "hard2-00308",
+   "raw": "```json\n{\n  \"cat\": \"retirement\",\n  \"inst\": \"Maritime Officers Retirement Fund\",\n  \"ref\": \"7715\",\n  \"amt\": 5660,\n  \"kind\": \"balance\",\n  \"rec\": \"monthly\",\n  \"due\": 30,\n  \"act\": \"verify_debt\",\n  \"ev\": [12, 13, 14]\n}\n```",
+   "out_tok": 93,
+   "in_tok": 621,
+   "ms": 44974
+  },
+  "hard2-00317": {
+   "id": "hard2-00317",
+   "raw": "```json\n{\n  \"cat\": \"subscription\",\n  \"inst\": \"Petal & Pot Plant Box\",\n  \"ref\": \"2552\",\n  \"amt\": 4.99,\n  \"kind\": \"charge\",\n  \"rec\": \"quarterly\",\n  \"act\": \"cancel\",\n  \"ev\": [1, 3, 4]\n}\n```",
+   "out_tok": 81,
+   "in_tok": 487,
+   "ms": 39694
+  },
+  "hard2-00325": {
+   "id": "hard2-00325",
+   "raw": "```json\n{\n  \"cat\": \"legal\",\n  \"inst\": \"Probate & Family Court Registry\",\n  \"ref\": \"Estate of Anwar Bergström\",\n  \"due\": 30,\n  \"act\": \"notify\",\n  \"ev\": [1, 2, 4, 5]\n}\n```",
+   "out_tok": 71,
+   "in_tok": 444,
+   "ms": 35858
+  },
+  "hard2-00318": {
+   "id": "hard2-00318",
+   "raw": "```json\n{\n  \"cat\": \"subscription\",\n  \"inst\": \"Petal & Pot Plant Box\",\n  \"ref\": \"2552\",\n  \"amt\": 4.99,\n  \"kind\": \"charge\",\n  \"rec\": \"quarterly\",\n  \"act\": \"cancel\",\n  \"ev\": [1, 2, 3, 4]\n}\n```",
+   "out_tok": 84,
+   "in_tok": 299,
+   "ms": 41121
+  },
+  "hard2-00364": {
+   "id": "hard2-00364",
+   "raw": "```json\n{\n  \"cat\": \"bank\",\n  \"inst\": \"Crestline Wealth Management\",\n  \"ref\": \"9900\"\n}\n```",
+   "out_tok": 35,
+   "in_tok": 411,
+   "ms": 18003
+  },
+  "hard2-00382": {
+   "id": "hard2-00382",
+   "raw": "```json\n{\"cat\":\"personal\",\"act\":\"notify\",\"ev\":[3,4,5]}\n```",
+   "out_tok": 22,
+   "in_tok": 566,
+   "ms": 10454
+  },
+  "hard2-00368": {
+   "id": "hard2-00368",
+   "raw": "```json\n{\n  \"cat\": \"credit_card\",\n  \"inst\": \"Parallel Credit Co.\",\n  \"ref\": \"6508\"\n}\n```",
+   "out_tok": 34,
+   "in_tok": 356,
+   "ms": 17615
+  },
+  "hard2-00401": {
+   "id": "hard2-00401",
+   "raw": "{\"cat\": \"personal\"}",
+   "out_tok": 7,
+   "in_tok": 238,
+   "ms": 3924
+  },
+  "hard2-00395": {
+   "id": "hard2-00395",
+   "raw": "```json\n{\n  \"cat\": \"personal\"\n}\n```",
+   "out_tok": 14,
+   "in_tok": 508,
+   "ms": 6740
+  },
+  "hard2-00341": {
+   "id": "hard2-00341",
+   "raw": "```json\n{\n  \"cat\": \"legal\",\n  \"inst\": \"Register of Wills\",\n  \"ref\": \"PR-2025-6893\",\n  \"act\": \"notify\",\n  \"ev\": [1, 5]\n}\n```",
+   "out_tok": 58,
+   "in_tok": 364,
+   "ms": 30368
+  },
+  "hard2-00326": {
+   "id": "hard2-00326",
+   "raw": "{\n  \"cat\": \"property\",\n  \"inst\": \"Willow Lane Homeowners Association\",\n  \"ref\": \"7362\",\n  \"amt\": 8935.61,\n  \"kind\": \"balance\",\n  \"due\": 14,\n  \"act\": \"notify\",\n  \"ev\": [2, 4]\n}",
+   "out_tok": 77,
+   "in_tok": 435,
+   "ms": 38682
+  },
+  "hard2-00403": {
+   "id": "hard2-00403",
+   "raw": "{\"cat\": \"government\"}",
+   "out_tok": 7,
+   "in_tok": 518,
+   "ms": 3962
+  },
+  "hard2-00328": {
+   "id": "hard2-00328",
+   "raw": "```json\n{\n  \"cat\": \"insurance\",\n  \"inst\": \"Continental Legacy Insurance\",\n  \"ref\": \"PL176770\",\n  \"amt\": 10000,\n  \"kind\": \"face_value\",\n  \"act\": \"claim\",\n  \"ev\": [4]\n}\n```",
+   "out_tok": 70,
+   "in_tok": 346,
+   "ms": 36102
+  },
+  "hard2-00329": {
+   "id": "hard2-00329",
+   "raw": "```json\n{\n  \"cat\": \"loan\",\n  \"inst\": \"Parallel Credit Co.\",\n  \"ref\": \"1878\",\n  \"amt\": 3002.57,\n  \"kind\": \"balance\",\n  \"act\": \"verify_debt\",\n  \"ev\": [12]\n}\n```",
+   "out_tok": 70,
+   "in_tok": 622,
+   "ms": 36102
+  },
+  "hard2-00406": {
+   "id": "hard2-00406",
+   "raw": "{\"cat\": \"personal\"}",
+   "out_tok": 7,
+   "in_tok": 330,
+   "ms": 3830
+  },
+  "hard2-00331": {
+   "id": "hard2-00331",
+   "raw": "```json\n{\n  \"cat\": \"legal\",\n  \"inst\": \"Okafor Lindell Estate Law\",\n  \"ref\": \"PR-2024-6929\",\n  \"due\": 30,\n  \"act\": \"notify\",\n  \"ev\": [4, 6, 7]\n}\n```",
+   "out_tok": 72,
+   "in_tok": 506,
+   "ms": 37149
+  },
+  "hard2-00409": {
+   "id": "hard2-00409",
+   "raw": "{\"cat\": \"personal\"}",
+   "out_tok": 7,
+   "in_tok": 258,
+   "ms": 3672
+  },
+  "hard2-00332": {
+   "id": "hard2-00332",
+   "raw": "```json\n{\n  \"cat\": \"subscription\",\n  \"inst\": \"Loom Learning\",\n  \"ref\": \"1532\",\n  \"amt\": 59.99,\n  \"kind\": \"due\",\n  \"rec\": \"annual\",\n  \"act\": \"cancel\",\n  \"ev\": [1, 4]\n}\n```",
+   "out_tok": 75,
+   "in_tok": 378,
+   "ms": 38307
+  },
+  "hard2-00334": {
+   "id": "hard2-00334",
+   "raw": "```json\n{\n  \"cat\": \"investment\",\n  \"inst\": \"Arbor Point Securities\",\n  \"ref\": \"2833\",\n  \"amt\": 733913.03,\n  \"kind\": \"balance\",\n  \"act\": \"transfer\",\n  \"ev\": [3, 4]\n}\n```",
+   "out_tok": 73,
+   "in_tok": 497,
+   "ms": 37240
+  },
+  "hard2-00410": {
+   "id": "hard2-00410",
+   "raw": "{\"cat\": \"irrelevant\"}",
+   "out_tok": 8,
+   "in_tok": 252,
+   "ms": 3925
+  },
+  "hard2-00333": {
+   "id": "hard2-00333",
+   "raw": "```json\n{\n  \"cat\": \"subscription\",\n  \"inst\": \"Loom Learning\",\n  \"ref\": \"1532\",\n  \"amt\": 59.99,\n  \"kind\": \"charge\",\n  \"rec\": \"annual\",\n  \"act\": \"stop_payment\",\n  \"ev\": [1, 2]\n}\n```",
+   "out_tok": 76,
+   "in_tok": 281,
+   "ms": 38538
+  },
+  "hard2-00350": {
+   "id": "hard2-00350",
+   "raw": "```json\n{\n  \"cat\": \"insurance\",\n  \"inst\": \"Lighthouse Life Assurance\",\n  \"ref\": \"PL298973\",\n  \"amt\": 10000,\n  \"kind\": \"face_value\",\n  \"act\": \"claim\"\n}\n```",
+   "out_tok": 63,
+   "in_tok": 424,
+   "ms": 31590
+  },
+  "hard2-00340": {
+   "id": "hard2-00340",
+   "raw": "```json\n{\n  \"cat\": \"credit_card\",\n  \"inst\": \"Meridian Gold Card\",\n  \"ref\": \"7994\",\n  \"amt\": 13787.00,\n  \"kind\": \"balance\",\n  \"act\": \"verify_debt\",\n  \"ev\": [4]\n}\n```",
+   "out_tok": 72,
+   "in_tok": 378,
+   "ms": 36213
+  },
+  "hard2-00345": {
+   "id": "hard2-00345",
+   "raw": "{\n  \"cat\": \"loan\",\n  \"inst\": \"Bluebell Consumer Loans\",\n  \"ref\": \"6816\",\n  \"amt\": 1136.00,\n  \"kind\": \"due\",\n  \"act\": \"stop_payment\",\n  \"ev\": [2, 4]\n}",
+   "out_tok": 68,
+   "in_tok": 362,
+   "ms": 34003
+  },
+  "hard2-00335": {
+   "id": "hard2-00335",
+   "raw": "```json\n{\n  \"cat\": \"loan\",\n  \"inst\": \"Keel & Anchor Mortgage Co.\",\n  \"ref\": \"5147\",\n  \"amt\": 4127.27,\n  \"kind\": \"due\",\n  \"rec\": \"monthly\",\n  \"act\": \"verify_debt\",\n  \"ev\": [4]\n}\n```",
+   "out_tok": 79,
+   "in_tok": 532,
+   "ms": 39651
+  },
+  "hard2-00336": {
+   "id": "hard2-00336",
+   "raw": "{\n  \"cat\": \"bank\",\n  \"inst\": \"Crestline Wealth Management\",\n  \"ref\": \"9349\",\n  \"amt\": 291707.77,\n  \"kind\": \"balance\",\n  \"act\": \"notify\",\n  \"ev\": [6, 7, 8, 9]\n}",
+   "out_tok": 76,
+   "in_tok": 611,
+   "ms": 37529
+  },
+  "hard2-00394": {
+   "id": "hard2-00394",
+   "raw": "{\"cat\": \"subscription\", \"kind\": \"balance\", \"amt\": 2150, \"act\": \"review\", \"ev\": [1]}",
+   "out_tok": 34,
+   "in_tok": 246,
+   "ms": 14885
+  },
+  "hard2-00387": {
+   "id": "hard2-00387",
+   "raw": "```json\n{\n  \"cat\": \"subscription\",\n  \"inst\": \"Inkwell Monthly\",\n  \"ref\": \"2535\",\n  \"act\": \"cancel\"\n}\n```",
+   "out_tok": 41,
+   "in_tok": 264,
+   "ms": 18149
+  },
+  "hard2-00351": {
+   "id": "hard2-00351",
+   "raw": "```json\n{\n  \"cat\": \"community\",\n  \"inst\": \"Ashford Neighbourhood Steering Committee\",\n  \"ref\": \"Final Notice\",\n  \"due\": 9,\n  \"act\": \"notify\",\n  \"ev\": [5, 8, 11, 19]\n}\n```",
+   "out_tok": 67,
+   "in_tok": 609,
+   "ms": 32779
+  },
+  "hard2-00367": {
+   "id": "hard2-00367",
+   "raw": "{\n  \"cat\": \"credit_card\",\n  \"inst\": \"Meridian Gold Card\",\n  \"ref\": \"7658\",\n  \"kind\": \"due\",\n  \"act\": \"stop_payment\",\n  \"ev\": [8, 10]\n}",
+   "out_tok": 57,
+   "in_tok": 619,
+   "ms": 26859
+  },
+  "hard2-00358": {
+   "id": "hard2-00358",
+   "raw": "{\n  \"cat\": \"subscription\",\n  \"inst\": \"Inkwell Monthly\",\n  \"ref\": \"3427\",\n  \"rec\": \"monthly\",\n  \"act\": \"cancel\",\n  \"ev\": [11, 12, 21, 29]\n}",
+   "out_tok": 64,
+   "in_tok": 634,
+   "ms": 30332
+  },
+  "hard2-00419": {
+   "id": "hard2-00419",
+   "raw": "{\"cat\": \"personal\"}",
+   "out_tok": 7,
+   "in_tok": 351,
+   "ms": 3395
+  },
+  "hard2-00348": {
+   "id": "hard2-00348",
+   "raw": "```json\n{\n  \"cat\": \"insurance\",\n  \"inst\": \"Birchwood Mutual\",\n  \"ref\": \"PL507927\",\n  \"amt\": 500000,\n  \"kind\": \"face_value\",\n  \"act\": \"claim\",\n  \"ev\": [4]\n}\n```",
+   "out_tok": 72,
+   "in_tok": 361,
+   "ms": 34669
+  },
+  "hard2-00347": {
+   "id": "hard2-00347",
+   "raw": "```json\n{\n  \"cat\": \"investment\",\n  \"inst\": \"Tidewater Brokerage\",\n  \"ref\": \"9329\",\n  \"amt\": 645432.37,\n  \"kind\": \"balance\",\n  \"act\": \"verify_debt\",\n  \"ev\": [4]\n}\n```",
+   "out_tok": 73,
+   "in_tok": 360,
+   "ms": 35251
+  },
+  "hard2-00349": {
+   "id": "hard2-00349",
+   "raw": "```json\n{\n  \"cat\": \"insurance\",\n  \"inst\": \"Birchwood Mutual\",\n  \"ref\": \"PL507927\",\n  \"amt\": 500000,\n  \"kind\": \"face_value\",\n  \"act\": \"claim\",\n  \"ev\": [1, 3]\n}\n```",
+   "out_tok": 75,
+   "in_tok": 362,
+   "ms": 35629
+  },
+  "hard2-00346": {
+   "id": "hard2-00346",
+   "raw": "```json\n{\n  \"cat\": \"medical\",\n  \"inst\": \"Westbrook Regional Hospital\",\n  \"ref\": \"1789\",\n  \"amt\": 59130.18,\n  \"kind\": \"balance\",\n  \"due\": 60,\n  \"act\": \"verify_debt\",\n  \"ev\": [4, 5]\n}\n```",
+   "out_tok": 82,
+   "in_tok": 445,
+   "ms": 38552
+  },
+  "hard2-00359": {
+   "id": "hard2-00359",
+   "raw": "{\n  \"cat\": \"government\",\n  \"inst\": \"State Unclaimed Property Division\",\n  \"ref\": \"7885\",\n  \"amt\": 1972.37,\n  \"kind\": \"balance\",\n  \"act\": \"notify\",\n  \"ev\": [6, 7, 9]\n}",
+   "out_tok": 71,
+   "in_tok": 542,
+   "ms": 32590
+  },
+  "hard2-00352": {
+   "id": "hard2-00352",
+   "raw": "```json\n{\n  \"cat\": \"medical\",\n  \"inst\": \"Westbrook Regional Hospital\",\n  \"ref\": \"8069\",\n  \"amt\": 34337.04,\n  \"kind\": \"due\",\n  \"due\": 90,\n  \"act\": \"notify\",\n  \"ev\": [1]\n}\n```",
+   "out_tok": 77,
+   "in_tok": 290,
+   "ms": 36015
+  },
+  "hard2-00362": {
+   "id": "hard2-00362",
+   "raw": "```json\n{\n  \"cat\": \"bank\",\n  \"inst\": \"Fjord National Bank\",\n  \"ref\": \"4510\",\n  \"amt\": 48355,\n  \"kind\": \"balance\",\n  \"act\": \"notify\",\n  \"ev\": [5, 6, 7]\n}\n```",
+   "out_tok": 73,
+   "in_tok": 442,
+   "ms": 33232
+  },
+  "hard2-00388": {
+   "id": "hard2-00388",
+   "raw": "```json\n{\n  \"cat\": \"subscription\",\n  \"inst\": \"Inkwell Monthly\",\n  \"ref\": \"2535\",\n  \"act\": \"cancel\",\n  \"ev\": [1, 3, 4]\n}\n```",
+   "out_tok": 54,
+   "in_tok": 344,
+   "ms": 22207
+  },
+  "hard2-00363": {
+   "id": "hard2-00363",
+   "raw": "```json\n{\n  \"cat\": \"bank\",\n  \"inst\": \"Fjord National Bank\",\n  \"ref\": \"4510\",\n  \"amt\": 48355,\n  \"kind\": \"balance\",\n  \"act\": \"claim\",\n  \"ev\": [11, 14, 15]\n}\n```",
+   "out_tok": 76,
+   "in_tok": 593,
+   "ms": 34191
+  },
+  "hard2-00376": {
+   "id": "hard2-00376",
+   "raw": "{\n  \"cat\": \"utility\",\n  \"inst\": \"Clearbrook Water District\",\n  \"ref\": \"2471\",\n  \"amt\": 163.69,\n  \"kind\": \"due\",\n  \"act\": \"notify\",\n  \"ev\": [6, 18]\n}",
+   "out_tok": 67,
+   "in_tok": 587,
+   "ms": 28248
+  },
+  "hard2-00360": {
+   "id": "hard2-00360",
+   "raw": "```json\n{\n  \"cat\": \"property\",\n  \"inst\": \"StowAway Storage\",\n  \"ref\": \"7902\",\n  \"amt\": 7731.23,\n  \"kind\": \"balance\",\n  \"due\": 30,\n  \"act\": \"notify\",\n  \"ev\": [1, 2]\n}\n```",
+   "out_tok": 79,
+   "in_tok": 280,
+   "ms": 35154
+  },
+  "hard2-00375": {
+   "id": "hard2-00375",
+   "raw": "```json\n{\n  \"cat\": \"bank\",\n  \"inst\": \"Silver Creek Savings Bank\",\n  \"ref\": \"8413\",\n  \"amt\": 46072.00,\n  \"kind\": \"balance\",\n  \"act\": \"notify\",\n  \"ev\": [4]\n}\n```",
+   "out_tok": 69,
+   "in_tok": 389,
+   "ms": 28886
+  },
+  "hard2-00370": {
+   "id": "hard2-00370",
+   "raw": "```json\n{\n  \"cat\": \"insurance\",\n  \"inst\": \"Lighthouse Life Assurance\",\n  \"ref\": \"920-91831\",\n  \"amt\": 500000.00,\n  \"kind\": \"face_value\",\n  \"act\": \"claim\",\n  \"ev\": [4]\n}\n```",
+   "out_tok": 76,
+   "in_tok": 418,
+   "ms": 32719
+  },
+  "hard2-00371": {
+   "id": "hard2-00371",
+   "raw": "```json\n{\n  \"cat\": \"utility\",\n  \"inst\": \"Tri-State Power Cooperative\",\n  \"ref\": \"1184\",\n  \"amt\": 844.95,\n  \"kind\": \"balance\",\n  \"due\": 21,\n  \"act\": \"notify\",\n  \"ev\": [4]\n}\n```",
+   "out_tok": 75,
+   "in_tok": 426,
+   "ms": 32137
+  },
+  "hard2-00361": {
+   "id": "hard2-00361",
+   "raw": "{\n  \"cat\": \"loan\",\n  \"inst\": \"Bluebell Consumer Loans\",\n  \"ref\": \"2551\",\n  \"amt\": 1320.85,\n  \"kind\": \"due\",\n  \"rec\": \"monthly\",\n  \"due\": 45,\n  \"act\": \"notify\",\n  \"ev\": [2, 3]\n}",
+   "out_tok": 82,
+   "in_tok": 393,
+   "ms": 36109
+  },
+  "hard2-00356": {
+   "id": "hard2-00356",
+   "raw": "```json\n{\n  \"cat\": \"insurance\",\n  \"inst\": \"Continental Legacy Insurance\",\n  \"ref\": \"955-14973\",\n  \"amt\": 500000,\n  \"kind\": \"face_value\",\n  \"due\": 90,\n  \"act\": \"claim\",\n  \"ev\": [7, 8, 10]\n}\n```",
+   "out_tok": 88,
+   "in_tok": 561,
+   "ms": 39526
+  },
+  "hard2-00379": {
+   "id": "hard2-00379",
+   "raw": "{\n  \"cat\": \"utility\",\n  \"inst\": \"Summit Fiber Internet\",\n  \"ref\": \"1160\",\n  \"amt\": 532.33,\n  \"kind\": \"due\",\n  \"act\": \"notify\",\n  \"ev\": [1, 3, 4]\n}",
+   "out_tok": 69,
+   "in_tok": 339,
+   "ms": 28173
+  },
+  "hard2-00344": {
+   "id": "hard2-00344",
+   "raw": "```json\n{\n  \"cat\": \"subscription\",\n  \"inst\": \"Petal & Pot Plant Box\",\n  \"ref\": \"9930\",\n  \"amt\": 14.99,\n  \"kind\": \"charge\",\n  \"rec\": \"quarterly\",\n  \"due\": 0,\n  \"act\": \"cancel\",\n  \"ev\": [6, 12, 13, 18]\n}\n```",
+   "out_tok": 95,
+   "in_tok": 606,
+   "ms": 42843
+  },
+  "hard2-00380": {
+   "id": "hard2-00380",
+   "raw": "```json\n{\n  \"cat\": \"utility\",\n  \"inst\": \"Summit Fiber Internet\",\n  \"ref\": \"1160\",\n  \"amt\": 532.33,\n  \"kind\": \"due\",\n  \"act\": \"notify\",\n  \"ev\": [1, 4]\n}\n```",
+   "out_tok": 70,
+   "in_tok": 536,
+   "ms": 28486
+  },
+  "hard2-00377": {
+   "id": "hard2-00377",
+   "raw": "{\n  \"cat\": \"utility\",\n  \"inst\": \"Summit Fiber Internet\",\n  \"ref\": \"5789\",\n  \"amt\": 310.58,\n  \"kind\": \"balance\",\n  \"due\": 30,\n  \"act\": \"notify\",\n  \"ev\": [1, 4]\n}",
+   "out_tok": 74,
+   "in_tok": 354,
+   "ms": 30467
+  },
+  "hard2-00398": {
+   "id": "hard2-00398",
+   "raw": "```json\n{\n  \"cat\": \"government\",\n  \"inst\": \"State Unclaimed Property Division\",\n  \"ref\": \"4517\",\n  \"act\": \"notify\",\n  \"ev\": [1, 3, 5]\n}\n```",
+   "out_tok": 55,
+   "in_tok": 378,
+   "ms": 21331
+  },
+  "hard2-00373": {
+   "id": "hard2-00373",
+   "raw": "{\n  \"cat\": \"subscription\",\n  \"inst\": \"Harbor Coffee Club\",\n  \"ref\": \"1387\",\n  \"amt\": 59.99,\n  \"kind\": \"charge\",\n  \"rec\": \"quarterly\",\n  \"act\": \"cancel\",\n  \"ev\": [1, 2, 4, 5]\n}",
+   "out_tok": 79,
+   "in_tok": 422,
+   "ms": 32696
+  },
+  "hard2-00392": {
+   "id": "hard2-00392",
+   "raw": "```json\n{\n  \"cat\": \"investment\",\n  \"inst\": \"Crestline Wealth Management\",\n  \"ref\": \"2380\",\n  \"amt\": 1731819.51,\n  \"kind\": \"balance\",\n  \"ev\": [2]\n}\n```",
+   "out_tok": 65,
+   "in_tok": 265,
+   "ms": 25542
+  },
+  "hard2-00389": {
+   "id": "hard2-00389",
+   "raw": "{\n  \"cat\": \"insurance\",\n  \"inst\": \"Birchwood Mutual\",\n  \"ref\": \"PL393434\",\n  \"amt\": 100000,\n  \"kind\": \"face_value\",\n  \"act\": \"claim\",\n  \"ev\": [4]\n}",
+   "out_tok": 68,
+   "in_tok": 359,
+   "ms": 26634
+  },
+  "hard2-00365": {
+   "id": "hard2-00365",
+   "raw": "{\n  \"cat\": \"retirement\",\n  \"inst\": \"Electrical Workers Pension Trust Fund 47\",\n  \"ref\": \"7519\",\n  \"amt\": 6413.43,\n  \"kind\": \"balance\",\n  \"act\": \"verify_debt\",\n  \"due\": 10,\n  \"ev\": [1, 2, 3, 4]\n}",
+   "out_tok": 89,
+   "in_tok": 367,
+   "ms": 37327
+  },
+  "hard2-00372": {
+   "id": "hard2-00372",
+   "raw": "```json\n{\n  \"cat\": \"utility\",\n  \"inst\": \"Tri-State Power Cooperative\",\n  \"ref\": \"1184\",\n  \"amt\": 844.95,\n  \"kind\": \"due\",\n  \"due\": 21,\n  \"act\": \"notify\",\n  \"ev\": [1, 4, 5, 6]\n}\n```",
+   "out_tok": 84,
+   "in_tok": 492,
+   "ms": 34251
+  },
+  "hard2-00355": {
+   "id": "hard2-00355",
+   "raw": "```json\n{\n  \"cat\": \"retirement\",\n  \"inst\": \"Electrical Workers Pension Trust Fund 47\",\n  \"ref\": \"1074\",\n  \"amt\": 2148,\n  \"kind\": \"balance\",\n  \"rec\": \"monthly\",\n  \"due\": 30,\n  \"act\": \"notify\",\n  \"ev\": [1, 2, 5, 6, 7]\n}\n```",
+   "out_tok": 98,
+   "in_tok": 300,
+   "ms": 42646
+  },
+  "hard2-00400": {
+   "id": "hard2-00400",
+   "raw": "```json\n{\n  \"cat\": \"medical\",\n  \"inst\": \"Evergrove Dental Group\",\n  \"ref\": \"4966\",\n  \"amt\": 7628.96,\n  \"kind\": \"balance\",\n  \"act\": \"notify\"\n}\n```",
+   "out_tok": 62,
+   "in_tok": 370,
+   "ms": 23325
+  },
+  "hard2-00381": {
+   "id": "hard2-00381",
+   "raw": "{\n  \"cat\": \"insurance\",\n  \"inst\": \"Lighthouse Life Assurance\",\n  \"ref\": \"407-45808\",\n  \"amt\": 500000,\n  \"kind\": \"face_value\",\n  \"due\": 30,\n  \"act\": \"claim\",\n  \"ev\": [10, 18]\n}",
+   "out_tok": 82,
+   "in_tok": 607,
+   "ms": 32217
+  },
+  "hard2-00418": {
+   "id": "hard2-00418",
+   "raw": "{\"cat\":\"subscription\",\"inst\":\"Harbor Coffee Club\",\"ref\":\"4720\",\"amt\":99,\"kind\":\"charge\",\"rec\":\"monthly\",\"act\":\"cancel\",\"ev\":[1]}",
+   "out_tok": 41,
+   "in_tok": 273,
+   "ms": 14191
+  },
+  "hard2-00391": {
+   "id": "hard2-00391",
+   "raw": "```json\n{\n  \"cat\": \"bank\",\n  \"inst\": \"Fjord National Bank\",\n  \"ref\": \"9063\",\n  \"amt\": 15341.09,\n  \"kind\": \"balance\",\n  \"act\": \"verify_debt\",\n  \"ev\": [2, 3]\n}\n```",
+   "out_tok": 75,
+   "in_tok": 313,
+   "ms": 28642
+  },
+  "hard2-00390": {
+   "id": "hard2-00390",
+   "raw": "```json\n{\n  \"cat\": \"insurance\",\n  \"inst\": \"Birchwood Mutual\",\n  \"ref\": \"PL393434\",\n  \"amt\": 100000,\n  \"kind\": \"face_value\",\n  \"act\": \"verify_debt\",\n  \"ev\": [1, 2]\n}\n```",
+   "out_tok": 77,
+   "in_tok": 268,
+   "ms": 29258
+  },
+  "hard2-00386": {
+   "id": "hard2-00386",
+   "raw": "```json\n{\n  \"cat\": \"government\",\n  \"inst\": \"Tax Office of the State of Georgia\",\n  \"ref\": \"5303\",\n  \"amt\": 2073.56,\n  \"kind\": \"charge\",\n  \"rec\": \"monthly\",\n  \"act\": \"verify_debt\",\n  \"ev\": [3]\n}\n```",
+   "out_tok": 80,
+   "in_tok": 429,
+   "ms": 30507
+  },
+  "hard2-00366": {
+   "id": "hard2-00366",
+   "raw": "{\n  \"cat\": \"retirement\",\n  \"inst\": \"Maritime Officers Retirement Fund\",\n  \"ref\": \"1899\",\n  \"amt\": 5803.38,\n  \"kind\": \"balance\",\n  \"rec\": \"monthly\",\n  \"due\": 30,\n  \"act\": \"verify_debt\",\n  \"ev\": [13, 14, 15, 16]\n}",
+   "out_tok": 96,
+   "in_tok": 605,
+   "ms": 39217
+  },
+  "hard2-00385": {
+   "id": "hard2-00385",
+   "raw": "```json\n{\n  \"cat\": \"medical\",\n  \"inst\": \"Westbrook Regional Hospital\",\n  \"ref\": \"8197\",\n  \"amt\": 33282.84,\n  \"kind\": \"balance\",\n  \"due\": 60,\n  \"act\": \"notify\",\n  \"ev\": [1, 3, 4]\n}\n```",
+   "out_tok": 83,
+   "in_tok": 392,
+   "ms": 31674
+  },
+  "hard2-00374": {
+   "id": "hard2-00374",
+   "raw": "{\n  \"cat\": \"loan\",\n  \"inst\": \"Keel & Anchor Mortgage Co.\",\n  \"ref\": \"7806\",\n  \"amt\": 605.30,\n  \"kind\": \"due\",\n  \"rec\": \"monthly\",\n  \"due\": 30,\n  \"act\": \"close\",\n  \"ev\": [1, 3, 4, 8, 11]\n}",
+   "out_tok": 93,
+   "in_tok": 541,
+   "ms": 36694
+  },
+  "hard2-00407": {
+   "id": "hard2-00407",
+   "raw": "```json\n{\n  \"cat\": \"bank\",\n  \"inst\": \"Parallel Credit Co.\",\n  \"ref\": \"1256\",\n  \"amt\": 14012.46,\n  \"kind\": \"balance\",\n  \"act\": \"notify\"\n}\n```",
+   "out_tok": 61,
+   "in_tok": 362,
+   "ms": 21856
+  },
+  "hard2-00383": {
+   "id": "hard2-00383",
+   "raw": "```json\n{\n  \"cat\": \"government\",\n  \"inst\": \"Veterans Benefits Regional Office\",\n  \"ref\": \"4357\",\n  \"amt\": 5512.32,\n  \"kind\": \"due\",\n  \"rec\": \"monthly\",\n  \"due\": 30,\n  \"act\": \"notify\",\n  \"ev\": [4, 5]\n}\n```",
+   "out_tok": 87,
+   "in_tok": 411,
+   "ms": 32904
+  },
+  "hard2-00397": {
+   "id": "hard2-00397",
+   "raw": "```json\n{\n  \"cat\": \"bank\",\n  \"inst\": \"Commonwealth Depositors Union\",\n  \"ref\": \"1686\",\n  \"amt\": 114125.56,\n  \"kind\": \"balance\",\n  \"act\": \"notify\",\n  \"ev\": [3, 4, 7]\n}\n```",
+   "out_tok": 77,
+   "in_tok": 406,
+   "ms": 28088
+  },
+  "hard2-00413": {
+   "id": "hard2-00413",
+   "raw": "{\n  \"cat\": \"subscription\",\n  \"inst\": \"Loom Learning\",\n  \"ref\": \"4548\",\n  \"amt\": 9.99,\n  \"kind\": \"due\",\n  \"rec\": \"annual\",\n  \"act\": \"cancel\"\n}",
+   "out_tok": 60,
+   "in_tok": 360,
+   "ms": 20669
+  },
+  "hard2-00393": {
+   "id": "hard2-00393",
+   "raw": "```json\n{\n  \"cat\": \"loan\",\n  \"inst\": \"Bluebell Consumer Loans\",\n  \"ref\": \"9668\",\n  \"amt\": 3637.96,\n  \"kind\": \"due\",\n  \"rec\": \"monthly\",\n  \"due\": 30,\n  \"act\": \"verify_debt\",\n  \"ev\": [4]\n}\n```",
+   "out_tok": 85,
+   "in_tok": 484,
+   "ms": 31449
+  },
+  "hard2-00402": {
+   "id": "hard2-00402",
+   "raw": "{\n  \"cat\": \"insurance\",\n  \"inst\": \"Lighthouse Life Assurance\",\n  \"ref\": \"PL643492\",\n  \"amt\": 250000,\n  \"kind\": \"face_value\",\n  \"act\": \"claim\",\n  \"ev\": [3, 4, 6]\n}",
+   "out_tok": 73,
+   "in_tok": 518,
+   "ms": 25987
+  },
+  "hard2-00399": {
+   "id": "hard2-00399",
+   "raw": "{\n  \"cat\": \"insurance\",\n  \"inst\": \"Birchwood Mutual\",\n  \"ref\": \"PL608421\",\n  \"amt\": 100000,\n  \"kind\": \"benefit\",\n  \"due\": 365,\n  \"act\": \"claim\",\n  \"ev\": [6, 8, 9]\n}",
+   "out_tok": 83,
+   "in_tok": 585,
+   "ms": 29786
+  },
+  "hard2-00405": {
+   "id": "hard2-00405",
+   "raw": "{\n  \"cat\": \"loan\",\n  \"inst\": \"Bluebell Consumer Loans\",\n  \"ref\": \"1122\",\n  \"amt\": 2103.94,\n  \"kind\": \"due\",\n  \"rec\": \"monthly\",\n  \"due\": 45,\n  \"act\": \"close\",\n  \"ev\": [2, 4, 5]\n}",
+   "out_tok": 85,
+   "in_tok": 407,
+   "ms": 28840
+  },
+  "hard2-00404": {
+   "id": "hard2-00404",
+   "raw": "```json\n{\n  \"cat\": \"loan\",\n  \"inst\": \"Bluebell Consumer Loans\",\n  \"ref\": \"9782\",\n  \"amt\": 6691.53,\n  \"kind\": \"due\",\n  \"rec\": \"monthly\",\n  \"due\": 45,\n  \"act\": \"verify_debt\",\n  \"ev\": [2, 4]\n}\n```",
+   "out_tok": 88,
+   "in_tok": 322,
+   "ms": 29946
+  },
+  "hard2-00412": {
+   "id": "hard2-00412",
+   "raw": "{\n  \"cat\": \"credit_card\",\n  \"inst\": \"Parallel Credit Co.\",\n  \"ref\": \"7199\",\n  \"amt\": 867.72,\n  \"kind\": \"due\",\n  \"due\": 45,\n  \"act\": \"notify\",\n  \"ev\": [1, 2, 3, 4]\n}",
+   "out_tok": 80,
+   "in_tok": 378,
+   "ms": 26439
+  },
+  "hard2-00411": {
+   "id": "hard2-00411",
+   "raw": "```json\n{\n  \"cat\": \"retirement\",\n  \"inst\": \"Maritime Officers Retirement Fund\",\n  \"ref\": \"7945\",\n  \"amt\": 7071.01,\n  \"kind\": \"due\",\n  \"due\": 10,\n  \"act\": \"notify\",\n  \"ev\": [1, 2, 3]\n}\n```",
+   "out_tok": 84,
+   "in_tok": 336,
+   "ms": 27695
+  },
+  "hard2-00416": {
+   "id": "hard2-00416",
+   "raw": "```json\n{\n  \"cat\": \"utility\",\n  \"inst\": \"Clearbrook Water District\",\n  \"ref\": \"5791\",\n  \"amt\": 284.05,\n  \"kind\": \"due\",\n  \"due\": 10,\n  \"act\": \"notify\",\n  \"ev\": [2, 6]\n}\n```",
+   "out_tok": 78,
+   "in_tok": 347,
+   "ms": 25125
+  },
+  "hard2-00414": {
+   "id": "hard2-00414",
+   "raw": "```json\n{\n  \"cat\": \"government\",\n  \"inst\": \"Veterans Benefits Regional Office\",\n  \"ref\": \"9717\",\n  \"amt\": 5333.4,\n  \"kind\": \"balance\",\n  \"rec\": \"monthly\",\n  \"due\": 30,\n  \"act\": \"notify\",\n  \"ev\": [1]\n}\n```",
+   "out_tok": 83,
+   "in_tok": 287,
+   "ms": 27010
+  },
+  "hard2-00415": {
+   "id": "hard2-00415",
+   "raw": "{\n  \"cat\": \"government\",\n  \"inst\": \"Veterans Benefits Regional Office\",\n  \"ref\": \"9717\",\n  \"amt\": 5333.4,\n  \"kind\": \"balance\",\n  \"rec\": \"monthly\",\n  \"due\": 30,\n  \"act\": \"notify\",\n  \"ev\": [1, 2]\n}",
+   "out_tok": 82,
+   "in_tok": 289,
+   "ms": 26437
+  },
+  "hard2-00408": {
+   "id": "hard2-00408",
+   "raw": "```json\n{\n  \"cat\": \"government\",\n  \"inst\": \"Veterans Benefits Regional Office\",\n  \"ref\": \"C5333177\",\n  \"amt\": 3317.97,\n  \"kind\": \"benefit\",\n  \"rec\": \"monthly\",\n  \"due\": 30,\n  \"act\": \"verify_debt\",\n  \"ev\": [4]\n}\n```",
+   "out_tok": 91,
+   "in_tok": 442,
+   "ms": 30347
+  },
+  "hard2-00417": {
+   "id": "hard2-00417",
+   "raw": "```json\n{\n  \"cat\": \"insurance\",\n  \"inst\": \"Continental Legacy Insurance\",\n  \"ref\": \"PL238649\",\n  \"amt\": 25000.00,\n  \"kind\": \"face_value\",\n  \"due\": 90,\n  \"act\": \"claim\",\n  \"ev\": [2, 4, 5, 6, 7]\n}\n```",
+   "out_tok": 93,
+   "in_tok": 437,
+   "ms": 29181
+  }
+ }
+}
