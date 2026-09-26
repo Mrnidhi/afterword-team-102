@@ -2,7 +2,7 @@
 const AfterwordStore = (() => {
   const KEY = 'afterword-workspace-v3';
   let remote = false, csrfToken = '', saveTimer = 0, pending = null;
-  const taskIds = ['insurance','storage','subscriptions','medical','bonds','notify-employer','gather-records'];
+  const taskIds = ['insurance','storage','subscriptions','medical','bonds','car-emi','personal-loan','notify-employer','gather-records'];
   const findingIds = ['insurance','medical','storage'];
   const memoryIds = ['tea','sunday','walk'];
   const object = v => v !== null && typeof v === 'object' && !Array.isArray(v);
@@ -10,7 +10,7 @@ const AfterwordStore = (() => {
   const ids = (v, allowed, fallback = []) => Array.isArray(v) ? [...new Set(v.filter(x => allowed.includes(x)))] : fallback;
   const validDate = v => typeof v === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(v) && !Number.isNaN(Date.parse(v)) && new Date(v).toISOString().slice(0,10) === v;
   const languageIds = ['en','es','vi','hi'];
-  const defaults = () => ({completed:['notify-employer','gather-records'],waiting:[],outreachReview:[],reviewed:[],favorite:[],drafts:{},lastDraft:'insurance',taskNotes:{},reminders:{},reviewNotes:{},reviewTimes:{},staged:[],imported:false,largeText:false,ambientMotion:true,lang:'en',activity:[]});
+  const defaults = () => ({completed:['notify-employer','gather-records'],waiting:[],outreachReview:[],reviewed:[],favorite:[],drafts:{},lastDraft:'insurance',taskNotes:{},reminders:{},reviewNotes:{},reviewTimes:{},staged:[],imported:false,largeText:false,ambientMotion:true,lang:'en',theme:'system',activity:[]});
   function clean(input) {
     const d = defaults(), v = object(input) ? input : {};
     d.completed = ids(v.completed, taskIds, d.completed);
@@ -20,6 +20,7 @@ const AfterwordStore = (() => {
     d.favorite = ids(v.favorite, memoryIds);
     d.largeText = v.largeText === true;
     d.ambientMotion = typeof v.ambientMotion === 'boolean' ? v.ambientMotion : true;
+    d.theme = ['light','dark','system'].includes(v.theme) ? v.theme : 'system';
     d.imported = v.imported === true;
     d.lang = languageIds.includes(v.lang) ? v.lang : 'en';
     d.lastDraft = findingIds.includes(v.lastDraft) ? v.lastDraft : 'insurance';
