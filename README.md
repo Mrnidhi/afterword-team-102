@@ -12,9 +12,15 @@ A family workspace for organizing the practical work after a loss. The local app
 bash setup.sh --run     # creates .venv, installs dependencies, runs tests, starts the app
 ```
 
-Then open `http://127.0.0.1:4190`. Python 3.10+; no GPU needed — without a model server the app
-starts in preview mode with the sample workspace. To switch the on-device AI on, serve the
-fine-tuned model (below) and set `AFTERWORD_EXTRACT_URL=http://127.0.0.1:8091/v1`.
+Then open `http://127.0.0.1:4190`. Needs Python 3.10–3.12 and no GPU. The setup script creates a
+virtualenv, installs dependencies and runs the test suite (333 Python tests plus the frontend
+suite). Without a model server the workspace, documents and evidence views all work and the chat
+reports "model not connected"; to switch the on-device AI on, serve the fine-tuned model (below)
+and set `AFTERWORD_EXTRACT_URL=http://127.0.0.1:8091/v1`.
+
+> **Python 3.13 note.** `rapidocr-onnxruntime` 1.4.4, which bundles the ONNX models we use
+> offline, has no wheel for 3.13. `setup.sh` prefers a 3.10–3.12 interpreter when one is present,
+> and otherwise installs everything else and tells you that photo/scan OCR is unavailable.
 
 ## The on-device model
 
