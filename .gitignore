@@ -24,3 +24,6 @@ token*.json
 .env.*
 !.env.example
 backend/afterword.db
+
+# Local Python virtualenvs
+.venv*/
